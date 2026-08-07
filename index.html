@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru" data-theme="parchment">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f0e5d1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d1017" media="(prefers-color-scheme: dark)" />
+    <title>Синхрония — атлас параллельной истории</title>
+    <meta
+      name="description"
+      content="Интерактивная синхронная хронология: события и деятели восьми стран на одной вертикальной шкале времени — от первого года нашей эры до наших дней."
+    />
+    <meta property="og:title" content="Синхрония — атлас параллельной истории" />
+    <meta
+      property="og:description"
+      content="Германия, Англия, Франция, Россия, Беларусь, Испания, Китай и Япония на одной шкале времени. Видно, что происходило в разных странах в один и тот же год."
+    />
+    <meta property="og:type" content="website" />
+    <script>
+      // Тема применяется до первой отрисовки, чтобы не было вспышки светлого фона.
+      try {
+        var saved = JSON.parse(localStorage.getItem('history-line:theme'));
+        if (saved === 'atlas' || saved === 'parchment') {
+          document.documentElement.dataset.theme = saved;
+        }
+      } catch (error) {
+        /* хранилище недоступно — остаётся тема по умолчанию */
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

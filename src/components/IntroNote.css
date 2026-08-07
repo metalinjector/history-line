@@ -1,0 +1,110 @@
+.intro-note {
+  padding-block: 8px 40px;
+}
+
+.intro-note__card {
+  padding: clamp(20px, 2.4vw, 30px);
+  border-left: 3px solid var(--accent);
+  background:
+    linear-gradient(100deg, color-mix(in oklab, var(--gold) 9%, transparent), transparent 42%),
+    var(--card-bg);
+}
+
+.intro-note__main {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.intro-note__seal {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in oklab, var(--accent) 40%, transparent);
+  background: color-mix(in oklab, var(--gold) 14%, transparent);
+  color: var(--accent);
+  font-size: 18px;
+}
+
+.intro-note__text {
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-size: clamp(17px, 1.5vw, 21px);
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 88ch;
+}
+
+.intro-note__details {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--line);
+}
+
+.intro-note__details summary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 550;
+  color: var(--ink-soft);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.intro-note__details summary:hover {
+  color: var(--ink-strong);
+}
+
+.intro-note__details summary::-webkit-details-marker {
+  display: none;
+}
+
+.intro-note__details summary::before {
+  content: '＋';
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  transition: transform var(--dur-mid) var(--ease-out);
+}
+
+.intro-note__details[open] summary::before {
+  content: '－';
+}
+
+.intro-note__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px 32px;
+  margin: 18px 0 4px;
+  padding: 0;
+  list-style: none;
+}
+
+.intro-note__list li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.intro-note__list b {
+  color: var(--ink-strong);
+  font-weight: 600;
+}
+
+.intro-note__dot {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--c) 18%, transparent);
+}

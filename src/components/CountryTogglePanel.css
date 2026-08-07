@@ -1,0 +1,132 @@
+.country-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line-soft);
+  background: color-mix(in oklab, var(--paper-raised) 62%, transparent);
+}
+
+.country-toggles__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 1;
+}
+
+.country-chip {
+  display: inline-flex;
+  align-items: stretch;
+  border-radius: 999px;
+  border: 1px solid var(--line-soft);
+  background: color-mix(in oklab, var(--paper) 55%, transparent);
+  color: var(--ink-ghost);
+  overflow: hidden;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.country-chip:hover {
+  transform: translateY(-1px);
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+.country-chip__main {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 11px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: inherit;
+}
+
+.country-chip__main:disabled {
+  cursor: default;
+}
+
+/* Отдельная кнопка «только эта страна» — своя зона нажатия, без перекрытия */
+.country-chip__only {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 8px;
+  border-left: 1px solid var(--line-soft);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-ghost);
+  opacity: 0.6;
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.country-chip:hover .country-chip__only {
+  opacity: 1;
+}
+
+.country-chip__only:hover {
+  background: color-mix(in oklab, var(--c) 18%, transparent);
+  color: var(--ink-strong);
+}
+
+.country-chip__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ink-ghost);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.country-chip[data-active] {
+  color: var(--ink-strong);
+  border-color: color-mix(in oklab, var(--c) 52%, transparent);
+  background: color-mix(in oklab, var(--c) 12%, var(--paper-raised));
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--c) 20%, transparent);
+}
+
+.country-chip[data-active] .country-chip__only {
+  border-left-color: color-mix(in oklab, var(--c) 35%, transparent);
+}
+
+.country-chip[data-active] .country-chip__dot {
+  background: var(--c);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--c) 24%, transparent);
+}
+
+.country-chip__count {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.country-chip[data-active] .country-chip__count {
+  color: color-mix(in oklab, var(--c-ink) 80%, var(--ink-soft));
+}
+
+[data-theme='atlas'] .country-chip[data-active] .country-chip__count {
+  color: color-mix(in oklab, var(--c) 70%, var(--ink-soft));
+}
+
+.country-toggles__all {
+  margin-left: auto;
+}
+
+.country-toggles__all:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}

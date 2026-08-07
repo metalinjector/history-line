@@ -1,0 +1,135 @@
+/* ============================================================
+   Дизайн-токены.
+   Две темы: «Пергамент» (по умолчанию) и «Ночной атлас».
+   Все компоненты обращаются только к переменным отсюда,
+   поэтому добавить третью тему — значит добавить один блок.
+   ============================================================ */
+
+:root {
+  /* Типографика */
+  --font-display: 'Lora Variable', 'Lora', Georgia, 'Times New Roman', serif;
+  --font-ui: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+  /* Масштаб хронологии: задаётся ползунком, влияет на ширины и кегль */
+  --zoom: 1;
+  --col-width: calc(272px * var(--zoom));
+  --date-width: calc(124px * var(--zoom));
+  --row-gap: calc(14px * var(--zoom));
+  --card-radius: 14px;
+
+  /* Скругления и тени */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  /* Тайминги */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 140ms;
+  --dur-mid: 260ms;
+  --dur-slow: 520ms;
+
+  --header-height: 60px;
+}
+
+/* ---------- Тема «Пергамент» ---------- */
+:root,
+[data-theme='parchment'] {
+  color-scheme: light;
+
+  --paper: hsl(38 44% 93%);
+  --paper-raised: hsl(40 52% 96%);
+  --paper-sunken: hsl(36 34% 88%);
+  --paper-deep: hsl(34 28% 83%);
+
+  --ink: hsl(26 32% 15%);
+  --ink-strong: hsl(24 40% 10%);
+  --ink-soft: hsl(28 18% 34%);
+  --ink-faint: hsl(30 14% 50%);
+  --ink-ghost: hsl(30 12% 62%);
+
+  --line: hsl(32 24% 76%);
+  --line-soft: hsl(34 26% 82%);
+  --line-strong: hsl(30 22% 62%);
+
+  --accent: hsl(28 72% 38%);
+  --accent-soft: hsl(32 66% 52%);
+  --gold: hsl(40 74% 46%);
+  --seal: hsl(354 58% 41%);
+
+  --shadow-sm: 0 1px 2px hsl(28 30% 20% / 0.08), 0 2px 6px hsl(28 30% 20% / 0.06);
+  --shadow-md: 0 2px 6px hsl(28 30% 20% / 0.09), 0 12px 28px hsl(28 30% 20% / 0.1);
+  --shadow-lg: 0 8px 20px hsl(28 30% 20% / 0.12), 0 30px 60px hsl(28 30% 20% / 0.14);
+
+  --card-bg: linear-gradient(168deg, hsl(42 56% 97%), hsl(38 40% 93%));
+  --card-border: hsl(32 26% 78%);
+
+  --grid-line: hsl(32 22% 80% / 0.75);
+  --rail-opacity: 0.34;
+  --dot-ring: hsl(40 52% 96%);
+
+  --focus-ring: hsl(28 72% 38%);
+  --selection: hsl(38 78% 72% / 0.5);
+
+  /* Насыщенность цветов стран под светлый фон */
+  --country-l: 40%;
+  --country-s: 68%;
+
+  --texture-opacity: 0.5;
+  --vignette: radial-gradient(120% 80% at 50% 0%, transparent 40%, hsl(30 30% 40% / 0.1) 100%);
+}
+
+/* ---------- Тема «Ночной атлас» ---------- */
+[data-theme='atlas'] {
+  color-scheme: dark;
+
+  --paper: hsl(222 32% 7%);
+  --paper-raised: hsl(220 28% 11%);
+  --paper-sunken: hsl(223 34% 5%);
+  --paper-deep: hsl(222 30% 9%);
+
+  --ink: hsl(40 24% 90%);
+  --ink-strong: hsl(42 40% 96%);
+  --ink-soft: hsl(40 12% 72%);
+  --ink-faint: hsl(38 10% 56%);
+  --ink-ghost: hsl(38 8% 44%);
+
+  --line: hsl(220 20% 22%);
+  --line-soft: hsl(220 18% 18%);
+  --line-strong: hsl(220 16% 34%);
+
+  --accent: hsl(40 84% 62%);
+  --accent-soft: hsl(38 70% 56%);
+  --gold: hsl(43 88% 64%);
+  --seal: hsl(354 62% 58%);
+
+  --shadow-sm: 0 1px 2px hsl(220 60% 2% / 0.5), 0 2px 8px hsl(220 60% 2% / 0.4);
+  --shadow-md: 0 2px 8px hsl(220 60% 2% / 0.5), 0 14px 34px hsl(220 60% 2% / 0.45);
+  --shadow-lg: 0 10px 26px hsl(220 60% 2% / 0.55), 0 34px 70px hsl(220 60% 2% / 0.5);
+
+  --card-bg: linear-gradient(168deg, hsl(220 26% 13%), hsl(222 30% 9%));
+  --card-border: hsl(220 18% 22%);
+
+  --grid-line: hsl(220 18% 20% / 0.9);
+  --rail-opacity: 0.5;
+  --dot-ring: hsl(222 32% 8%);
+
+  --focus-ring: hsl(40 84% 62%);
+  --selection: hsl(40 80% 60% / 0.28);
+
+  --country-l: 66%;
+  --country-s: 74%;
+
+  --texture-opacity: 0.35;
+  --vignette: radial-gradient(120% 80% at 50% 0%, hsl(220 40% 14% / 0.6) 0%, transparent 60%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur-mid: 1ms;
+    --dur-slow: 1ms;
+  }
+}

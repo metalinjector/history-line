@@ -1,0 +1,128 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  height: var(--header-height);
+  backdrop-filter: blur(14px) saturate(140%);
+  background: color-mix(in oklab, var(--paper) 78%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--line) 60%, transparent);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 100%;
+}
+
+.site-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  color: inherit;
+  margin-right: auto;
+}
+
+.site-header__mark {
+  display: grid;
+  grid-template-columns: repeat(4, 3px);
+  gap: 3px;
+  align-items: end;
+  height: 24px;
+}
+
+.site-header__mark span {
+  display: block;
+  width: 3px;
+  border-radius: 2px;
+  transform-origin: bottom;
+  animation: mark-draw 900ms var(--ease-out) backwards;
+}
+
+.site-header__mark span:nth-child(1) {
+  height: 60%;
+  background: hsl(38 var(--country-s) var(--country-l));
+  animation-delay: 60ms;
+}
+.site-header__mark span:nth-child(2) {
+  height: 100%;
+  background: hsl(350 var(--country-s) var(--country-l));
+  animation-delay: 140ms;
+}
+.site-header__mark span:nth-child(3) {
+  height: 44%;
+  background: hsl(214 var(--country-s) var(--country-l));
+  animation-delay: 220ms;
+}
+.site-header__mark span:nth-child(4) {
+  height: 78%;
+  background: hsl(160 var(--country-s) var(--country-l));
+  animation-delay: 300ms;
+}
+
+@keyframes mark-draw {
+  from {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.site-header__name {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: var(--ink-strong);
+}
+
+.site-header__sub {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 3px;
+}
+
+.site-header__nav {
+  display: flex;
+  gap: 4px;
+}
+
+.site-header__link {
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.site-header__link:hover {
+  color: var(--ink-strong);
+  background: color-mix(in oklab, var(--paper-raised) 80%, transparent);
+}
+
+@media (max-width: 860px) {
+  .site-header__nav {
+    display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .site-header__theme span[aria-hidden] + * {
+    display: none;
+  }
+}
