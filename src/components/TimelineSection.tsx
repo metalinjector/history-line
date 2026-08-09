@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useMemo, useState } from 'react';
 import type { TimelineItem } from '../types';
 import type { TimelineState } from '../lib/useTimelineState';
 import { eras } from '../data/eras';
@@ -8,8 +8,10 @@ import { TimelineControls } from './TimelineControls';
 import { CountryTogglePanel } from './CountryTogglePanel';
 import { TimelineHeader } from './TimelineHeader';
 import { TimelineRow } from './TimelineRow';
-import { FocusPanel } from './FocusPanel';
 import './TimelineSection.css';
+
+// Модалка тянет за собой разбор Markdown, поэтому грузится только при первом открытии.
+const ItemModal = lazy(() => import('./ItemModal'));
 
 type Props = {
   state: TimelineState;
@@ -18,14 +20,18 @@ type Props = {
 
 export function TimelineSection({ state, sectionRef }: Props) {
   const {
+    columns,
+    sharedColumns,
+    maxColumns,
     visibleCountries,
     groups,
     filteredItems,
     stats,
     countryCounts,
     selectedItem,
-    selectedCountry,
-    selectedEra,
+    openedItem,
+    openedCountry,
+    openedEra,
     neighbours,
     scrollTarget,
     countries,
@@ -47,6 +53,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
     setExpanded,
     selectItem,
     clearSelection,
+    openItem,
+    closeItem,
     toggleCountry,
     showAllCountries,
     onlyCountry,
@@ -96,6 +104,14 @@ export function TimelineSection({ state, sectionRef }: Props) {
     [didPan, selectItem],
   );
 
+  const handleOpen = useCallback(
+    (item: TimelineItem) => {
+      if (didPan()) return;
+      openItem(item);
+    },
+    [didPan, openItem],
+  );
+
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (!['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Escape'].includes(event.key)) return;
@@ -128,22 +144,11 @@ export function TimelineSection({ state, sectionRef }: Props) {
       selectItem(nextItem);
       scrollItemIntoView(nextItem.id);
       window.requestAnimationFrame(() => {
-        document.getElementById(`item-${nextItem.id}`)?.focus({ preventScroll: true });
+        document.querySelector<HTMLElement>(`#item-${nextItem.id} .tcard__hit`)?.focus({ preventScroll: true });
       });
     },
     [clearSelection, ordered, scrollItemIntoView, selectItem, selectedItem, visibleCountries],
   );
-
-  /** Эпохи, реально присутствующие в текущей выборке, — для быстрых переходов. */
-  const availableEras = useMemo(() => {
-    const firstRowByEra = new Map<string, string>();
-    for (const group of groups) {
-      if (!firstRowByEra.has(group.era.id)) firstRowByEra.set(group.era.id, group.key);
-    }
-    return eras
-      .filter((item) => firstRowByEra.has(item.id))
-      .map((item) => ({ ...item, rowKey: firstRowByEra.get(item.id)! }));
-  }, [groups]);
 
   /**
    * Измеряет базовую ширину таблицы через скрытый зонд.
@@ -158,9 +163,9 @@ export function TimelineSection({ state, sectionRef }: Props) {
     const probeDate = viewport?.querySelector<HTMLElement>('[data-probe="date"]');
     if (!viewport || !probeColumn || !probeDate) return undefined;
 
-    const width = probeDate.offsetWidth + probeColumn.offsetWidth * visibleCountries.length;
+    const width = probeDate.offsetWidth + probeColumn.offsetWidth * columns.length;
     return width > 0 ? { width, available: viewport.clientWidth } : undefined;
-  }, [viewportRef, visibleCountries.length]);
+  }, [columns.length, viewportRef]);
 
   /** Если колонки уже, чем поле, они растягиваются и заполняют его целиком. */
   const [stretchColumns, setStretchColumns] = useState(false);
@@ -187,6 +192,17 @@ export function TimelineSection({ state, sectionRef }: Props) {
     setZoom(((measured.available - 4) / measured.width) * zoom);
   }, [measureBaseWidth, setZoom, zoom]);
 
+  /** Эпохи, реально присутствующие в текущей выборке, — для быстрых переходов. */
+  const availableEras = useMemo(() => {
+    const firstRowByEra = new Map<string, string>();
+    for (const group of groups) {
+      if (!firstRowByEra.has(group.era.id)) firstRowByEra.set(group.era.id, group.key);
+    }
+    return eras
+      .filter((item) => firstRowByEra.has(item.id))
+      .map((item) => ({ ...item, rowKey: firstRowByEra.get(item.id)! }));
+  }, [groups]);
+
   const jumpToRow = useCallback(
     (rowKey: string) => {
       const viewport = viewportRef.current;
@@ -204,8 +220,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
 
   const gridStyle = {
     '--cols': stretchColumns
-      ? `repeat(${visibleCountries.length}, minmax(var(--col-width), 1fr))`
-      : `repeat(${visibleCountries.length}, var(--col-width))`,
+      ? `repeat(${columns.length}, minmax(var(--col-width), 1fr))`
+      : `repeat(${columns.length}, var(--col-width))`,
   } as React.CSSProperties;
 
   return (
@@ -216,8 +232,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
           <h2 className="timeline__title">Одно время — восемь линий</h2>
         </div>
         <p className="timeline__hint lede">
-          Тащите поле мышью, приближайте ползунком, отключайте лишние страны. Нажмите на карточку — справа
-          появится подробное объяснение, а слева подсветится год.
+          Тащите поле мышью, приближайте ползунком, отключайте лишние страны. Нажмите на карточку — слева
+          подсветится год, а значок <span className="timeline__hint-glyph">¶</span> откроет полный текст.
         </p>
       </header>
 
@@ -248,6 +264,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
           countries={countries}
           activeIds={activeCountryIds}
           counts={countryCounts}
+          sharedColumns={sharedColumns}
+          maxColumns={maxColumns}
           onToggle={toggleCountry}
           onShowAll={showAllCountries}
           onOnly={onlyCountry}
@@ -282,7 +300,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
             role="grid"
             aria-label="Хронология событий по странам"
             aria-rowcount={groups.length + 1}
-            aria-colcount={visibleCountries.length + 1}
+            aria-colcount={columns.length + 1}
           >
             {/* Скрытый зонд: даёт базовые ширины колонок для расчёта масштаба */}
             <span className="timeline__probe" aria-hidden="true">
@@ -292,7 +310,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
 
             <div className="timeline__grid" style={gridStyle} data-stretch={stretchColumns || undefined}>
               <TimelineHeader
-                countries={visibleCountries}
+                columns={columns}
                 selectedCountry={selectedItem?.country}
                 onHide={toggleCountry}
                 canHide={visibleCountries.length > 1}
@@ -337,11 +355,12 @@ export function TimelineSection({ state, sectionRef }: Props) {
 
                       <TimelineRow
                         group={group}
-                        countries={visibleCountries}
+                        columns={columns}
                         selectedId={selectedItem?.id}
                         selectedCountry={selectedItem?.country}
                         query={query}
                         onSelect={handleSelect}
+                        onOpen={handleOpen}
                       />
                     </div>
                   ))}
@@ -353,22 +372,24 @@ export function TimelineSection({ state, sectionRef }: Props) {
               )}
             </div>
           </div>
-
-          <FocusPanel
-            item={selectedItem}
-            country={selectedCountry}
-            era={selectedEra}
-            previous={neighbours.previous}
-            next={neighbours.next}
-            onNavigate={(item) => {
-              selectItem(item);
-              scrollItemIntoView(item.id);
-            }}
-            onClose={clearSelection}
-            onTagClick={toggleTag}
-          />
         </div>
       </div>
+
+      {openedItem && openedCountry ? (
+        <Suspense fallback={null}>
+          <ItemModal
+            key={openedItem.id}
+            item={openedItem}
+            country={openedCountry}
+            era={openedEra}
+            previous={neighbours.previous}
+            next={neighbours.next}
+            onNavigate={openItem}
+            onClose={closeItem}
+            onTagClick={toggleTag}
+          />
+        </Suspense>
+      ) : null}
     </section>
   );
 }

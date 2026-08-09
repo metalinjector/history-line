@@ -1,0 +1,500 @@
+/* ============================================================
+   Модальное окно с полным текстом объекта.
+   Разметка приходит из Markdown, поэтому стили описаны
+   не по классам, а по тегам внутри блока .md.
+   ============================================================ */
+
+.modal {
+  /* position: fixed обязателен: браузер по умолчанию позиционирует dialog
+     абсолютно, и он бы прилип к ближайшему предку с position: relative
+     (секция хронологии), вместо того чтобы встать по центру экрана. */
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(820px, calc(100vw - 32px));
+  max-height: min(88vh, 980px);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-xl);
+  background: transparent;
+  overflow: visible;
+}
+
+.modal::backdrop {
+  background: color-mix(in oklab, hsl(28 30% 8%) 62%, transparent);
+  backdrop-filter: blur(6px) saturate(120%);
+  animation: modal-backdrop 260ms var(--ease-out);
+}
+
+[data-theme='atlas'] .modal::backdrop {
+  background: color-mix(in oklab, hsl(222 45% 3%) 74%, transparent);
+}
+
+.modal[open] {
+  animation: modal-in 300ms var(--ease-out);
+}
+
+@keyframes modal-backdrop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal[open],
+  .modal::backdrop {
+    animation: none;
+  }
+}
+
+.modal__panel {
+  display: flex;
+  flex-direction: column;
+  max-height: min(88vh, 980px);
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-lg);
+}
+
+.modal__bar {
+  flex: none;
+  height: 4px;
+  background: linear-gradient(90deg, var(--c), color-mix(in oklab, var(--c) 22%, transparent));
+  transform-origin: left;
+  animation: modal-bar 700ms var(--ease-out);
+}
+
+@keyframes modal-bar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.modal__head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 22px 0;
+}
+
+.modal__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal__country {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 12px 4px 10px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--c) 45%, transparent);
+  background: color-mix(in oklab, var(--c) 12%, transparent);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-ink);
+}
+
+[data-theme='atlas'] .modal__country {
+  color: var(--c);
+}
+
+.modal__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c);
+}
+
+.modal__kind,
+.modal__seal {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line-soft);
+}
+
+.modal__seal {
+  color: var(--gold);
+  border-color: color-mix(in oklab, var(--gold) 42%, transparent);
+  background: color-mix(in oklab, var(--gold) 12%, transparent);
+}
+
+.modal__close {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 21px;
+  line-height: 1;
+  color: var(--ink-faint);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.modal__close:hover {
+  background: var(--paper-sunken);
+  color: var(--ink-strong);
+}
+
+.modal__title-block {
+  flex: none;
+  padding: 12px 22px 16px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.modal__date {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+.modal__life {
+  color: var(--ink-faint);
+  font-size: 11.5px;
+}
+
+.modal__title {
+  margin-top: 6px;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.14;
+}
+
+.modal__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 22px 22px 26px;
+}
+
+.modal__foot {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding: 14px 22px 16px;
+  border-top: 1px solid var(--line-soft);
+  background: color-mix(in oklab, var(--paper-sunken) 45%, transparent);
+}
+
+.modal__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.modal__nav {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+  max-width: 100%;
+}
+
+.modal__nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 240px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line-soft);
+  font-size: 12px;
+  color: var(--ink-soft);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.modal__nav-btn:hover:not(:disabled) {
+  border-color: color-mix(in oklab, var(--c) 50%, transparent);
+  background: color-mix(in oklab, var(--c) 10%, transparent);
+  color: var(--ink-strong);
+}
+
+.modal__nav-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.modal__nav-btn span[aria-hidden] {
+  font-family: var(--font-mono);
+  color: var(--c);
+}
+
+.modal__nav-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Оформление Markdown
+   ============================================================ */
+
+.md {
+  font-size: 15.5px;
+  line-height: 1.72;
+  color: var(--ink-soft);
+}
+
+.md > *:first-child {
+  margin-top: 0;
+}
+
+.md p {
+  margin: 0 0 1.05em;
+}
+
+.md h1,
+.md h2,
+.md h3,
+.md h4 {
+  color: var(--ink-strong);
+  line-height: 1.24;
+}
+
+.md h1 {
+  margin: 1.6em 0 0.5em;
+  font-size: 26px;
+}
+
+.md h2 {
+  margin: 1.75em 0 0.6em;
+  font-size: 20px;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.md h3 {
+  margin: 1.5em 0 0.45em;
+  font-size: 17px;
+}
+
+.md h4 {
+  margin: 1.3em 0 0.4em;
+  font-size: 15px;
+  font-family: var(--font-ui);
+  font-weight: 650;
+}
+
+.md strong {
+  color: var(--ink-strong);
+  font-weight: 650;
+}
+
+.md em {
+  font-style: italic;
+}
+
+.md del {
+  color: var(--ink-ghost);
+  text-decoration-color: var(--seal);
+}
+
+.md a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in oklab, var(--accent) 40%, transparent);
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.md a:hover {
+  color: var(--ink-strong);
+  border-bottom-color: var(--ink-strong);
+  background: color-mix(in oklab, var(--gold) 14%, transparent);
+}
+
+.md a[href^='http']::after {
+  content: '↗';
+  font-size: 0.72em;
+  vertical-align: super;
+  margin-left: 2px;
+  opacity: 0.7;
+}
+
+.md ul,
+.md ol {
+  margin: 0 0 1.05em;
+  padding-left: 1.35em;
+}
+
+.md li {
+  margin-bottom: 0.42em;
+}
+
+.md li::marker {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.md ul ul,
+.md ol ol,
+.md ul ol,
+.md ol ul {
+  margin-top: 0.42em;
+  margin-bottom: 0;
+}
+
+.md blockquote {
+  margin: 0 0 1.15em;
+  padding: 14px 18px;
+  border-left: 3px solid var(--c, var(--accent));
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: color-mix(in oklab, var(--c, var(--accent)) 8%, transparent);
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.md blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.md hr {
+  height: 1px;
+  margin: 1.8em 0;
+  border: 0;
+  background: linear-gradient(90deg, var(--line), transparent);
+}
+
+/* Таблицы прокручиваются внутри себя, а не растягивают модалку */
+.md table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  margin: 0 0 1.2em;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.md thead {
+  background: color-mix(in oklab, var(--paper-sunken) 70%, transparent);
+}
+
+.md th,
+.md td {
+  padding: 9px 14px;
+  text-align: left;
+  border: 1px solid var(--line-soft);
+  vertical-align: top;
+}
+
+.md th {
+  font-family: var(--font-ui);
+  font-weight: 650;
+  font-size: 12.5px;
+  letter-spacing: 0.01em;
+  color: var(--ink-strong);
+  white-space: nowrap;
+}
+
+.md tbody tr:nth-child(even) {
+  background: color-mix(in oklab, var(--paper-sunken) 40%, transparent);
+}
+
+.md code {
+  padding: 2px 6px;
+  border-radius: 5px;
+  border: 1px solid var(--line-soft);
+  background: color-mix(in oklab, var(--paper-sunken) 65%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  color: var(--ink-strong);
+}
+
+.md pre {
+  margin: 0 0 1.2em;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line-soft);
+  background: var(--paper-sunken);
+  overflow-x: auto;
+}
+
+.md pre code {
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.md img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+}
+
+.md input[type='checkbox'] {
+  margin-right: 8px;
+  accent-color: var(--accent);
+}
+
+@media (max-width: 620px) {
+  .modal {
+    width: 100vw;
+    max-width: 100vw;
+    max-height: 100vh;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .modal__panel {
+    max-height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+
+  .modal__nav {
+    width: 100%;
+  }
+
+  .modal__nav-btn {
+    flex: 1;
+    min-width: 0;
+  }
+}

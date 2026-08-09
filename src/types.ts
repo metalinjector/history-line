@@ -77,6 +77,11 @@ export type TimelineItem = {
   importance?: Importance;
   /** Короткая реплика о синхронности: что в это же время происходило рядом. */
   parallel?: string;
+  /**
+   * Полный текст статьи в Markdown для модального окна.
+   * Если поля нет, документ собирается из остальных полей — см. lib/markdown.ts.
+   */
+  body?: string;
   sources?: SourceLink[];
   /** Объект добавлен пользователем через конструктор персоналий. */
   custom?: boolean;
@@ -101,6 +106,25 @@ export type Layer = 'all' | 'events' | 'people';
 /** Тема оформления. */
 export type ThemeName = 'parchment' | 'atlas';
 
+/**
+ * Колонка таблицы. Может держать одну страну или пару стран.
+ *
+ * Пары нужны, потому что колонок на экране не больше шести: когда включено
+ * больше стран, близкие линии «вклиниваются» в общую колонку и различаются
+ * цветом точки на шкале и бейджем на карточке.
+ */
+export type TimelineColumn = {
+  /** Идентификатор колонки: 'russia' или 'russia+belarus'. */
+  id: string;
+  countries: Country[];
+  /** Подпись в шапке: «Россия · Беларусь». */
+  label: string;
+  /** Короткое обозначение: «RU · BY». */
+  short: string;
+  /** Колонка держит больше одной страны. */
+  shared: boolean;
+};
+
 /** Группа объектов одного «шага» шкалы (сейчас — одного года). */
 export type TimelineGroup = {
   /** Стабильный ключ группы: '1789' | '1789-07' | '1789-07-14'. */
@@ -114,8 +138,8 @@ export type TimelineGroup = {
   /** Первая группа эпохи — по ней рисуется разделитель эпохи. */
   startsEra: boolean;
   items: TimelineItem[];
-  /** Объекты, разложенные по колонкам стран. */
-  byCountry: Record<string, TimelineItem[]>;
+  /** Объекты, разложенные по колонкам таблицы (ключ — TimelineColumn.id). */
+  byColumn: Record<string, TimelineItem[]>;
   /** Максимальная важность внутри группы — влияет на вес подписи года. */
   weight: Importance;
 };

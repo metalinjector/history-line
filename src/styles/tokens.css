@@ -11,12 +11,21 @@
   --font-ui: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
 
-  /* Масштаб хронологии: задаётся ползунком, влияет на ширины и кегль */
+  /* Масштаб хронологии: задаётся ползунком, влияет на ширины и кегль.
+     Ширина колонки подобрана так, чтобы шесть колонок и колонка дат
+     помещались в поле без горизонтальной прокрутки на широком экране. */
   --zoom: 1;
-  --col-width: calc(272px * var(--zoom));
-  --date-width: calc(124px * var(--zoom));
-  --row-gap: calc(14px * var(--zoom));
+  --col-width: calc(240px * var(--zoom));
+  --date-width: calc(100px * var(--zoom));
+  --row-gap: calc(13px * var(--zoom));
   --card-radius: 14px;
+
+  /* Геометрия шкалы внутри ячейки: отступ под линии, центр линии, шаг между
+     линиями общей колонки и размер узла. Из них считаются позиции узлов карточек. */
+  --cell-pad-left: 40px;
+  --rail-center: 19px;
+  --rail-gap: 9px;
+  --node: 11px;
 
   /* Скругления и тени */
   --radius-sm: 8px;

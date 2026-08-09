@@ -4,9 +4,11 @@ import type {
   Granularity,
   Importance,
   Layer,
+  TimelineColumn,
   TimelineGroup,
   TimelineItem,
 } from '../types';
+import { columnIndex } from '../data/columns';
 import { eraForYear } from '../data/eras';
 import { MONTHS_NOMINATIVE, timeKey } from './format';
 
@@ -95,9 +97,16 @@ function groupLabel(year: number, month?: number, day?: number): string {
  */
 export function buildGroups(
   items: TimelineItem[],
-  countries: CountryId[],
+  columns: TimelineColumn[],
   granularity: Granularity = 'year',
 ): TimelineGroup[] {
+  const columnOf = columnIndex(columns);
+  // Порядок стран внутри общей колонки — для устойчивой сортировки в ячейке.
+  const countryOrder = new Map<string, number>();
+  for (const column of columns) {
+    column.countries.forEach((country, index) => countryOrder.set(country.id, index));
+  }
+
   const buckets = new Map<string, TimelineItem[]>();
 
   for (const item of items) {
@@ -121,15 +130,16 @@ export function buildGroups(
     bucket.sort(
       (a, b) =>
         timeKey(a) - timeKey(b) ||
+        (countryOrder.get(a.country) ?? 0) - (countryOrder.get(b.country) ?? 0) ||
         (b.importance ?? 2) - (a.importance ?? 2) ||
         a.title.localeCompare(b.title, 'ru'),
     );
 
     const [year, month, day] = key.split('-').map(Number);
     const era = eraForYear(year);
-    const byCountry: Record<string, TimelineItem[]> = {};
-    for (const country of countries) byCountry[country] = [];
-    for (const item of bucket) byCountry[item.country]?.push(item);
+    const byColumn: Record<string, TimelineItem[]> = {};
+    for (const column of columns) byColumn[column.id] = [];
+    for (const item of bucket) byColumn[columnOf[item.country]?.id]?.push(item);
 
     const weight = bucket.reduce<Importance>(
       (max, item) => (Math.max(max, item.importance ?? 2) as Importance),
@@ -145,7 +155,7 @@ export function buildGroups(
       era,
       startsEra: era.id !== previousEra,
       items: bucket,
-      byCountry,
+      byColumn,
       weight,
     });
 

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CountryId, EraId, Layer, ThemeName, TimelineItem } from '../types';
 import { allCountryIds, countries, countryById } from '../data/countries';
+import { buildColumns, MAX_COLUMNS } from '../data/columns';
 import { eraForYear } from '../data/eras';
 import { timelineItems } from '../data/timelineItems';
 import { buildGroups, filterItems, findNearestItem, summarize } from './timeline';
@@ -33,6 +34,7 @@ export function useTimelineState() {
   );
   const [addedPeople, setAddedPeople] = usePersistentState<TimelineItem[]>('added-people', []);
   const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
+  const [openedId, setOpenedId] = useState<string | undefined>(undefined);
   const [scrollTarget, setScrollTarget] = useState<ScrollTarget | undefined>(undefined);
   const [expanded, setExpanded] = useState(false);
 
@@ -55,6 +57,15 @@ export function useTimelineState() {
     [activeCountryIds],
   );
 
+  /**
+   * Колонки таблицы. Когда включённых стран больше, чем помещается колонок,
+   * близкие линии объединяются в общие дорожки — см. data/columns.ts.
+   */
+  const columns = useMemo(() => buildColumns(activeCountryIds), [activeCountryIds]);
+
+  /** Пары, которые сейчас делят колонку, — о них нужно сказать пользователю. */
+  const sharedColumns = useMemo(() => columns.filter((column) => column.shared), [columns]);
+
   const allItems = useMemo(() => [...timelineItems, ...addedPeople], [addedPeople]);
 
   const filter = useMemo(
@@ -64,10 +75,7 @@ export function useTimelineState() {
 
   const filteredItems = useMemo(() => filterItems(allItems, filter), [allItems, filter]);
 
-  const groups = useMemo(
-    () => buildGroups(filteredItems, activeCountryIds),
-    [filteredItems, activeCountryIds],
-  );
+  const groups = useMemo(() => buildGroups(filteredItems, columns), [filteredItems, columns]);
 
   const stats = useMemo(() => summarize(filteredItems), [filteredItems]);
 
@@ -85,6 +93,12 @@ export function useTimelineState() {
     [filteredItems, selectedId],
   );
 
+  /** Объект, открытый в модальном окне с полным текстом. */
+  const openedItem = useMemo(
+    () => allItems.find((item) => item.id === openedId),
+    [allItems, openedId],
+  );
+
   // Запоминаем последний удачно выбранный объект, чтобы искать по нему замену.
   const lastSelectedRef = useRef<TimelineItem | undefined>(undefined);
   useEffect(() => {
@@ -98,15 +112,19 @@ export function useTimelineState() {
     setSelectedId(nearest?.id);
   }, [filteredItems, selectedId, selectedItem]);
 
-  /** Соседи выбранного объекта внутри его собственной страны. */
+  /**
+   * Соседи открытого объекта внутри его собственной линии — для перехода
+   * «раньше / позже» прямо из модального окна. Считаем по всей базе, а не по
+   * отфильтрованной выборке: читатель статьи не должен упираться в фильтр.
+   */
   const neighbours = useMemo(() => {
-    if (!selectedItem) return {};
-    const line = filteredItems
-      .filter((item) => item.country === selectedItem.country)
+    if (!openedItem) return {};
+    const line = allItems
+      .filter((item) => item.country === openedItem.country)
       .sort((a, b) => timeKey(a) - timeKey(b));
-    const index = line.findIndex((item) => item.id === selectedItem.id);
+    const index = line.findIndex((item) => item.id === openedItem.id);
     return { previous: line[index - 1], next: line[index + 1] };
-  }, [filteredItems, selectedItem]);
+  }, [allItems, openedItem]);
 
   const selectItem = useCallback((item: TimelineItem, options?: { scroll?: boolean }) => {
     setSelectedId(item.id);
@@ -114,6 +132,14 @@ export function useTimelineState() {
   }, []);
 
   const clearSelection = useCallback(() => setSelectedId(undefined), []);
+
+  /** Открыть полный текст. Объект заодно становится выбранным, чтобы подсветился год. */
+  const openItem = useCallback((item: TimelineItem) => {
+    setSelectedId(item.id);
+    setOpenedId(item.id);
+  }, []);
+
+  const closeItem = useCallback(() => setOpenedId(undefined), []);
 
   const toggleCountry = useCallback(
     (id: CountryId) => {
@@ -198,6 +224,9 @@ export function useTimelineState() {
     // данные
     countries,
     visibleCountries,
+    columns,
+    sharedColumns,
+    maxColumns: MAX_COLUMNS,
     groups,
     filteredItems,
     allItems,
@@ -205,8 +234,9 @@ export function useTimelineState() {
     totalStats,
     countryCounts,
     selectedItem,
-    selectedCountry: selectedItem ? countryById[selectedItem.country] : undefined,
-    selectedEra: selectedItem ? eraForYear(selectedItem.year) : undefined,
+    openedItem,
+    openedCountry: openedItem ? countryById[openedItem.country] : undefined,
+    openedEra: openedItem ? eraForYear(openedItem.year) : undefined,
     neighbours,
     addedPeople,
     scrollTarget,
@@ -233,6 +263,8 @@ export function useTimelineState() {
     setExpanded,
     selectItem,
     clearSelection,
+    openItem,
+    closeItem,
     toggleCountry,
     showAllCountries,
     onlyCountry,

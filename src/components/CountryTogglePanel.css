@@ -120,8 +120,37 @@
   color: color-mix(in oklab, var(--c) 70%, var(--ink-soft));
 }
 
+/* Страна, делящая колонку с соседкой, помечается пунктиром */
+.country-chip[data-shared] {
+  border-style: dashed;
+}
+
 .country-toggles__all {
   margin-left: auto;
+}
+
+.country-toggles__note {
+  flex-basis: 100%;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 2px;
+  padding-top: 11px;
+  border-top: 1px dashed var(--line-soft);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-faint);
+}
+
+.country-toggles__note-icon {
+  flex: none;
+  color: var(--accent);
+  font-size: 13px;
+}
+
+.country-toggles__note b {
+  color: var(--ink-soft);
+  font-weight: 600;
 }
 
 .country-toggles__all:disabled {

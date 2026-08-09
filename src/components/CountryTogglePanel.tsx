@@ -1,10 +1,13 @@
-import type { Country, CountryId } from '../types';
+import type { Country, CountryId, TimelineColumn } from '../types';
 import './CountryTogglePanel.css';
 
 type Props = {
   countries: Country[];
   activeIds: CountryId[];
   counts: Record<string, number>;
+  /** Колонки, которые сейчас делят две страны. */
+  sharedColumns: TimelineColumn[];
+  maxColumns: number;
   onToggle: (id: CountryId) => void;
   onShowAll: () => void;
   onOnly: (id: CountryId) => void;
@@ -18,12 +21,15 @@ export function CountryTogglePanel({
   countries,
   activeIds,
   counts,
+  sharedColumns,
+  maxColumns,
   onToggle,
   onShowAll,
   onOnly,
 }: Props) {
   const activeSet = new Set(activeIds);
   const allVisible = activeIds.length === countries.length;
+  const sharedIds = new Set(sharedColumns.flatMap((column) => column.countries.map((c) => c.id)));
 
   return (
     <div className="country-toggles" role="group" aria-label="Показать или скрыть страны">
@@ -38,6 +44,7 @@ export function CountryTogglePanel({
             <div
               className="country-chip"
               data-active={active || undefined}
+              data-shared={(active && sharedIds.has(country.id)) || undefined}
               key={country.id}
               style={
                 {
@@ -87,6 +94,25 @@ export function CountryTogglePanel({
       >
         Показать все
       </button>
+
+      {sharedColumns.length > 0 ? (
+        <p className="country-toggles__note">
+          <span className="country-toggles__note-icon" aria-hidden="true">
+            ⇄
+          </span>
+          <span>
+            Колонок на экране не больше {maxColumns}, поэтому близкие линии делят общую дорожку:{' '}
+            {sharedColumns.map((column, index) => (
+              <b key={column.id}>
+                {index > 0 ? ', ' : ''}
+                {column.label}
+              </b>
+            ))}
+            . События различаются цветом точки и бейджем на карточке — скройте лишнюю страну, чтобы
+            развести линии по своим колонкам.
+          </span>
+        </p>
+      ) : null}
     </div>
   );
 }

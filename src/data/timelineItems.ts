@@ -1,4 +1,5 @@
 import type { TimelineItem } from '../types';
+import { articles } from './articles';
 import { germany } from './items/germany';
 import { england } from './items/england';
 import { france } from './items/france';
@@ -24,7 +25,11 @@ export const timelineItems: TimelineItem[] = [
   ...spain,
   ...china,
   ...japan,
-];
+].map((item) =>
+  // Развёрнутые статьи хранятся отдельно и подмешиваются по идентификатору,
+  // чтобы файлы стран оставались компактными списками карточек.
+  articles[item.id] ? { ...item, body: articles[item.id] } : item,
+);
 
 /** Все теги, встречающиеся в базе, по частоте использования. */
 export const allTags = Array.from(
