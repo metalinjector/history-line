@@ -284,6 +284,22 @@ export type Relation = {
 /** Проверенная связь, которую пользователь заполняет в конструкторе. */
 export type RelationDraftInput = Pick<Relation, 'to' | 'kind' | 'label' | 'detail' | 'sources'>;
 
+/** Один осмысленный шаг кураторского маршрута по шкале. */
+export type StoryStep = {
+  itemId: string;
+  title: string;
+  note: string;
+};
+
+/** Короткий учебный маршрут, связывающий несколько стран и эпох. */
+export type Story = {
+  id: string;
+  title: string;
+  summary: string;
+  minutes: number;
+  steps: StoryStep[];
+};
+
 export type Suggestion = {
   id: string;
   /** Готовый объект, который добавится в хронологию. */

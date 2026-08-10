@@ -7,9 +7,12 @@ const PREFIX = 'history-line:';
  * Ошибки чтения и записи игнорируются: приватный режим браузера
  * не должен ломать интерфейс.
  */
-export function usePersistentState<T>(key: string, initial: T) {
+export function usePersistentState<T>(key: string, initial: T, urlOverride?: T) {
   const [value, setValue] = useState<T>(() => {
     if (typeof window === 'undefined') return initial;
+    // Явное состояние ссылки важнее локальной сессии: иначе shared URL
+    // открывался бы по-разному у разных читателей.
+    if (urlOverride !== undefined) return urlOverride;
     try {
       const raw = window.localStorage.getItem(PREFIX + key);
       return raw === null ? initial : (JSON.parse(raw) as T);

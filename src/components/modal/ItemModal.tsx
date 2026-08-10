@@ -8,6 +8,7 @@ import { MarkdownView } from './MarkdownView';
 import { Viewpoints } from './Viewpoints';
 import { NoteEditor } from './NoteEditor';
 import { hasVerifiedSources, isRelationVerified } from '../../lib/provenance';
+import type { Contemporary } from '../../lib/contemporaries';
 
 type Props = {
   item: TimelineItem;
@@ -17,6 +18,8 @@ type Props = {
   next?: TimelineItem;
   /** Связи этого объекта с другими — показываются списком под статьёй. */
   relations: Relation[];
+  /** Автоматически найденные события других стран рядом по времени. */
+  contemporaries: Contemporary[];
   /** Разрешение идентификатора в объект — нужно, чтобы подписать вторую сторону связи. */
   resolveItem: (id: string) => TimelineItem | undefined;
   /** Год, из окна которого сюда пришли, — для кнопки возврата. */
@@ -40,6 +43,7 @@ export function ItemModal({
   previous,
   next,
   relations,
+  contemporaries,
   resolveItem,
   backToDay,
   onNavigate,
@@ -130,6 +134,39 @@ export function ItemModal({
           sources={item.sources}
           onOpenItem={onOpenLink}
         />
+
+        {contemporaries.length > 0 ? (
+          <section className="contemporaries">
+            <div className="contemporaries__head">
+              <h3>В это же время</h3>
+              <span>автоматический контекст по другим странам</span>
+            </div>
+            <ul>
+              {contemporaries.map(({ item: contemporary, exactYear, distanceYears }) => {
+                const otherCountry = countryById[contemporary.country];
+                const later = contemporary.year > item.year;
+                return (
+                  <li key={contemporary.id}>
+                    <button type="button" onClick={() => onNavigate(contemporary)}>
+                      <span
+                        className="contemporaries__dot"
+                        style={{ '--c': `hsl(${otherCountry.color})` } as React.CSSProperties}
+                        aria-hidden="true"
+                      />
+                      <span className="contemporaries__text">
+                        <b>{contemporary.title}</b>
+                        <small>{otherCountry.label} · {contemporary.year}</small>
+                      </span>
+                      <span className="contemporaries__distance">
+                        {exactYear ? 'тот же год' : `${distanceYears} г. ${later ? 'позже' : 'раньше'}`}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ) : null}
 
         <NoteEditor
           itemId={item.id}

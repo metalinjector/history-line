@@ -24,6 +24,7 @@ export default function ModalHost({ state }: Props) {
     openedRelation,
     openedRelationEnds,
     openedItemRelations,
+    openedContemporaries,
     backToDay,
     neighbours,
     resolveItem,
@@ -63,6 +64,7 @@ export default function ModalHost({ state }: Props) {
         previous={neighbours.previous}
         next={neighbours.next}
         relations={openedItemRelations}
+        contemporaries={openedContemporaries}
         resolveItem={resolveItem}
         backToDay={backToDay}
         onNavigate={openItem}

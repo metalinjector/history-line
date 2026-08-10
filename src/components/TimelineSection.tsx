@@ -11,6 +11,9 @@ import { TimelineRow } from './TimelineRow';
 import { TimelineOverlay } from './TimelineOverlay';
 import { LayerMenu } from './LayerMenu';
 import { fitZoomToWidth } from '../lib/zoom';
+import { StoryPanel } from './StoryPanel';
+import { EditorialDashboard } from './EditorialDashboard';
+import { ResearchTools } from './ResearchTools';
 import './TimelineSection.css';
 
 // Окна тянут за собой разбор Markdown, KaTeX и загрузчик Mermaid,
@@ -248,6 +251,17 @@ export function TimelineSection({ state, sectionRef }: Props) {
       </header>
 
       <div className="timeline__body shell">
+        <StoryPanel
+          stories={state.stories}
+          activeStory={state.activeStory}
+          step={state.storyStep}
+          activeItem={state.activeStoryItem}
+          onStep={state.goToStoryStep}
+          onStop={state.stopStory}
+        />
+
+        <ResearchTools state={state} />
+
         <TimelineControls
           layer={layer}
           query={query}
@@ -302,6 +316,20 @@ export function TimelineSection({ state, sectionRef }: Props) {
           onRemoveLayer={state.removeLayer}
           onPlaceLayer={state.placeLayer}
           onDragLayer={setDraggingLayerId}
+        />
+
+        <EditorialDashboard
+          items={state.allItems}
+          countries={countries}
+          onSelect={(countryId, eraId) => {
+            state.stopStory();
+            onlyCountry(countryId);
+            setLayer('all');
+            setQuery('');
+            setKeyOnly(false);
+            setTags([]);
+            setEra(eraId);
+          }}
         />
 
         {availableEras.length > 1 ? (
