@@ -1,3 +1,4 @@
+import { useEffect, useId, useRef, useState } from 'react';
 import type { Country, CountryId, TimelineColumn } from '../types';
 import './CountryTogglePanel.css';
 
@@ -5,46 +6,108 @@ type Props = {
   countries: Country[];
   activeIds: CountryId[];
   counts: Record<string, number>;
-  /** Колонки, которые сейчас делят две страны. */
+  /** Колонки, которые сейчас делят несколько линий. */
   sharedColumns: TimelineColumn[];
+  columnCount: number;
   maxColumns: number;
+  maxPerColumn: number;
   onToggle: (id: CountryId) => void;
   onShowAll: () => void;
   onOnly: (id: CountryId) => void;
+  onMerge: (target: CountryId, source: CountryId) => void;
+  onDetach: (id: CountryId) => void;
+  onResetColumns: () => void;
 };
 
 /**
- * Переключатели стран.
- * Последнюю видимую страну скрыть нельзя — иначе хронология опустеет.
+ * Переключатели стран и раскладка колонок.
+ *
+ * По умолчанию у каждой страны своя колонка. Через меню на чипе страну можно
+ * подселить в колонку соседа — тогда линии делят одну дорожку и различаются
+ * цветом точки. Последнюю видимую страну скрыть нельзя.
  */
 export function CountryTogglePanel({
   countries,
   activeIds,
   counts,
   sharedColumns,
+  columnCount,
   maxColumns,
+  maxPerColumn,
   onToggle,
   onShowAll,
   onOnly,
+  onMerge,
+  onDetach,
+  onResetColumns,
 }: Props) {
+  const [openMenu, setOpenMenu] = useState<CountryId | undefined>(undefined);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
+
   const activeSet = new Set(activeIds);
   const allVisible = activeIds.length === countries.length;
-  const sharedIds = new Set(sharedColumns.flatMap((column) => column.countries.map((c) => c.id)));
+
+  /** Страна → её соседи по общей колонке. */
+  const partners = new Map<CountryId, Country[]>();
+  for (const column of sharedColumns) {
+    for (const country of column.countries) {
+      partners.set(
+        country.id,
+        column.countries.filter((other) => other.id !== country.id),
+      );
+    }
+  }
+
+  // Меню закрывается по клику мимо и по Esc.
+  useEffect(() => {
+    if (!openMenu) return;
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (!panelRef.current?.contains(event.target as Node)) setOpenMenu(undefined);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpenMenu(undefined);
+    };
+
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [openMenu]);
+
+  const tooManyColumns = columnCount > maxColumns;
 
   return (
-    <div className="country-toggles" role="group" aria-label="Показать или скрыть страны">
+    <div
+      className="country-toggles"
+      role="group"
+      aria-label="Показать, скрыть и объединить страны"
+      ref={panelRef}
+    >
       <div className="country-toggles__list">
         {countries.map((country) => {
           const active = activeSet.has(country.id);
           const isLast = active && activeIds.length === 1;
+          const columnPartners = partners.get(country.id) ?? [];
+          const menuOpen = openMenu === country.id;
+
+          // Подселить можно только к видимой стране, которая ещё не в этой же колонке
+          // и чья колонка не заполнена.
+          const mergeTargets = countries.filter((other) => {
+            if (other.id === country.id || !activeSet.has(other.id)) return false;
+            if (columnPartners.some((partner) => partner.id === other.id)) return false;
+            const targetSize = (partners.get(other.id)?.length ?? 0) + 1;
+            return targetSize < maxPerColumn;
+          });
 
           return (
-            // Две кнопки в одной «таблетке»: переключение видимости и режим «только эта».
-            // Вложенные кнопки недопустимы, поэтому контейнер — обычный div.
             <div
               className="country-chip"
               data-active={active || undefined}
-              data-shared={(active && sharedIds.has(country.id)) || undefined}
+              data-shared={(active && columnPartners.length > 0) || undefined}
               key={country.id}
               style={
                 {
@@ -69,47 +132,121 @@ export function CountryTogglePanel({
               >
                 <span className="country-chip__dot" aria-hidden="true" />
                 <span className="country-chip__label">{country.label}</span>
+                {columnPartners.length > 0 ? (
+                  <span className="country-chip__link" title="Делит колонку с соседом">
+                    {columnPartners.map((partner) => (
+                      <span
+                        key={partner.id}
+                        className="country-chip__link-dot"
+                        style={{ background: `hsl(${partner.color})` }}
+                      />
+                    ))}
+                  </span>
+                ) : null}
                 <span className="country-chip__count">{counts[country.id] ?? 0}</span>
               </button>
 
               <button
                 type="button"
-                className="country-chip__only"
-                onClick={() => onOnly(country.id)}
-                title={`Показать только «${country.label}»`}
+                className="country-chip__menu-btn"
+                aria-haspopup="menu"
+                aria-expanded={menuOpen}
+                aria-controls={menuOpen ? `${menuId}-${country.id}` : undefined}
+                title={`Действия с линией «${country.label}»`}
+                onClick={() => setOpenMenu(menuOpen ? undefined : country.id)}
               >
-                <span aria-hidden="true">только</span>
-                <span className="visually-hidden">Показать только страну {country.label}</span>
+                <span aria-hidden="true">⋯</span>
+                <span className="visually-hidden">Действия с линией {country.label}</span>
               </button>
+
+              {menuOpen ? (
+                <div className="chip-menu" role="menu" id={`${menuId}-${country.id}`}>
+                  <p className="chip-menu__title">{country.label}</p>
+
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="chip-menu__item"
+                    onClick={() => {
+                      onOnly(country.id);
+                      setOpenMenu(undefined);
+                    }}
+                  >
+                    Показать только эту линию
+                  </button>
+
+                  {columnPartners.length > 0 ? (
+                    <button
+                      type="button"
+                      role="menuitem"
+                      className="chip-menu__item"
+                      onClick={() => {
+                        onDetach(country.id);
+                        setOpenMenu(undefined);
+                      }}
+                    >
+                      Вынести в свою колонку
+                      <span className="chip-menu__hint">
+                        сейчас вместе с: {columnPartners.map((p) => p.label).join(', ')}
+                      </span>
+                    </button>
+                  ) : null}
+
+                  {active && mergeTargets.length > 0 ? (
+                    <>
+                      <p className="chip-menu__group">Добавить в колонку страны</p>
+                      <div className="chip-menu__targets">
+                        {mergeTargets.map((target) => (
+                          <button
+                            key={target.id}
+                            type="button"
+                            role="menuitem"
+                            className="chip-menu__target"
+                            style={{ '--t': `hsl(${target.color})` } as React.CSSProperties}
+                            onClick={() => {
+                              onMerge(target.id, country.id);
+                              setOpenMenu(undefined);
+                            }}
+                          >
+                            <span className="chip-menu__target-dot" aria-hidden="true" />
+                            {target.label}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
           );
         })}
       </div>
 
-      <button
-        type="button"
-        className="btn btn--sm country-toggles__all"
-        onClick={onShowAll}
-        disabled={allVisible}
-      >
-        Показать все
-      </button>
+      <div className="country-toggles__actions">
+        {sharedColumns.length > 0 ? (
+          <button type="button" className="btn btn--sm btn--ghost" onClick={onResetColumns}>
+            Разъединить колонки
+          </button>
+        ) : null}
+        <button
+          type="button"
+          className="btn btn--sm"
+          onClick={onShowAll}
+          disabled={allVisible}
+        >
+          Показать все
+        </button>
+      </div>
 
-      {sharedColumns.length > 0 ? (
+      {tooManyColumns ? (
         <p className="country-toggles__note">
           <span className="country-toggles__note-icon" aria-hidden="true">
             ⇄
           </span>
           <span>
-            Колонок на экране не больше {maxColumns}, поэтому близкие линии делят общую дорожку:{' '}
-            {sharedColumns.map((column, index) => (
-              <b key={column.id}>
-                {index > 0 ? ', ' : ''}
-                {column.label}
-              </b>
-            ))}
-            . События различаются цветом точки и бейджем на карточке — скройте лишнюю страну, чтобы
-            развести линии по своим колонкам.
+            Сейчас {columnCount} колонок — без прокрутки в поле помещается около {maxColumns}.
+            Скройте лишние линии или через меню <b>⋯</b> добавьте страну в колонку соседа: тогда
+            линии поделят одну дорожку, а события останутся различимы по цвету точки.
           </span>
         </p>
       ) : null}

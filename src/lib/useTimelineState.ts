@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CountryId, EraId, Layer, ThemeName, TimelineItem } from '../types';
 import { allCountryIds, countries, countryById } from '../data/countries';
-import { buildColumns, MAX_COLUMNS } from '../data/columns';
+import {
+  buildColumns,
+  detachCountry as detachFromGroups,
+  mergeCountries as mergeIntoGroups,
+  MAX_COLUMNS,
+  MAX_PER_COLUMN,
+  type ColumnGroups,
+} from '../data/columns';
 import { eraForYear } from '../data/eras';
 import { timelineItems } from '../data/timelineItems';
 import { buildGroups, filterItems, findNearestItem, summarize } from './timeline';
@@ -33,6 +40,8 @@ export function useTimelineState() {
     allCountryIds,
   );
   const [addedPeople, setAddedPeople] = usePersistentState<TimelineItem[]>('added-people', []);
+  /** Объединения колонок задаёт пользователь; по умолчанию у каждой страны своя колонка. */
+  const [columnGroups, setColumnGroups] = usePersistentState<ColumnGroups>('column-groups', []);
   const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
   const [openedId, setOpenedId] = useState<string | undefined>(undefined);
   const [scrollTarget, setScrollTarget] = useState<ScrollTarget | undefined>(undefined);
@@ -57,13 +66,13 @@ export function useTimelineState() {
     [activeCountryIds],
   );
 
-  /**
-   * Колонки таблицы. Когда включённых стран больше, чем помещается колонок,
-   * близкие линии объединяются в общие дорожки — см. data/columns.ts.
-   */
-  const columns = useMemo(() => buildColumns(activeCountryIds), [activeCountryIds]);
+  /** Колонки таблицы с учётом заданных пользователем объединений — см. data/columns.ts. */
+  const columns = useMemo(
+    () => buildColumns(activeCountryIds, columnGroups),
+    [activeCountryIds, columnGroups],
+  );
 
-  /** Пары, которые сейчас делят колонку, — о них нужно сказать пользователю. */
+  /** Колонки, которые сейчас делят несколько линий. */
   const sharedColumns = useMemo(() => columns.filter((column) => column.shared), [columns]);
 
   const allItems = useMemo(() => [...timelineItems, ...addedPeople], [addedPeople]);
@@ -157,6 +166,21 @@ export function useTimelineState() {
 
   const showAllCountries = useCallback(() => setActiveCountryIds(allCountryIds), [setActiveCountryIds]);
 
+  /** Добавить страну в колонку другой страны. */
+  const mergeCountry = useCallback(
+    (target: CountryId, source: CountryId) =>
+      setColumnGroups((current) => mergeIntoGroups(current, target, source)),
+    [setColumnGroups],
+  );
+
+  /** Вернуть страну в собственную колонку. */
+  const detachCountry = useCallback(
+    (id: CountryId) => setColumnGroups((current) => detachFromGroups(current, id)),
+    [setColumnGroups],
+  );
+
+  const resetColumns = useCallback(() => setColumnGroups([]), [setColumnGroups]);
+
   const onlyCountry = useCallback((id: CountryId) => setActiveCountryIds([id]), [setActiveCountryIds]);
 
   const ensureCountryVisible = useCallback(
@@ -226,7 +250,9 @@ export function useTimelineState() {
     visibleCountries,
     columns,
     sharedColumns,
+    columnGroups,
     maxColumns: MAX_COLUMNS,
+    maxPerColumn: MAX_PER_COLUMN,
     groups,
     filteredItems,
     allItems,
@@ -268,6 +294,9 @@ export function useTimelineState() {
     toggleCountry,
     showAllCountries,
     onlyCountry,
+    mergeCountry,
+    detachCountry,
+    resetColumns,
     resetFilters,
     addPerson,
     removePerson,

@@ -1,4 +1,8 @@
 .country-toggles {
+  /* Позиционируем панель и поднимаем её слой: иначе выпадающее меню
+     оказывается под полем хронологии, которое идёт следующим в потоке. */
+  position: relative;
+  z-index: 30;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -17,13 +21,15 @@
 }
 
 .country-chip {
+  position: relative;
   display: inline-flex;
   align-items: stretch;
   border-radius: 999px;
   border: 1px solid var(--line-soft);
   background: color-mix(in oklab, var(--paper) 55%, transparent);
   color: var(--ink-ghost);
-  overflow: hidden;
+  /* Без overflow: hidden — иначе выпадающее меню обрезалось бы по чипу.
+     Скругление сегментов задано на них самих. */
   transition:
     color var(--dur-fast) var(--ease-out),
     border-color var(--dur-fast) var(--ease-out),
@@ -43,6 +49,7 @@
   align-items: center;
   gap: 9px;
   padding: 7px 11px;
+  border-radius: 999px 0 0 999px;
   font-size: 13.5px;
   font-weight: 500;
   color: inherit;
@@ -52,31 +59,153 @@
   cursor: default;
 }
 
-/* Отдельная кнопка «только эта страна» — своя зона нажатия, без перекрытия */
-.country-chip__only {
+/* Метка «делит колонку»: точки соседей по дорожке */
+.country-chip__link {
   display: inline-flex;
   align-items: center;
-  padding: 0 8px;
+  gap: 2px;
+  padding-left: 5px;
+  margin-left: -3px;
+  border-left: 1px dotted var(--line-strong);
+}
+
+.country-chip__link-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* Меню действий со страной — своя зона нажатия, без перекрытия основной кнопки */
+.country-chip__menu-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 9px;
+  border-radius: 0 999px 999px 0;
   border-left: 1px solid var(--line-soft);
-  font-family: var(--font-mono);
-  font-size: 8.5px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 13px;
+  line-height: 1;
   color: var(--ink-ghost);
-  opacity: 0.6;
   transition:
-    opacity var(--dur-fast) var(--ease-out),
     color var(--dur-fast) var(--ease-out),
     background-color var(--dur-fast) var(--ease-out);
 }
 
-.country-chip:hover .country-chip__only {
-  opacity: 1;
-}
-
-.country-chip__only:hover {
+.country-chip__menu-btn:hover,
+.country-chip__menu-btn[aria-expanded='true'] {
   background: color-mix(in oklab, var(--c) 18%, transparent);
   color: var(--ink-strong);
+}
+
+/* ---------- Выпадающее меню ---------- */
+
+.chip-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 40;
+  min-width: 250px;
+  max-width: 320px;
+  padding: 8px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--card-border);
+  background: var(--paper-raised);
+  box-shadow: var(--shadow-lg);
+  animation: chip-menu-in 180ms var(--ease-out);
+}
+
+@keyframes chip-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip-menu {
+    animation: none;
+  }
+}
+
+.chip-menu__title {
+  padding: 4px 9px 7px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  border-bottom: 1px solid var(--line-soft);
+  margin-bottom: 5px;
+}
+
+.chip-menu__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 7px 9px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--ink);
+  text-align: left;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.chip-menu__item:hover {
+  background: var(--paper-sunken);
+}
+
+.chip-menu__hint {
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+.chip-menu__group {
+  padding: 9px 9px 5px;
+  margin-top: 4px;
+  border-top: 1px solid var(--line-soft);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.chip-menu__targets {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.chip-menu__target {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 6px 9px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-align: left;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.chip-menu__target:hover {
+  background: color-mix(in oklab, var(--t) 14%, transparent);
+  color: var(--ink-strong);
+}
+
+.chip-menu__target-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--t);
 }
 
 .country-chip__dot {
@@ -125,7 +254,10 @@
   border-style: dashed;
 }
 
-.country-toggles__all {
+.country-toggles__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-left: auto;
 }
 
@@ -153,7 +285,7 @@
   font-weight: 600;
 }
 
-.country-toggles__all:disabled {
+.country-toggles__actions .btn:disabled {
   opacity: 0.45;
   cursor: default;
   transform: none;

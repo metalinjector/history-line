@@ -2,26 +2,61 @@ import type { Country, CountryId, TimelineColumn } from '../types';
 import { allCountryIds, countryById } from './countries';
 
 /**
- * Больше шести колонок на экране не помещается без потери читаемости карточки:
- * при ширине поля около 1550 px на колонку остаётся ~250 px, и это уже нижняя
- * граница, при которой заголовок и краткое описание ещё нормально верстаются.
+ * Сколько колонок помещается в поле без горизонтальной прокрутки.
+ * Это ориентир, а не запрет: колонок может быть и больше, просто часть
+ * уедет за край. Значение используется только для подсказки пользователю.
  */
 export const MAX_COLUMNS = 6;
 
+/** Больше трёх линий в одной колонке уже не читается: узлы сливаются. */
+export const MAX_PER_COLUMN = 3;
+
 /**
- * Пары стран, которые «вклиниваются» в общую колонку, когда включено
- * больше шести линий. Порядок важен: пары объединяются сверху вниз,
- * пока число колонок не станет допустимым.
- *
- * Пары подобраны по историческому родству — у таких линий много общих
- * сюжетов, и их удобно читать рядом в одной колонке.
+ * Объединения колонок, заданные пользователем.
+ * Каждая группа — список стран, которые делят одну дорожку.
+ * По умолчанию пусто: у каждой страны своя колонка.
  */
-export const columnPairs: [CountryId, CountryId][] = [
-  ['russia', 'belarus'],
-  ['china', 'japan'],
-  ['germany', 'spain'],
-  ['england', 'france'],
-];
+export type ColumnGroups = CountryId[][];
+
+/** Убирает несуществующие страны, повторы и группы, в которых осталась одна линия. */
+export function normalizeGroups(groups: ColumnGroups): ColumnGroups {
+  const seen = new Set<CountryId>();
+  const result: ColumnGroups = [];
+
+  for (const group of groups) {
+    const members = group.filter(
+      (id) => allCountryIds.includes(id) && !seen.has(id) && countryById[id],
+    );
+    for (const id of members) seen.add(id);
+    if (members.length > 1) result.push(members.slice(0, MAX_PER_COLUMN));
+  }
+
+  return result;
+}
+
+/** Добавляет страну source в колонку страны target. */
+export function mergeCountries(
+  groups: ColumnGroups,
+  target: CountryId,
+  source: CountryId,
+): ColumnGroups {
+  if (target === source) return groups;
+
+  // Страна может быть только в одной колонке, поэтому сначала вынимаем её отовсюду.
+  const without = groups.map((group) => group.filter((id) => id !== source));
+  const targetIndex = without.findIndex((group) => group.includes(target));
+
+  if (targetIndex === -1) return normalizeGroups([...without, [target, source]]);
+  if (without[targetIndex].length >= MAX_PER_COLUMN) return normalizeGroups(without);
+
+  const next = without.map((group, index) => (index === targetIndex ? [...group, source] : group));
+  return normalizeGroups(next);
+}
+
+/** Возвращает страну в собственную колонку. */
+export function detachCountry(groups: ColumnGroups, id: CountryId): ColumnGroups {
+  return normalizeGroups(groups.map((group) => group.filter((member) => member !== id)));
+}
 
 function makeColumn(countries: Country[]): TimelineColumn {
   return {
@@ -36,36 +71,30 @@ function makeColumn(countries: Country[]): TimelineColumn {
 /**
  * Раскладывает включённые страны по колонкам.
  *
- * Пока стран не больше MAX_COLUMNS, каждая получает свою колонку.
- * Дальше подключаются пары: каждая объединённая пара убирает одну колонку.
- * Порядок колонок — канонический порядок стран по ведущей стране пары,
- * поэтому колонки не прыгают при включении и выключении соседей.
+ * По умолчанию каждая страна получает свою колонку. Колонка становится общей
+ * только там, где пользователь сам объединил линии. Позиция колонки — позиция
+ * её первой включённой страны в каноническом порядке, поэтому колонки
+ * не прыгают при включении и выключении соседей.
  */
-export function buildColumns(activeIds: CountryId[]): TimelineColumn[] {
+export function buildColumns(activeIds: CountryId[], groups: ColumnGroups): TimelineColumn[] {
   const active = allCountryIds.filter((id) => activeIds.includes(id));
   const activeSet = new Set(active);
 
-  let excess = active.length - MAX_COLUMNS;
-  const partners = new Map<CountryId, CountryId>();
-  const absorbed = new Set<CountryId>();
-
-  for (const [leader, partner] of columnPairs) {
-    if (excess <= 0) break;
-    if (!activeSet.has(leader) || !activeSet.has(partner)) continue;
-    if (partners.has(leader) || absorbed.has(leader) || absorbed.has(partner)) continue;
-
-    partners.set(leader, partner);
-    absorbed.add(partner);
-    excess -= 1;
+  const groupOf = new Map<CountryId, CountryId[]>();
+  for (const group of normalizeGroups(groups)) {
+    const members = group.filter((id) => activeSet.has(id));
+    if (members.length < 2) continue;
+    for (const id of members) groupOf.set(id, members);
   }
 
+  const used = new Set<CountryId>();
   const columns: TimelineColumn[] = [];
+
   for (const id of active) {
-    if (absorbed.has(id)) continue;
-    const partner = partners.get(id);
-    columns.push(
-      makeColumn(partner ? [countryById[id], countryById[partner]] : [countryById[id]]),
-    );
+    if (used.has(id)) continue;
+    const members = groupOf.get(id) ?? [id];
+    for (const member of members) used.add(member);
+    columns.push(makeColumn(members.map((member) => countryById[member])));
   }
 
   return columns;

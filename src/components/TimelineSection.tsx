@@ -23,6 +23,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
     columns,
     sharedColumns,
     maxColumns,
+    maxPerColumn,
     visibleCountries,
     groups,
     filteredItems,
@@ -58,6 +59,9 @@ export function TimelineSection({ state, sectionRef }: Props) {
     toggleCountry,
     showAllCountries,
     onlyCountry,
+    mergeCountry,
+    detachCountry,
+    resetColumns,
     resetFilters,
   } = state;
 
@@ -265,10 +269,15 @@ export function TimelineSection({ state, sectionRef }: Props) {
           activeIds={activeCountryIds}
           counts={countryCounts}
           sharedColumns={sharedColumns}
+          columnCount={columns.length}
           maxColumns={maxColumns}
+          maxPerColumn={maxPerColumn}
           onToggle={toggleCountry}
           onShowAll={showAllCountries}
           onOnly={onlyCountry}
+          onMerge={mergeCountry}
+          onDetach={detachCountry}
+          onResetColumns={resetColumns}
         />
 
         {availableEras.length > 1 ? (
