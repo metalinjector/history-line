@@ -9,6 +9,7 @@ import { CountryTogglePanel } from './CountryTogglePanel';
 import { TimelineHeader } from './TimelineHeader';
 import { TimelineRow } from './TimelineRow';
 import { TimelineOverlay } from './TimelineOverlay';
+import { LayerMenu } from './LayerMenu';
 import './TimelineSection.css';
 
 // Окна тянут за собой разбор Markdown, KaTeX и загрузчик Mermaid,
@@ -68,6 +69,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
 
   const { ref: viewportRef, isPanning, onPointerDown, didPan } = usePanning<HTMLDivElement>();
   const gridRef = useRef<HTMLDivElement>(null);
+  /** Слой, который сейчас тащат мышью: колонки становятся зонами приёма. */
+  const [draggingLayerId, setDraggingLayerId] = useState<string | undefined>();
 
   /** Плоский список в порядке шкалы — для навигации стрелками. */
   const ordered = useMemo(
@@ -287,6 +290,19 @@ export function TimelineSection({ state, sectionRef }: Props) {
           onResetColumns={resetColumns}
         />
 
+        <LayerMenu
+          activeLayerIds={state.activeLayerIds}
+          layerState={state.layerState}
+          maxLayers={state.maxLayers}
+          countries={countries}
+          activeCountryIds={activeCountryIds}
+          placementOf={state.placementOf}
+          onToggleLayer={state.toggleLayer}
+          onRemoveLayer={state.removeLayer}
+          onPlaceLayer={state.placeLayer}
+          onDragLayer={setDraggingLayerId}
+        />
+
         {availableEras.length > 1 ? (
           <nav className="era-rail" aria-label="Быстрый переход по эпохам" data-no-pan>
             {availableEras.map((item) => (
@@ -342,8 +358,15 @@ export function TimelineSection({ state, sectionRef }: Props) {
               <TimelineHeader
                 columns={columns}
                 selectedCountry={selectedItem?.country}
+                draggingLayerId={draggingLayerId}
                 onHide={toggleCountry}
                 canHide={visibleCountries.length > 1}
+                onDropLayer={(layerId, column) => {
+                  const target = column.tracks.find((track) => track.countryId);
+                  if (target?.countryId) state.placeLayer(layerId, target.countryId);
+                  setDraggingLayerId(undefined);
+                }}
+                onRemoveLayer={state.removeLayer}
               />
 
               {groups.length === 0 ? (

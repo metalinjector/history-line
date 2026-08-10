@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { CountryId, EraId, Layer, ThemeName, TimelineItem } from '../types';
+import type { CountryId, EraId, KindFilter, ThemeName, TimelineItem } from '../types';
 import { allCountryIds, countries, countryById } from '../data/countries';
 import {
   buildColumns,
@@ -11,6 +11,9 @@ import {
 } from '../data/columns';
 import { eraForYear } from '../data/eras';
 import { timelineItems } from '../data/timelineItems';
+import { layerById, layers as allLayers, MAX_ACTIVE_LAYERS } from '../data/layers';
+import { applyLayers, materializeLayerItems, type LayerPlacements } from './layers';
+import { OWN_COLUMN, type LayerPlacement } from '../types';
 import { relations as baseRelations } from '../data/relations';
 import type { Relation } from '../types';
 import {
@@ -45,7 +48,7 @@ export type ScrollTarget = { id: string; nonce: number };
  */
 export function useTimelineState() {
   const [theme, setTheme] = usePersistentState<ThemeName>('theme', 'parchment');
-  const [layer, setLayer] = useState<Layer>('all');
+  const [layer, setLayer] = useState<KindFilter>('all');
   const [query, setQuery] = useState('');
   const [keyOnly, setKeyOnly] = useState(false);
   const [era, setEra] = useState<EraId | undefined>(undefined);
@@ -60,6 +63,14 @@ export function useTimelineState() {
   const [columnGroups, setColumnGroups] = usePersistentState<ColumnGroups>('column-groups', []);
   /** Связи, созданные пользователем вместе с добавленными объектами. */
   const [addedRelations, setAddedRelations] = usePersistentState<Relation[]>('added-relations', []);
+  /** Личные заметки читателя. Хранятся отдельно от базы фактов и не смешиваются с ней. */
+  const [notes, setNotes] = usePersistentState<Record<string, string>>('notes', {});
+  /** Включённые слои и их размещение — по умолчанию слоёв нет. */
+  const [activeLayerIds, setActiveLayerIds] = usePersistentState<string[]>('layers', []);
+  const [layerPlacements, setLayerPlacements] = usePersistentState<LayerPlacements>(
+    'layer-placements',
+    {},
+  );
   const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
   const [openedId, setOpenedId] = useState<string | undefined>(undefined);
   const [openedDayKey, setOpenedDayKey] = useState<string | undefined>(undefined);
@@ -93,16 +104,31 @@ export function useTimelineState() {
     [activeCountryIds],
   );
 
-  /** Колонки таблицы с учётом заданных пользователем объединений — см. data/columns.ts. */
-  const columns = useMemo(
+  /** Колонки стран с учётом заданных пользователем объединений — см. data/columns.ts. */
+  const countryColumns = useMemo(
     () => buildColumns(activeCountryIds, columnGroups),
     [activeCountryIds, columnGroups],
   );
 
+  /** Колонки стран плюс дорожки включённых слоёв. */
+  const { columns, layerState } = useMemo(() => {
+    const applied = applyLayers(countryColumns, activeLayerIds, layerPlacements);
+    return { columns: applied.columns, layerState: applied.state };
+  }, [countryColumns, activeLayerIds, layerPlacements]);
+
   /** Колонки, которые сейчас делят несколько линий. */
   const sharedColumns = useMemo(() => columns.filter((column) => column.shared), [columns]);
 
-  const allItems = useMemo(() => [...timelineItems, ...addedPeople], [addedPeople]);
+  /** Объекты включённых слоёв, приведённые к обычному виду. */
+  const layerItems = useMemo(
+    () => materializeLayerItems(activeLayerIds, layerPlacements, activeCountryIds[0] ?? 'germany'),
+    [activeCountryIds, activeLayerIds, layerPlacements],
+  );
+
+  const allItems = useMemo(
+    () => [...timelineItems, ...addedPeople, ...layerItems],
+    [addedPeople, layerItems],
+  );
 
   const allRelations = useMemo(
     () => [...baseRelations, ...addedRelations],
@@ -301,7 +327,25 @@ export function useTimelineState() {
 
   const resetColumns = useCallback(() => setColumnGroups([]), [setColumnGroups]);
 
-  const onlyCountry = useCallback((id: CountryId) => setActiveCountryIds([id]), [setActiveCountryIds]);
+  const setNote = useCallback(
+    (itemId: string, note: string) => {
+      setNotes((current) => {
+        const next = { ...current };
+        if (note.trim()) next[itemId] = note;
+        else delete next[itemId];
+        return next;
+      });
+    },
+    [setNotes],
+  );
+
+  const resetFilters = useCallback(() => {
+    setLayer('all');
+    setQuery('');
+    setKeyOnly(false);
+    setEra(undefined);
+    setTags([]);
+  }, []);
 
   const ensureCountryVisible = useCallback(
     (id: CountryId) => {
@@ -312,13 +356,53 @@ export function useTimelineState() {
     [setActiveCountryIds],
   );
 
-  const resetFilters = useCallback(() => {
-    setLayer('all');
-    setQuery('');
-    setKeyOnly(false);
-    setEra(undefined);
-    setTags([]);
-  }, []);
+  /**
+   * Включает слой. Предел одновременных слоёв — визуальный, а не архитектурный:
+   * раскладка обрабатывает любое их число, ограничение задаётся одной константой.
+   */
+  const addLayer = useCallback(
+    (layerId: string) => {
+      setActiveLayerIds((current) =>
+        current.includes(layerId) || current.length >= MAX_ACTIVE_LAYERS
+          ? current
+          : [...current, layerId],
+      );
+    },
+    [setActiveLayerIds],
+  );
+
+  const removeLayer = useCallback(
+    (layerId: string) => setActiveLayerIds((current) => current.filter((id) => id !== layerId)),
+    [setActiveLayerIds],
+  );
+
+  const toggleLayer = useCallback(
+    (layerId: string) => {
+      setActiveLayerIds((current) => {
+        if (current.includes(layerId)) return current.filter((id) => id !== layerId);
+        return current.length >= MAX_ACTIVE_LAYERS ? current : [...current, layerId];
+      });
+    },
+    [setActiveLayerIds],
+  );
+
+  /** Переносит слой на другую страну или в собственную колонку. */
+  const placeLayer = useCallback(
+    (layerId: string, placement: LayerPlacement) => {
+      setLayerPlacements((current) => ({ ...current, [layerId]: placement }));
+      if (placement !== OWN_COLUMN) ensureCountryVisible(placement);
+    },
+    [ensureCountryVisible, setLayerPlacements],
+  );
+
+  const placementOf = useCallback(
+    (layerId: string): LayerPlacement =>
+      layerPlacements[layerId] ?? layerById[layerId]?.defaultPlacement ?? OWN_COLUMN,
+    [layerPlacements],
+  );
+
+  const onlyCountry = useCallback((id: CountryId) => setActiveCountryIds([id]), [setActiveCountryIds]);
+
 
   /**
    * Добавление деятеля из конструктора.
@@ -411,6 +495,13 @@ export function useTimelineState() {
     neighbours,
     addedPeople,
     addedRelations,
+    notes,
+    layers: allLayers,
+    activeLayerIds,
+    layerState,
+    layerItems,
+    maxLayers: MAX_ACTIVE_LAYERS,
+    placementOf,
     allRelations,
     scrollTarget,
 
@@ -451,6 +542,11 @@ export function useTimelineState() {
     mergeCountry,
     detachCountry,
     resetColumns,
+    setNote,
+    addLayer,
+    removeLayer,
+    toggleLayer,
+    placeLayer,
     resetFilters,
     addPerson,
     removePerson,

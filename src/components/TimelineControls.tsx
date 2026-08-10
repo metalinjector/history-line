@@ -1,13 +1,13 @@
 import { useId, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import type { EraId, Layer } from '../types';
+import type { EraId, KindFilter } from '../types';
 import { eras } from '../data/eras';
 import { allTags } from '../data/timelineItems';
 import { plural } from '../lib/format';
 import './TimelineControls.css';
 
 export type ControlsState = {
-  layer: Layer;
+  layer: KindFilter;
   query: string;
   keyOnly: boolean;
   era?: EraId;
@@ -20,7 +20,7 @@ type Props = ControlsState & {
   events: number;
   people: number;
   expanded: boolean;
-  onLayerChange: (layer: Layer) => void;
+  onLayerChange: (layer: KindFilter) => void;
   onQueryChange: (query: string) => void;
   onKeyOnlyChange: (value: boolean) => void;
   onEraChange: (era?: EraId) => void;
@@ -38,7 +38,7 @@ type Props = ControlsState & {
   splitRows: number;
 };
 
-const layers: { id: Layer; label: string; hint: string }[] = [
+const layers: { id: KindFilter; label: string; hint: string }[] = [
   { id: 'all', label: 'Всё', hint: 'События и деятели вместе' },
   { id: 'events', label: 'События', hint: 'Только то, что произошло' },
   { id: 'people', label: 'Деятели', hint: 'Только персоналии' },

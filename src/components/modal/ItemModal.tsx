@@ -6,6 +6,7 @@ import { itemToMarkdown, resolveWikiLinks } from '../../lib/markdown';
 import { Modal, ModalClose } from './Modal';
 import { MarkdownView } from './MarkdownView';
 import { Viewpoints } from './Viewpoints';
+import { NoteEditor } from './NoteEditor';
 
 type Props = {
   item: TimelineItem;
@@ -22,6 +23,9 @@ type Props = {
   onNavigate: (item: TimelineItem) => void;
   /** Переход по внутренней ссылке из текста статьи. */
   onOpenLink: (id: string) => void;
+  /** Личная заметка читателя к этому объекту. */
+  note: string;
+  onNoteChange: (itemId: string, note: string) => void;
   onOpenRelation: (relation: Relation) => void;
   onBackToDay: (key: string) => void;
   onClose: () => void;
@@ -39,6 +43,8 @@ export function ItemModal({
   backToDay,
   onNavigate,
   onOpenLink,
+  note,
+  onNoteChange,
   onOpenRelation,
   onBackToDay,
   onClose,
@@ -110,6 +116,14 @@ export function ItemModal({
         <Viewpoints
           viewpoints={item.viewpoints}
           sources={item.sources}
+          onOpenItem={onOpenLink}
+        />
+
+        <NoteEditor
+          itemId={item.id}
+          value={note}
+          onChange={onNoteChange}
+          resolveItem={resolveItem}
           onOpenItem={onOpenLink}
         />
 

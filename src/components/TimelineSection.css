@@ -1150,3 +1150,67 @@
 .tcard[data-key-event] .tcard__disputed {
   right: 16px;
 }
+
+/* ---------- Дорожка слоя внутри колонки ---------- */
+
+.thead__line[data-kind='layer'] .thead__label {
+  font-style: italic;
+  font-size: calc(12.5px * var(--zoom));
+}
+
+.thead__line[data-kind='layer'] .thead__dot {
+  border-radius: 3px;
+  transform: rotate(45deg);
+  width: 7px;
+  height: 7px;
+}
+
+.thead__cell[data-layer-only] {
+  background: color-mix(in oklab, var(--paper-sunken) 35%, transparent);
+}
+
+/* Линия слоя штриховая — видно, что это наложение, а не своя история страны */
+.tcell__rail[data-kind='layer'] {
+  background: repeating-linear-gradient(
+    180deg,
+    var(--c) 0 7px,
+    transparent 7px 13px
+  );
+}
+
+.tcard[data-layer] {
+  border-style: dashed;
+}
+
+.tcard[data-layer] .tcard__kind {
+  color: var(--c-ink);
+}
+
+[data-theme='atlas'] .tcard[data-layer] .tcard__kind {
+  color: var(--c);
+}
+
+/* Колонка как зона приёма при перетаскивании слоя */
+.thead__cell[data-drop] {
+  outline: 2px dashed color-mix(in oklab, var(--accent) 45%, transparent);
+  outline-offset: -4px;
+  border-radius: var(--radius-md);
+}
+
+.thead__cell[data-drop-active] {
+  outline-style: solid;
+  outline-color: var(--accent);
+  background: color-mix(in oklab, var(--gold) 14%, transparent);
+}
+
+.thead__drop-hint {
+  position: absolute;
+  left: 18px;
+  bottom: 3px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  pointer-events: none;
+}

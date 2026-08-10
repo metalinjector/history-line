@@ -3,17 +3,17 @@ import type {
   EraId,
   Granularity,
   Importance,
-  Layer,
+  KindFilter,
   TimelineColumn,
   TimelineGroup,
   TimelineItem,
 } from '../types';
-import { columnIndex } from '../data/columns';
+import { columnOfItem } from '../data/columns';
 import { eraForYear } from '../data/eras';
 import { MONTHS_NOMINATIVE, timeKey } from './format';
 
 export type FilterState = {
-  layer: Layer;
+  layer: KindFilter;
   countries: CountryId[];
   /** Поисковый запрос по заголовку, описанию и тегам. */
   query: string;
@@ -57,7 +57,8 @@ export function filterItems(items: TimelineItem[], filter: FilterState): Timelin
   const era = filter.era;
 
   return items.filter((item) => {
-    if (!countrySet.has(item.country)) return false;
+    // Объект слоя живёт по правилам своего слоя, а не колонки страны.
+    if (!item.layerId && !countrySet.has(item.country)) return false;
     if (filter.layer === 'events' && item.kind !== 'event') return false;
     if (filter.layer === 'people' && item.kind !== 'person') return false;
     if (filter.keyOnly && (item.importance ?? 2) < 3) return false;
@@ -132,12 +133,13 @@ export function buildGroups(
   columns: TimelineColumn[],
   granularity: Granularity = 'year',
 ): TimelineGroup[] {
-  const columnOf = columnIndex(columns);
-  // Порядок стран внутри общей колонки — для устойчивой сортировки в ячейке.
-  const countryOrder = new Map<string, number>();
+  // Порядок дорожек внутри колонки — для устойчивой сортировки в ячейке.
+  const trackOrder = new Map<string, number>();
   for (const column of columns) {
-    column.countries.forEach((country, index) => countryOrder.set(country.id, index));
+    column.tracks.forEach((track, index) => trackOrder.set(track.id, index));
   }
+  const orderOf = (item: TimelineItem) =>
+    trackOrder.get(item.layerId ? `layer:${item.layerId}` : `country:${item.country}`) ?? 0;
 
   const buckets = new Map<string, TimelineItem[]>();
 
@@ -162,7 +164,7 @@ export function buildGroups(
     bucket.sort(
       (a, b) =>
         timeKey(a) - timeKey(b) ||
-        (countryOrder.get(a.country) ?? 0) - (countryOrder.get(b.country) ?? 0) ||
+        orderOf(a) - orderOf(b) ||
         (b.importance ?? 2) - (a.importance ?? 2) ||
         a.title.localeCompare(b.title, 'ru'),
     );
@@ -176,7 +178,10 @@ export function buildGroups(
     );
     const byColumn: Record<string, TimelineItem[]> = {};
     for (const column of columns) byColumn[column.id] = [];
-    for (const item of bucket) byColumn[columnOf[item.country]?.id]?.push(item);
+    for (const item of bucket) {
+      const column = columnOfItem(item, columns);
+      if (column) byColumn[column.id]?.push(item);
+    }
 
     const weight = bucket.reduce<Importance>(
       (max, item) => (Math.max(max, item.importance ?? 2) as Importance),

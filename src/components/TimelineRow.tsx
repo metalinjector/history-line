@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import type { CountryId, TimelineColumn, TimelineGroup, TimelineItem } from '../types';
 import { countryById } from '../data/countries';
+import { trackOfItem } from '../lib/layers';
 import { plural } from '../lib/format';
 import { TimelineCard } from './TimelineCard';
 
@@ -97,7 +98,7 @@ export const TimelineRow = memo(function TimelineRow({
 
       {columns.map((column) => {
         const items = group.byColumn[column.id] ?? [];
-        const holdsSelected = column.countries.some((country) => country.id === selectedCountry);
+        const holdsSelected = column.tracks.some((track) => track.countryId === selectedCountry);
 
         return (
           <div
@@ -107,35 +108,37 @@ export const TimelineRow = memo(function TimelineRow({
             data-empty={items.length === 0 || undefined}
             data-shared={column.shared || undefined}
             data-selected-column={holdsSelected || undefined}
-            style={{ '--rail-n': column.countries.length } as React.CSSProperties}
+            data-layer-only={column.layerOnly || undefined}
+            style={{ '--rail-n': column.tracks.length } as React.CSSProperties}
           >
-            {column.countries.map((country, index) => (
+            {column.tracks.map((track, index) => (
               <span
                 className="tcell__rail"
-                key={country.id}
+                key={track.id}
+                data-kind={track.kind}
                 aria-hidden="true"
                 style={
                   {
                     '--rail-i': index,
-                    '--c': `hsl(${country.color})`,
+                    '--c': `hsl(${track.color})`,
                   } as React.CSSProperties
                 }
               />
             ))}
 
             {items.map((item) => {
-              const railIndex = column.countries.findIndex((country) => country.id === item.country);
-              const country = column.countries[railIndex] ?? column.countries[0];
+              const railIndex = trackOfItem(item, column);
+              const track = column.tracks[railIndex] ?? column.tracks[0];
 
               return (
                 <TimelineCard
                   key={item.id}
                   item={item}
-                  country={country}
+                  track={track}
                   selected={item.id === selectedId}
                   query={query}
-                  railIndex={Math.max(0, railIndex)}
-                  railCount={column.countries.length}
+                  railIndex={railIndex}
+                  railCount={column.tracks.length}
                   shared={column.shared}
                   onSelect={onSelect}
                   onOpen={onOpen}

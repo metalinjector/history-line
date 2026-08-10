@@ -1,11 +1,12 @@
 import { memo } from 'react';
-import type { Country, TimelineItem } from '../types';
+import type { TimelineItem, Track } from '../types';
 import { formatItemDate } from '../lib/format';
 import { Highlight } from './Highlight';
 
 type Props = {
   item: TimelineItem;
-  country: Country;
+  /** Дорожка, на которой стоит карточка: страна или слой. */
+  track: Track;
   selected: boolean;
   query: string;
   /** Индекс страны внутри колонки и общее число стран в ней — задают положение узла на шкале. */
@@ -26,7 +27,7 @@ type Props = {
  */
 export const TimelineCard = memo(function TimelineCard({
   item,
-  country,
+  track,
   selected,
   query,
   railIndex,
@@ -44,13 +45,14 @@ export const TimelineCard = memo(function TimelineCard({
       data-key-event={isKey || undefined}
       data-selected={selected || undefined}
       data-custom={item.custom || undefined}
+      data-layer={item.layerId || undefined}
       id={`item-${item.id}`}
       style={
         {
           '--rail-i': railIndex,
           '--rail-n': railCount,
-          '--c': `hsl(${country.color})`,
-          '--c-ink': `hsl(${country.colorInk})`,
+          '--c': `hsl(${track.color})`,
+          '--c-ink': `hsl(${track.colorInk})`,
         } as React.CSSProperties
       }
     >
@@ -60,7 +62,7 @@ export const TimelineCard = memo(function TimelineCard({
         type="button"
         className="tcard__hit"
         aria-pressed={selected}
-        aria-label={`${country.label}, ${formatItemDate(item)}. ${
+        aria-label={`${track.label}, ${formatItemDate(item)}. ${
           item.kind === 'event' ? 'Событие' : 'Деятель'
         }: ${item.title}. ${item.summary}`}
         onClick={() => onSelect(item)}
@@ -70,7 +72,11 @@ export const TimelineCard = memo(function TimelineCard({
             <span className="tcard__glyph" aria-hidden="true">
               {item.kind === 'event' ? '◆' : '✦'}
             </span>
-            {shared ? country.short : item.kind === 'event' ? 'Событие' : 'Деятель'}
+            {shared || track.kind === 'layer'
+              ? track.short
+              : item.kind === 'event'
+                ? 'Событие'
+                : 'Деятель'}
           </span>
           <span className="tcard__date">{formatItemDate(item)}</span>
         </span>

@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import type { Country, CountryId, TimelineColumn } from '../types';
+import { countryById } from '../data/countries';
 import './CountryTogglePanel.css';
 
 type Props = {
@@ -51,10 +52,13 @@ export function CountryTogglePanel({
   /** Страна → её соседи по общей колонке. */
   const partners = new Map<CountryId, Country[]>();
   for (const column of sharedColumns) {
-    for (const country of column.countries) {
+    const countryTracks = column.tracks.filter((track) => track.countryId);
+    for (const track of countryTracks) {
       partners.set(
-        country.id,
-        column.countries.filter((other) => other.id !== country.id),
+        track.countryId!,
+        countryTracks
+          .filter((other) => other.countryId !== track.countryId)
+          .map((other) => countryById[other.countryId!]),
       );
     }
   }

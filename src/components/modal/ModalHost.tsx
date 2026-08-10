@@ -27,6 +27,8 @@ export default function ModalHost({ state }: Props) {
     backToDay,
     neighbours,
     resolveItem,
+    notes,
+    setNote,
     openItem,
     openDay,
     openRelation,
@@ -69,6 +71,8 @@ export default function ModalHost({ state }: Props) {
           if (target) openItem(target, { scroll: true });
         }}
         onOpenRelation={openRelation}
+        note={notes[openedItem.id] ?? ''}
+        onNoteChange={setNote}
         onBackToDay={openDay}
         onClose={closeModals}
         onTagClick={toggleTag}

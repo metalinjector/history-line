@@ -1,4 +1,4 @@
-import type { Country, CountryId, TimelineColumn } from '../types';
+import type { CountryId, TimelineColumn, TimelineItem, Track } from '../types';
 import { allCountryIds, countryById } from './countries';
 
 /**
@@ -58,13 +58,26 @@ export function detachCountry(groups: ColumnGroups, id: CountryId): ColumnGroups
   return normalizeGroups(groups.map((group) => group.filter((member) => member !== id)));
 }
 
-function makeColumn(countries: Country[]): TimelineColumn {
+function makeColumn(countryIds: CountryId[]): TimelineColumn {
+  const tracks: Track[] = countryIds.map((id) => {
+    const country = countryById[id];
+    return {
+      id: `country:${country.id}`,
+      label: country.label,
+      short: country.short,
+      color: country.color,
+      colorInk: country.colorInk,
+      kind: 'country' as const,
+      countryId: country.id,
+    };
+  });
+
   return {
-    id: countries.map((country) => country.id).join('+'),
-    countries,
-    label: countries.map((country) => country.label).join(' · '),
-    short: countries.map((country) => country.short).join(' · '),
-    shared: countries.length > 1,
+    id: countryIds.join('+'),
+    tracks,
+    label: tracks.map((track) => track.label).join(' · '),
+    short: tracks.map((track) => track.short).join(' · '),
+    shared: tracks.length > 1,
   };
 }
 
@@ -94,17 +107,30 @@ export function buildColumns(activeIds: CountryId[], groups: ColumnGroups): Time
     if (used.has(id)) continue;
     const members = groupOf.get(id) ?? [id];
     for (const member of members) used.add(member);
-    columns.push(makeColumn(members.map((member) => countryById[member])));
+    columns.push(makeColumn(members));
   }
 
   return columns;
 }
 
-/** Сопоставление «страна → колонка», нужное при раскладке объектов по ячейкам. */
-export function columnIndex(columns: TimelineColumn[]): Record<string, TimelineColumn> {
-  const index: Record<string, TimelineColumn> = {};
-  for (const column of columns) {
-    for (const country of column.countries) index[country.id] = column;
+/**
+ * Находит колонку объекта.
+ *
+ * Объект слоя ищет колонку по слою — так он остаётся в своей дорожке
+ * независимо от того, какая страна ему формально присвоена.
+ * Обычный объект ищет колонку по стране.
+ */
+export function columnOfItem(
+  item: TimelineItem,
+  columns: TimelineColumn[],
+): TimelineColumn | undefined {
+  if (item.layerId) {
+    const byLayer = columns.find((column) =>
+      column.tracks.some((track) => track.layerId === item.layerId),
+    );
+    if (byLayer) return byLayer;
   }
-  return index;
+  return columns.find((column) =>
+    column.tracks.some((track) => track.countryId === item.country),
+  );
 }
