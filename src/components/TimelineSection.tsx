@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { TimelineItem } from '../types';
 import type { TimelineState } from '../lib/useTimelineState';
 import { eras } from '../data/eras';
@@ -8,10 +8,12 @@ import { TimelineControls } from './TimelineControls';
 import { CountryTogglePanel } from './CountryTogglePanel';
 import { TimelineHeader } from './TimelineHeader';
 import { TimelineRow } from './TimelineRow';
+import { TimelineOverlay } from './TimelineOverlay';
 import './TimelineSection.css';
 
-// Модалка тянет за собой разбор Markdown, поэтому грузится только при первом открытии.
-const ItemModal = lazy(() => import('./ItemModal'));
+// Окна тянут за собой разбор Markdown, KaTeX и загрузчик Mermaid,
+// поэтому грузятся одним чанком при первом открытии.
+const ModalHost = lazy(() => import('./modal/ModalHost'));
 
 type Props = {
   state: TimelineState;
@@ -30,10 +32,9 @@ export function TimelineSection({ state, sectionRef }: Props) {
     stats,
     countryCounts,
     selectedItem,
-    openedItem,
-    openedCountry,
-    openedEra,
-    neighbours,
+    visibleRelations,
+    showRelations,
+    setShowRelations,
     scrollTarget,
     countries,
     activeCountryIds,
@@ -49,13 +50,13 @@ export function TimelineSection({ state, sectionRef }: Props) {
     setKeyOnly,
     setEra,
     setTags,
-    toggleTag,
     setZoom,
     setExpanded,
     selectItem,
     clearSelection,
     openItem,
-    closeItem,
+    openDay,
+    openRelation,
     toggleCountry,
     showAllCountries,
     onlyCountry,
@@ -66,6 +67,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
   } = state;
 
   const { ref: viewportRef, isPanning, onPointerDown, didPan } = usePanning<HTMLDivElement>();
+  const gridRef = useRef<HTMLDivElement>(null);
 
   /** Плоский список в порядке шкалы — для навигации стрелками. */
   const ordered = useMemo(
@@ -262,6 +264,9 @@ export function TimelineSection({ state, sectionRef }: Props) {
           onFitToWidth={fitToWidth}
           onToggleExpanded={() => setExpanded(!expanded)}
           onReset={resetFilters}
+          showRelations={showRelations}
+          relationCount={visibleRelations.length}
+          onToggleRelations={() => setShowRelations(!showRelations)}
         />
 
         <CountryTogglePanel
@@ -317,7 +322,21 @@ export function TimelineSection({ state, sectionRef }: Props) {
               <i data-probe="date" />
             </span>
 
-            <div className="timeline__grid" style={gridStyle} data-stretch={stretchColumns || undefined}>
+            <div
+              className="timeline__grid"
+              ref={gridRef}
+              style={gridStyle}
+              data-stretch={stretchColumns || undefined}
+            >
+              <TimelineOverlay
+                gridRef={gridRef}
+                groups={groups}
+                selectedItem={selectedItem}
+                relations={visibleRelations}
+                layoutKey={`${zoom}|${columns.length}|${stretchColumns}|${groups.length}|${selectedItem?.id ?? ''}|${visibleRelations.length}`}
+                onRelationClick={openRelation}
+              />
+
               <TimelineHeader
                 columns={columns}
                 selectedCountry={selectedItem?.country}
@@ -370,6 +389,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
                         query={query}
                         onSelect={handleSelect}
                         onOpen={handleOpen}
+                        onOpenDay={openDay}
                       />
                     </div>
                   ))}
@@ -384,19 +404,9 @@ export function TimelineSection({ state, sectionRef }: Props) {
         </div>
       </div>
 
-      {openedItem && openedCountry ? (
+      {state.openedItem || state.openedDay || state.openedRelation ? (
         <Suspense fallback={null}>
-          <ItemModal
-            key={openedItem.id}
-            item={openedItem}
-            country={openedCountry}
-            era={openedEra}
-            previous={neighbours.previous}
-            next={neighbours.next}
-            onNavigate={openItem}
-            onClose={closeItem}
-            onTagClick={toggleTag}
-          />
+          <ModalHost state={state} />
         </Suspense>
       ) : null}
     </section>

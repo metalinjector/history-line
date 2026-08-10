@@ -1,7 +1,10 @@
 import { memo } from 'react';
 import type { CountryId, TimelineColumn, TimelineGroup, TimelineItem } from '../types';
+import { countryById } from '../data/countries';
 import { plural } from '../lib/format';
 import { TimelineCard } from './TimelineCard';
+
+const countryColor = (id: CountryId) => `hsl(${countryById[id].color})`;
 
 type Props = {
   group: TimelineGroup;
@@ -11,6 +14,8 @@ type Props = {
   query: string;
   onSelect: (item: TimelineItem) => void;
   onOpen: (item: TimelineItem) => void;
+  /** Открыть окно со всеми событиями этого года. */
+  onOpenDay: (key: string) => void;
 };
 
 /**
@@ -29,26 +34,60 @@ export const TimelineRow = memo(function TimelineRow({
   query,
   onSelect,
   onOpen,
+  onOpenDay,
 }: Props) {
   const isSelectedRow = group.items.some((item) => item.id === selectedId);
+
+  /** Страны, чьи линии сошлись в этой строке. */
+  const countriesHere = Array.from(new Set(group.items.map((item) => item.country)));
+  const isCrossroads = countriesHere.length > 1;
 
   return (
     <div
       className="trow"
       data-weight={group.weight}
       data-active={isSelectedRow || undefined}
+      data-crossroads={isCrossroads || undefined}
       role="row"
       id={`row-${group.key}`}
     >
       <div className="trow__date" role="rowheader">
-        <span className="trow__date-inner">
-          <span className="trow__year">{group.label}</span>
-          <span className="trow__count">
-            {group.items.length > 1
-              ? `${group.items.length} ${plural(group.items.length, ['объект', 'объекта', 'объектов'])}`
-              : ''}
+        {isCrossroads ? (
+          // Год, в котором сошлись линии нескольких стран, обведён кольцом
+          // из их цветов и открывает окно со всеми событиями сразу.
+          <button
+            type="button"
+            className="trow__crossroads"
+            onClick={() => onOpenDay(group.key)}
+            title={`${group.label}: события ${countriesHere.length} стран — открыть все`}
+            style={
+              {
+                '--ring': `conic-gradient(${countriesHere
+                  .map((id, index) => {
+                    const from = Math.round((index / countriesHere.length) * 100);
+                    const to = Math.round(((index + 1) / countriesHere.length) * 100);
+                    return `${countryColor(id)} ${from}% ${to}%`;
+                  })
+                  .join(', ')})`,
+              } as React.CSSProperties
+            }
+          >
+            <span className="trow__crossroads-ring" aria-hidden="true" />
+            <span className="trow__year">{group.label}</span>
+            <span className="trow__crossroads-count" aria-hidden="true">
+              {countriesHere.length}
+            </span>
+            <span className="visually-hidden">
+              Открыть все события {group.label} года: {group.items.length}{' '}
+              {plural(group.items.length, ['объект', 'объекта', 'объектов'])} в{' '}
+              {countriesHere.length} странах
+            </span>
+          </button>
+        ) : (
+          <span className="trow__date-inner">
+            <span className="trow__year">{group.label}</span>
           </span>
-        </span>
+        )}
         <span className="trow__tick" aria-hidden="true" />
       </div>
 

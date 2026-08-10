@@ -11,6 +11,7 @@ import {
 } from '../data/columns';
 import { eraForYear } from '../data/eras';
 import { timelineItems } from '../data/timelineItems';
+import { relations as allRelations } from '../data/relations';
 import { buildGroups, filterItems, findNearestItem, summarize } from './timeline';
 import { timeKey } from './format';
 import { usePersistentState } from './usePersistentState';
@@ -44,8 +45,13 @@ export function useTimelineState() {
   const [columnGroups, setColumnGroups] = usePersistentState<ColumnGroups>('column-groups', []);
   const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
   const [openedId, setOpenedId] = useState<string | undefined>(undefined);
+  const [openedDayKey, setOpenedDayKey] = useState<string | undefined>(undefined);
+  const [openedRelationId, setOpenedRelationId] = useState<string | undefined>(undefined);
+  /** Год, из окна которого открыли статью, — для кнопки возврата. */
+  const [returnDayKey, setReturnDayKey] = useState<string | undefined>(undefined);
   const [scrollTarget, setScrollTarget] = useState<ScrollTarget | undefined>(undefined);
   const [expanded, setExpanded] = useState(false);
+  const [showRelations, setShowRelations] = usePersistentState('show-relations', true);
 
   const setZoom = useCallback(
     (value: number) => setZoomRaw(Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, value))),
@@ -102,11 +108,62 @@ export function useTimelineState() {
     [filteredItems, selectedId],
   );
 
+  const itemsById = useMemo(() => {
+    const index: Record<string, TimelineItem> = {};
+    for (const item of allItems) index[item.id] = item;
+    return index;
+  }, [allItems]);
+
+  const resolveItem = useCallback((id: string) => itemsById[id], [itemsById]);
+
   /** Объект, открытый в модальном окне с полным текстом. */
-  const openedItem = useMemo(
-    () => allItems.find((item) => item.id === openedId),
-    [allItems, openedId],
+  const openedItem = openedId ? itemsById[openedId] : undefined;
+
+  /** Группа-год, открытая в окне «одна дата, несколько стран». */
+  const openedDay = useMemo(
+    () => (openedDayKey ? groups.find((group) => group.key === openedDayKey) : undefined),
+    [groups, openedDayKey],
   );
+
+  const openedRelation = useMemo(
+    () => allRelations.find((relation) => relation.id === openedRelationId),
+    [openedRelationId],
+  );
+
+  const openedRelationEnds = useMemo(() => {
+    if (!openedRelation) return undefined;
+    const from = itemsById[openedRelation.from];
+    const to = itemsById[openedRelation.to];
+    return from && to ? { from, to } : undefined;
+  }, [itemsById, openedRelation]);
+
+  const openedItemRelations = useMemo(
+    () =>
+      openedItem
+        ? allRelations.filter(
+            (relation) => relation.from === openedItem.id || relation.to === openedItem.id,
+          )
+        : [],
+    [openedItem],
+  );
+
+  const backToDay = useMemo(() => {
+    if (!returnDayKey) return undefined;
+    const group = groups.find((item) => item.key === returnDayKey);
+    return group ? { key: group.key, label: group.label } : undefined;
+  }, [groups, returnDayKey]);
+
+  /**
+   * Связи, которые сейчас можно нарисовать: обе стороны прошли фильтры
+   * и находятся в видимых колонках.
+   */
+  const visibleRelations = useMemo(() => {
+    if (!showRelations) return [];
+    const visible = new Set(filteredItems.map((item) => item.id));
+    return allRelations.filter(
+      (relation) => visible.has(relation.from) && visible.has(relation.to),
+    );
+  }, [filteredItems, showRelations]);
 
   // Запоминаем последний удачно выбранный объект, чтобы искать по нему замену.
   const lastSelectedRef = useRef<TimelineItem | undefined>(undefined);
@@ -143,12 +200,40 @@ export function useTimelineState() {
   const clearSelection = useCallback(() => setSelectedId(undefined), []);
 
   /** Открыть полный текст. Объект заодно становится выбранным, чтобы подсветился год. */
-  const openItem = useCallback((item: TimelineItem) => {
-    setSelectedId(item.id);
-    setOpenedId(item.id);
+  const openItem = useCallback(
+    (item: TimelineItem, options?: { fromDay?: string; scroll?: boolean }) => {
+      setSelectedId(item.id);
+      setOpenedId(item.id);
+      setOpenedDayKey(undefined);
+      setOpenedRelationId(undefined);
+      // Возврат к списку года запоминается только при переходе именно оттуда.
+      if (options?.fromDay !== undefined) setReturnDayKey(options.fromDay);
+      if (options?.scroll) setScrollTarget({ id: item.id, nonce: Date.now() });
+    },
+    [],
+  );
+
+  /** Открыть окно со всеми событиями одного года. */
+  const openDay = useCallback((key: string) => {
+    setOpenedDayKey(key);
+    setOpenedId(undefined);
+    setOpenedRelationId(undefined);
+    setReturnDayKey(undefined);
   }, []);
 
-  const closeItem = useCallback(() => setOpenedId(undefined), []);
+  /** Открыть объяснение связи между двумя объектами. */
+  const openRelation = useCallback((relation: { id: string }) => {
+    setOpenedRelationId(relation.id);
+    setOpenedId(undefined);
+    setOpenedDayKey(undefined);
+  }, []);
+
+  const closeModals = useCallback(() => {
+    setOpenedId(undefined);
+    setOpenedDayKey(undefined);
+    setOpenedRelationId(undefined);
+    setReturnDayKey(undefined);
+  }, []);
 
   const toggleCountry = useCallback(
     (id: CountryId) => {
@@ -263,6 +348,13 @@ export function useTimelineState() {
     openedItem,
     openedCountry: openedItem ? countryById[openedItem.country] : undefined,
     openedEra: openedItem ? eraForYear(openedItem.year) : undefined,
+    openedDay,
+    openedRelation,
+    openedRelationEnds,
+    openedItemRelations,
+    backToDay,
+    visibleRelations,
+    resolveItem,
     neighbours,
     addedPeople,
     scrollTarget,
@@ -290,7 +382,11 @@ export function useTimelineState() {
     selectItem,
     clearSelection,
     openItem,
-    closeItem,
+    openDay,
+    openRelation,
+    closeModals,
+    showRelations,
+    setShowRelations,
     toggleCountry,
     showAllCountries,
     onlyCountry,

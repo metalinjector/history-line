@@ -136,6 +136,8 @@
 }
 
 .timeline__grid {
+  /* Точка отсчёта для слоя со штриховыми линиями и нитями связей */
+  position: relative;
   width: max-content;
   min-width: 100%;
   /* Строки мемоизированы; при росте базы сюда встанет виртуализация
@@ -188,7 +190,9 @@
   display: flex;
   align-items: flex-end;
   padding: 14px 14px 11px;
-  background: inherit;
+  /* Непрозрачный фон обязателен: при горизонтальной прокрутке под липкой
+     колонкой дат проезжают колонки стран, и полупрозрачный фон их пропускал. */
+  background: var(--paper-raised);
   border-right: 1px solid var(--line-soft);
 }
 
@@ -426,14 +430,16 @@
   align-items: flex-start;
   justify-content: flex-end;
   padding: calc(var(--row-gap) + 4px) 16px var(--row-gap) 12px;
-  background: linear-gradient(90deg, var(--paper-sunken) 78%, color-mix(in oklab, var(--paper-sunken) 0%, transparent));
+  /* Фон непрозрачен почти до самого края: под колонкой дат проезжают карточки
+     при горизонтальной прокрутке, растушёвываются только последние пиксели. */
+  background: linear-gradient(90deg, var(--paper-sunken) calc(100% - 8px), transparent);
   border-right: 1px solid var(--line-soft);
 }
 
 .trow[data-active] .trow__date {
   background: linear-gradient(
     90deg,
-    color-mix(in oklab, var(--accent) 14%, var(--paper-sunken)) 78%,
+    color-mix(in oklab, var(--accent) 14%, var(--paper-sunken)) calc(100% - 8px),
     transparent
   );
 }
@@ -879,4 +885,229 @@
   .timeline__origin-year {
     font-size: 34px;
   }
+}
+
+/* ============================================================
+   Слой поверх сетки: штриховые линии выбора и нити связей.
+   Координаты рисуются в пикселях сетки, поэтому SVG не имеет
+   viewBox и растягивается по всей её площади.
+   ============================================================ */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  overflow: visible;
+  /* Слой не мешает перетаскиванию: кликабельны только нити */
+  pointer-events: none;
+}
+
+/* ---------- Штриховая линия от карточки к дате ---------- */
+
+.lead__line {
+  stroke: var(--c);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 5;
+  opacity: 0.55;
+  animation: lead-draw 520ms var(--ease-out);
+}
+
+.lead__span {
+  stroke: var(--c);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 6;
+  stroke-linecap: round;
+  opacity: 0.45;
+}
+
+.lead__cap {
+  fill: var(--c);
+  opacity: 0.75;
+}
+
+@keyframes lead-draw {
+  from {
+    opacity: 0;
+    stroke-dashoffset: 22;
+  }
+  to {
+    opacity: 0.55;
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lead__line {
+    animation: none;
+  }
+}
+
+/* ---------- Нить-связь между событиями ---------- */
+
+.thread {
+  --thread-color: var(--accent);
+}
+
+.thread[data-kind='conflict'] {
+  --thread-color: var(--seal);
+}
+
+.thread[data-kind='exchange'] {
+  --thread-color: hsl(196 70% 45%);
+}
+
+[data-theme='atlas'] .thread[data-kind='exchange'] {
+  --thread-color: hsl(190 75% 58%);
+}
+
+.thread__line {
+  fill: none;
+  stroke: var(--thread-color);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: 0.3;
+  transition:
+    opacity var(--dur-mid) var(--ease-out),
+    stroke-width var(--dur-mid) var(--ease-out);
+}
+
+/* Связи выбранной карточки выходят на первый план */
+.thread[data-active] .thread__line {
+  opacity: 0.85;
+  stroke-width: 2.2;
+}
+
+.thread[data-hovered] .thread__line {
+  opacity: 1;
+  stroke-width: 2.6;
+}
+
+.thread[data-kind='conflict'] .thread__line {
+  stroke-dasharray: 9 5;
+}
+
+.thread[data-kind='exchange'] .thread__line {
+  stroke-dasharray: 2 6;
+}
+
+/* Широкая невидимая копия нити — по ней проще попасть курсором */
+.thread__hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 16;
+  pointer-events: stroke;
+  cursor: pointer;
+}
+
+.thread__knot {
+  fill: var(--paper-raised);
+  stroke: var(--thread-color);
+  stroke-width: 2;
+  opacity: 0.55;
+  pointer-events: auto;
+  cursor: pointer;
+  transition:
+    opacity var(--dur-mid) var(--ease-out),
+    r var(--dur-fast) var(--ease-out);
+}
+
+.thread[data-active] .thread__knot,
+.thread[data-hovered] .thread__knot {
+  opacity: 1;
+  fill: var(--thread-color);
+  stroke: var(--dot-ring);
+}
+
+/* ---------- Кольцо даты: год, где сошлись несколько стран ---------- */
+
+.trow__crossroads {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 9px 5px 7px;
+  border-radius: 999px;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.trow__crossroads:hover {
+  transform: translateX(-2px);
+  background: color-mix(in oklab, var(--paper-raised) 80%, transparent);
+}
+
+/* Кольцо собрано из цветов стран, участвующих в этой строке */
+.trow__crossroads-ring {
+  position: absolute;
+  inset: -2px 2px -2px -2px;
+  border-radius: 999px;
+  padding: 1.5px;
+  background: var(--ring);
+  opacity: 0.75;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: opacity var(--dur-mid) var(--ease-out);
+  animation: ring-in 620ms var(--ease-out) backwards;
+}
+
+.trow__crossroads:hover .trow__crossroads-ring,
+.trow[data-active] .trow__crossroads-ring {
+  opacity: 1;
+}
+
+@keyframes ring-in {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  to {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trow__crossroads-ring {
+    animation: none;
+  }
+}
+
+.trow__crossroads-count {
+  display: grid;
+  place-items: center;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-faint);
+}
+
+.trow__crossroads:hover .trow__crossroads-count {
+  color: var(--ink-strong);
+  border-color: var(--line-strong);
+}
+
+/* Переключатель связей в панели управления */
+.toggle__count {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--accent) 18%, transparent);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
 }

@@ -498,3 +498,343 @@
     min-width: 0;
   }
 }
+
+
+/* ============================================================
+   Окно года: несколько стран в одной дате
+   ============================================================ */
+
+.day__count {
+  display: inline-block;
+  margin-left: 12px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line-soft);
+  background: color-mix(in oklab, var(--paper-sunken) 60%, transparent);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-faint);
+  vertical-align: middle;
+}
+
+.day__lede {
+  margin-bottom: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-faint);
+}
+
+.day__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.day__item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  height: 100%;
+  padding: 13px 15px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--card-border);
+  border-left: 3px solid var(--c);
+  background: color-mix(in oklab, var(--c) 5%, var(--paper-raised));
+  text-align: left;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.day__item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background: color-mix(in oklab, var(--c) 11%, var(--paper-raised));
+}
+
+.day__item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.day__item-country {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--c-ink);
+}
+
+[data-theme='atlas'] .day__item-country {
+  color: var(--c);
+}
+
+.day__item-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c);
+}
+
+.day__item-date {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-ghost);
+}
+
+.day__item-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.22;
+  color: var(--ink-strong);
+}
+
+.day__item-summary {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+/* ============================================================
+   Окно связи между событиями
+   ============================================================ */
+
+.relation__ends {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.relation__end-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.relation__arrow {
+  flex: none;
+  font-size: 18px;
+  color: var(--ink-faint);
+}
+
+.relation__end {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--card-border);
+  border-top: 3px solid var(--c);
+  background: color-mix(in oklab, var(--c) 6%, var(--paper-raised));
+  text-align: left;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.relation__end:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.relation__end-role {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-ghost);
+}
+
+.relation__end-country {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--c-ink);
+}
+
+[data-theme='atlas'] .relation__end-country {
+  color: var(--c);
+}
+
+.relation__end-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c);
+}
+
+.relation__end-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.24;
+  color: var(--ink-strong);
+}
+
+/* ============================================================
+   Связи в окне объекта
+   ============================================================ */
+
+.modal__relations {
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.modal__relations h3 {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+.modal__relations ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.modal__relation {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  width: 100%;
+  padding: 10px 13px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line-soft);
+  border-left: 3px solid var(--thread-color, var(--accent));
+  background: color-mix(in oklab, var(--paper-sunken) 45%, transparent);
+  text-align: left;
+  font-size: 13.5px;
+  color: var(--ink);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.modal__relation[data-kind='influence'] {
+  --thread-color: var(--accent);
+}
+.modal__relation[data-kind='conflict'] {
+  --thread-color: var(--seal);
+}
+.modal__relation[data-kind='exchange'] {
+  --thread-color: hsl(196 70% 45%);
+}
+
+.modal__relation:hover {
+  transform: translateX(2px);
+  background: var(--paper-sunken);
+}
+
+.modal__relation-arrow {
+  flex: none;
+  font-family: var(--font-mono);
+  color: var(--thread-color, var(--accent));
+}
+
+.modal__relation b {
+  display: block;
+  font-weight: 600;
+  color: var(--ink-strong);
+}
+
+.modal__relation-hint {
+  display: block;
+  margin-top: 2px;
+  font-size: 11.5px;
+  color: var(--ink-faint);
+}
+
+.modal__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line-soft);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.modal__back:hover {
+  background: var(--paper-sunken);
+  color: var(--ink-strong);
+}
+
+/* ============================================================
+   Диаграммы Mermaid и формулы KaTeX
+   ============================================================ */
+
+.mermaid {
+  margin: 0 0 1.3em;
+  padding: 18px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line-soft);
+  background: color-mix(in oklab, var(--paper-sunken) 40%, transparent);
+  overflow-x: auto;
+  text-align: center;
+}
+
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.mermaid--loading {
+  padding: 26px 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-ghost);
+}
+
+.mermaid--failed {
+  text-align: left;
+  border-color: color-mix(in oklab, var(--seal) 40%, transparent);
+}
+
+.mermaid--failed figcaption {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--seal);
+}
+
+/* Формулы: блочные центрируются и прокручиваются, если не влезают */
+.md .katex {
+  font-size: 1.04em;
+}
+
+.md .katex-display {
+  margin: 1.2em 0;
+  padding: 6px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.md .katex-display > .katex {
+  white-space: nowrap;
+}

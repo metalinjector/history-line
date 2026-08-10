@@ -29,6 +29,9 @@ type Props = ControlsState & {
   onFitToWidth: () => void;
   onToggleExpanded: () => void;
   onReset: () => void;
+  showRelations: boolean;
+  relationCount: number;
+  onToggleRelations: () => void;
 };
 
 const layers: { id: Layer; label: string; hint: string }[] = [
@@ -61,6 +64,9 @@ export function TimelineControls(props: Props) {
     onFitToWidth,
     onToggleExpanded,
     onReset,
+    showRelations,
+    relationCount,
+    onToggleRelations,
   } = props;
 
   const [tagsOpen, setTagsOpen] = useState(false);
@@ -150,6 +156,24 @@ export function TimelineControls(props: Props) {
             <span className="toggle__thumb" />
           </span>
           Только вехи
+        </button>
+
+        {/* Нити связей */}
+        <button
+          type="button"
+          className="toggle"
+          data-active={showRelations || undefined}
+          aria-pressed={showRelations}
+          onClick={onToggleRelations}
+          title="Показать нити между связанными событиями разных стран"
+        >
+          <span className="toggle__track" aria-hidden="true">
+            <span className="toggle__thumb" />
+          </span>
+          Связи
+          {showRelations && relationCount > 0 ? (
+            <span className="toggle__count">{relationCount}</span>
+          ) : null}
         </button>
 
         {/* Масштаб */}
