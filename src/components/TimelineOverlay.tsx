@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import type { Relation, TimelineGroup, TimelineItem } from '../types';
+import { isRelationVerified } from '../lib/provenance';
 import { countryById } from '../data/countries';
 
 type Point = { x: number; y: number };
@@ -192,6 +193,7 @@ export function TimelineOverlay({
           key={thread.relation.id}
           className="thread"
           data-kind={thread.relation.kind}
+          data-verification={isRelationVerified(thread.relation) ? 'verified' : 'draft'}
           data-active={thread.active || undefined}
           data-hovered={hovered === thread.relation.id || undefined}
         >

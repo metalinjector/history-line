@@ -9,6 +9,7 @@ import type {
 import { OWN_COLUMN } from '../types';
 import { countryById } from '../data/countries';
 import { layerById } from '../data/layers';
+import { MAX_PER_COLUMN } from '../data/columns';
 
 /** Куда положен каждый включённый слой. */
 export type LayerPlacements = Record<string, LayerPlacement>;
@@ -18,6 +19,8 @@ export type LayerState = {
   placed: Layer[];
   /** Слой включён, но его страна скрыта — показываем предупреждение. */
   homeless: Layer[];
+  /** Почему включённый слой пока нельзя показать. */
+  unplacedReasons: Record<string, 'hidden-host' | 'full-host'>;
 };
 
 /** Дорожка для страны. */
@@ -64,6 +67,7 @@ export function applyLayers(
 ): { columns: TimelineColumn[]; state: LayerState } {
   const placed: Layer[] = [];
   const homeless: Layer[] = [];
+  const unplacedReasons: LayerState['unplacedReasons'] = {};
 
   // Копии колонок: дорожки будем дополнять, не трогая исходные объекты.
   const next = columns.map((column) => ({ ...column, tracks: [...column.tracks] }));
@@ -95,6 +99,15 @@ export function applyLayers(
 
     if (!host) {
       homeless.push(layer);
+      unplacedReasons[layer.id] = 'hidden-host';
+      continue;
+    }
+
+    // Ограничение относится ко всем дорожкам, а не только к объединённым странам.
+    // Иначе три страны + три слоя превращали колонку в нечитаемые шесть линий.
+    if (host.tracks.length >= MAX_PER_COLUMN) {
+      homeless.push(layer);
+      unplacedReasons[layer.id] = 'full-host';
       continue;
     }
 
@@ -103,7 +116,7 @@ export function applyLayers(
     placed.push(layer);
   }
 
-  return { columns: [...next, ...ownColumns], state: { placed, homeless } };
+  return { columns: [...next, ...ownColumns], state: { placed, homeless, unplacedReasons } };
 }
 
 /**

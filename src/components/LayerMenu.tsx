@@ -98,6 +98,7 @@ export function LayerMenu({
                 key={layer.id}
                 layer={layer}
                 homeless={layerState.homeless.some((item) => item.id === layer.id)}
+                unplacedReason={layerState.unplacedReasons[layer.id]}
                 placement={placementOf(layer.id)}
                 countries={countries}
                 activeCountryIds={activeCountryIds}
@@ -171,6 +172,7 @@ export function LayerMenu({
 type ChipProps = {
   layer: Layer;
   homeless: boolean;
+  unplacedReason?: 'hidden-host' | 'full-host';
   placement: LayerPlacement;
   countries: Country[];
   activeCountryIds: string[];
@@ -183,6 +185,7 @@ type ChipProps = {
 function ActiveLayerChip({
   layer,
   homeless,
+  unplacedReason,
   placement,
   countries,
   activeCountryIds,
@@ -220,7 +223,11 @@ function ActiveLayerChip({
       <span className="layer-chip__text">
         <b>{layer.title}</b>
         <span className="layer-chip__where">
-          {homeless ? 'страна скрыта — выберите другую' : placementLabel}
+          {homeless
+            ? unplacedReason === 'full-host'
+              ? 'в колонке уже три линии — выберите другую'
+              : 'страна скрыта — выберите другую'
+            : placementLabel}
         </span>
       </span>
 

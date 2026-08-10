@@ -1,6 +1,12 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import type { CountryId, TimelineItem, TimelineItemKind } from '../types';
+import type {
+  CountryId,
+  RelationDraftInput,
+  SourceKind,
+  TimelineItem,
+  TimelineItemKind,
+} from '../types';
 import { countries, countryById } from '../data/countries';
 import { suggestedPeople } from '../data/suggestedPeople';
 import { suggestRelations } from '../lib/suggestRelations';
@@ -12,11 +18,39 @@ type Props = {
   allItems: TimelineItem[];
   onAdd: (
     draft: Omit<TimelineItem, 'id' | 'custom'>,
-    links?: { toId: string; label: string }[],
+    links?: RelationDraftInput[],
   ) => void;
   onRemove: (id: string) => void;
   onSelect: (item: TimelineItem) => void;
 };
+
+const sourceKinds: { value: SourceKind; label: string }[] = [
+  { value: 'academic', label: 'Академический' },
+  { value: 'archive', label: 'Архив / документ' },
+  { value: 'institution', label: 'Музей / учреждение' },
+  { value: 'encyclopedia', label: 'Энциклопедия' },
+];
+
+function isWebUrl(value?: string): boolean {
+  if (!value) return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
+function relationIsComplete(relation: RelationDraftInput): boolean {
+  const sources = relation.sources ?? [];
+  return (
+    relation.label.trim().length > 3 &&
+    relation.detail.trim().length >= 20 &&
+    sources.length >= 2 &&
+    sources.every((source) => source.label.trim().length > 1 && isWebUrl(source.url)) &&
+    sources.some((source) => source.kind !== 'encyclopedia')
+  );
+}
 
 const principles = [
   {
@@ -47,7 +81,7 @@ const emptyDraft = {
 export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect }: Props) {
   const [formOpen, setFormOpen] = useState(false);
   const [draft, setDraft] = useState(emptyDraft);
-  const [chosenLinks, setChosenLinks] = useState<string[]>([]);
+  const [chosenLinks, setChosenLinks] = useState<Record<string, RelationDraftInput>>({});
 
   const draftTags = useMemo(
     () => draft.tags.split(',').map((tag) => tag.trim()).filter(Boolean),
@@ -65,13 +99,27 @@ export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect
     [allItems, draft.country, draft.year, draftTags],
   );
 
+  // Подсказки зависят от страны, года и тегов. Если пользователь изменил черновик,
+  // связи с исчезнувшими кандидатами не должны тихо сохраниться в localStorage.
+  useEffect(() => {
+    const available = new Set(candidates.map((candidate) => candidate.item.id));
+    setChosenLinks((current) => {
+      const entries = Object.entries(current).filter(([id]) => available.has(id));
+      return entries.length === Object.keys(current).length ? current : Object.fromEntries(entries);
+    });
+  }, [candidates]);
+
   /** Подсказки, которые уже стоят на шкале, помечаются как добавленные. */
   const addedKeys = useMemo(
     () => new Set(addedPeople.map((item) => `${item.title}|${item.year}`)),
     [addedPeople],
   );
 
-  const canSubmit = draft.title.trim().length > 1 && draft.summary.trim().length > 1;
+  const selectedRelations = Object.values(chosenLinks);
+  const canSubmit =
+    draft.title.trim().length > 1 &&
+    draft.summary.trim().length > 1 &&
+    selectedRelations.every(relationIsComplete);
 
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -91,13 +139,10 @@ export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect
         .filter(Boolean),
       importance: 2,
       },
-      chosenLinks.map((toId) => ({
-        toId,
-        label: `${draft.title.trim()} — ${allItems.find((item) => item.id === toId)?.title ?? ''}`,
-      })),
+      selectedRelations,
     );
     setDraft({ ...emptyDraft, country: draft.country });
-    setChosenLinks([]);
+    setChosenLinks({});
     setFormOpen(false);
   };
 
@@ -252,7 +297,8 @@ export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect
                     </span>
                     <ul className="links">
                       {candidates.map((candidate) => {
-                        const active = chosenLinks.includes(candidate.item.id);
+                        const active = Boolean(chosenLinks[candidate.item.id]);
+                        const relation = chosenLinks[candidate.item.id];
                         const country = countryById[candidate.item.country];
                         return (
                           <li key={candidate.item.id}>
@@ -265,8 +311,22 @@ export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect
                               onClick={() =>
                                 setChosenLinks((current) =>
                                   active
-                                    ? current.filter((id) => id !== candidate.item.id)
-                                    : [...current, candidate.item.id],
+                                    ? Object.fromEntries(
+                                        Object.entries(current).filter(([id]) => id !== candidate.item.id),
+                                      )
+                                    : {
+                                        ...current,
+                                        [candidate.item.id]: {
+                                          to: candidate.item.id,
+                                          kind: 'influence',
+                                          label: `${draft.title.trim() || 'Новый объект'} — ${candidate.item.title}`,
+                                          detail: '',
+                                          sources: [
+                                            { label: '', url: '', kind: 'academic' },
+                                            { label: '', url: '', kind: 'institution' },
+                                          ],
+                                        },
+                                      },
                                 )
                               }
                             >
@@ -282,6 +342,112 @@ export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect
                                 </span>
                               </span>
                             </button>
+                            {relation ? (
+                              <div className="links__editor">
+                                <label>
+                                  <span>Характер связи</span>
+                                  <select
+                                    value={relation.kind}
+                                    onChange={(event) =>
+                                      setChosenLinks((current) => ({
+                                        ...current,
+                                        [candidate.item.id]: {
+                                          ...relation,
+                                          kind: event.target.value as RelationDraftInput['kind'],
+                                        },
+                                      }))
+                                    }
+                                  >
+                                    <option value="influence">Влияние</option>
+                                    <option value="exchange">Перекличка / обмен</option>
+                                    <option value="conflict">Противостояние</option>
+                                  </select>
+                                </label>
+                                <label>
+                                  <span>Короткая формулировка</span>
+                                  <input
+                                    value={relation.label}
+                                    onChange={(event) =>
+                                      setChosenLinks((current) => ({
+                                        ...current,
+                                        [candidate.item.id]: { ...relation, label: event.target.value },
+                                      }))
+                                    }
+                                  />
+                                </label>
+                                <label className="links__editor-wide">
+                                  <span>Что именно связывает объекты</span>
+                                  <textarea
+                                    rows={3}
+                                    minLength={20}
+                                    value={relation.detail}
+                                    placeholder="Опишите механизм, направление и исторический контекст связи"
+                                    onChange={(event) =>
+                                      setChosenLinks((current) => ({
+                                        ...current,
+                                        [candidate.item.id]: { ...relation, detail: event.target.value },
+                                      }))
+                                    }
+                                  />
+                                </label>
+                                {(relation.sources ?? []).map((source, sourceIndex) => (
+                                  <fieldset className="links__source" key={sourceIndex}>
+                                    <legend>Источник {sourceIndex + 1}</legend>
+                                    <input
+                                      aria-label={`Название источника ${sourceIndex + 1}`}
+                                      placeholder="Название публикации"
+                                      value={source.label}
+                                      onChange={(event) => {
+                                        const sources = [...(relation.sources ?? [])];
+                                        sources[sourceIndex] = { ...source, label: event.target.value };
+                                        setChosenLinks((current) => ({
+                                          ...current,
+                                          [candidate.item.id]: { ...relation, sources },
+                                        }));
+                                      }}
+                                    />
+                                    <input
+                                      type="url"
+                                      aria-label={`URL источника ${sourceIndex + 1}`}
+                                      placeholder="https://…"
+                                      value={source.url}
+                                      onChange={(event) => {
+                                        const sources = [...(relation.sources ?? [])];
+                                        sources[sourceIndex] = { ...source, url: event.target.value };
+                                        setChosenLinks((current) => ({
+                                          ...current,
+                                          [candidate.item.id]: { ...relation, sources },
+                                        }));
+                                      }}
+                                    />
+                                    <select
+                                      aria-label={`Тип источника ${sourceIndex + 1}`}
+                                      value={source.kind}
+                                      onChange={(event) => {
+                                        const sources = [...(relation.sources ?? [])];
+                                        sources[sourceIndex] = {
+                                          ...source,
+                                          kind: event.target.value as SourceKind,
+                                        };
+                                        setChosenLinks((current) => ({
+                                          ...current,
+                                          [candidate.item.id]: { ...relation, sources },
+                                        }));
+                                      }}
+                                    >
+                                      {sourceKinds.map((kind) => (
+                                        <option key={kind.value} value={kind.value}>{kind.label}</option>
+                                      ))}
+                                    </select>
+                                  </fieldset>
+                                ))}
+                                <p className="links__requirement" data-valid={relationIsComplete(relation) || undefined}>
+                                  {relationIsComplete(relation)
+                                    ? '✓ Связь готова к сохранению'
+                                    : 'Нужны объяснение (от 20 знаков) и два URL-источника; хотя бы один — не энциклопедия.'}
+                                </p>
+                              </div>
+                            ) : null}
                           </li>
                         );
                       })}

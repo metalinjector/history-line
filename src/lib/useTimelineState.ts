@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { CountryId, EraId, KindFilter, ThemeName, TimelineItem } from '../types';
+import type { CountryId, EraId, KindFilter, RelationDraftInput, ThemeName, TimelineItem } from '../types';
 import { allCountryIds, countries, countryById } from '../data/countries';
 import {
   buildColumns,
@@ -26,16 +26,7 @@ import {
 } from './timeline';
 import { timeKey } from './format';
 import { usePersistentState } from './usePersistentState';
-
-const ZOOM_MIN = 0.65;
-const ZOOM_MAX = 1.9;
-
-/**
- * Выше этого значения колонки перестают расширяться: дальнейшее приближение
- * тратится не на ширину карточек, а на точность времени — год распадается
- * на месяцы, месяц на дни.
- */
-const VISUAL_ZOOM_MAX = 1.2;
+import { clampZoom, visualZoom } from './zoom';
 
 export type ScrollTarget = { id: string; nonce: number };
 
@@ -82,7 +73,7 @@ export function useTimelineState() {
   const [showRelations, setShowRelations] = usePersistentState('show-relations', true);
 
   const setZoom = useCallback(
-    (value: number) => setZoomRaw(Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, value))),
+    (value: number) => setZoomRaw(clampZoom(value)),
     [setZoomRaw],
   );
 
@@ -92,7 +83,7 @@ export function useTimelineState() {
 
   // Геометрия растёт только до визуального предела; остальное уходит в детализацию.
   useEffect(() => {
-    document.documentElement.style.setProperty('--zoom', String(Math.min(zoom, VISUAL_ZOOM_MAX)));
+    document.documentElement.style.setProperty('--zoom', String(visualZoom(zoom)));
   }, [zoom]);
 
   /** Текущий уровень дробления шкалы: годы, месяцы или дни. */
@@ -121,8 +112,8 @@ export function useTimelineState() {
 
   /** Объекты включённых слоёв, приведённые к обычному виду. */
   const layerItems = useMemo(
-    () => materializeLayerItems(activeLayerIds, layerPlacements, activeCountryIds[0] ?? 'germany'),
-    [activeCountryIds, activeLayerIds, layerPlacements],
+    () => materializeLayerItems(layerState.placed.map((item) => item.id), layerPlacements, activeCountryIds[0] ?? 'germany'),
+    [activeCountryIds, layerPlacements, layerState.placed],
   );
 
   const allItems = useMemo(
@@ -410,7 +401,7 @@ export function useTimelineState() {
    * а сам объект выделяется и подтягивает к себе прокрутку.
    */
   const addPerson = useCallback(
-    (draft: Omit<TimelineItem, 'id' | 'custom'>, links: { toId: string; label: string }[] = []) => {
+    (draft: Omit<TimelineItem, 'id' | 'custom'>, links: RelationDraftInput[] = []) => {
       const id = `custom-${draft.country}-${draft.year}-${Math.random().toString(36).slice(2, 8)}`;
       const item: TimelineItem = { ...draft, id, custom: true };
 
@@ -421,12 +412,8 @@ export function useTimelineState() {
           ...links.map((link, index) => ({
             id: `${id}-rel-${index}`,
             from: id,
-            to: link.toId,
-            kind: 'influence' as const,
-            label: link.label,
-            detail:
-              'Связь отмечена при добавлении объекта. Опишите здесь, что именно ' +
-              'и как повлияло, и подтвердите это источниками — см. docs/AI-CONTRIBUTING.md.',
+            ...link,
+            verification: 'verified' as const,
           })),
         ]);
       }
