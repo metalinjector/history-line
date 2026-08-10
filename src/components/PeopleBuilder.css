@@ -343,3 +343,80 @@
     grid-column: span 1;
   }
 }
+
+/* ---------- Подсказки возможных связей ---------- */
+
+.links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.links__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  width: 100%;
+  height: 100%;
+  padding: 9px 11px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line-soft);
+  border-left: 3px solid var(--c);
+  background: color-mix(in oklab, var(--paper) 55%, transparent);
+  text-align: left;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.links__item:hover {
+  background: color-mix(in oklab, var(--c) 8%, transparent);
+}
+
+.links__item[data-active] {
+  border-color: color-mix(in oklab, var(--c) 60%, transparent);
+  border-left-color: var(--c);
+  background: color-mix(in oklab, var(--c) 14%, transparent);
+}
+
+.links__check {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  margin-top: 1px;
+  border-radius: 5px;
+  border: 1px solid var(--line-strong);
+  font-size: 11px;
+  line-height: 1;
+  color: var(--ink-faint);
+}
+
+.links__item[data-active] .links__check {
+  background: var(--c);
+  border-color: var(--c);
+  color: var(--paper-raised);
+}
+
+.links__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.links__text b {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-strong);
+}
+
+.links__why {
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--ink-faint);
+}

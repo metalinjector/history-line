@@ -1,6 +1,38 @@
 import type { Country, Era, TimelineItem } from '../types';
 import { formatItemDate } from './format';
 
+/** Протокол внутренних ссылок: превращается в переход к другому объекту шкалы. */
+export const ITEM_LINK_PROTOCOL = 'item:';
+
+const WIKI_LINK = /\[\[([^\]|]+?)(?:\|([^\]]+?))?\]\]/g;
+
+/**
+ * Превращает ссылки в стиле Obsidian в обычные Markdown-ссылки.
+ *
+ *     [[de-luther-1517]]                  → [Мартин Лютер и 95 тезисов](item:de-luther-1517)
+ *     [[de-luther-1517|его тезисы]]       → [его тезисы](item:de-luther-1517)
+ *
+ * Если объекта с таким идентификатором нет, ссылка остаётся видимым текстом
+ * и помечается как битая — так ошибка в базе сразу заметна, а статья не ломается.
+ */
+export function resolveWikiLinks(
+  markdown: string,
+  resolve: (id: string) => TimelineItem | undefined,
+): string {
+  return markdown.replace(WIKI_LINK, (_match, rawId: string, label?: string) => {
+    const id = rawId.trim();
+    const item = resolve(id);
+    if (!item) return `\`[[${id}]]\``;
+    const text = (label ?? item.title).trim();
+    return `[${text}](${ITEM_LINK_PROTOCOL}${id})`;
+  });
+}
+
+/** Все объекты, на которые ссылается текст статьи. */
+export function collectWikiLinks(markdown: string): string[] {
+  return Array.from(markdown.matchAll(WIKI_LINK), (match) => match[1].trim());
+}
+
 /**
  * Готовит Markdown-документ для модального окна.
  *
@@ -58,6 +90,17 @@ export function itemToMarkdown(item: TimelineItem, country: Country, era?: Era):
   lines.push(`*${country.note}*`);
 
   return lines.join('\n');
+}
+
+const sourceKindLabels: Record<string, string> = {
+  encyclopedia: 'энциклопедия',
+  academic: 'научная публикация',
+  archive: 'архив или документ',
+  institution: 'профильное учреждение',
+};
+
+export function sourceKindLabel(kind?: string): string {
+  return kind ? (sourceKindLabels[kind] ?? kind) : 'источник';
 }
 
 function weightLabel(importance?: number): string {

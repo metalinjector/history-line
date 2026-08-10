@@ -1,6 +1,7 @@
 import type { Relation, TimelineItem } from '../../types';
 import { countryById } from '../../data/countries';
 import { formatItemDate } from '../../lib/format';
+import { resolveWikiLinks } from '../../lib/markdown';
 import { Modal, ModalClose } from './Modal';
 import { MarkdownView } from './MarkdownView';
 
@@ -9,6 +10,8 @@ type Props = {
   from: TimelineItem;
   to: TimelineItem;
   onOpenItem: (item: TimelineItem) => void;
+  resolveItem: (id: string) => TimelineItem | undefined;
+  onOpenLink: (id: string) => void;
   onClose: () => void;
 };
 
@@ -22,7 +25,7 @@ const kindLabels: Record<Relation['kind'], string> = {
  * Окно связи между двумя объектами: что на что повлияло и как.
  * Открывается кликом по нити на хронологии.
  */
-export function RelationModal({ relation, from, to, onOpenItem, onClose }: Props) {
+export function RelationModal({ relation, from, to, onOpenItem, resolveItem, onOpenLink, onClose }: Props) {
   const fromCountry = countryById[from.country];
   const toCountry = countryById[to.country];
 
@@ -76,7 +79,9 @@ export function RelationModal({ relation, from, to, onOpenItem, onClose }: Props
       </div>
 
       <div className="modal__body md">
-        <MarkdownView>{relation.detail.trim()}</MarkdownView>
+        <MarkdownView onOpenItem={onOpenLink}>
+          {resolveWikiLinks(relation.detail.trim(), resolveItem)}
+        </MarkdownView>
       </div>
     </Modal>
   );

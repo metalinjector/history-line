@@ -96,6 +96,13 @@ export const TimelineCard = memo(function TimelineCard({
         <span className="visually-hidden">Открыть полный текст: {item.title}</span>
       </button>
 
+      {(item.viewpoints?.length ?? 0) > 1 ? (
+        <span className="tcard__disputed" title="Трактовки расходятся — см. полный текст">
+          <span aria-hidden="true">⚖</span>
+          <span className="visually-hidden">Есть несколько устоявшихся трактовок</span>
+        </span>
+      ) : null}
+
       {isKey ? (
         <span className="tcard__seal" title="Опорная веха эпохи">
           <span aria-hidden="true">★</span>

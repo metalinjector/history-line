@@ -32,6 +32,10 @@ type Props = ControlsState & {
   showRelations: boolean;
   relationCount: number;
   onToggleRelations: () => void;
+  /** Текущее дробление шкалы: годы, месяцы, дни. */
+  granularityLabel: string;
+  /** Сколько строк раздробилось на месяцы или дни. */
+  splitRows: number;
 };
 
 const layers: { id: Layer; label: string; hint: string }[] = [
@@ -41,7 +45,7 @@ const layers: { id: Layer; label: string; hint: string }[] = [
 ];
 
 const ZOOM_MIN = 0.65;
-const ZOOM_MAX = 1.2;
+const ZOOM_MAX = 1.9;
 
 export function TimelineControls(props: Props) {
   const {
@@ -67,6 +71,8 @@ export function TimelineControls(props: Props) {
     showRelations,
     relationCount,
     onToggleRelations,
+    granularityLabel,
+    splitRows,
   } = props;
 
   const [tagsOpen, setTagsOpen] = useState(false);
@@ -177,7 +183,7 @@ export function TimelineControls(props: Props) {
         </button>
 
         {/* Масштаб */}
-        <div className="controls__zoom">
+        <div className="controls__zoom" data-detail={granularityLabel !== 'годы' || undefined}>
           <label htmlFor={zoomId} className="controls__zoom-label">
             Масштаб
           </label>
@@ -189,8 +195,15 @@ export function TimelineControls(props: Props) {
             step={0.01}
             value={zoom}
             onChange={(event) => onZoomChange(Number(event.target.value))}
+            title="После 120% приближение дробит шкалу на месяцы, затем на дни"
           />
-          <output className="controls__zoom-value">{Math.round(zoom * 100)}%</output>
+          <output className="controls__zoom-value">
+            {Math.round(zoom * 100)}%
+            <span className="controls__grain">
+              {granularityLabel}
+              {splitRows > 0 ? <b>+{splitRows}</b> : null}
+            </span>
+          </output>
           <button
             type="button"
             className="controls__fit"

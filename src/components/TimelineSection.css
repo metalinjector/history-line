@@ -1111,3 +1111,42 @@
   font-variant-numeric: tabular-nums;
   color: var(--accent);
 }
+
+/* Год под названием месяца при детализации по месяцам и дням */
+.trow__sub {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--ink-ghost);
+  font-variant-numeric: tabular-nums;
+}
+
+/* В режиме месяцев и дней подпись строки короче — уменьшаем кегль */
+.trow__year:not(:only-child) {
+  font-size: calc(13px * var(--zoom));
+}
+
+/* Пометка карточки: у факта несколько устоявшихся трактовок */
+.tcard__disputed {
+  position: absolute;
+  top: -6px;
+  right: 14px;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--paper-raised);
+  border: 1px solid color-mix(in oklab, hsl(288 48% 50%) 55%, transparent);
+  color: hsl(288 48% 46%);
+  font-size: 9px;
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme='atlas'] .tcard__disputed {
+  color: hsl(288 62% 72%);
+}
+
+.tcard[data-key-event] .tcard__disputed {
+  right: 16px;
+}

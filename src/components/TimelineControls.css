@@ -274,12 +274,42 @@
 }
 
 .controls__zoom-value {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.15;
   font-family: var(--font-mono);
   font-size: 11.5px;
   font-variant-numeric: tabular-nums;
   color: var(--ink-soft);
-  min-width: 36px;
+  min-width: 52px;
   text-align: right;
+}
+
+/* Подпись уровня дробления шкалы: годы → месяцы → дни */
+.controls__grain {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-ghost);
+  transition: color var(--dur-mid) var(--ease-out);
+}
+
+.controls__zoom[data-detail] .controls__grain {
+  color: var(--accent);
+}
+
+.controls__grain b {
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.controls__zoom[data-detail] {
+  border-color: color-mix(in oklab, var(--accent) 45%, transparent);
+  background: color-mix(in oklab, var(--gold) 10%, transparent);
 }
 
 .controls__fit {

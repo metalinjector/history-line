@@ -11,13 +11,28 @@ import {
 } from '../data/columns';
 import { eraForYear } from '../data/eras';
 import { timelineItems } from '../data/timelineItems';
-import { relations as allRelations } from '../data/relations';
-import { buildGroups, filterItems, findNearestItem, summarize } from './timeline';
+import { relations as baseRelations } from '../data/relations';
+import type { Relation } from '../types';
+import {
+  buildGroups,
+  filterItems,
+  findNearestItem,
+  granularityForZoom,
+  granularityLabel,
+  summarize,
+} from './timeline';
 import { timeKey } from './format';
 import { usePersistentState } from './usePersistentState';
 
 const ZOOM_MIN = 0.65;
-const ZOOM_MAX = 1.2;
+const ZOOM_MAX = 1.9;
+
+/**
+ * Выше этого значения колонки перестают расширяться: дальнейшее приближение
+ * тратится не на ширину карточек, а на точность времени — год распадается
+ * на месяцы, месяц на дни.
+ */
+const VISUAL_ZOOM_MAX = 1.2;
 
 export type ScrollTarget = { id: string; nonce: number };
 
@@ -43,6 +58,8 @@ export function useTimelineState() {
   const [addedPeople, setAddedPeople] = usePersistentState<TimelineItem[]>('added-people', []);
   /** Объединения колонок задаёт пользователь; по умолчанию у каждой страны своя колонка. */
   const [columnGroups, setColumnGroups] = usePersistentState<ColumnGroups>('column-groups', []);
+  /** Связи, созданные пользователем вместе с добавленными объектами. */
+  const [addedRelations, setAddedRelations] = usePersistentState<Relation[]>('added-relations', []);
   const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
   const [openedId, setOpenedId] = useState<string | undefined>(undefined);
   const [openedDayKey, setOpenedDayKey] = useState<string | undefined>(undefined);
@@ -62,9 +79,13 @@ export function useTimelineState() {
     document.documentElement.dataset.theme = theme;
   }, [theme]);
 
+  // Геометрия растёт только до визуального предела; остальное уходит в детализацию.
   useEffect(() => {
-    document.documentElement.style.setProperty('--zoom', String(zoom));
+    document.documentElement.style.setProperty('--zoom', String(Math.min(zoom, VISUAL_ZOOM_MAX)));
   }, [zoom]);
+
+  /** Текущий уровень дробления шкалы: годы, месяцы или дни. */
+  const granularity = useMemo(() => granularityForZoom(zoom), [zoom]);
 
   /** Страны в исходном порядке — чтобы колонки не прыгали при включении. */
   const visibleCountries = useMemo(
@@ -83,6 +104,11 @@ export function useTimelineState() {
 
   const allItems = useMemo(() => [...timelineItems, ...addedPeople], [addedPeople]);
 
+  const allRelations = useMemo(
+    () => [...baseRelations, ...addedRelations],
+    [addedRelations],
+  );
+
   const filter = useMemo(
     () => ({ layer, countries: activeCountryIds, query, tags, keyOnly, era }),
     [layer, activeCountryIds, query, tags, keyOnly, era],
@@ -90,7 +116,16 @@ export function useTimelineState() {
 
   const filteredItems = useMemo(() => filterItems(allItems, filter), [allItems, filter]);
 
-  const groups = useMemo(() => buildGroups(filteredItems, columns), [filteredItems, columns]);
+  const groups = useMemo(
+    () => buildGroups(filteredItems, columns, granularity),
+    [filteredItems, columns, granularity],
+  );
+
+  /** Сколько строк реально раздробилось — показываем это в подсказке масштаба. */
+  const splitRows = useMemo(
+    () => groups.filter((group) => group.month !== undefined).length,
+    [groups],
+  );
 
   const stats = useMemo(() => summarize(filteredItems), [filteredItems]);
 
@@ -127,7 +162,7 @@ export function useTimelineState() {
 
   const openedRelation = useMemo(
     () => allRelations.find((relation) => relation.id === openedRelationId),
-    [openedRelationId],
+    [allRelations, openedRelationId],
   );
 
   const openedRelationEnds = useMemo(() => {
@@ -144,7 +179,7 @@ export function useTimelineState() {
             (relation) => relation.from === openedItem.id || relation.to === openedItem.id,
           )
         : [],
-    [openedItem],
+    [allRelations, openedItem],
   );
 
   const backToDay = useMemo(() => {
@@ -163,7 +198,7 @@ export function useTimelineState() {
     return allRelations.filter(
       (relation) => visible.has(relation.from) && visible.has(relation.to),
     );
-  }, [filteredItems, showRelations]);
+  }, [allRelations, filteredItems, showRelations]);
 
   // Запоминаем последний удачно выбранный объект, чтобы искать по нему замену.
   const lastSelectedRef = useRef<TimelineItem | undefined>(undefined);
@@ -291,11 +326,26 @@ export function useTimelineState() {
    * а сам объект выделяется и подтягивает к себе прокрутку.
    */
   const addPerson = useCallback(
-    (draft: Omit<TimelineItem, 'id' | 'custom'>) => {
+    (draft: Omit<TimelineItem, 'id' | 'custom'>, links: { toId: string; label: string }[] = []) => {
       const id = `custom-${draft.country}-${draft.year}-${Math.random().toString(36).slice(2, 8)}`;
       const item: TimelineItem = { ...draft, id, custom: true };
 
       setAddedPeople((current) => [...current, item]);
+      if (links.length > 0) {
+        setAddedRelations((current) => [
+          ...current,
+          ...links.map((link, index) => ({
+            id: `${id}-rel-${index}`,
+            from: id,
+            to: link.toId,
+            kind: 'influence' as const,
+            label: link.label,
+            detail:
+              'Связь отмечена при добавлении объекта. Опишите здесь, что именно ' +
+              'и как повлияло, и подтвердите это источниками — см. docs/AI-CONTRIBUTING.md.',
+          })),
+        ]);
+      }
       ensureCountryVisible(item.country);
       setKeyOnly(false);
       setEra(undefined);
@@ -307,15 +357,18 @@ export function useTimelineState() {
       setScrollTarget({ id, nonce: Date.now() });
       return item;
     },
-    [ensureCountryVisible, layer, setAddedPeople],
+    [ensureCountryVisible, layer, setAddedPeople, setAddedRelations],
   );
 
   const removePerson = useCallback(
     (id: string) => {
       setAddedPeople((current) => current.filter((item) => item.id !== id));
+      setAddedRelations((current) =>
+        current.filter((relation) => relation.from !== id && relation.to !== id),
+      );
       setSelectedId((current) => (current === id ? undefined : current));
     },
-    [setAddedPeople],
+    [setAddedPeople, setAddedRelations],
   );
 
   const toggleTheme = useCallback(
@@ -357,6 +410,8 @@ export function useTimelineState() {
     resolveItem,
     neighbours,
     addedPeople,
+    addedRelations,
+    allRelations,
     scrollTarget,
 
     // состояние
@@ -367,6 +422,9 @@ export function useTimelineState() {
     era,
     tags,
     zoom,
+    granularity,
+    granularityLabel: granularityLabel(granularity),
+    splitRows,
     activeCountryIds,
     expanded,
 

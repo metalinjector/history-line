@@ -267,6 +267,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
           showRelations={showRelations}
           relationCount={visibleRelations.length}
           onToggleRelations={() => setShowRelations(!showRelations)}
+          granularityLabel={state.granularityLabel}
+          splitRows={state.splitRows}
         />
 
         <CountryTogglePanel

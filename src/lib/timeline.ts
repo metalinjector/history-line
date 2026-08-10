@@ -71,8 +71,38 @@ export function filterItems(items: TimelineItem[], filter: FilterState): Timelin
   });
 }
 
-/** Ключ группы для выбранного уровня детализации. */
+/**
+ * Пороги масштаба, на которых шкала переходит к более дробному времени.
+ * Ниже 120% колонки перестают расширяться, и дальнейшее приближение
+ * тратится не на ширину, а на точность времени.
+ */
+export const GRANULARITY_STEPS: { from: number; granularity: Granularity; label: string }[] = [
+  { from: 0, granularity: 'year', label: 'годы' },
+  { from: 1.2, granularity: 'month', label: 'месяцы' },
+  { from: 1.55, granularity: 'day', label: 'дни' },
+];
+
+/** Уровень детализации, соответствующий текущему масштабу. */
+export function granularityForZoom(zoom: number): Granularity {
+  let result: Granularity = 'year';
+  for (const step of GRANULARITY_STEPS) if (zoom >= step.from) result = step.granularity;
+  return result;
+}
+
+export function granularityLabel(granularity: Granularity): string {
+  return GRANULARITY_STEPS.find((step) => step.granularity === granularity)?.label ?? 'годы';
+}
+
+/**
+ * Ключ группы для выбранного уровня детализации.
+ *
+ * Детализация «интеллектуальная»: объект дробится настолько, насколько
+ * точно известна его дата. Событие, у которого записан только год, остаётся
+ * в годовой строке даже в режиме месяцев — вместо того чтобы попасть
+ * в выдуманный январь.
+ */
 export function groupKeyOf(item: TimelineItem, granularity: Granularity): string {
+  if (item.approximate) return String(item.year);
   if (granularity === 'day' && item.month && item.day) {
     return `${item.year}-${String(item.month).padStart(2, '0')}-${String(item.day).padStart(2, '0')}`;
   }
@@ -82,10 +112,12 @@ export function groupKeyOf(item: TimelineItem, granularity: Granularity): string
   return String(item.year);
 }
 
-function groupLabel(year: number, month?: number, day?: number): string {
-  if (day && month) return `${day} ${MONTHS_NOMINATIVE[month - 1]}`;
-  if (month) return `${MONTHS_NOMINATIVE[month - 1]} ${year}`;
-  return String(year);
+function groupLabel(year: number, month?: number, day?: number): { label: string; sublabel?: string } {
+  if (day && month) {
+    return { label: `${day} ${MONTHS_NOMINATIVE[month - 1].slice(0, 3)}`, sublabel: String(year) };
+  }
+  if (month) return { label: MONTHS_NOMINATIVE[month - 1], sublabel: String(year) };
+  return { label: String(year) };
 }
 
 /**
@@ -137,6 +169,11 @@ export function buildGroups(
 
     const [year, month, day] = key.split('-').map(Number);
     const era = eraForYear(year);
+    const { label, sublabel } = groupLabel(
+      year,
+      Number.isNaN(month) ? undefined : month,
+      Number.isNaN(day) ? undefined : day,
+    );
     const byColumn: Record<string, TimelineItem[]> = {};
     for (const column of columns) byColumn[column.id] = [];
     for (const item of bucket) byColumn[columnOf[item.country]?.id]?.push(item);
@@ -151,7 +188,8 @@ export function buildGroups(
       year,
       month: Number.isNaN(month) ? undefined : month,
       day: Number.isNaN(day) ? undefined : day,
-      label: groupLabel(year, Number.isNaN(month) ? undefined : month, Number.isNaN(day) ? undefined : day),
+      label,
+      sublabel,
       era,
       startsEra: era.id !== previousEra,
       items: bucket,

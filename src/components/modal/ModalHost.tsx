@@ -41,6 +41,11 @@ export default function ModalHost({ state }: Props) {
         from={openedRelationEnds.from}
         to={openedRelationEnds.to}
         onOpenItem={(item) => openItem(item, { scroll: true })}
+        resolveItem={resolveItem}
+        onOpenLink={(id) => {
+          const target = resolveItem(id);
+          if (target) openItem(target, { scroll: true });
+        }}
         onClose={closeModals}
       />
     );
@@ -59,6 +64,10 @@ export default function ModalHost({ state }: Props) {
         resolveItem={resolveItem}
         backToDay={backToDay}
         onNavigate={openItem}
+        onOpenLink={(id) => {
+          const target = resolveItem(id);
+          if (target) openItem(target, { scroll: true });
+        }}
         onOpenRelation={openRelation}
         onBackToDay={openDay}
         onClose={closeModals}

@@ -3,11 +3,17 @@ import { AnimatePresence, motion } from 'framer-motion';
 import type { CountryId, TimelineItem, TimelineItemKind } from '../types';
 import { countries, countryById } from '../data/countries';
 import { suggestedPeople } from '../data/suggestedPeople';
+import { suggestRelations } from '../lib/suggestRelations';
 import './PeopleBuilder.css';
 
 type Props = {
   addedPeople: TimelineItem[];
-  onAdd: (draft: Omit<TimelineItem, 'id' | 'custom'>) => void;
+  /** Все объекты базы — по ним считаются подсказки связей. */
+  allItems: TimelineItem[];
+  onAdd: (
+    draft: Omit<TimelineItem, 'id' | 'custom'>,
+    links?: { toId: string; label: string }[],
+  ) => void;
   onRemove: (id: string) => void;
   onSelect: (item: TimelineItem) => void;
 };
@@ -38,9 +44,26 @@ const emptyDraft = {
   tags: '',
 };
 
-export function PeopleBuilder({ addedPeople, onAdd, onRemove, onSelect }: Props) {
+export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect }: Props) {
   const [formOpen, setFormOpen] = useState(false);
   const [draft, setDraft] = useState(emptyDraft);
+  const [chosenLinks, setChosenLinks] = useState<string[]>([]);
+
+  const draftTags = useMemo(
+    () => draft.tags.split(',').map((tag) => tag.trim()).filter(Boolean),
+    [draft.tags],
+  );
+
+  /**
+   * Потенциальные исторические связи считаются сразу при вводе — до сохранения.
+   * Это подсказка, а не автоматическое создание связи: причинность
+   * подтверждает человек, см. docs/AI-CONTRIBUTING.md.
+   */
+  const candidates = useMemo(
+    () =>
+      suggestRelations({ country: draft.country, year: Number(draft.year) || 1, tags: draftTags }, allItems),
+    [allItems, draft.country, draft.year, draftTags],
+  );
 
   /** Подсказки, которые уже стоят на шкале, помечаются как добавленные. */
   const addedKeys = useMemo(
@@ -53,7 +76,8 @@ export function PeopleBuilder({ addedPeople, onAdd, onRemove, onSelect }: Props)
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
     if (!canSubmit) return;
-    onAdd({
+    onAdd(
+      {
       country: draft.country,
       year: Number(draft.year) || 1,
       kind: draft.kind,
@@ -66,8 +90,14 @@ export function PeopleBuilder({ addedPeople, onAdd, onRemove, onSelect }: Props)
         .map((tag) => tag.trim())
         .filter(Boolean),
       importance: 2,
-    });
+      },
+      chosenLinks.map((toId) => ({
+        toId,
+        label: `${draft.title.trim()} — ${allItems.find((item) => item.id === toId)?.title ?? ''}`,
+      })),
+    );
     setDraft({ ...emptyDraft, country: draft.country });
+    setChosenLinks([]);
     setFormOpen(false);
   };
 
@@ -214,6 +244,50 @@ export function PeopleBuilder({ addedPeople, onAdd, onRemove, onSelect }: Props)
                     placeholder="наука, астрономия"
                   />
                 </label>
+
+                {candidates.length > 0 ? (
+                  <div className="field field--full">
+                    <span>
+                      Возможные связи — отметьте те, что действительно есть
+                    </span>
+                    <ul className="links">
+                      {candidates.map((candidate) => {
+                        const active = chosenLinks.includes(candidate.item.id);
+                        const country = countryById[candidate.item.country];
+                        return (
+                          <li key={candidate.item.id}>
+                            <button
+                              type="button"
+                              className="links__item"
+                              data-active={active || undefined}
+                              aria-pressed={active}
+                              style={{ '--c': `hsl(${country.color})` } as React.CSSProperties}
+                              onClick={() =>
+                                setChosenLinks((current) =>
+                                  active
+                                    ? current.filter((id) => id !== candidate.item.id)
+                                    : [...current, candidate.item.id],
+                                )
+                              }
+                            >
+                              <span className="links__check" aria-hidden="true">
+                                {active ? '✓' : '+'}
+                              </span>
+                              <span className="links__text">
+                                <b>
+                                  {candidate.item.year} · {candidate.item.title}
+                                </b>
+                                <span className="links__why">
+                                  {country.label} · {candidate.reasons.join(' · ')}
+                                </span>
+                              </span>
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ) : null}
 
                 <div className="builder__form-actions">
                   <button type="submit" className="btn btn--primary btn--sm" disabled={!canSubmit}>

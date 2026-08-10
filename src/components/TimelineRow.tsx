@@ -73,7 +73,10 @@ export const TimelineRow = memo(function TimelineRow({
             }
           >
             <span className="trow__crossroads-ring" aria-hidden="true" />
-            <span className="trow__year">{group.label}</span>
+            <span className="trow__date-inner">
+              <span className="trow__year">{group.label}</span>
+              {group.sublabel ? <span className="trow__sub">{group.sublabel}</span> : null}
+            </span>
             <span className="trow__crossroads-count" aria-hidden="true">
               {countriesHere.length}
             </span>
@@ -86,6 +89,7 @@ export const TimelineRow = memo(function TimelineRow({
         ) : (
           <span className="trow__date-inner">
             <span className="trow__year">{group.label}</span>
+            {group.sublabel ? <span className="trow__sub">{group.sublabel}</span> : null}
           </span>
         )}
         <span className="trow__tick" aria-hidden="true" />

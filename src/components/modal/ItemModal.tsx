@@ -2,9 +2,10 @@ import { useEffect, useMemo, useRef } from 'react';
 import type { Country, Era, Relation, TimelineItem } from '../../types';
 import { countryById } from '../../data/countries';
 import { formatItemDate } from '../../lib/format';
-import { itemToMarkdown } from '../../lib/markdown';
+import { itemToMarkdown, resolveWikiLinks } from '../../lib/markdown';
 import { Modal, ModalClose } from './Modal';
 import { MarkdownView } from './MarkdownView';
+import { Viewpoints } from './Viewpoints';
 
 type Props = {
   item: TimelineItem;
@@ -19,6 +20,8 @@ type Props = {
   /** Год, из окна которого сюда пришли, — для кнопки возврата. */
   backToDay?: { key: string; label: string };
   onNavigate: (item: TimelineItem) => void;
+  /** Переход по внутренней ссылке из текста статьи. */
+  onOpenLink: (id: string) => void;
   onOpenRelation: (relation: Relation) => void;
   onBackToDay: (key: string) => void;
   onClose: () => void;
@@ -35,13 +38,18 @@ export function ItemModal({
   resolveItem,
   backToDay,
   onNavigate,
+  onOpenLink,
   onOpenRelation,
   onBackToDay,
   onClose,
   onTagClick,
 }: Props) {
   const bodyRef = useRef<HTMLDivElement>(null);
-  const markdown = useMemo(() => itemToMarkdown(item, country, era), [item, country, era]);
+  // Ссылки [[id]] превращаются в переходы к другим объектам шкалы.
+  const markdown = useMemo(
+    () => resolveWikiLinks(itemToMarkdown(item, country, era), resolveItem),
+    [item, country, era, resolveItem],
+  );
 
   // При переходе к соседнему объекту читатель должен оказаться в начале текста.
   useEffect(() => {
@@ -73,6 +81,11 @@ export function ItemModal({
           </span>
           <span className="modal__kind">{item.kind === 'event' ? '◆ Событие' : '✦ Деятель'}</span>
           {(item.importance ?? 2) >= 3 ? <span className="modal__seal">★ веха</span> : null}
+          {item.viewpoints && item.viewpoints.length > 1 ? (
+            <span className="modal__disputed" title="У факта есть несколько устоявшихся трактовок">
+              ⚖ трактовки расходятся
+            </span>
+          ) : null}
           {item.custom ? <span className="modal__kind">добавлено вами</span> : null}
         </div>
         <ModalClose />
@@ -92,7 +105,13 @@ export function ItemModal({
       </div>
 
       <div className="modal__body md" ref={bodyRef}>
-        <MarkdownView>{markdown}</MarkdownView>
+        <MarkdownView onOpenItem={onOpenLink}>{markdown}</MarkdownView>
+
+        <Viewpoints
+          viewpoints={item.viewpoints}
+          sources={item.sources}
+          onOpenItem={onOpenLink}
+        />
 
         {relations.length > 0 ? (
           <section className="modal__relations">
