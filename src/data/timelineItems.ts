@@ -1,6 +1,5 @@
 import type { TimelineItem } from '../types';
-import { articles } from './articles';
-import { sourcesByItem, viewpointsByItem } from './viewpoints';
+import { articles, sourcesByItem, viewpointsByItem } from './content';
 import { germany } from './items/germany';
 import { england } from './items/england';
 import { france } from './items/france';
