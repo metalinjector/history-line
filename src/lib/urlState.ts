@@ -12,6 +12,7 @@ export type TimelineUrlState = {
   kind?: KindFilter;
   query?: string;
   keyOnly?: boolean;
+  showBce?: boolean;
   era?: EraId;
   tags?: string[];
   zoom?: number;
@@ -74,6 +75,7 @@ export function parseTimelineUrl(search: string): TimelineUrlState {
     kind: kind && validKinds.has(kind) ? kind : shared ? 'all' : undefined,
     query: params.get('q') || undefined,
     keyOnly: params.get('key') === '1' || undefined,
+    showBce: params.get('bce') === '0' ? false : shared ? true : undefined,
     era: era && validEras.has(era) ? era : undefined,
     tags: unique(params.getAll('tag').map((tag) => tag.trim()).filter(Boolean)),
     zoom: Number.isFinite(rawZoom) && params.has('z') ? clampZoom(rawZoom) : shared ? 1 : undefined,
@@ -94,7 +96,7 @@ export function parseTimelineUrl(search: string): TimelineUrlState {
 export function buildTimelineUrl(state: TimelineUrlState, href: string): string {
   const url = new URL(href);
   const params = url.searchParams;
-  ['view', 'c', 'kind', 'q', 'key', 'era', 'tag', 'z', 'layers', 'place', 'groups', 'focus', 'item', 'day', 'relation', 'threads', 'story', 'step'].forEach((key) =>
+  ['view', 'c', 'kind', 'q', 'key', 'bce', 'era', 'tag', 'z', 'layers', 'place', 'groups', 'focus', 'item', 'day', 'relation', 'threads', 'story', 'step'].forEach((key) =>
     params.delete(key),
   );
   params.set('view', '1');
@@ -106,6 +108,7 @@ export function buildTimelineUrl(state: TimelineUrlState, href: string): string 
   if (state.kind && state.kind !== 'all') params.set('kind', state.kind);
   if (state.query) params.set('q', state.query);
   if (state.keyOnly) params.set('key', '1');
+  if (state.showBce === false) params.set('bce', '0');
   if (state.era) params.set('era', state.era);
   for (const tag of state.tags ?? []) params.append('tag', tag);
   if (state.zoom !== undefined && Math.abs(state.zoom - 1) > 0.001) params.set('z', String(state.zoom));

@@ -38,17 +38,29 @@ export function resolutionOf(item: Pick<TimelineItem, 'month' | 'day'>): 'year' 
 }
 
 /** Человекочитаемая дата объекта: «14 июля 1789», «июнь 1940» или «1789». */
-export function formatItemDate(item: Pick<TimelineItem, 'year' | 'month' | 'day' | 'endYear'>): string {
-  const { year, month, day, endYear } = item;
-  if (day && month) return `${day} ${MONTHS_GENITIVE[month - 1]} ${year}`;
-  if (month) return `${MONTHS_NOMINATIVE[month - 1]} ${year}`;
-  if (endYear && endYear !== year) return `${year}–${endYear}`;
-  return String(year);
+export function formatItemDate(
+  item: Pick<TimelineItem, 'year' | 'month' | 'day' | 'endYear' | 'dateLabel'>,
+): string {
+  const { year, month, day, endYear, dateLabel } = item;
+  if (dateLabel) return dateLabel;
+  if (day && month) return `${day} ${MONTHS_GENITIVE[month - 1]} ${formatYearLabel(year)}`;
+  if (month) return `${MONTHS_NOMINATIVE[month - 1]} ${formatYearLabel(year)}`;
+  if (endYear && endYear !== year) return `${formatYearLabel(year)}–${formatYearLabel(endYear)}`;
+  return formatYearLabel(year);
 }
 
 /** Подпись года для колонки дат. Для первых веков добавляем пояснение. */
 export function formatYearLabel(year: number): string {
-  return String(year);
+  return year < 0 ? `${Math.abs(year).toLocaleString('ru-RU')} до н. э.` : String(year);
+}
+
+/** Компактный диапазон эпохи без технического минуса у дат до нашей эры. */
+export function formatEraRange(from: number, to: number): string {
+  if (to > 2100) return `${formatYearLabel(from)}–наши дни`;
+  if (from < 0 && to < 0) {
+    return `${Math.abs(from).toLocaleString('ru-RU')}–${formatYearLabel(to)}`;
+  }
+  return `${formatYearLabel(from)}–${formatYearLabel(to)}`;
 }
 
 /** Склонение существительных по числу: 3 события, 21 событие, 5 событий. */

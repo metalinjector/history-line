@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import type { Country, CountryId, TimelineColumn } from '../types';
-import { countryById } from '../data/countries';
+import { countryById, countryRegionLabels } from '../data/countries';
 import './CountryTogglePanel.css';
 
 type Props = {
@@ -43,11 +43,26 @@ export function CountryTogglePanel({
   onResetColumns,
 }: Props) {
   const [openMenu, setOpenMenu] = useState<CountryId | undefined>(undefined);
+  const [catalogTab, setCatalogTab] = useState<'selected' | 'modern' | 'historical' | 'all'>('selected');
+  const [catalogQuery, setCatalogQuery] = useState('');
   const panelRef = useRef<HTMLDivElement>(null);
   const menuId = useId();
 
   const activeSet = new Set(activeIds);
   const allVisible = activeIds.length === countries.length;
+  const query = catalogQuery.trim().toLocaleLowerCase('ru').replaceAll('ё', 'е');
+  const visibleCatalogCountries = countries.filter((country) => {
+    if (catalogTab === 'selected' && !activeSet.has(country.id)) return false;
+    if (catalogTab === 'modern' && country.kind !== 'modern') return false;
+    if (catalogTab === 'historical' && country.kind !== 'historical') return false;
+    if (!query) return true;
+    const region = country.region ? countryRegionLabels[country.region] : '';
+    const haystack = [country.label, country.short, country.note, region, ...(country.aliases ?? [])]
+      .join(' ')
+      .toLocaleLowerCase('ru')
+      .replaceAll('ё', 'е');
+    return haystack.includes(query);
+  });
 
   /** Страна → её соседи по общей колонке. */
   const partners = new Map<CountryId, Country[]>();
@@ -91,8 +106,43 @@ export function CountryTogglePanel({
       aria-label="Показать, скрыть и объединить страны"
       ref={panelRef}
     >
+      <div className="country-catalog">
+        <div className="country-catalog__tabs" role="tablist" aria-label="Разделы каталога стран">
+          {([
+            ['selected', `Выбрано · ${activeIds.length}`],
+            ['modern', 'Современные страны'],
+            ['historical', 'Исторические государства'],
+            ['all', `Все · ${countries.length}`],
+          ] as const).map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={catalogTab === id}
+              className="country-catalog__tab"
+              onClick={() => setCatalogTab(id)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <label className="country-catalog__search">
+          <span className="visually-hidden">Найти страну или историческое государство</span>
+          <span aria-hidden="true">⌕</span>
+          <input
+            type="search"
+            value={catalogQuery}
+            placeholder="Найти страну, государство или регион"
+            onChange={(event) => {
+              setCatalogQuery(event.target.value);
+              if (event.target.value) setCatalogTab('all');
+            }}
+          />
+        </label>
+      </div>
+
       <div className="country-toggles__list">
-        {countries.map((country) => {
+        {visibleCatalogCountries.map((country) => {
           const active = activeSet.has(country.id);
           const isLast = active && activeIds.length === 1;
           const columnPartners = partners.get(country.id) ?? [];
@@ -224,6 +274,9 @@ export function CountryTogglePanel({
             </div>
           );
         })}
+        {visibleCatalogCountries.length === 0 ? (
+          <p className="country-catalog__empty">В этом разделе ничего не найдено.</p>
+        ) : null}
       </div>
 
       <div className="country-toggles__actions">
@@ -238,7 +291,7 @@ export function CountryTogglePanel({
           onClick={onShowAll}
           disabled={allVisible}
         >
-          Показать все
+          Выбрать все линии
         </button>
       </div>
 

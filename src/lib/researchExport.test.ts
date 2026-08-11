@@ -11,7 +11,7 @@ describe('research export', () => {
     };
     const session = buildResearchSession([item], { event: 'Сравнить с 1918' }, {
       countries: ['russia'], kind: 'events', query: '', keyOnly: false,
-      tags: ['политика'], zoom: 1, layers: [], columnGroups: [],
+      showBce: false, tags: ['политика'], zoom: 1, layers: [], columnGroups: [],
     }, '2026-01-01T00:00:00.000Z');
     const markdown = researchSessionToMarkdown(session);
 
@@ -19,6 +19,7 @@ describe('research export', () => {
     expect(session.items[0].note).toBe('Сравнить с 1918');
     expect(markdown).toContain('# Исследовательская сессия History Line');
     expect(markdown).toContain('> Личная заметка: Сравнить с 1918');
+    expect(markdown).toContain('Даты до н. э.: скрыты');
     expect(markdown).toContain('https://example.test/archive');
   });
 });

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CountryId, EraId, KindFilter, RelationDraftInput, ThemeName, TimelineItem } from '../types';
-import { allCountryIds, countries, countryById } from '../data/countries';
+import { allCountryIds, countries, countryById, defaultCountryIds } from '../data/countries';
 import {
   buildColumns,
   detachCountry as detachFromGroups,
@@ -9,7 +9,7 @@ import {
   MAX_PER_COLUMN,
   type ColumnGroups,
 } from '../data/columns';
-import { eraForYear } from '../data/eras';
+import { eraForYear, eras } from '../data/eras';
 import { timelineItems } from '../data/timelineItems';
 import { layerById, layers as allLayers, MAX_ACTIVE_LAYERS } from '../data/layers';
 import { applyLayers, materializeLayerItems, type LayerPlacements } from './layers';
@@ -48,12 +48,17 @@ export function useTimelineState() {
   const [layer, setLayer] = useState<KindFilter>(initialUrlState.kind ?? 'all');
   const [query, setQuery] = useState(initialUrlState.query ?? '');
   const [keyOnly, setKeyOnly] = useState(initialUrlState.keyOnly ?? false);
-  const [era, setEra] = useState<EraId | undefined>(initialUrlState.era);
+  const [era, setEraRaw] = useState<EraId | undefined>(initialUrlState.era);
+  const [showBce, setShowBceRaw] = usePersistentState(
+    'show-bce',
+    true,
+    initialUrlState.showBce,
+  );
   const [tags, setTags] = useState<string[]>(initialUrlState.tags ?? []);
   const [zoom, setZoomRaw] = usePersistentState<number>('zoom', 1, initialUrlState.zoom);
   const [activeCountryIds, setActiveCountryIds] = usePersistentState<CountryId[]>(
     'countries',
-    allCountryIds,
+    defaultCountryIds,
     initialUrlState.countries,
   );
   const [addedPeople, setAddedPeople] = usePersistentState<TimelineItem[]>('added-people', []);
@@ -96,6 +101,23 @@ export function useTimelineState() {
   const [activeStoryId, setActiveStoryId] = useState<string | undefined>(initialUrlState.storyId);
   const [storyStep, setStoryStep] = useState(initialUrlState.storyStep ?? 0);
 
+  const setShowBce = useCallback((value: boolean) => {
+    setShowBceRaw(value);
+    if (!value) {
+      setEraRaw((current) => {
+        const selectedEra = eras.find((candidate) => candidate.id === current);
+        return selectedEra && selectedEra.to < 0 ? undefined : current;
+      });
+    }
+  }, [setShowBceRaw]);
+
+  /** Переход к полностью дореформенной эпохе сам раскрывает часть шкалы до н. э. */
+  const setEra = useCallback((value?: EraId) => {
+    const selectedEra = eras.find((candidate) => candidate.id === value);
+    if (selectedEra && selectedEra.to < 0) setShowBceRaw(true);
+    setEraRaw(value);
+  }, [setShowBceRaw]);
+
   const setZoom = useCallback(
     (value: number) => setZoomRaw(clampZoom(value)),
     [setZoomRaw],
@@ -136,7 +158,7 @@ export function useTimelineState() {
 
   /** Объекты включённых слоёв, приведённые к обычному виду. */
   const layerItems = useMemo(
-    () => materializeLayerItems(layerState.placed.map((item) => item.id), layerPlacements, activeCountryIds[0] ?? 'germany'),
+    () => materializeLayerItems(layerState.placed.map((item) => item.id), layerPlacements, activeCountryIds[0] ?? defaultCountryIds[0]),
     [activeCountryIds, layerPlacements, layerState.placed],
   );
 
@@ -151,8 +173,8 @@ export function useTimelineState() {
   );
 
   const filter = useMemo(
-    () => ({ layer, countries: activeCountryIds, query, tags, keyOnly, era }),
-    [layer, activeCountryIds, query, tags, keyOnly, era],
+    () => ({ layer, countries: activeCountryIds, query, tags, keyOnly, era, showBce }),
+    [layer, activeCountryIds, query, tags, keyOnly, era, showBce],
   );
 
   const filteredItems = useMemo(() => filterItems(allItems, filter), [allItems, filter]);
@@ -369,8 +391,9 @@ export function useTimelineState() {
     setQuery('');
     setKeyOnly(false);
     setEra(undefined);
+    setShowBce(true);
     setTags([]);
-  }, []);
+  }, [setEra, setShowBce]);
 
   const ensureCountryVisible = useCallback(
     (id: CountryId) => {
@@ -397,12 +420,13 @@ export function useTimelineState() {
       setQuery('');
       setKeyOnly(false);
       setEra(undefined);
+      if (item.year < 0) setShowBce(true);
       setTags([]);
       setSelectedId(item.id);
       setScrollTarget({ id: item.id, nonce: Date.now() });
       if (options?.open) openItem(item, { scroll: true });
     },
-    [ensureCountryVisible, itemsById, openItem],
+    [ensureCountryVisible, itemsById, openItem, setEra, setShowBce],
   );
 
   const stopStory = useCallback(() => {
@@ -420,6 +444,7 @@ export function useTimelineState() {
         kind: layer,
         query,
         keyOnly,
+        showBce,
         era,
         tags,
         zoom,
@@ -451,6 +476,7 @@ export function useTimelineState() {
     openedRelationId,
     query,
     selectedId,
+    showBce,
     showRelations,
     storyStep,
     tags,
@@ -530,6 +556,7 @@ export function useTimelineState() {
       ensureCountryVisible(item.country);
       setKeyOnly(false);
       setEra(undefined);
+      if (item.year < 0) setShowBce(true);
       setTags([]);
       setQuery('');
       if (layer === 'events' && item.kind === 'person') setLayer('all');
@@ -538,7 +565,7 @@ export function useTimelineState() {
       setScrollTarget({ id, nonce: Date.now() });
       return item;
     },
-    [ensureCountryVisible, layer, setAddedPeople, setAddedRelations],
+    [ensureCountryVisible, layer, setAddedPeople, setAddedRelations, setEra, setShowBce],
   );
 
   const removePerson = useCallback(
@@ -612,6 +639,7 @@ export function useTimelineState() {
     layer,
     query,
     keyOnly,
+    showBce,
     era,
     tags,
     zoom,
@@ -625,6 +653,7 @@ export function useTimelineState() {
     setLayer,
     setQuery,
     setKeyOnly,
+    setShowBce,
     setEra,
     setTags,
     toggleTag,

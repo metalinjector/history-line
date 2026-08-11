@@ -1,4 +1,4 @@
-import { countries } from '../data/countries';
+import { countryById, defaultCountryIds } from '../data/countries';
 import './SiteFooter.css';
 
 type Props = {
@@ -10,7 +10,7 @@ export function SiteFooter({ itemCount }: Props) {
     <footer className="site-footer">
       <div className="shell site-footer__inner">
         <div className="site-footer__lines" aria-hidden="true">
-          {countries.map((country) => (
+          {defaultCountryIds.map((id) => countryById[id]).map((country) => (
             <span key={country.id} style={{ background: `hsl(${country.color})` }} />
           ))}
         </div>
@@ -18,7 +18,7 @@ export function SiteFooter({ itemCount }: Props) {
         <div className="site-footer__text">
           <p className="site-footer__brand">Синхрония — атлас параллельной истории</p>
           <p>
-            {itemCount} объектов на восьми линиях, от первого года нашей эры до наших дней. Тексты написаны
+            {itemCount} объектов на линиях современных стран, исторических государств и международных процессов — от предыстории до наших дней. Тексты написаны
             для читателя без специальной подготовки: одно предложение сути, несколько предложений контекста.
           </p>
           <p className="site-footer__note">

@@ -7,15 +7,11 @@
  * миграции данных — достаточно поменять уровень группировки (см. lib/timeline.ts).
  */
 
-export type CountryId =
-  | 'germany'
-  | 'england'
-  | 'france'
-  | 'russia'
-  | 'belarus'
-  | 'spain'
-  | 'china'
-  | 'japan';
+/**
+ * Stable catalog key rather than a closed union. Countries and historical
+ * polities are data, so adding a line must not require changing the type system.
+ */
+export type CountryId = string;
 
 export type TimelineItemKind = 'event' | 'person';
 
@@ -29,6 +25,9 @@ export type Importance = 1 | 2 | 3;
 export type Granularity = 'year' | 'month' | 'day';
 
 export type EraId =
+  | 'deep-prehistory'
+  | 'prehistory'
+  | 'ancient-civilizations'
   | 'antiquity'
   | 'early-middle-ages'
   | 'high-middle-ages'
@@ -58,7 +57,9 @@ export type SourceKind =
   /** Архив, публикация документа, официальный государственный источник. */
   | 'archive'
   /** Музей, библиотека, научно-популярный ресурс профильного учреждения. */
-  | 'institution';
+  | 'institution'
+  /** Печатный справочник: источник импорта, но не независимая верификация. */
+  | 'reference';
 
 export type SourceLink = {
   label: string;
@@ -90,6 +91,8 @@ export type TimelineItem = {
   country: CountryId;
   /** Год размещения на шкале. Может быть годом ключевого действия, а не рождения. */
   year: number;
+  /** Печатная формулировка неточной или составной даты: диапазон, век, «около». */
+  dateLabel?: string;
   /** 1–12. Задел на помесячную детализацию. */
   month?: number;
   /** 1–31. Задел на подневную детализацию. */
@@ -133,7 +136,24 @@ export type TimelineItem = {
   custom?: boolean;
   /** Объект пришёл из наложенного слоя — см. data/layers.ts. */
   layerId?: string;
+  /** Редакционный статус факта; старые записи определяются по комплекту источников. */
+  verification?: 'verified' | 'reference' | 'draft';
+  /** Страница печатного справочника, из которой импортирована запись. */
+  referencePage?: number;
 };
+
+export type CountryKind = 'modern' | 'historical' | 'global';
+
+export type CountryRegion =
+  | 'global'
+  | 'europe'
+  | 'asia'
+  | 'africa'
+  | 'middle-east'
+  | 'north-america'
+  | 'latin-america'
+  | 'oceania'
+  | 'historical';
 
 export type Country = {
   id: CountryId;
@@ -146,6 +166,12 @@ export type Country = {
   color: string;
   /** Более тёмный вариант цвета для светлой «пергаментной» темы. */
   colorInk: string;
+  /** Современная страна, историческое государство/цивилизация или общая линия мира. */
+  kind?: CountryKind;
+  /** Географическая группа для масштабируемого каталога выбора. */
+  region?: CountryRegion;
+  /** Дополнительные названия, по которым линия находится в поиске. */
+  aliases?: string[];
 };
 
 /** Слой фильтрации по типу объекта. */
@@ -234,7 +260,7 @@ export type LayerItem = Omit<TimelineItem, 'country' | 'custom'>;
 
 /** Группа объектов одного «шага» шкалы (сейчас — одного года). */
 export type TimelineGroup = {
-  /** Стабильный ключ группы: '1789' | '1789-07' | '1789-07-14'. */
+  /** Стабильный ключ группы: 'y:1789' | 'm:1789:7' | 'd:1789:7:14'. */
   key: string;
   year: number;
   month?: number;

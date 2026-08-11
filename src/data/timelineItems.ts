@@ -8,6 +8,7 @@ import { belarus } from './items/belarus';
 import { spain } from './items/spain';
 import { china } from './items/china';
 import { japan } from './items/japan';
+import { referenceItems } from './items/reference';
 
 /**
  * Единый массив объектов хронологии.
@@ -25,6 +26,7 @@ export const timelineItems: TimelineItem[] = [
   ...spain,
   ...china,
   ...japan,
+  ...referenceItems,
 ].map((item) => ({
   // Статьи, источники и трактовки хранятся отдельно и подмешиваются
   // по идентификатору, чтобы файлы стран оставались компактными списками карточек.

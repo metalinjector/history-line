@@ -8,6 +8,7 @@ describe('timeline URL state', () => {
       kind: 'events',
       query: 'революция 1917',
       keyOnly: true,
+      showBce: false,
       era: 'world-wars',
       tags: ['война', 'политика'],
       zoom: 1.55,
@@ -26,7 +27,7 @@ describe('timeline URL state', () => {
     const parsed = parseTimelineUrl(new URL(url).search);
     expect(parsed).toMatchObject({
       countries: ['france', 'russia'], kind: 'events', query: 'революция 1917', keyOnly: true,
-      era: 'world-wars', tags: ['война', 'политика'], zoom: 1.55,
+      showBce: false, era: 'world-wars', tags: ['война', 'политика'], zoom: 1.55,
       activeLayerIds: ['einstein'], layerPlacements: { einstein: 'own' },
       columnGroups: [['france', 'russia']],
       selectedId: 'ru-1917', openedId: 'ru-1917', openedDayKey: '1917',
@@ -40,7 +41,7 @@ describe('timeline URL state', () => {
   it('drops invalid enum values and clamps zoom', () => {
     expect(parseTimelineUrl('?c=france,moon&kind=bad&era=nope&z=99&layers=unknown')).toEqual({
       countries: ['france'], kind: undefined, query: undefined, keyOnly: undefined,
-      era: undefined, tags: [], zoom: 1.9, activeLayerIds: undefined,
+      showBce: undefined, era: undefined, tags: [], zoom: 1.9, activeLayerIds: undefined,
       layerPlacements: undefined, columnGroups: undefined, selectedId: undefined, openedId: undefined,
       openedDayKey: undefined, openedRelationId: undefined, showRelations: undefined,
       storyId: undefined, storyStep: undefined,

@@ -487,6 +487,87 @@ timeline
       { kind: 'institution', label: 'City League THE HANSA: четыре главных контора и сеть торговых отделений', url: 'https://www.hanse.org/en/the-medieval-hanseatic-league/die-kontore' },
     ],
   },
+  {
+    id: 'rel-sputnik-apollo',
+    from: 'ref-p108-zapusk-sssr-pervogo-iskusstvennogo-sputnik',
+    to: 'ref-p105-vysadka-amerikanskih-astronavtov-na-poverh',
+    kind: 'influence',
+    label: '«Спутник-1» ускорил американскую лунную программу',
+    detail: `
+Запуск первого искусственного спутника не был технической причиной высадки на Луну:
+между этими событиями лежали создание NASA, пилотируемые программы Mercury и Gemini,
+решения Конгресса и огромная работа инженеров. Однако именно советский успех в октябре
+1957 года превратил космос в приоритет политического соревнования сверхдержав.
+
+В США «спутниковый шок» вызвал пересмотр организации космических исследований. В 1958
+году была создана NASA, а в 1961 году администрация Кеннеди поставила цель высадить
+человека на Луну до конца десятилетия. Программа Apollo стала ответом не на один запуск,
+а на последовательность советских достижений, включая полёт Юрия Гагарина.
+
+Поэтому связь показывает доказуемый политико-институциональный механизм: советские
+успехи усилили конкуренцию, ускорили мобилизацию американских ресурсов и помогли
+сформировать срок лунной программы. Они не предопределяли её технический результат.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'NASA History: Dawn of the Space Age — Sputnik and the creation of NASA', url: 'https://www.nasa.gov/history/dawn-of-the-space-age/' },
+      { kind: 'archive', label: 'U.S. National Archives: Sputnik, Congress and the legislation that created NASA', url: 'https://www.archives.gov/legislative/features/early-space' },
+    ],
+  },
+  {
+    id: 'rel-cuban-crisis-test-ban',
+    from: 'ref-p123-karibskiy-krizis',
+    to: 'ref-p123-dogovor-o-zapreschenii-yadernogo-oruzhiya-',
+    kind: 'influence',
+    label: 'Карибский кризис ускорил договор об ограничении испытаний',
+    detail: `
+Переговоры о запрете ядерных испытаний начались задолго до 1962 года и неоднократно
+заходили в тупик из-за вопросов контроля. Поэтому Московский договор нельзя считать
+внезапным продуктом Карибского кризиса.
+
+Но октябрьское противостояние показало руководителям СССР и США, насколько быстро
+военная эскалация может приблизить ядерную войну. После кризиса стороны восстановили
+переговоры; в 1963 году появились прямая линия связи Москва — Вашингтон и договор,
+запретивший испытания в атмосфере, космосе и под водой. Подземные испытания он не
+запрещал, так что это был ограниченный, но практический шаг по снижению риска.
+
+Связь проведена через изменение политической оценки опасности, а не через утверждение,
+будто кризис единолично создал договор. Существовавшая дипломатическая работа получила
+после октября 1962 года новый импульс и поддержку на высшем уровне.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'U.S. Office of the Historian: The Cuban Missile Crisis and the first steps toward a test-ban agreement', url: 'https://history.state.gov/milestones/1961-1968/cuban-missile-crisis' },
+      { kind: 'institution', label: 'John F. Kennedy Presidential Library: Cuban Missile Crisis, hotline and Nuclear Test Ban Treaty', url: 'https://www.jfklibrary.org/learn/about-jfk/jfk-in-history/cuban-missile-crisis' },
+    ],
+  },
+  {
+    id: 'rel-oil-shock-recession',
+    from: 'ref-p124-energeticheskiy-neftyanoy-krizis',
+    to: 'ref-p124-mirovoy-ekonomicheskiy-krizis',
+    kind: 'influence',
+    label: 'Нефтяной шок углубил мировую рецессию 1974–1975 годов',
+    detail: `
+Эмбарго арабских экспортёров и резкий рост цены нефти увеличили издержки транспорта,
+промышленности и отопления в странах-импортёрах. Ускорилась инфляция, сократился
+реальный спрос, а предприятия и домохозяйства столкнулись с дефицитом топлива. Это
+стало одним из ключевых механизмов международного распространения кризиса.
+
+Рецессию нельзя объяснить только нефтью. Ещё до эмбарго мировая экономика испытывала
+инфляционное давление, распадалась Бреттон-Вудская валютная система, а центральные
+банки ужесточали политику. Нефтяной шок наложился на эти проблемы и сделал спад глубже
+и синхроннее, одновременно усилив необычное сочетание безработицы и высокой инфляции.
+
+Таким образом, это причинная связь с несколькими условиями, а не формула «эмбарго
+автоматически вызвало весь кризис». На шкале она показывает конкретный канал влияния:
+цена энергии → производственные издержки и инфляция → падение выпуска и спроса.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'U.S. Office of the Historian: Oil Embargo, 1973–1974 — global price increase and recession', url: 'https://history.state.gov/milestones/1969-1976/oil-embargo' },
+      { kind: 'institution', label: 'Federal Reserve History: Oil Shock of 1973–74 and the 1973–1975 recession', url: 'https://www.federalreservehistory.org/essays/oil-shock-of-1973-74' },
+    ],
+  },
 ];
 
 /** Быстрый доступ к связям по идентификатору объекта. */

@@ -1,5 +1,5 @@
 import type { Country, Era, TimelineItem } from '../types';
-import { formatItemDate } from './format';
+import { formatEraRange, formatItemDate } from './format';
 
 /** Протокол внутренних ссылок: превращается в переход к другому объекту шкалы. */
 export const ITEM_LINK_PROTOCOL = 'item:';
@@ -64,7 +64,7 @@ export function itemToMarkdown(item: TimelineItem, country: Country, era?: Era):
     lines.push('');
     lines.push('## Эпоха');
     lines.push('');
-    lines.push(`**${era.label}** (${era.from}–${era.to > 2100 ? 'наши дни' : era.to}). ${era.note}`);
+    lines.push(`**${era.label}** (${formatEraRange(era.from, era.to)}). ${era.note}`);
   }
 
   lines.push('');
@@ -84,6 +84,18 @@ export function itemToMarkdown(item: TimelineItem, country: Country, era?: Era):
     lines.push(`**Темы:** ${item.tags.map((tag) => `\`${tag}\``).join(' · ')}`);
   }
 
+  if (item.verification === 'reference') {
+    lines.push('');
+    lines.push('## Редакционный статус');
+    lines.push('');
+    lines.push(
+      `Запись перенесена из печатного справочника${item.referencePage ? ` со страницы ${item.referencePage}` : ''}. ` +
+      'Исходная формулировка даты сохранена, а числовое положение на шкале служит ' +
+      'сортировочным ориентиром для диапазонов, веков и приблизительных дат. ' +
+      'Статус «по справочнику» отделяет такую карточку от независимо проверенных авторских материалов.',
+    );
+  }
+
   lines.push('');
   lines.push('---');
   lines.push('');
@@ -97,6 +109,7 @@ const sourceKindLabels: Record<string, string> = {
   academic: 'научная публикация',
   archive: 'архив или документ',
   institution: 'профильное учреждение',
+  reference: 'печатный справочник',
 };
 
 export function sourceKindLabel(kind?: string): string {

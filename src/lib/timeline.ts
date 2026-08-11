@@ -10,7 +10,7 @@ import type {
 } from '../types';
 import { columnOfItem } from '../data/columns';
 import { eraForYear } from '../data/eras';
-import { MONTHS_NOMINATIVE, timeKey } from './format';
+import { formatYearLabel, MONTHS_NOMINATIVE, timeKey } from './format';
 
 export type FilterState = {
   layer: KindFilter;
@@ -23,6 +23,8 @@ export type FilterState = {
   keyOnly: boolean;
   /** Ограничение по эпохе; undefined — все эпохи. */
   era?: EraId;
+  /** Включать даты до нашей эры в общую шкалу. */
+  showBce: boolean;
 };
 
 export const emptyFilter: FilterState = {
@@ -31,6 +33,7 @@ export const emptyFilter: FilterState = {
   query: '',
   tags: [],
   keyOnly: false,
+  showBce: true,
 };
 
 function normalize(value: string): string {
@@ -61,6 +64,7 @@ export function filterItems(items: TimelineItem[], filter: FilterState): Timelin
     if (!item.layerId && !countrySet.has(item.country)) return false;
     if (filter.layer === 'events' && item.kind !== 'event') return false;
     if (filter.layer === 'people' && item.kind !== 'person') return false;
+    if (!filter.showBce && item.year < 0) return false;
     if (filter.keyOnly && (item.importance ?? 2) < 3) return false;
     if (era) {
       const itemEra = eraForYear(item.year);
@@ -103,22 +107,30 @@ export function granularityLabel(granularity: Granularity): string {
  * в выдуманный январь.
  */
 export function groupKeyOf(item: TimelineItem, granularity: Granularity): string {
-  if (item.approximate) return String(item.year);
+  const year = item.year < 0 ? `b${Math.abs(item.year)}` : String(item.year);
+  if (item.approximate) return year;
   if (granularity === 'day' && item.month && item.day) {
-    return `${item.year}-${String(item.month).padStart(2, '0')}-${String(item.day).padStart(2, '0')}`;
+    return `${year}-${String(item.month).padStart(2, '0')}-${String(item.day).padStart(2, '0')}`;
   }
   if (granularity !== 'year' && item.month) {
-    return `${item.year}-${String(item.month).padStart(2, '0')}`;
+    return `${year}-${String(item.month).padStart(2, '0')}`;
   }
-  return String(item.year);
+  return year;
+}
+
+/** Разбирает ключ группы, не путая знак года с разделителем месяца. */
+export function groupParts(key: string): [number, number?, number?] {
+  const [rawYear = '0', rawMonth, rawDay] = key.split('-');
+  const year = rawYear.startsWith('b') ? -Number(rawYear.slice(1)) : Number(rawYear);
+  return [year, rawMonth === undefined ? undefined : Number(rawMonth), rawDay === undefined ? undefined : Number(rawDay)];
 }
 
 function groupLabel(year: number, month?: number, day?: number): { label: string; sublabel?: string } {
   if (day && month) {
-    return { label: `${day} ${MONTHS_NOMINATIVE[month - 1].slice(0, 3)}`, sublabel: String(year) };
+    return { label: `${day} ${MONTHS_NOMINATIVE[month - 1].slice(0, 3)}`, sublabel: formatYearLabel(year) };
   }
-  if (month) return { label: MONTHS_NOMINATIVE[month - 1], sublabel: String(year) };
-  return { label: String(year) };
+  if (month) return { label: MONTHS_NOMINATIVE[month - 1], sublabel: formatYearLabel(year) };
+  return { label: formatYearLabel(year) };
 }
 
 /**
@@ -152,9 +164,9 @@ export function buildGroups(
 
   const groups: TimelineGroup[] = [];
   const sortedKeys = Array.from(buckets.keys()).sort((a, b) => {
-    const [ay = 0, am = 0, ad = 0] = a.split('-').map(Number);
-    const [by = 0, bm = 0, bd = 0] = b.split('-').map(Number);
-    return ay - by || am - bm || ad - bd;
+    const [ay = 0, am = 0, ad = 0] = groupParts(a);
+    const [by = 0, bm = 0, bd = 0] = groupParts(b);
+    return ay - by || (am ?? 0) - (bm ?? 0) || (ad ?? 0) - (bd ?? 0);
   });
 
   let previousEra: string | undefined;
@@ -169,12 +181,12 @@ export function buildGroups(
         a.title.localeCompare(b.title, 'ru'),
     );
 
-    const [year, month, day] = key.split('-').map(Number);
+    const [year, month, day] = groupParts(key);
     const era = eraForYear(year);
     const { label, sublabel } = groupLabel(
       year,
-      Number.isNaN(month) ? undefined : month,
-      Number.isNaN(day) ? undefined : day,
+      month,
+      day,
     );
     const byColumn: Record<string, TimelineItem[]> = {};
     for (const column of columns) byColumn[column.id] = [];
@@ -191,8 +203,8 @@ export function buildGroups(
     groups.push({
       key,
       year,
-      month: Number.isNaN(month) ? undefined : month,
-      day: Number.isNaN(day) ? undefined : day,
+      month,
+      day,
       label,
       sublabel,
       era,
