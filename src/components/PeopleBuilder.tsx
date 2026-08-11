@@ -359,8 +359,10 @@ export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect
                                     }
                                   >
                                     <option value="influence">Влияние</option>
-                                    <option value="exchange">Перекличка / обмен</option>
+                                    <option value="exchange">Обмен</option>
                                     <option value="conflict">Противостояние</option>
+                                    <option value="comparison">Сопоставление без причинности</option>
+                                    <option value="context">Общий исторический контекст</option>
                                   </select>
                                 </label>
                                 <label>

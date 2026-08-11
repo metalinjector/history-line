@@ -1,6 +1,6 @@
 import type { Layer } from '../types';
 import { OWN_COLUMN } from '../types';
-import { articles, sourcesByItem } from './content';
+import { articles, sourcesByItem, viewpointsByItem } from './content';
 
 /**
  * Наложенные слои.
@@ -522,6 +522,7 @@ export const layers: Layer[] = layerDefinitions.map((layer) => ({
     ...item,
     ...(sourcesByItem[item.id] ? { sources: sourcesByItem[item.id] } : {}),
     ...(articles[item.id] ? { body: articles[item.id] } : {}),
+    ...(viewpointsByItem[item.id] ? { viewpoints: viewpointsByItem[item.id] } : {}),
   })),
 }));
 
