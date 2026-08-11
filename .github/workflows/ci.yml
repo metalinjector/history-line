@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-      - claude/interactive-historical-timeline-xx3lga
 
 permissions:
   contents: read
