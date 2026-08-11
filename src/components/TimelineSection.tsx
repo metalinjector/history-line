@@ -1,8 +1,10 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { defaultRangeExtractor, useVirtualizer } from '@tanstack/react-virtual';
 import type { TimelineItem } from '../types';
 import type { TimelineState } from '../lib/useTimelineState';
 import { eras } from '../data/eras';
 import { timeKey } from '../lib/format';
+import { groupKeyOf } from '../lib/timeline';
 import { usePanning } from '../lib/usePanning';
 import { TimelineControls } from './TimelineControls';
 import { CountryTogglePanel } from './CountryTogglePanel';
@@ -50,6 +52,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
     tags,
     zoom,
     expanded,
+    granularity,
     setLayer,
     setQuery,
     setKeyOnly,
@@ -73,6 +76,11 @@ export function TimelineSection({ state, sectionRef }: Props) {
 
   const { ref: viewportRef, isPanning, onPointerDown, didPan } = usePanning<HTMLDivElement>();
   const gridRef = useRef<HTMLDivElement>(null);
+  /** Контейнер виртуализированных строк — нужен, чтобы измерить отступ от
+   *  верха поля прокрутки до начала списка групп (над ним стоят шапка и
+   *  стартовая строка «1 год»). Без этого scrollMargin виртуализатор
+   *  считал бы видимый диапазон от нуля и прорисовывал бы лишние строки. */
+  const rowsRef = useRef<HTMLDivElement>(null);
   /** Слой, который сейчас тащат мышью: колонки становятся зонами приёма. */
   const [draggingLayerId, setDraggingLayerId] = useState<string | undefined>();
 
@@ -82,22 +90,105 @@ export function TimelineSection({ state, sectionRef }: Props) {
     [filteredItems],
   );
 
+  /** Отступ от верха поля прокрутки до начала списка групп.
+   *  Шапка стран и стартовая строка «1 год» стоят над группами в одном
+   *  scroll-контейнере, поэтому виртуализатору нужно знать, что видимый
+   *  диапазон строк начинается не от нуля, а ниже этих элементов. */
+  const [scrollMargin, setScrollMargin] = useState(0);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    const rows = rowsRef.current;
+    if (!viewport || !rows) return;
+    const measure = () => {
+      const next = rows.getBoundingClientRect().top - viewport.getBoundingClientRect().top + viewport.scrollTop;
+      setScrollMargin((prev) => (next >= 0 && next !== prev ? next : prev));
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(viewport);
+    observer.observe(rows);
+    return () => observer.disconnect();
+  }, [viewportRef]);
+
+  /** Карта ключ группы → индекс в массиве groups — для быстрого поиска при
+   *  навигации (стрелки, эпохи, прокрутка к объекту после добавления). */
+  const groupIndexByKey = useMemo(() => {
+    const map = new Map<string, number>();
+    for (let i = 0; i < groups.length; i++) map.set(groups[i].key, i);
+    return map;
+  }, [groups]);
+
+  /**
+   * Нити измеряют координаты реальных DOM-узлов. Поэтому строки с концами
+   * видимых связей должны оставаться смонтированными даже за пределами
+   * обычного окна виртуализации. Таких строк немного: не более двух на связь.
+   */
+  const relationRowIndexes = useMemo(() => {
+    const itemRow = new Map<string, number>();
+    groups.forEach((group, index) => group.items.forEach((item) => itemRow.set(item.id, index)));
+
+    const indexes = new Set<number>();
+    for (const relation of visibleRelations) {
+      const from = itemRow.get(relation.from);
+      const to = itemRow.get(relation.to);
+      if (from !== undefined) indexes.add(from);
+      if (to !== undefined) indexes.add(to);
+    }
+    return Array.from(indexes);
+  }, [groups, visibleRelations]);
+
+  const relationAwareRange = useCallback(
+    (range: Parameters<typeof defaultRangeExtractor>[0]) =>
+      Array.from(new Set([...defaultRangeExtractor(range), ...relationRowIndexes])).sort((a, b) => a - b),
+    [relationRowIndexes],
+  );
+
+  const rowVirtualizer = useVirtualizer({
+    count: groups.length,
+    getScrollElement: () => viewportRef.current,
+    estimateSize: () => 64,
+    overscan: 8,
+    getItemKey: (index) => groups[index]?.key ?? index,
+    rangeExtractor: relationAwareRange,
+    scrollMargin,
+  });
+
   const scrollItemIntoView = useCallback(
     (id: string, behavior: ScrollBehavior = 'smooth') => {
       const viewport = viewportRef.current;
-      const element = document.getElementById(`item-${id}`);
-      if (!viewport || !element) return;
+      if (!viewport) return;
 
-      const viewportRect = viewport.getBoundingClientRect();
-      const elementRect = element.getBoundingClientRect();
-      const top =
-        viewport.scrollTop + (elementRect.top - viewportRect.top) - viewportRect.height / 2 + elementRect.height / 2;
-      const left =
-        viewport.scrollLeft + (elementRect.left - viewportRect.left) - viewportRect.width / 2 + elementRect.width / 2;
+      const scrollToElement = () => {
+        const element = document.getElementById(`item-${id}`);
+        if (!element) return;
+        const viewportRect = viewport.getBoundingClientRect();
+        const elementRect = element.getBoundingClientRect();
+        const top =
+          viewport.scrollTop + (elementRect.top - viewportRect.top) - viewportRect.height / 2 + elementRect.height / 2;
+        const left =
+          viewport.scrollLeft + (elementRect.left - viewportRect.left) - viewportRect.width / 2 + elementRect.width / 2;
+        viewport.scrollTo({ top: Math.max(0, top), left: Math.max(0, left), behavior });
+      };
 
-      viewport.scrollTo({ top: Math.max(0, top), left: Math.max(0, left), behavior });
+      // Если объект принадлежит группе, которая сейчас не отрендерена
+      // (виртуализация), сначала подвозим её в видимую область, а саму
+      // прокрутку до карточки делаем в следующем кадре — когда строка
+      // уже стоит в DOM и её можно измерить.
+      const groupIndex = ordered.findIndex((item) => item.id === id);
+      if (groupIndex >= 0) {
+        const item = ordered[groupIndex];
+        const groupKey = groupKeyOf(item, granularity);
+        const rowIndex = groupIndexByKey.get(groupKey);
+        if (rowIndex !== undefined) {
+          rowVirtualizer.scrollToIndex(rowIndex, { align: 'center', behavior });
+          window.requestAnimationFrame(scrollToElement);
+          return;
+        }
+      }
+      scrollToElement();
     },
-    [viewportRef],
+    [granularity, groupIndexByKey, ordered, rowVirtualizer, viewportRef],
   );
 
   // Внешний запрос на прокрутку (например, после добавления деятеля).
@@ -219,16 +310,24 @@ export function TimelineSection({ state, sectionRef }: Props) {
   const jumpToRow = useCallback(
     (rowKey: string) => {
       const viewport = viewportRef.current;
-      const row = document.getElementById(`row-${rowKey}`);
-      if (!viewport || !row) return;
-      const viewportRect = viewport.getBoundingClientRect();
-      const rowRect = row.getBoundingClientRect();
-      viewport.scrollTo({
-        top: Math.max(0, viewport.scrollTop + (rowRect.top - viewportRect.top) - 72),
-        behavior: 'smooth',
+      if (!viewport) return;
+      const rowIndex = groupIndexByKey.get(rowKey);
+      if (rowIndex === undefined) return;
+      // Сначала подвозим строку в видимую область через виртуализатор,
+      // затем доводим прокрутку так, чтобы строка встала под шапкой с отступом.
+      rowVirtualizer.scrollToIndex(rowIndex, { align: 'start' });
+      window.requestAnimationFrame(() => {
+        const row = document.getElementById(`row-${rowKey}`);
+        if (!row) return;
+        const viewportRect = viewport.getBoundingClientRect();
+        const rowRect = row.getBoundingClientRect();
+        viewport.scrollTo({
+          top: Math.max(0, viewport.scrollTop + (rowRect.top - viewportRect.top) - 72),
+          behavior: 'smooth',
+        });
       });
     },
-    [viewportRef],
+    [groupIndexByKey, rowVirtualizer, viewportRef],
   );
 
   const gridStyle = {
@@ -236,6 +335,9 @@ export function TimelineSection({ state, sectionRef }: Props) {
       ? `repeat(${columns.length}, minmax(var(--col-width), 1fr))`
       : `repeat(${columns.length}, var(--col-width))`,
   } as React.CSSProperties;
+
+  const virtualItems = rowVirtualizer.getVirtualItems();
+  const virtualRangeKey = virtualItems.map((item) => item.index).join(',');
 
   return (
     <section className="timeline" id="timeline" ref={sectionRef}>
@@ -380,7 +482,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
                 groups={groups}
                 selectedItem={selectedItem}
                 relations={visibleRelations}
-                layoutKey={`${zoom}|${columns.length}|${stretchColumns}|${groups.length}|${selectedItem?.id ?? ''}|${visibleRelations.length}`}
+                layoutKey={`${zoom}|${columns.length}|${stretchColumns}|${groups.length}|${selectedItem?.id ?? ''}|${visibleRelations.length}|${virtualRangeKey}|${scrollMargin}`}
                 onRelationClick={openRelation}
               />
 
@@ -421,32 +523,63 @@ export function TimelineSection({ state, sectionRef }: Props) {
                     </div>
                   </div>
 
-                  {groups.map((group) => (
-                    <div className="timeline__group" key={group.key}>
-                      {group.startsEra ? (
-                        <div className="era-band" role="row">
-                          <div className="era-band__inner">
-                            <span className="era-band__label">{group.era.label}</span>
-                            <span className="era-band__years">
-                              {group.era.from}–{group.era.to > 2100 ? 'наши дни' : group.era.to}
-                            </span>
-                            <span className="era-band__note">{group.era.note}</span>
-                          </div>
-                        </div>
-                      ) : null}
+                  {/*
+                    Виртуализация строк: рендерятся только видимые группы плюс
+                    оверскан, остальное место зарезервировано высотой контейнера.
+                    Каждая группа измеряется после появления в DOM (measureElement),
+                    поэтому строки переменной высоты (с карточками и без) стоят
+                    корректно. Липкая шапка, липкая колонка дат, горизонтальная
+                    прокрутка, перетаскивание и нити связей сохранены — структура
+                    DOM групп не изменилась, только способ их вывода.
+                  */}
+                  <div
+                    className="timeline__rows"
+                    ref={rowsRef}
+                    style={{ height: rowVirtualizer.getTotalSize() }}
+                  >
+                    {virtualItems.map((virtualRow) => {
+                      const group = groups[virtualRow.index];
+                      if (!group) return null;
+                      return (
+                        <div
+                          className="timeline__group"
+                          key={virtualRow.key}
+                          data-index={virtualRow.index}
+                          ref={rowVirtualizer.measureElement}
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            transform: `translateY(${virtualRow.start - scrollMargin}px)`,
+                          }}
+                        >
+                          {group.startsEra ? (
+                            <div className="era-band" role="row">
+                              <div className="era-band__inner">
+                                <span className="era-band__label">{group.era.label}</span>
+                                <span className="era-band__years">
+                                  {group.era.from}–{group.era.to > 2100 ? 'наши дни' : group.era.to}
+                                </span>
+                                <span className="era-band__note">{group.era.note}</span>
+                              </div>
+                            </div>
+                          ) : null}
 
-                      <TimelineRow
-                        group={group}
-                        columns={columns}
-                        selectedId={selectedItem?.id}
-                        selectedCountry={selectedItem?.country}
-                        query={query}
-                        onSelect={handleSelect}
-                        onOpen={handleOpen}
-                        onOpenDay={openDay}
-                      />
-                    </div>
-                  ))}
+                          <TimelineRow
+                            group={group}
+                            columns={columns}
+                            selectedId={selectedItem?.id}
+                            selectedCountry={selectedItem?.country}
+                            query={query}
+                            onSelect={handleSelect}
+                            onOpen={handleOpen}
+                            onOpenDay={openDay}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
 
                   <div className="timeline__tail" role="row">
                     <span>Конец текущей выборки · {stats.maxYear} год</span>
