@@ -6,6 +6,7 @@ import { layers } from './layers';
 import { buildDataQualityReport } from '../lib/dataQuality';
 import { hasVerifiedSources, isRelationVerified } from '../lib/provenance';
 import type { SourceLink, TimelineItem } from '../types';
+import { stories } from './stories';
 
 function expectValidSources(sources: SourceLink[] | undefined) {
   expect(hasVerifiedSources(sources)).toBe(true);
@@ -70,5 +71,14 @@ describe('historical data integrity', () => {
     expect(report.items.verified).toBeGreaterThan(0);
     expect(report.relations.draft + report.relations.verified).toBe(relations.length);
     console.info('Data quality:', JSON.stringify(report));
+  });
+
+  it('keeps every guided story complete and free of dangling steps', () => {
+    for (const story of stories) {
+      expect(story.steps.length, story.id).toBeGreaterThanOrEqual(8);
+      expect(story.steps.length, story.id).toBeLessThanOrEqual(15);
+      expect(new Set(story.steps.map((step) => step.itemId)).size, story.id).toBe(story.steps.length);
+      for (const step of story.steps) expect(baseIds.has(step.itemId), `${story.id}: ${step.itemId}`).toBe(true);
+    }
   });
 });

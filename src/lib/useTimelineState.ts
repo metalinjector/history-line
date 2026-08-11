@@ -27,6 +27,9 @@ import {
 import { timeKey } from './format';
 import { usePersistentState } from './usePersistentState';
 import { clampZoom, visualZoom } from './zoom';
+import { stories as storyRoutes } from '../data/stories';
+import { findContemporaries } from './contemporaries';
+import { buildTimelineUrl, parseTimelineUrl } from './urlState';
 
 export type ScrollTarget = { id: string; nonce: number };
 
@@ -38,39 +41,60 @@ export type ScrollTarget = { id: string; nonce: number };
  * Это позволит подменить источник данных (JSON, CMS, API) не трогая UI.
  */
 export function useTimelineState() {
+  const [initialUrlState] = useState(() =>
+    typeof window === 'undefined' ? {} : parseTimelineUrl(window.location.search),
+  );
   const [theme, setTheme] = usePersistentState<ThemeName>('theme', 'parchment');
-  const [layer, setLayer] = useState<KindFilter>('all');
-  const [query, setQuery] = useState('');
-  const [keyOnly, setKeyOnly] = useState(false);
-  const [era, setEra] = useState<EraId | undefined>(undefined);
-  const [tags, setTags] = useState<string[]>([]);
-  const [zoom, setZoomRaw] = usePersistentState<number>('zoom', 1);
+  const [layer, setLayer] = useState<KindFilter>(initialUrlState.kind ?? 'all');
+  const [query, setQuery] = useState(initialUrlState.query ?? '');
+  const [keyOnly, setKeyOnly] = useState(initialUrlState.keyOnly ?? false);
+  const [era, setEra] = useState<EraId | undefined>(initialUrlState.era);
+  const [tags, setTags] = useState<string[]>(initialUrlState.tags ?? []);
+  const [zoom, setZoomRaw] = usePersistentState<number>('zoom', 1, initialUrlState.zoom);
   const [activeCountryIds, setActiveCountryIds] = usePersistentState<CountryId[]>(
     'countries',
     allCountryIds,
+    initialUrlState.countries,
   );
   const [addedPeople, setAddedPeople] = usePersistentState<TimelineItem[]>('added-people', []);
   /** Объединения колонок задаёт пользователь; по умолчанию у каждой страны своя колонка. */
-  const [columnGroups, setColumnGroups] = usePersistentState<ColumnGroups>('column-groups', []);
+  const [columnGroups, setColumnGroups] = usePersistentState<ColumnGroups>(
+    'column-groups',
+    [],
+    initialUrlState.columnGroups,
+  );
   /** Связи, созданные пользователем вместе с добавленными объектами. */
   const [addedRelations, setAddedRelations] = usePersistentState<Relation[]>('added-relations', []);
   /** Личные заметки читателя. Хранятся отдельно от базы фактов и не смешиваются с ней. */
   const [notes, setNotes] = usePersistentState<Record<string, string>>('notes', {});
   /** Включённые слои и их размещение — по умолчанию слоёв нет. */
-  const [activeLayerIds, setActiveLayerIds] = usePersistentState<string[]>('layers', []);
+  const [activeLayerIds, setActiveLayerIds] = usePersistentState<string[]>(
+    'layers',
+    [],
+    initialUrlState.activeLayerIds,
+  );
   const [layerPlacements, setLayerPlacements] = usePersistentState<LayerPlacements>(
     'layer-placements',
     {},
+    initialUrlState.layerPlacements,
   );
-  const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
-  const [openedId, setOpenedId] = useState<string | undefined>(undefined);
-  const [openedDayKey, setOpenedDayKey] = useState<string | undefined>(undefined);
-  const [openedRelationId, setOpenedRelationId] = useState<string | undefined>(undefined);
+  const [selectedId, setSelectedId] = useState<string | undefined>(
+    initialUrlState.selectedId ?? initialUrlState.openedId,
+  );
+  const [openedId, setOpenedId] = useState<string | undefined>(initialUrlState.openedId);
+  const [openedDayKey, setOpenedDayKey] = useState<string | undefined>(initialUrlState.openedDayKey);
+  const [openedRelationId, setOpenedRelationId] = useState<string | undefined>(initialUrlState.openedRelationId);
   /** Год, из окна которого открыли статью, — для кнопки возврата. */
   const [returnDayKey, setReturnDayKey] = useState<string | undefined>(undefined);
   const [scrollTarget, setScrollTarget] = useState<ScrollTarget | undefined>(undefined);
   const [expanded, setExpanded] = useState(false);
-  const [showRelations, setShowRelations] = usePersistentState('show-relations', true);
+  const [showRelations, setShowRelations] = usePersistentState(
+    'show-relations',
+    true,
+    initialUrlState.showRelations,
+  );
+  const [activeStoryId, setActiveStoryId] = useState<string | undefined>(initialUrlState.storyId);
+  const [storyStep, setStoryStep] = useState(initialUrlState.storyStep ?? 0);
 
   const setZoom = useCallback(
     (value: number) => setZoomRaw(clampZoom(value)),
@@ -197,6 +221,16 @@ export function useTimelineState() {
           )
         : [],
     [allRelations, openedItem],
+  );
+
+  const openedContemporaries = useMemo(
+    () => (openedItem ? findContemporaries(openedItem, allItems) : []),
+    [allItems, openedItem],
+  );
+
+  const activeStory = useMemo(
+    () => storyRoutes.find((story) => story.id === activeStoryId),
+    [activeStoryId],
   );
 
   const backToDay = useMemo(() => {
@@ -347,6 +381,82 @@ export function useTimelineState() {
     [setActiveCountryIds],
   );
 
+  /** Фокусирует шаг маршрута и гарантирует, что его карточка не скрыта фильтрами. */
+  const goToStoryStep = useCallback(
+    (storyId: string, requestedStep: number, options?: { open?: boolean }) => {
+      const story = storyRoutes.find((candidate) => candidate.id === storyId);
+      if (!story) return;
+      const nextStep = Math.max(0, Math.min(story.steps.length - 1, requestedStep));
+      const item = itemsById[story.steps[nextStep].itemId];
+      if (!item) return;
+
+      setActiveStoryId(story.id);
+      setStoryStep(nextStep);
+      ensureCountryVisible(item.country);
+      setLayer('all');
+      setQuery('');
+      setKeyOnly(false);
+      setEra(undefined);
+      setTags([]);
+      setSelectedId(item.id);
+      setScrollTarget({ id: item.id, nonce: Date.now() });
+      if (options?.open) openItem(item, { scroll: true });
+    },
+    [ensureCountryVisible, itemsById, openItem],
+  );
+
+  const stopStory = useCallback(() => {
+    setActiveStoryId(undefined);
+    setStoryStep(0);
+  }, []);
+
+  // Состояние исследования канонически отражается в URL. replaceState не засоряет
+  // историю браузера при каждом символе поиска, но ссылка всегда готова к копированию.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const url = buildTimelineUrl(
+      {
+        countries: activeCountryIds,
+        kind: layer,
+        query,
+        keyOnly,
+        era,
+        tags,
+        zoom,
+        activeLayerIds,
+        layerPlacements,
+        columnGroups,
+        selectedId,
+        openedId,
+        openedDayKey,
+        openedRelationId,
+        showRelations,
+        storyId: activeStory?.id,
+        storyStep,
+      },
+      window.location.href,
+    );
+    window.history.replaceState(window.history.state, '', url);
+  }, [
+    activeCountryIds,
+    activeLayerIds,
+    activeStory?.id,
+    columnGroups,
+    era,
+    keyOnly,
+    layer,
+    layerPlacements,
+    openedId,
+    openedDayKey,
+    openedRelationId,
+    query,
+    selectedId,
+    showRelations,
+    storyStep,
+    tags,
+    zoom,
+  ]);
+
   /**
    * Включает слой. Предел одновременных слоёв — визуальный, а не архитектурный:
    * раскладка обрабатывает любое их число, ограничение задаётся одной константой.
@@ -476,6 +586,7 @@ export function useTimelineState() {
     openedRelation,
     openedRelationEnds,
     openedItemRelations,
+    openedContemporaries,
     backToDay,
     visibleRelations,
     resolveItem,
@@ -491,6 +602,10 @@ export function useTimelineState() {
     placementOf,
     allRelations,
     scrollTarget,
+    stories: storyRoutes,
+    activeStory,
+    storyStep,
+    activeStoryItem: activeStory ? itemsById[activeStory.steps[storyStep]?.itemId] : undefined,
 
     // состояние
     theme,
@@ -534,6 +649,8 @@ export function useTimelineState() {
     removeLayer,
     toggleLayer,
     placeLayer,
+    goToStoryStep,
+    stopStory,
     resetFilters,
     addPerson,
     removePerson,
