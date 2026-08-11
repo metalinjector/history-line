@@ -1,5 +1,7 @@
 # Синхрония — атлас параллельной истории
 
+> 🌐 **Живой сайт:** https://metalinjector.github.io/history-line/
+
 Интерактивная **синхронная хронология**: события и деятели восьми стран на одной вертикальной
 шкале времени — от первого года нашей эры до наших дней. Главная идея сайта не в списке дат,
 а в одновременности: одна строка показывает, что происходило в разных странах в один и тот же год.
@@ -84,6 +86,20 @@ npm run lint     # oxlint
 npm run test     # unit- и data-integrity-тесты
 npm run validate:data # отдельная проверка исторической базы
 ```
+
+## Деплой
+
+Сайт публикуется на **GitHub Pages** автоматически при пуше в `main`.
+
+- Workflow `.github/workflows/deploy.yml` собирает проект (`npm ci` → `npm run build`)
+  и публикует содержимое `dist/` через `actions/upload-pages-artifact@v3`
+  и `actions/deploy-pages@v4`.
+- `base: '/history-line/'` в `vite.config.ts` обеспечивает правильные пути
+  ассетов на `https://metalinjector.github.io/history-line/`.
+- Деплой можно запустить вручную через **Actions → Deploy to GitHub Pages → Run workflow**.
+- Перед деплоем должен пройти CI (`.github/workflows/ci.yml`: lint, test, build).
+
+Живая версия: https://metalinjector.github.io/history-line/
 
 ## Структура проекта
 
