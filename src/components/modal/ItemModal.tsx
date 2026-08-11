@@ -7,6 +7,7 @@ import { Modal, ModalClose } from './Modal';
 import { MarkdownView } from './MarkdownView';
 import { Viewpoints } from './Viewpoints';
 import { NoteEditor } from './NoteEditor';
+import { hasVerifiedSources, isRelationVerified } from '../../lib/provenance';
 
 type Props = {
   item: TimelineItem;
@@ -93,6 +94,17 @@ export function ItemModal({
             </span>
           ) : null}
           {item.custom ? <span className="modal__kind">добавлено вами</span> : null}
+          <span
+            className="modal__provenance"
+            data-verified={hasVerifiedSources(item.sources) || undefined}
+            title={
+              hasVerifiedSources(item.sources)
+                ? 'Не менее двух источников, включая неэнциклопедический'
+                : 'Для этой записи ещё не опубликован полный комплект источников'
+            }
+          >
+            {hasVerifiedSources(item.sources) ? '✓ источники проверены' : '△ источники не опубликованы'}
+          </span>
         </div>
         <ModalClose />
       </header>
@@ -142,6 +154,7 @@ export function ItemModal({
                       type="button"
                       className="modal__relation"
                       data-kind={relation.kind}
+                      data-verification={isRelationVerified(relation) ? 'verified' : 'draft'}
                       onClick={() => onOpenRelation(relation)}
                     >
                       <span className="modal__relation-arrow" aria-hidden="true">
@@ -153,6 +166,7 @@ export function ItemModal({
                           {isSource ? 'это событие повлияло на' : 'повлияло на это событие'}
                           {other ? ` · ${other.title}` : ''}
                           {otherCountry ? ` (${otherCountry.label})` : ''}
+                          {!isRelationVerified(relation) ? ' · черновая связь' : ''}
                         </span>
                       </span>
                     </button>

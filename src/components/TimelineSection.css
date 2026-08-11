@@ -992,6 +992,16 @@
   stroke-dasharray: 2 6;
 }
 
+.thread[data-verification='draft'] .thread__line {
+  stroke-dasharray: 1 7;
+  opacity: 0.17;
+}
+
+.thread[data-verification='draft'][data-active] .thread__line,
+.thread[data-verification='draft'][data-hovered] .thread__line {
+  opacity: 0.72;
+}
+
 /* Широкая невидимая копия нити — по ней проще попасть курсором */
 .thread__hit {
   fill: none;

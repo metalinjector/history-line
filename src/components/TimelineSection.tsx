@@ -10,6 +10,7 @@ import { TimelineHeader } from './TimelineHeader';
 import { TimelineRow } from './TimelineRow';
 import { TimelineOverlay } from './TimelineOverlay';
 import { LayerMenu } from './LayerMenu';
+import { fitZoomToWidth } from '../lib/zoom';
 import './TimelineSection.css';
 
 // Окна тянут за собой разбор Markdown, KaTeX и загрузчик Mermaid,
@@ -198,7 +199,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
   const fitToWidth = useCallback(() => {
     const measured = measureBaseWidth();
     if (!measured || !zoom) return;
-    setZoom(((measured.available - 4) / measured.width) * zoom);
+    setZoom(fitZoomToWidth(measured.width, measured.available - 4, zoom));
   }, [measureBaseWidth, setZoom, zoom]);
 
   /** Эпохи, реально присутствующие в текущей выборке, — для быстрых переходов. */
