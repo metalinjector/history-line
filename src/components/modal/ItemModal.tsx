@@ -103,11 +103,11 @@ export function ItemModal({
             data-verified={hasVerifiedSources(item.sources) || undefined}
             title={
               hasVerifiedSources(item.sources)
-                ? 'Не менее двух источников, включая неэнциклопедический'
+                ? 'Указано не менее двух независимых источников, из которых хотя бы один не энциклопедия'
                 : 'Для этой записи ещё не опубликован полный комплект источников'
             }
           >
-            {hasVerifiedSources(item.sources) ? '✓ источники проверены' : '△ источники не опубликованы'}
+            {hasVerifiedSources(item.sources) ? '✓ источники указаны' : '△ источники не опубликованы'}
           </span>
         </div>
         <ModalClose />
