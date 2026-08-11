@@ -3,6 +3,7 @@ import { countryById } from '../../data/countries';
 import { formatItemDate } from '../../lib/format';
 import { resolveWikiLinks, sourceKindLabel } from '../../lib/markdown';
 import { isRelationVerified } from '../../lib/provenance';
+import { relationPresentation } from '../../lib/relationPresentation';
 import { Modal, ModalClose } from './Modal';
 import { MarkdownView } from './MarkdownView';
 
@@ -16,26 +17,21 @@ type Props = {
   onClose: () => void;
 };
 
-const kindLabels: Record<Relation['kind'], string> = {
-  influence: 'влияние',
-  conflict: 'противостояние',
-  exchange: 'перекличка',
-};
-
 /**
- * Окно связи между двумя объектами: что на что повлияло и как.
+ * Окно связи между двумя объектами: причинность, конфликт, обмен или сравнение.
  * Открывается кликом по нити на хронологии.
  */
 export function RelationModal({ relation, from, to, onOpenItem, resolveItem, onOpenLink, onClose }: Props) {
   const fromCountry = countryById[from.country];
   const toCountry = countryById[to.country];
   const verified = isRelationVerified(relation);
+  const presentation = relationPresentation[relation.kind];
 
   return (
     <Modal labelledBy="relation-modal-title" onClose={onClose}>
       <header className="modal__head">
         <div className="modal__meta">
-          <span className="modal__kind">Связь · {kindLabels[relation.kind]}</span>
+          <span className="modal__kind">Связь · {presentation.label}</span>
           <span className="modal__provenance" data-verified={verified || undefined}>
             {verified ? '✓ проверено' : '△ редакционный черновик'}
           </span>
@@ -50,13 +46,13 @@ export function RelationModal({ relation, from, to, onOpenItem, resolveItem, onO
 
         <div className="relation__ends">
           {[
-            { item: from, country: fromCountry, role: 'Источник' },
-            { item: to, country: toCountry, role: 'Следствие' },
+            { item: from, country: fromCountry, role: presentation.roles[0] },
+            { item: to, country: toCountry, role: presentation.roles[1] },
           ].map(({ item, country, role }, index) => (
             <div key={item.id} className="relation__end-wrap">
               {index === 1 ? (
                 <span className="relation__arrow" aria-hidden="true">
-                  {relation.kind === 'exchange' ? '↔' : '→'}
+                  {presentation.arrow}
                 </span>
               ) : null}
               <button

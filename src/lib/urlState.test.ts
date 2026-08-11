@@ -64,4 +64,18 @@ describe('timeline URL state', () => {
     expect(parsed.columnGroups).toEqual([]);
     expect(parsed.showRelations).toBe(true);
   });
+
+  it('keeps shared layers and guided-story progress inside UI bounds', () => {
+    const parsed = parseTimelineUrl(
+      '?view=1&layers=einstein,napoleon,curie,plagues&story=print-networks&step=999',
+    );
+
+    expect(parsed.activeLayerIds).toEqual(['einstein', 'napoleon', 'curie']);
+    expect(parsed.storyId).toBe('print-networks');
+    expect(parsed.storyStep).toBe(7);
+    expect(parseTimelineUrl('?story=missing&step=2')).toMatchObject({
+      storyId: undefined,
+      storyStep: undefined,
+    });
+  });
 });

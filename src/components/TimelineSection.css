@@ -958,6 +958,14 @@
   --thread-color: hsl(196 70% 45%);
 }
 
+.thread[data-kind='comparison'] {
+  --thread-color: hsl(275 43% 55%);
+}
+
+.thread[data-kind='context'] {
+  --thread-color: hsl(210 28% 52%);
+}
+
 [data-theme='atlas'] .thread[data-kind='exchange'] {
   --thread-color: hsl(190 75% 58%);
 }
@@ -990,6 +998,14 @@
 
 .thread[data-kind='exchange'] .thread__line {
   stroke-dasharray: 2 6;
+}
+
+.thread[data-kind='comparison'] .thread__line {
+  stroke-dasharray: 3 6;
+}
+
+.thread[data-kind='context'] .thread__line {
+  stroke-dasharray: 8 5;
 }
 
 .thread[data-verification='draft'] .thread__line {

@@ -3,7 +3,8 @@ import { OWN_COLUMN } from '../types';
 import { allCountryIds } from '../data/countries';
 import { normalizeGroups, type ColumnGroups } from '../data/columns';
 import { eras } from '../data/eras';
-import { layers } from '../data/layers';
+import { layers, MAX_ACTIVE_LAYERS } from '../data/layers';
+import { stories } from '../data/stories';
 import { clampZoom } from './zoom';
 
 export type TimelineUrlState = {
@@ -29,6 +30,7 @@ export type TimelineUrlState = {
 const validKinds = new Set<KindFilter>(['all', 'events', 'people']);
 const validEras = new Set(eras.map((era) => era.id));
 const validLayers = new Set(layers.map((layer) => layer.id));
+const storiesById = new Map(stories.map((story) => [story.id, story]));
 
 function unique<T>(items: T[]): T[] {
   return Array.from(new Set(items));
@@ -43,7 +45,8 @@ export function parseTimelineUrl(search: string): TimelineUrlState {
   const kind = params.get('kind') as KindFilter | null;
   const era = params.get('era') as EraId | null;
   const rawZoom = Number(params.get('z'));
-  const layerIds = unique((params.get('layers') ?? '').split(',').filter((id) => validLayers.has(id)));
+  const layerIds = unique((params.get('layers') ?? '').split(',').filter((id) => validLayers.has(id)))
+    .slice(0, MAX_ACTIVE_LAYERS);
   const placements: Record<string, LayerPlacement> = {};
   const columnGroups = normalizeGroups(
     (params.get('groups') ?? '')
@@ -60,6 +63,12 @@ export function parseTimelineUrl(search: string): TimelineUrlState {
   }
 
   const rawStep = Number(params.get('step'));
+  const storyId = params.get('story') || undefined;
+  const story = storyId ? storiesById.get(storyId) : undefined;
+  const storyStep =
+    story && Number.isInteger(rawStep) && rawStep > 0
+      ? Math.min(rawStep - 1, story.steps.length - 1)
+      : undefined;
   return {
     countries: countryIds.length ? countryIds : shared ? allCountryIds : undefined,
     kind: kind && validKinds.has(kind) ? kind : shared ? 'all' : undefined,
@@ -76,8 +85,8 @@ export function parseTimelineUrl(search: string): TimelineUrlState {
     openedDayKey: params.get('day') || undefined,
     openedRelationId: params.get('relation') || undefined,
     showRelations: params.get('threads') === '0' ? false : shared ? true : undefined,
-    storyId: params.get('story') || undefined,
-    storyStep: Number.isInteger(rawStep) && rawStep > 0 ? rawStep - 1 : undefined,
+    storyId: story?.id,
+    storyStep,
   };
 }
 
