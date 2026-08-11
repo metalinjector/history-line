@@ -850,6 +850,12 @@
 .modal__relation[data-kind='exchange'] {
   --thread-color: hsl(196 70% 45%);
 }
+.modal__relation[data-kind='comparison'] {
+  --thread-color: hsl(275 43% 55%);
+}
+.modal__relation[data-kind='context'] {
+  --thread-color: hsl(210 28% 52%);
+}
 
 .modal__relation:hover {
   transform: translateX(2px);

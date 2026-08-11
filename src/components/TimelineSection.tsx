@@ -1,5 +1,5 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useVirtualizer } from '@tanstack/react-virtual';
+import { defaultRangeExtractor, useVirtualizer } from '@tanstack/react-virtual';
 import type { TimelineItem } from '../types';
 import type { TimelineState } from '../lib/useTimelineState';
 import { eras } from '../data/eras';
@@ -119,12 +119,38 @@ export function TimelineSection({ state, sectionRef }: Props) {
     return map;
   }, [groups]);
 
+  /**
+   * Нити измеряют координаты реальных DOM-узлов. Поэтому строки с концами
+   * видимых связей должны оставаться смонтированными даже за пределами
+   * обычного окна виртуализации. Таких строк немного: не более двух на связь.
+   */
+  const relationRowIndexes = useMemo(() => {
+    const itemRow = new Map<string, number>();
+    groups.forEach((group, index) => group.items.forEach((item) => itemRow.set(item.id, index)));
+
+    const indexes = new Set<number>();
+    for (const relation of visibleRelations) {
+      const from = itemRow.get(relation.from);
+      const to = itemRow.get(relation.to);
+      if (from !== undefined) indexes.add(from);
+      if (to !== undefined) indexes.add(to);
+    }
+    return Array.from(indexes);
+  }, [groups, visibleRelations]);
+
+  const relationAwareRange = useCallback(
+    (range: Parameters<typeof defaultRangeExtractor>[0]) =>
+      Array.from(new Set([...defaultRangeExtractor(range), ...relationRowIndexes])).sort((a, b) => a - b),
+    [relationRowIndexes],
+  );
+
   const rowVirtualizer = useVirtualizer({
     count: groups.length,
     getScrollElement: () => viewportRef.current,
     estimateSize: () => 64,
     overscan: 8,
     getItemKey: (index) => groups[index]?.key ?? index,
+    rangeExtractor: relationAwareRange,
     scrollMargin,
   });
 
@@ -311,6 +337,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
   } as React.CSSProperties;
 
   const virtualItems = rowVirtualizer.getVirtualItems();
+  const virtualRangeKey = virtualItems.map((item) => item.index).join(',');
 
   return (
     <section className="timeline" id="timeline" ref={sectionRef}>
@@ -455,7 +482,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
                 groups={groups}
                 selectedItem={selectedItem}
                 relations={visibleRelations}
-                layoutKey={`${zoom}|${columns.length}|${stretchColumns}|${groups.length}|${selectedItem?.id ?? ''}|${visibleRelations.length}|${virtualItems.length}|${scrollMargin}`}
+                layoutKey={`${zoom}|${columns.length}|${stretchColumns}|${groups.length}|${selectedItem?.id ?? ''}|${visibleRelations.length}|${virtualRangeKey}|${scrollMargin}`}
                 onRelationClick={openRelation}
               />
 
@@ -524,7 +551,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
                             top: 0,
                             left: 0,
                             width: '100%',
-                            transform: `translateY(${virtualRow.start}px)`,
+                            transform: `translateY(${virtualRow.start - scrollMargin}px)`,
                           }}
                         >
                           {group.startsEra ? (

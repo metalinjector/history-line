@@ -9,6 +9,7 @@ import { Viewpoints } from './Viewpoints';
 import { NoteEditor } from './NoteEditor';
 import { hasVerifiedSources, isRelationVerified } from '../../lib/provenance';
 import type { Contemporary } from '../../lib/contemporaries';
+import { relationHint, relationPresentation } from '../../lib/relationPresentation';
 
 type Props = {
   item: TimelineItem;
@@ -195,12 +196,14 @@ export function ItemModal({
                       onClick={() => onOpenRelation(relation)}
                     >
                       <span className="modal__relation-arrow" aria-hidden="true">
-                        {isSource ? '→' : '←'}
+                        {relation.kind === 'influence'
+                          ? (isSource ? '→' : '←')
+                          : relationPresentation[relation.kind].arrow}
                       </span>
                       <span>
                         <b>{relation.label}</b>
                         <span className="modal__relation-hint">
-                          {isSource ? 'это событие повлияло на' : 'повлияло на это событие'}
+                          {relationHint(relation, item.id)}
                           {other ? ` · ${other.title}` : ''}
                           {otherCountry ? ` (${otherCountry.label})` : ''}
                           {!isRelationVerified(relation) ? ' · черновая связь' : ''}
