@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { countries } from '../data/countries';
-import { plural } from '../lib/format';
+import { countries, countryById, defaultCountryIds } from '../data/countries';
+import { formatYearLabel, plural } from '../lib/format';
 import './Hero.css';
 
 type Props = {
@@ -22,6 +22,8 @@ const nodePattern: number[][] = [
   [0.02, 0.25, 0.49, 0.7, 0.92],
   [0.15, 0.39, 0.61, 0.81],
 ];
+
+const heroCountries = defaultCountryIds.map((id) => countryById[id]);
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -59,7 +61,7 @@ export function Hero({ itemCount, minYear, maxYear, onStart }: Props) {
           transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
         >
           <motion.p className="eyebrow" variants={fadeUp} transition={{ duration: 0.6 }}>
-            Синхронная хронология · {minYear} — {maxYear}
+            Синхронная хронология · {formatYearLabel(minYear)} — {maxYear}
           </motion.p>
 
           <motion.h1 className="hero__title" variants={fadeUp} transition={{ duration: 0.75 }}>
@@ -70,10 +72,10 @@ export function Hero({ itemCount, minYear, maxYear, onStart }: Props) {
           </motion.h1>
 
           <motion.p className="hero__lede lede" variants={fadeUp} transition={{ duration: 0.7 }}>
-            Восемь стран идут параллельными линиями по одной вертикальной шкале — от первого года нашей эры
-            до сегодняшнего дня. Видно сразу: пока Германия печатает первые книги, Полоцк отправляет Скорину
-            в Прагу; пока Париж строит республику, Речь Посполитая исчезает с карты; пока Берлин делит стену,
-            над Землёй летит первый человек.
+            Современные страны, исторические государства и международные процессы идут параллельными
+            линиями — от первых людей до сегодняшнего дня. Каталог не ограничен одним регионом: можно
+            сопоставить Древний Египет и Месопотамию, революции Европы и Америки, деколонизацию Азии и
+            Африки или собрать собственный набор линий.
           </motion.p>
 
           <motion.div className="hero__actions" variants={fadeUp} transition={{ duration: 0.6 }}>
@@ -88,7 +90,7 @@ export function Hero({ itemCount, minYear, maxYear, onStart }: Props) {
 
           <motion.dl className="hero__stats" variants={fadeUp} transition={{ duration: 0.6 }}>
             <div>
-              <dt>Стран</dt>
+              <dt>Линий в каталоге</dt>
               <dd>{countries.length}</dd>
             </div>
             <div>
@@ -96,8 +98,8 @@ export function Hero({ itemCount, minYear, maxYear, onStart }: Props) {
               <dd>{itemCount}</dd>
             </div>
             <div>
-              <dt>Лет на шкале</dt>
-              <dd>{maxYear - minYear + 1}</dd>
+              <dt>Охват</dt>
+              <dd>3+ млн лет</dd>
             </div>
           </motion.dl>
         </motion.div>
@@ -110,7 +112,7 @@ export function Hero({ itemCount, minYear, maxYear, onStart }: Props) {
           aria-hidden="true"
         >
           <div className="hero__stage-inner">
-            {countries.map((country, index) => (
+            {heroCountries.map((country, index) => (
               <motion.div
                 className="hero__lane"
                 key={country.id}
@@ -130,7 +132,7 @@ export function Hero({ itemCount, minYear, maxYear, onStart }: Props) {
                   animate={{ scaleY: 1 }}
                   transition={{ delay: 0.35 + index * 0.07, duration: 1.15, ease: [0.22, 1, 0.36, 1] }}
                 />
-                {nodePattern[index].map((position, nodeIndex) => (
+                {nodePattern[index % nodePattern.length].map((position, nodeIndex) => (
                   <motion.span
                     className="hero__node"
                     key={position}
@@ -150,7 +152,7 @@ export function Hero({ itemCount, minYear, maxYear, onStart }: Props) {
 
           {/* Подписи вынесены из-под маски, иначе их съедает градиентное затухание */}
           <div className="hero__legend">
-            {countries.map((country) => (
+            {heroCountries.map((country) => (
               <span key={country.id} style={{ '--lane-color': `hsl(${country.color})` } as React.CSSProperties}>
                 {country.short}
               </span>

@@ -7,9 +7,30 @@ import type { Era } from '../types';
  */
 export const eras: Era[] = [
   {
+    id: 'deep-prehistory',
+    label: 'Глубокая предыстория',
+    from: -3_500_000,
+    to: -12_001,
+    note: 'Антропогенез, расселение людей и длительные климатические изменения до завершения последнего оледенения.',
+  },
+  {
+    id: 'prehistory',
+    label: 'Первобытное общество',
+    from: -12_000,
+    to: -4_001,
+    note: 'Переход к производящему хозяйству, оседлости и ранним сложным обществам.',
+  },
+  {
+    id: 'ancient-civilizations',
+    label: 'Первые цивилизации',
+    from: -4_000,
+    to: -800,
+    note: 'Города, письменность и государства Египта, Междуречья, Индии, Китая и древней Америки.',
+  },
+  {
     id: 'antiquity',
-    label: 'Античность и ранняя наша эра',
-    from: 1,
+    label: 'Античность',
+    from: -799,
     to: 475,
     note: 'Рим ещё держит Средиземноморье, в Китае правит Хань, а Северная Европа живёт вне империй.',
   },
@@ -71,8 +92,7 @@ export const eras: Era[] = [
   },
 ];
 
-const fallbackEra = eras[eras.length - 1];
-
 export function eraForYear(year: number): Era {
-  return eras.find((era) => year >= era.from && year <= era.to) ?? fallbackEra;
+  if (year < eras[0].from) return eras[0];
+  return eras.find((era) => year >= era.from && year <= era.to) ?? eras[eras.length - 1];
 }

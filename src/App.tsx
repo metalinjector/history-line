@@ -25,11 +25,9 @@ export default function App() {
       />
 
       <main>
-        {/* Шкала начинается со стартовой строки первого года нашей эры,
-            поэтому нижняя граница — 1, а не год самого раннего объекта. */}
         <Hero
           itemCount={state.totalStats.total}
-          minYear={1}
+          minYear={state.totalStats.minYear}
           maxYear={state.totalStats.maxYear}
           onStart={jumpToTimeline}
         />

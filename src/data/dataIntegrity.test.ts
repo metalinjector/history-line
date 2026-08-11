@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { allCountryIds } from './countries';
+import { allCountryIds, countries, countryById } from './countries';
 import { relations } from './relations';
 import { timelineItems } from './timelineItems';
 import { layers } from './layers';
@@ -9,7 +9,7 @@ import type { SourceLink, TimelineItem } from '../types';
 import { stories } from './stories';
 import { contentManifest } from './content';
 
-const sourceKinds = new Set<SourceLink['kind']>(['archive', 'academic', 'institution', 'encyclopedia']);
+const sourceKinds = new Set<SourceLink['kind']>(['archive', 'academic', 'institution', 'encyclopedia', 'reference']);
 
 function expectSourceShape(sources: SourceLink[] | undefined) {
   for (const source of sources ?? []) {
@@ -37,7 +37,8 @@ function expectValidItem(item: TimelineItem) {
   expect(item.id.trim()).not.toBe('');
   expect(allCountryIds).toContain(item.country);
   expect(Number.isInteger(item.year)).toBe(true);
-  expect(item.year).toBeGreaterThanOrEqual(1);
+  expect(item.year).not.toBe(0);
+  expect(item.year).toBeGreaterThanOrEqual(-3_500_000);
   if (item.month !== undefined) expect(item.month).toBeGreaterThanOrEqual(1);
   if (item.month !== undefined) expect(item.month).toBeLessThanOrEqual(12);
   if (item.day !== undefined) {
@@ -49,7 +50,14 @@ function expectValidItem(item: TimelineItem) {
   expect(item.title.trim().length).toBeGreaterThan(1);
   expect(item.summary.trim().length).toBeGreaterThan(1);
   expect(item.detail.trim().length).toBeGreaterThan(1);
-  expectValidSources(item.sources);
+  if (item.verification === 'reference') {
+    expect(item.sources?.length, `${item.id}: reference source`).toBeGreaterThan(0);
+    expect(item.sources?.some((source) => source.kind === 'reference')).toBe(true);
+    expectSourceShape(item.sources);
+    expect(item.referencePage).toBeGreaterThanOrEqual(1);
+  } else {
+    expectValidSources(item.sources);
+  }
 
   expect(new Set((item.viewpoints ?? []).map((viewpoint) => viewpoint.id)).size).toBe(item.viewpoints?.length ?? 0);
   for (const viewpoint of item.viewpoints ?? []) {
@@ -67,6 +75,18 @@ describe('historical data integrity', () => {
   const allItems = [...timelineItems, ...layerItems];
   const ids = allItems.map((item) => item.id);
   const baseIds = new Set(timelineItems.map((item) => item.id));
+
+  it('keeps the data-driven country catalog unique and searchable', () => {
+    expect(new Set(allCountryIds).size).toBe(allCountryIds.length);
+    expect(Object.keys(countryById).length).toBe(countries.length);
+    for (const country of countries) {
+      expect(country.label.trim().length, country.id).toBeGreaterThan(1);
+      expect(country.short.trim().length, country.id).toBeGreaterThan(0);
+      expect(country.kind, country.id).toBeDefined();
+      expect(country.region, country.id).toBeDefined();
+      expect(countryById[country.id], country.id).toBe(country);
+    }
+  });
 
   it('has globally unique item and relation identifiers', () => {
     expect(new Set(ids).size).toBe(ids.length);

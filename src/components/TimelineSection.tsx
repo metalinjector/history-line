@@ -3,7 +3,7 @@ import { defaultRangeExtractor, useVirtualizer } from '@tanstack/react-virtual';
 import type { TimelineItem } from '../types';
 import type { TimelineState } from '../lib/useTimelineState';
 import { eras } from '../data/eras';
-import { timeKey } from '../lib/format';
+import { formatEraRange, timeKey } from '../lib/format';
 import { groupKeyOf } from '../lib/timeline';
 import { usePanning } from '../lib/usePanning';
 import { TimelineControls } from './TimelineControls';
@@ -48,6 +48,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
     layer,
     query,
     keyOnly,
+    showBce,
     era,
     tags,
     zoom,
@@ -56,6 +57,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
     setLayer,
     setQuery,
     setKeyOnly,
+    setShowBce,
     setEra,
     setTags,
     setZoom,
@@ -344,10 +346,10 @@ export function TimelineSection({ state, sectionRef }: Props) {
       <header className="timeline__head shell">
         <div>
           <p className="eyebrow">Основная хронология</p>
-          <h2 className="timeline__title">Одно время — восемь линий</h2>
+          <h2 className="timeline__title">Одна шкала — весь мир</h2>
         </div>
         <p className="timeline__hint lede">
-          Тащите поле мышью, приближайте ползунком, отключайте лишние страны. Нажмите на карточку — слева
+          Выберите современные страны или исторические государства, тащите поле мышью и меняйте масштаб. Нажмите на карточку — слева
           подсветится год, а значок <span className="timeline__hint-glyph">¶</span> откроет полный текст.
         </p>
       </header>
@@ -368,6 +370,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
           layer={layer}
           query={query}
           keyOnly={keyOnly}
+          showBce={showBce}
           era={era}
           tags={tags}
           zoom={zoom}
@@ -378,6 +381,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
           onLayerChange={setLayer}
           onQueryChange={setQuery}
           onKeyOnlyChange={setKeyOnly}
+          onShowBceChange={setShowBce}
           onEraChange={setEra}
           onTagsChange={setTags}
           onZoomChange={setZoom}
@@ -445,7 +449,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
                 title={item.note}
               >
                 <span className="era-rail__years">
-                  {item.from}–{item.to > 2100 ? '…' : item.to}
+                  {formatEraRange(item.from, item.to)}
                 </span>
                 <span className="era-rail__label">{item.label}</span>
               </button>
@@ -559,7 +563,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
                               <div className="era-band__inner">
                                 <span className="era-band__label">{group.era.label}</span>
                                 <span className="era-band__years">
-                                  {group.era.from}–{group.era.to > 2100 ? 'наши дни' : group.era.to}
+                                  {formatEraRange(group.era.from, group.era.to)}
                                 </span>
                                 <span className="era-band__note">{group.era.note}</span>
                               </div>

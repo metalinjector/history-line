@@ -1,0 +1,6 @@
+---
+id: ref-p082-ustanovlenie-diktatury-yu-pilsudskogo-v-po
+sources:
+  - label: "В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. 82."
+    kind: reference
+---

@@ -10,6 +10,7 @@ export type ControlsState = {
   layer: KindFilter;
   query: string;
   keyOnly: boolean;
+  showBce: boolean;
   era?: EraId;
   tags: string[];
   zoom: number;
@@ -23,6 +24,7 @@ type Props = ControlsState & {
   onLayerChange: (layer: KindFilter) => void;
   onQueryChange: (query: string) => void;
   onKeyOnlyChange: (value: boolean) => void;
+  onShowBceChange: (value: boolean) => void;
   onEraChange: (era?: EraId) => void;
   onTagsChange: (tags: string[]) => void;
   onZoomChange: (zoom: number) => void;
@@ -52,6 +54,7 @@ export function TimelineControls(props: Props) {
     layer,
     query,
     keyOnly,
+    showBce,
     era,
     tags,
     zoom,
@@ -62,6 +65,7 @@ export function TimelineControls(props: Props) {
     onLayerChange,
     onQueryChange,
     onKeyOnlyChange,
+    onShowBceChange,
     onEraChange,
     onTagsChange,
     onZoomChange,
@@ -79,7 +83,7 @@ export function TimelineControls(props: Props) {
   const zoomId = useId();
   const searchId = useId();
 
-  const isFiltered = layer !== 'all' || query !== '' || keyOnly || era !== undefined || tags.length > 0;
+  const isFiltered = layer !== 'all' || query !== '' || keyOnly || !showBce || era !== undefined || tags.length > 0;
 
   return (
     <div className="controls" data-no-pan>
@@ -148,6 +152,21 @@ export function TimelineControls(props: Props) {
             ))}
           </select>
         </label>
+
+        {/* Даты до нашей эры */}
+        <button
+          type="button"
+          className="toggle"
+          data-active={showBce || undefined}
+          aria-pressed={showBce}
+          onClick={() => onShowBceChange(!showBce)}
+          title="Показывать или скрывать на общей шкале все даты до нашей эры"
+        >
+          <span className="toggle__track" aria-hidden="true">
+            <span className="toggle__thumb" />
+          </span>
+          До н. э.
+        </button>
 
         {/* Только вехи */}
         <button
