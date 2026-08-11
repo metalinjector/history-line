@@ -73,6 +73,7 @@ npm run lint     # oxlint
 ```text
 content/
   items/<страна>/<id>.md      источники, трактовки и статья — по файлу на объект
+  layers/<слой>/<id>.md       то же самое для объектов слоёв
 plugins/
   markdownContent.ts          разбор front-matter на этапе сборки
 src/

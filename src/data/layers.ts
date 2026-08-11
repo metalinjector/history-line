@@ -1,5 +1,6 @@
 import type { Layer } from '../types';
 import { OWN_COLUMN } from '../types';
+import { articles, sourcesByItem } from './content';
 
 /**
  * Наложенные слои.
@@ -16,7 +17,7 @@ import { OWN_COLUMN } from '../types';
  * Добавить слой — значит добавить одну запись в этот массив. Требования
  * к фактам те же, что и для основной базы: см. docs/AI-CONTRIBUTING.md.
  */
-export const layers: Layer[] = [
+const layerDefinitions: Layer[] = [
   {
     id: 'einstein',
     title: 'Жизнь Альберта Эйнштейна',
@@ -509,6 +510,20 @@ export const layers: Layer[] = [
     ],
   },
 ];
+
+/**
+ * Источники объектов слоя подмешиваются из `content/layers/<слой>/<id>.md` —
+ * ровно так же, как у основной базы. Требование то же: два независимых
+ * источника, хотя бы один не энциклопедия.
+ */
+export const layers: Layer[] = layerDefinitions.map((layer) => ({
+  ...layer,
+  items: layer.items.map((item) => ({
+    ...item,
+    ...(sourcesByItem[item.id] ? { sources: sourcesByItem[item.id] } : {}),
+    ...(articles[item.id] ? { body: articles[item.id] } : {}),
+  })),
+}));
 
 export const layerById = Object.fromEntries(layers.map((layer) => [layer.id, layer]));
 
