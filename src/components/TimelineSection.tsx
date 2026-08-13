@@ -14,9 +14,7 @@ import { TimelineOverlay } from './TimelineOverlay';
 import { LayerMenu } from './LayerMenu';
 import { fitZoomToWidth } from '../lib/zoom';
 import { resolveTimelinePin, type TimelinePinGeometry } from '../lib/timelinePin';
-import { StoryChooser, StoryPlayer } from './StoryPanel';
-import { EditorialDashboard } from './EditorialDashboard';
-import { ResearchTools } from './ResearchTools';
+import { StoryPlayer } from './StoryPanel';
 import './TimelineSection.css';
 
 // Окна тянут за собой разбор Markdown, KaTeX и загрузчик Mermaid,
@@ -85,8 +83,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
   const rowsRef = useRef<HTMLDivElement>(null);
   /**
    * Якорь остаётся в потоке страницы, когда само окно становится fixed.
-   * Благодаря этому нет скачка разметки, а нижние разделы могут пройти под
-   * окном вместо того, чтобы вытолкнуть его за верхнюю панель.
+   * Благодаря этому нет скачка разметки, а окно остаётся на месте до конца
+   * страницы, не ограничиваясь границей родительской секции.
    */
   const stageAnchorRef = useRef<HTMLDivElement>(null);
   const [pinnedStage, setPinnedStage] = useState<TimelinePinGeometry>();
@@ -111,6 +109,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
         anchorLeft: anchorRect.left,
         anchorWidth: anchorRect.width,
         headerBottom,
+        viewportHeight: window.innerHeight,
       });
 
       setPinnedStage((previous) => {
@@ -118,7 +117,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
         if (
           previous?.top === next.top &&
           previous.left === next.left &&
-          previous.width === next.width
+          previous.width === next.width &&
+          previous.height === next.height
         ) {
           return previous;
         }
@@ -519,7 +519,12 @@ export function TimelineSection({ state, sectionRef }: Props) {
             data-pinned={pinnedStage ? true : undefined}
             style={
               pinnedStage
-                ? { top: pinnedStage.top, left: pinnedStage.left, width: pinnedStage.width }
+                ? {
+                    top: pinnedStage.top,
+                    left: pinnedStage.left,
+                    width: pinnedStage.width,
+                    '--viewport-height': `${pinnedStage.height}px`,
+                  } as React.CSSProperties
                 : undefined
             }
           >
@@ -665,29 +670,6 @@ export function TimelineSection({ state, sectionRef }: Props) {
           </div>
         </div>
 
-        <div className="timeline__tools">
-          <StoryChooser
-            stories={state.stories}
-            activeStoryId={state.activeStory?.id}
-            onStart={(storyId) => state.goToStoryStep(storyId, 0)}
-          />
-
-          <ResearchTools state={state} />
-
-          <EditorialDashboard
-            items={state.allItems}
-            countries={countries}
-            onSelect={(countryId, eraId) => {
-              state.stopStory();
-              onlyCountry(countryId);
-              setLayer('all');
-              setQuery('');
-              setKeyOnly(false);
-              setTags([]);
-              setPeriod({ type: 'era', id: eraId });
-            }}
-          />
-        </div>
       </div>
 
       {state.openedItem || state.openedDay || state.openedRelation ? (

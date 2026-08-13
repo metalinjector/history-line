@@ -1,0 +1,188 @@
+.workspace-panel {
+  position: fixed;
+  inset: var(--header-height) 0 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--paper-raised) 72%, transparent), transparent 260px),
+    var(--paper);
+  box-shadow: 0 24px 54px color-mix(in oklab, var(--ink) 18%, transparent);
+}
+
+.workspace-panel__header {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in oklab, var(--paper-raised) 94%, transparent);
+  backdrop-filter: blur(16px) saturate(135%);
+  box-shadow: 0 12px 26px -22px color-mix(in oklab, var(--ink) 55%, transparent);
+}
+
+.workspace-panel__header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-block: 18px 14px;
+}
+
+.workspace-panel__heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.workspace-panel__heading h2 {
+  margin-top: 2px;
+  font-size: clamp(20px, 2.2vw, 29px);
+}
+
+.workspace-panel__heading p:last-child {
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-faint);
+}
+
+.workspace-panel__glyph {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid color-mix(in oklab, var(--accent) 34%, var(--line));
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--accent) 8%, var(--paper));
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--accent);
+}
+
+.workspace-panel__close {
+  flex: none;
+}
+
+.workspace-panel__close span {
+  font-size: 17px;
+  line-height: 1;
+}
+
+.workspace-panel__tabs {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scrollbar-width: none;
+}
+
+.workspace-panel__tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.workspace-panel__tab {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--ink-faint);
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.workspace-panel__tab:hover {
+  color: var(--ink-strong);
+  background: color-mix(in oklab, var(--paper) 62%, transparent);
+}
+
+.workspace-panel__tab[aria-selected='true'] {
+  border-color: color-mix(in oklab, var(--accent) 36%, var(--line));
+  background: color-mix(in oklab, var(--accent) 9%, var(--paper));
+  color: var(--accent);
+}
+
+.workspace-panel__tab span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.workspace-panel__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.workspace-panel__content {
+  padding-block: 28px 72px;
+}
+
+/* Перенесённые секции больше не являются этажами главной страницы: внутри
+   рабочей панели они используют всю доступную ширину без повторной оболочки. */
+.workspace-panel .builder,
+.workspace-panel .method {
+  padding-block: 10px 28px;
+  border-top: 0;
+}
+
+.workspace-panel .builder > .shell,
+.workspace-panel .method > .shell,
+.workspace-panel .site-footer > .shell {
+  width: 100%;
+  margin-inline: 0;
+}
+
+.workspace-panel .site-footer {
+  margin-top: 20px;
+  padding-block: 32px 10px;
+  border-radius: var(--radius-lg);
+}
+
+.workspace-panel .research-tools {
+  margin-bottom: 0;
+  padding: 20px;
+  background: color-mix(in oklab, var(--paper-raised) 72%, transparent);
+}
+
+.workspace-panel .editorial {
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .workspace-panel__header-inner {
+    align-items: flex-start;
+    padding-block: 13px 10px;
+  }
+
+  .workspace-panel__heading p:last-child,
+  .workspace-panel__glyph {
+    display: none;
+  }
+
+  .workspace-panel__heading h2 {
+    font-size: 19px;
+  }
+
+  .workspace-panel__close {
+    padding-inline: 12px;
+  }
+
+  .workspace-panel__tabs {
+    padding-bottom: 8px;
+  }
+
+  .workspace-panel__content {
+    padding-block: 18px 48px;
+  }
+}

@@ -1,20 +1,53 @@
 import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 import type { ThemeName } from '../types';
+import {
+  workspaceSectionById,
+  workspaceSections,
+  type WorkspaceSectionId,
+} from './workspaceSections';
 import './SiteHeader.css';
 
 type Props = {
   theme: ThemeName;
   onToggleTheme: () => void;
   onJumpToTimeline: () => void;
+  activeWorkspace: WorkspaceSectionId | null;
+  onOpenWorkspace: (section: WorkspaceSectionId) => void;
+  onCloseWorkspace: () => void;
 };
 
-const links = [
-  { href: '#timeline', label: 'Хронология' },
-  { href: '#builder', label: 'Персоналии' },
-  { href: '#method', label: 'Как это устроено' },
-];
+export function SiteHeader({
+  theme,
+  onToggleTheme,
+  onJumpToTimeline,
+  activeWorkspace,
+  onOpenWorkspace,
+  onCloseWorkspace,
+}: Props) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-export function SiteHeader({ theme, onToggleTheme, onJumpToTimeline }: Props) {
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) setMenuOpen(false);
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      setMenuOpen(false);
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown, true);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown, true);
+    };
+  }, [menuOpen]);
+
   return (
     <motion.header
       className="site-header"
@@ -28,6 +61,7 @@ export function SiteHeader({ theme, onToggleTheme, onJumpToTimeline }: Props) {
           href="#top"
           onClick={(event) => {
             event.preventDefault();
+            onCloseWorkspace();
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         >
@@ -44,20 +78,72 @@ export function SiteHeader({ theme, onToggleTheme, onJumpToTimeline }: Props) {
         </a>
 
         <nav className="site-header__nav" aria-label="Разделы сайта">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="site-header__link"
-              onClick={(event) => {
-                if (link.href !== '#timeline') return;
-                event.preventDefault();
-                onJumpToTimeline();
-              }}
+          <button
+            type="button"
+            className="site-header__link site-header__timeline-link"
+            aria-current={activeWorkspace ? undefined : 'page'}
+            onClick={onJumpToTimeline}
+          >
+            Хронология
+          </button>
+
+          <div className="site-header__menu" ref={menuRef}>
+            <button
+              type="button"
+              className="site-header__link site-header__menu-trigger"
+              aria-expanded={menuOpen}
+              aria-controls="site-sections-menu"
+              aria-label={`${menuOpen ? 'Закрыть' : 'Открыть'} меню разделов`}
+              data-active={activeWorkspace || undefined}
+              onClick={() => setMenuOpen((value) => !value)}
             >
-              {link.label}
-            </a>
-          ))}
+              <span className="site-header__menu-label">Разделы</span>
+              <span className="site-header__menu-icon" aria-hidden="true">☰</span>
+              {activeWorkspace ? (
+                <span className="site-header__active-section">
+                  {workspaceSectionById[activeWorkspace].shortLabel}
+                </span>
+              ) : null}
+              <span className="site-header__chevron" aria-hidden="true">⌄</span>
+            </button>
+
+            {menuOpen ? (
+              <motion.div
+                id="site-sections-menu"
+                className="site-header__dropdown"
+                initial={{ opacity: 0, y: -7, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <div className="site-header__dropdown-head">
+                  <b>Рабочие разделы</b>
+                  <span>Открываются поверх шкалы и не сбивают её позицию</span>
+                </div>
+                <div className="site-header__dropdown-grid">
+                  {workspaceSections.map((section) => (
+                    <button
+                      key={section.id}
+                      type="button"
+                      className="site-header__dropdown-item"
+                      data-active={section.id === activeWorkspace || undefined}
+                      onClick={() => {
+                        onOpenWorkspace(section.id);
+                        setMenuOpen(false);
+                      }}
+                    >
+                      <span className="site-header__dropdown-glyph" aria-hidden="true">
+                        {section.glyph}
+                      </span>
+                      <span>
+                        <b>{section.shortLabel}</b>
+                        <small>{section.description}</small>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            ) : null}
+          </div>
         </nav>
 
         <button

@@ -6,6 +6,7 @@ const base = {
   anchorLeft: 175,
   anchorWidth: 1560,
   headerBottom: 60,
+  viewportHeight: 900,
 };
 
 describe('каскадная фиксация окна хронологии', () => {
@@ -18,6 +19,7 @@ describe('каскадная фиксация окна хронологии', ()
       top: 60 + TIMELINE_PIN_GAP,
       left: 175,
       width: 1560,
+      height: 900 - 60 - TIMELINE_PIN_GAP,
     });
   });
 
@@ -26,10 +28,16 @@ describe('каскадная фиксация окна хронологии', ()
       top: 60 + TIMELINE_PIN_GAP,
       left: 175,
       width: 1560,
+      height: 900 - 60 - TIMELINE_PIN_GAP,
     });
   });
 
   it('отключает каскад там, где окно заняло бы почти весь экран', () => {
     expect(resolveTimelinePin({ ...base, enabled: false, anchorTop: -5000 })).toBeUndefined();
+  });
+
+  it('растягивает закреплённое окно точно до нижней границы экрана', () => {
+    const geometry = resolveTimelinePin({ ...base, anchorTop: -200 });
+    expect(geometry && geometry.top + geometry.height).toBe(base.viewportHeight);
   });
 });

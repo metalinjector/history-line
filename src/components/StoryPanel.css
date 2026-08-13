@@ -13,7 +13,8 @@
   background: color-mix(in oklab, var(--paper-raised) 68%, transparent);
 }
 
-.stories > summary {
+.stories > summary,
+.stories__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,19 +28,35 @@
   display: none;
 }
 
-.stories > summary > span:first-child {
+.stories > summary > span:first-child,
+.stories__head > span:first-child {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.stories > summary b {
+.stories > summary b,
+.stories__head b {
   font-size: 13px;
 }
 
-.stories > summary small {
+.stories > summary small,
+.stories__head small {
   font-size: 10.5px;
   color: var(--ink-faint);
+}
+
+.stories--workspace {
+  border-radius: var(--radius-lg);
+  background: color-mix(in oklab, var(--paper-raised) 70%, transparent);
+}
+
+.stories--workspace .stories__head {
+  padding: 18px 20px;
+}
+
+.stories--workspace .stories__grid {
+  padding: 18px;
 }
 
 .stories__count {

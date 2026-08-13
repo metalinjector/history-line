@@ -106,16 +106,19 @@
 
 .timeline__stage-anchor {
   --viewport-height: clamp(520px, calc(100vh - 290px), 940px);
-  height: var(--viewport-height);
+  /* После переноса нижних разделов в шапку якорю всё ещё нужен небольшой
+     прокручиваемый запас: без него последнему элементу страницы не хватило бы
+     хода, чтобы дойти до верхней панели и перейти в закреплённый режим. */
+  --pin-runway: max(320px, calc(100dvh - var(--viewport-height) - 32px));
+  height: calc(var(--viewport-height) + var(--pin-runway));
 }
 
 /*
  * На широком экране окно шкалы образует верхний слой «каскада»:
- * после того как оно дошло до шапки сайта, оно остаётся под ней, а инструменты
- * и редакторские блоки ниже продолжают прокручиваться под непрозрачным полем.
- * Якорь сохраняет место в потоке, а fixed-сцена больше не ограничена концом
- * родительской секции. Внутренняя прокрутка viewport отвечает за годы, а
- * .thead — за строку стран, поэтому две прокрутки не конкурируют.
+ * после того как оно дошло до шапки сайта, оно остаётся под ней до конца
+ * страницы. Якорь сохраняет место в потоке, а fixed-сцена больше не ограничена
+ * концом родительской секции. Внутренняя прокрутка viewport отвечает за годы,
+ * а .thead — за строку стран, поэтому две прокрутки не конкурируют.
  */
 .timeline__stage {
   width: 100%;
@@ -130,8 +133,6 @@
   --viewport-height: calc(100vh - var(--header-height) - 36px);
 }
 
-/* Инструменты после шкалы: маршруты, экспорт, редакторская матрица.
-   Всё это нужно уже после того, как читатель посмотрел на таблицу. */
 .thead__inherited {
   font-family: var(--font-mono);
   font-size: 8.5px;
@@ -140,13 +141,6 @@
   color: var(--ink-ghost);
   white-space: nowrap;
   cursor: help;
-}
-
-.timeline__tools {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 16px;
 }
 
 .timeline__viewport {
@@ -932,6 +926,7 @@
 @media (max-width: 720px) {
   .timeline__stage-anchor {
     --viewport-height: clamp(440px, calc(100vh - 260px), 720px);
+    --pin-runway: 0px;
   }
 
   .timeline__origin-inner,
@@ -941,6 +936,12 @@
 
   .timeline__origin-year {
     font-size: 34px;
+  }
+}
+
+@media (max-height: 679px) {
+  .timeline__stage-anchor {
+    --pin-runway: 0px;
   }
 }
 
