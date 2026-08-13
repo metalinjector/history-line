@@ -48,6 +48,15 @@ function expectValidItem(item: TimelineItem) {
   if (item.dateLabel && /\d{3}/.test(item.dateLabel)) {
     expect(Math.abs(item.year), `${item.id}: ${item.dateLabel}`).toBeGreaterThanOrEqual(100);
   }
+  // Третья ошибка того же импорта: «V – III вв. до н. э.» распозналось как
+  // «V – ILL вв.» и дало −9900 год. Римские цифры в подписи должны быть
+  // настоящими римскими цифрами.
+  for (const token of item.dateLabel?.match(/\b[IVXLCDM]{1,7}\b/g) ?? []) {
+    expect(
+      /^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/.test(token),
+      `${item.id}: «${token}» в подписи «${item.dateLabel}»`,
+    ).toBe(true);
+  }
   if (item.month !== undefined) expect(item.month).toBeGreaterThanOrEqual(1);
   if (item.month !== undefined) expect(item.month).toBeLessThanOrEqual(12);
   if (item.day !== undefined) {

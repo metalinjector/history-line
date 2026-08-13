@@ -114,6 +114,16 @@
 
 /* Инструменты после шкалы: маршруты, экспорт, редакторская матрица.
    Всё это нужно уже после того, как читатель посмотрел на таблицу. */
+.thead__inherited {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-ghost);
+  white-space: nowrap;
+  cursor: help;
+}
+
 .timeline__tools {
   display: flex;
   flex-direction: column;

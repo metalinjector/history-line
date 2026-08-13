@@ -93,6 +93,13 @@ export function TimelineHeader({
                       <span aria-hidden="true">×</span>
                       <span className="visually-hidden">Убрать слой {track.label}</span>
                     </button>
+                  ) : track.inherited ? (
+                    // Унаследованную дорожку нельзя скрыть отдельно: она пришла
+                    // вместе со своим наследником и уйдёт вместе с ним. Крестик
+                    // здесь означал бы «отделить», а не «скрыть», — лучше без него.
+                    <span className="thead__inherited" title={`Древняя линия колонки «${column.tracks[0].label}»`}>
+                      унаследована
+                    </span>
                   ) : canHide ? (
                     <button
                       type="button"

@@ -3,6 +3,7 @@ import type { CountryId, CountrySet, KindFilter, Period, RelationDraftInput, The
 import { allCountryIds, countries, countryById, defaultCountryIds } from '../data/countries';
 import {
   buildColumns,
+  effectiveCountryIds,
   detachCountry as detachFromGroups,
   mergeCountries as mergeIntoGroups,
   MAX_COLUMNS,
@@ -154,8 +155,18 @@ export function useTimelineState() {
     return { columns: applied.columns, layerState: applied.state };
   }, [countryColumns, activeLayerIds, layerPlacements]);
 
-  /** Колонки, которые сейчас делят несколько линий. */
-  const sharedColumns = useMemo(() => columns.filter((column) => column.shared), [columns]);
+  /**
+   * Колонки, которые читатель объединил сам. Унаследованные дорожки
+   * (Древний Рим в колонке Италии) сюда не считаются: их не он создавал
+   * и не ему разъединять.
+   */
+  const sharedColumns = useMemo(
+    () =>
+      columns.filter(
+        (column) => column.tracks.filter((track) => track.countryId && !track.inherited).length > 1,
+      ),
+    [columns],
+  );
 
   /** Объекты включённых слоёв, приведённые к обычному виду. */
   const layerItems = useMemo(
@@ -173,9 +184,16 @@ export function useTimelineState() {
     [addedRelations],
   );
 
+  /**
+   * Линии, которые сейчас на шкале: выбранные плюс их предшественники.
+   * Древний Рим попадает в выборку вместе с Италией, пока сам не выбран
+   * отдельной колонкой, — см. data/columns.ts.
+   */
+  const shownCountryIds = useMemo(() => effectiveCountryIds(activeCountryIds), [activeCountryIds]);
+
   const filter = useMemo(
-    () => ({ layer, countries: activeCountryIds, query, tags, keyOnly, period, showBce }),
-    [layer, activeCountryIds, query, tags, keyOnly, period, showBce],
+    () => ({ layer, countries: shownCountryIds, query, tags, keyOnly, period, showBce }),
+    [layer, shownCountryIds, query, tags, keyOnly, period, showBce],
   );
 
   const filteredItems = useMemo(() => filterItems(allItems, filter), [allItems, filter]);
@@ -193,14 +211,28 @@ export function useTimelineState() {
 
   const stats = useMemo(() => summarize(filteredItems), [filteredItems]);
 
-  /** Сколько объектов дала бы каждая страна при текущих остальных фильтрах. */
+  /**
+   * Сколько объектов дала бы каждая линия при текущих остальных фильтрах.
+   *
+   * К своим объектам линии добавляются объекты её предшественников — но только
+   * тех, что не выбраны отдельной колонкой. Это ровно то, что читатель получит,
+   * нажав на чип: Италия вместе с Древним Римом, если Рима нет своей колонкой.
+   */
   const countryCounts = useMemo(() => {
     const matching = filterItems(allItems, { ...filter, countries: allCountryIds });
-    const counts: Record<string, number> = {};
-    for (const id of allCountryIds) counts[id] = 0;
-    for (const item of matching) counts[item.country] += 1;
+    const own: Record<string, number> = {};
+    for (const id of allCountryIds) own[id] = 0;
+    for (const item of matching) own[item.country] = (own[item.country] ?? 0) + 1;
+
+    const selected = new Set(activeCountryIds);
+    const counts = { ...own };
+    for (const country of countries) {
+      for (const ancestor of country.ancestors ?? []) {
+        if (!selected.has(ancestor)) counts[country.id] += own[ancestor] ?? 0;
+      }
+    }
     return counts;
-  }, [allItems, filter]);
+  }, [activeCountryIds, allItems, filter]);
 
   /**
    * Сколько объектов до нашей эры дали бы выбранные линии, если бы шкала

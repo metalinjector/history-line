@@ -1389,8 +1389,8 @@ export const referenceItems: TimelineItem[] = [
   {
     "id": "ref-p022-ekspansiya-rima-na-apenninskom-poluostrove",
     "country": "ancient-rome",
-    "year": -9900,
-    "dateLabel": "V – ILL вв. до н. э.",
+    "year": -300,
+    "dateLabel": "V – III вв. до н. э.",
     "kind": "event",
     "title": "Экспансия Рима на Апеннинском полуострове",
     "summary": "Рим был расположен в густонаселенной области Италии, поэтому римляне вели непрерывные войны — сначала с этрусками, затем с другими италийскими племенами.",

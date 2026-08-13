@@ -159,6 +159,42 @@ const seeds: CountrySeed[] = [
   historical('kingdom-kongo', 'Королевство Конго', 'КОН', 'Историческое государство в нижнем течении реки Конго.'),
 ];
 
+/**
+ * Линии-предшественники.
+ *
+ * Каталог разводит Древний Рим и Италию сознательно: это разные государства,
+ * и подписывать римское событие словом «Италия» было бы неправдой. Но читателю,
+ * который выбрал Италию, античность нужна — иначе колонка начинается с VI века,
+ * а переключатель «до н. э.» ничего не показывает.
+ *
+ * Решение — уже существующий механизм колонки на несколько дорожек: линия
+ * предшественника подселяется в колонку наследника отдельной дорожкой,
+ * со своим цветом и своей подписью. Ничего не переименовывается и не сливается.
+ *
+ * Правило одно: **у предшественника ровно один наследник**. Иначе один и тот же
+ * объект попал бы в две колонки; это проверяется тестом.
+ * Если предшественник выбран отдельной колонкой, наследник его не забирает.
+ */
+const predecessors: Record<CountryId, CountryId[]> = {
+  italy: ['ancient-rome'],
+  greece: ['ancient-greece', 'ancient-macedonia'],
+  egypt: ['ancient-egypt'],
+  iraq: ['mesopotamia', 'assyria', 'babylonia'],
+  iran: ['elam', 'achaemenid-persia'],
+  israel: ['ancient-israel'],
+  lebanon: ['phoenicia'],
+  turkey: ['hittites', 'byzantium', 'ottoman-empire'],
+  russia: ['kievan-rus'],
+  germany: ['holy-roman-empire'],
+  france: ['frankish-empire'],
+  mongolia: ['mongol-empire'],
+  india: ['delhi-sultanate', 'mughal-empire'],
+  mexico: ['olmec', 'aztec'],
+  peru: ['inca'],
+  mali: ['songhai'],
+  congo: ['kingdom-kongo'],
+};
+
 const originalColors: Record<string, [string, string]> = {
   germany: ['38 92% 58%', '32 78% 38%'],
   england: ['350 82% 64%', '350 70% 42%'],
@@ -176,7 +212,7 @@ export const countries: Country[] = seeds.map((country, index) => {
     `${hue} 68% 58%`,
     `${hue} 60% 36%`,
   ];
-  return { ...country, color, colorInk };
+  return { ...country, color, colorInk, ...(predecessors[country.id] ? { ancestors: predecessors[country.id] } : {}) };
 });
 
 export const countryById: Record<CountryId, Country> = Object.fromEntries(

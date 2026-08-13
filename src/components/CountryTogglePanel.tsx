@@ -73,10 +73,14 @@ export function CountryTogglePanel({
     return haystack.includes(query);
   });
 
-  /** Страна → её соседи по общей колонке. */
+  /**
+   * Страна → её соседи по общей колонке, которых читатель подселил сам.
+   * Унаследованные дорожки сюда не входят: их нельзя разъединить,
+   * они появляются и исчезают вместе со своим наследником.
+   */
   const partners = new Map<CountryId, Country[]>();
   for (const column of sharedColumns) {
-    const countryTracks = column.tracks.filter((track) => track.countryId);
+    const countryTracks = column.tracks.filter((track) => track.countryId && !track.inherited);
     for (const track of countryTracks) {
       partners.set(
         track.countryId!,
@@ -85,6 +89,16 @@ export function CountryTogglePanel({
           .map((other) => countryById[other.countryId!]),
       );
     }
+  }
+
+  /** Страна → унаследованные ею древние линии, которые сейчас на шкале. */
+  const inheritedBy = new Map<CountryId, Country[]>();
+  for (const country of countries) {
+    if (!activeSet.has(country.id)) continue;
+    const taken = (country.ancestors ?? [])
+      .filter((id) => !activeSet.has(id) && countryById[id])
+      .map((id) => countryById[id]);
+    if (taken.length > 0) inheritedBy.set(country.id, taken);
   }
 
   // Меню закрывается по клику мимо и по Esc.
@@ -242,6 +256,7 @@ export function CountryTogglePanel({
           const active = activeSet.has(country.id);
           const isLast = active && activeIds.length === 1;
           const columnPartners = partners.get(country.id) ?? [];
+          const inherited = inheritedBy.get(country.id) ?? [];
           const menuOpen = openMenu === country.id;
 
           // Подселить можно только к видимой стране, которая ещё не в этой же колонке
@@ -295,6 +310,17 @@ export function CountryTogglePanel({
                 ) : null}
                 <span className="country-chip__count">{counts[country.id] ?? 0}</span>
               </button>
+
+              {inherited.length > 0 ? (
+                <span
+                  className="country-chip__inherited"
+                  title={`Колонка «${country.label}» показывает и древние линии: ${inherited
+                    .map((line) => line.label)
+                    .join(', ')}. Выберите такую линию отдельно, чтобы вынести её в свою колонку.`}
+                >
+                  + {inherited.map((line) => line.label).join(', ')}
+                </span>
+              ) : null}
 
               <button
                 type="button"

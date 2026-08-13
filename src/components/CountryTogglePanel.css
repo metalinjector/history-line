@@ -302,6 +302,18 @@
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--c) 24%, transparent);
 }
 
+/* Приписка «+ Древний Рим» на чипе наследника. */
+.country-chip__inherited {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px 0 2px;
+  font-size: 10.5px;
+  line-height: 1;
+  color: var(--ink-ghost);
+  white-space: nowrap;
+  cursor: help;
+}
+
 .country-chip__count {
   font-family: var(--font-mono);
   font-size: 10.5px;
@@ -309,11 +321,35 @@
   font-variant-numeric: tabular-nums;
 }
 
-.country-chip[data-active] .country-chip__count {
+.country-chip[data-active] /* Приписка «+ Древний Рим» на чипе наследника. */
+.country-chip__inherited {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px 0 2px;
+  font-size: 10.5px;
+  line-height: 1;
+  color: var(--ink-ghost);
+  white-space: nowrap;
+  cursor: help;
+}
+
+.country-chip__count {
   color: color-mix(in oklab, var(--c-ink) 80%, var(--ink-soft));
 }
 
-[data-theme='atlas'] .country-chip[data-active] .country-chip__count {
+[data-theme='atlas'] .country-chip[data-active] /* Приписка «+ Древний Рим» на чипе наследника. */
+.country-chip__inherited {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px 0 2px;
+  font-size: 10.5px;
+  line-height: 1;
+  color: var(--ink-ghost);
+  white-space: nowrap;
+  cursor: help;
+}
+
+.country-chip__count {
   color: color-mix(in oklab, var(--c) 70%, var(--ink-soft));
 }
 

@@ -12,6 +12,36 @@ export const MAX_COLUMNS = 6;
 export const MAX_PER_COLUMN = 3;
 
 /**
+ * Какие линии-предшественники достаются выбранным линиям.
+ *
+ * Предшественник подселяется в колонку наследника **только если сам не выбран**
+ * отдельной колонкой: если читатель включил и Италию, и Древний Рим, у Рима
+ * своя колонка, и дублировать его в итальянской нельзя.
+ *
+ * Возвращает соответствие «предшественник → наследник», по которому потом
+ * строятся дорожки и расширяется фильтр по странам.
+ */
+export function impliedAncestors(activeIds: CountryId[]): Map<CountryId, CountryId> {
+  const active = new Set(activeIds);
+  const result = new Map<CountryId, CountryId>();
+
+  for (const id of activeIds) {
+    for (const ancestor of countryById[id]?.ancestors ?? []) {
+      if (active.has(ancestor) || result.has(ancestor)) continue;
+      if (!countryById[ancestor]) continue;
+      result.set(ancestor, id);
+    }
+  }
+
+  return result;
+}
+
+/** Выбранные линии плюс те, что достались им по наследству, — для фильтра. */
+export function effectiveCountryIds(activeIds: CountryId[]): CountryId[] {
+  return [...activeIds, ...impliedAncestors(activeIds).keys()];
+}
+
+/**
  * Объединения колонок, заданные пользователем.
  * Каждая группа — список стран, которые делят одну дорожку.
  * По умолчанию пусто: у каждой страны своя колонка.
@@ -58,19 +88,26 @@ export function detachCountry(groups: ColumnGroups, id: CountryId): ColumnGroups
   return normalizeGroups(groups.map((group) => group.filter((member) => member !== id)));
 }
 
-function makeColumn(countryIds: CountryId[]): TimelineColumn {
-  const tracks: Track[] = countryIds.map((id) => {
-    const country = countryById[id];
-    return {
-      id: `country:${country.id}`,
-      label: country.label,
-      short: country.short,
-      color: country.color,
-      colorInk: country.colorInk,
-      kind: 'country' as const,
-      countryId: country.id,
-    };
-  });
+function trackOf(id: CountryId, inherited = false): Track {
+  const country = countryById[id];
+  return {
+    id: `country:${country.id}`,
+    label: country.label,
+    short: country.short,
+    color: country.color,
+    colorInk: country.colorInk,
+    kind: 'country' as const,
+    countryId: country.id,
+    ...(inherited ? { inherited: true } : {}),
+  };
+}
+
+function makeColumn(countryIds: CountryId[], inherited: CountryId[] = []): TimelineColumn {
+  // Дорожка предшественника идёт после своей страны: сначала «Италия», потом «Древний Рим».
+  const tracks: Track[] = [
+    ...countryIds.map((id) => trackOf(id)),
+    ...inherited.map((id) => trackOf(id, true)),
+  ].slice(0, MAX_PER_COLUMN);
 
   return {
     id: countryIds.join('+'),
@@ -100,6 +137,11 @@ export function buildColumns(activeIds: CountryId[], groups: ColumnGroups): Time
     for (const id of members) groupOf.set(id, members);
   }
 
+  const inheritedBy = new Map<CountryId, CountryId[]>();
+  for (const [ancestor, host] of impliedAncestors(active)) {
+    inheritedBy.set(host, [...(inheritedBy.get(host) ?? []), ancestor]);
+  }
+
   const used = new Set<CountryId>();
   const columns: TimelineColumn[] = [];
 
@@ -107,7 +149,8 @@ export function buildColumns(activeIds: CountryId[], groups: ColumnGroups): Time
     if (used.has(id)) continue;
     const members = groupOf.get(id) ?? [id];
     for (const member of members) used.add(member);
-    columns.push(makeColumn(members));
+    const inherited = members.flatMap((member) => inheritedBy.get(member) ?? []);
+    columns.push(makeColumn(members, inherited));
   }
 
   return columns;
