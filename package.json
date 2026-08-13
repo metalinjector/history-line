@@ -9,6 +9,7 @@
     "lint": "oxlint",
     "test": "vitest run",
     "validate:data": "vitest run src/data/dataIntegrity.test.ts",
+    "validate:attribution": "python scripts/apply_reference_country_overrides.py --check",
     "preview": "vite preview"
   },
   "dependencies": {

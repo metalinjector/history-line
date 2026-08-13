@@ -104,11 +104,29 @@
 
 /* ---------- Сцена: поле хронологии + панель фокуса ---------- */
 
-.timeline__stage {
+.timeline__stage-anchor {
   --viewport-height: clamp(520px, calc(100vh - 290px), 940px);
+  height: var(--viewport-height);
 }
 
-.timeline__stage[data-expanded] {
+/*
+ * На широком экране окно шкалы образует верхний слой «каскада»:
+ * после того как оно дошло до шапки сайта, оно остаётся под ней, а инструменты
+ * и редакторские блоки ниже продолжают прокручиваться под непрозрачным полем.
+ * Якорь сохраняет место в потоке, а fixed-сцена больше не ограничена концом
+ * родительской секции. Внутренняя прокрутка viewport отвечает за годы, а
+ * .thead — за строку стран, поэтому две прокрутки не конкурируют.
+ */
+.timeline__stage {
+  width: 100%;
+}
+
+.timeline__stage[data-pinned] {
+  position: fixed;
+  z-index: 20;
+}
+
+.timeline__stage-anchor[data-expanded] {
   --viewport-height: calc(100vh - var(--header-height) - 36px);
 }
 
@@ -906,13 +924,13 @@
 /* ---------- Адаптивность ---------- */
 
 @media (max-width: 1180px) {
-  .timeline__stage[data-expanded] {
+  .timeline__stage-anchor[data-expanded] {
     --viewport-height: calc(100vh - var(--header-height) - 24px);
   }
 }
 
 @media (max-width: 720px) {
-  .timeline__stage {
+  .timeline__stage-anchor {
     --viewport-height: clamp(440px, calc(100vh - 260px), 720px);
   }
 

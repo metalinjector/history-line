@@ -8,6 +8,7 @@ import { hasVerifiedSources, isRelationVerified } from '../lib/provenance';
 import type { SourceLink, TimelineItem } from '../types';
 import { stories } from './stories';
 import { contentManifest } from './content';
+import referenceCountryOverrides from '../../scripts/reference_country_overrides.json';
 
 const sourceKinds = new Set<SourceLink['kind']>(['archive', 'academic', 'institution', 'encyclopedia', 'reference']);
 
@@ -93,6 +94,7 @@ describe('historical data integrity', () => {
   const allItems = [...timelineItems, ...layerItems];
   const ids = allItems.map((item) => item.id);
   const baseIds = new Set(timelineItems.map((item) => item.id));
+  const itemById = new Map(timelineItems.map((item) => [item.id, item]));
 
   it('keeps the data-driven country catalog unique and searchable', () => {
     expect(new Set(allCountryIds).size).toBe(allCountryIds.length);
@@ -123,6 +125,48 @@ describe('historical data integrity', () => {
 
   it('keeps item fields and dates inside the domain contract', () => {
     allItems.forEach(expectValidItem);
+  });
+
+  it('keeps every manually audited reference attribution', () => {
+    for (const [id, country] of Object.entries(referenceCountryOverrides)) {
+      expect(itemById.get(id), `${id}: missing audited reference item`).toBeDefined();
+      expect(itemById.get(id)?.country, id).toBe(country);
+    }
+  });
+
+  it('keeps the international fallback tag consistent with reference attribution', () => {
+    for (const item of timelineItems.filter((candidate) => candidate.verification === 'reference')) {
+      if (item.country === 'world') {
+        expect(
+          item.tags.includes('всемирная история') || item.tags.includes('международные отношения'),
+          item.id,
+        ).toBe(true);
+      } else {
+        expect(item.tags, item.id).not.toContain('всемирная история');
+      }
+    }
+  });
+
+  it('attributes the imperial history of 962–1806 to the Holy Roman Empire', () => {
+    const imperialItems = [
+      'de-hre-962',
+      'de-worms-1122',
+      'de-barbarossa-1152',
+      'de-golden-bull-1356',
+      'de-augsburg-1555',
+      'de-thirty-years-1618',
+      'de-westphalia-1648',
+      'de-hre-end-1806',
+    ];
+    for (const id of imperialItems) {
+      expect(itemById.get(id)?.country, id).toBe('holy-roman-empire');
+    }
+  });
+
+  it('places qualified BCE millennia on the correct side of the millennium', () => {
+    expect(itemById.get('ref-p009-vozniknovenie-goroda-gosudarstva-apipur')?.year).toBe(-2000);
+    expect(itemById.get('ref-p011-vozniknovenie-plemennogo-soyuza-persov')?.year).toBe(-1000);
+    expect(itemById.get('ref-p006-vozniknovenie-pervyh-gosudarstv-v-doline-n')?.year).toBe(-3100);
   });
 
   it('does not leave dangling relation endpoints', () => {

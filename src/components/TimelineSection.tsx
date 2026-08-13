@@ -13,6 +13,7 @@ import { TimelineRow } from './TimelineRow';
 import { TimelineOverlay } from './TimelineOverlay';
 import { LayerMenu } from './LayerMenu';
 import { fitZoomToWidth } from '../lib/zoom';
+import { resolveTimelinePin, type TimelinePinGeometry } from '../lib/timelinePin';
 import { StoryChooser, StoryPlayer } from './StoryPanel';
 import { EditorialDashboard } from './EditorialDashboard';
 import { ResearchTools } from './ResearchTools';
@@ -82,8 +83,69 @@ export function TimelineSection({ state, sectionRef }: Props) {
    *  стартовая строка «1 год»). Без этого scrollMargin виртуализатор
    *  считал бы видимый диапазон от нуля и прорисовывал бы лишние строки. */
   const rowsRef = useRef<HTMLDivElement>(null);
+  /**
+   * Якорь остаётся в потоке страницы, когда само окно становится fixed.
+   * Благодаря этому нет скачка разметки, а нижние разделы могут пройти под
+   * окном вместо того, чтобы вытолкнуть его за верхнюю панель.
+   */
+  const stageAnchorRef = useRef<HTMLDivElement>(null);
+  const [pinnedStage, setPinnedStage] = useState<TimelinePinGeometry>();
   /** Слой, который сейчас тащат мышью: колонки становятся зонами приёма. */
   const [draggingLayerId, setDraggingLayerId] = useState<string | undefined>();
+
+  useEffect(() => {
+    const anchor = stageAnchorRef.current;
+    if (!anchor) return;
+
+    const media = window.matchMedia('(min-width: 721px) and (min-height: 680px)');
+    let frame = 0;
+
+    const measure = () => {
+      frame = 0;
+      const anchorRect = anchor.getBoundingClientRect();
+      const headerBottom =
+        document.querySelector<HTMLElement>('.site-header')?.getBoundingClientRect().bottom ?? 60;
+      const next = resolveTimelinePin({
+        enabled: media.matches,
+        anchorTop: anchorRect.top,
+        anchorLeft: anchorRect.left,
+        anchorWidth: anchorRect.width,
+        headerBottom,
+      });
+
+      setPinnedStage((previous) => {
+        if (!next) return previous ? undefined : previous;
+        if (
+          previous?.top === next.top &&
+          previous.left === next.left &&
+          previous.width === next.width
+        ) {
+          return previous;
+        }
+        return next;
+      });
+    };
+
+    const scheduleMeasure = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(measure);
+    };
+
+    measure();
+    window.addEventListener('scroll', scheduleMeasure, { passive: true });
+    window.addEventListener('resize', scheduleMeasure);
+    media.addEventListener('change', scheduleMeasure);
+    const observer = new ResizeObserver(scheduleMeasure);
+    observer.observe(anchor);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', scheduleMeasure);
+      window.removeEventListener('resize', scheduleMeasure);
+      media.removeEventListener('change', scheduleMeasure);
+      observer.disconnect();
+    };
+  }, []);
 
   /** Плоский список в порядке шкалы — для навигации стрелками. */
   const ordered = useMemo(
@@ -447,30 +509,43 @@ export function TimelineSection({ state, sectionRef }: Props) {
           </nav>
         ) : null}
 
-        <div className="timeline__stage" data-expanded={expanded || undefined}>
+        <div
+          className="timeline__stage-anchor"
+          ref={stageAnchorRef}
+          data-expanded={expanded || undefined}
+        >
           <div
-            className="timeline__viewport"
-            ref={viewportRef}
-            onPointerDown={onPointerDown}
-            onKeyDown={handleKeyDown}
-            data-panning={isPanning || undefined}
-            role="grid"
-            aria-label="Хронология событий по странам"
-            aria-rowcount={groups.length + 1}
-            aria-colcount={columns.length + 1}
+            className="timeline__stage"
+            data-pinned={pinnedStage ? true : undefined}
+            style={
+              pinnedStage
+                ? { top: pinnedStage.top, left: pinnedStage.left, width: pinnedStage.width }
+                : undefined
+            }
           >
+            <div
+              className="timeline__viewport"
+              ref={viewportRef}
+              onPointerDown={onPointerDown}
+              onKeyDown={handleKeyDown}
+              data-panning={isPanning || undefined}
+              role="grid"
+              aria-label="Хронология событий по странам"
+              aria-rowcount={groups.length + 1}
+              aria-colcount={columns.length + 1}
+            >
             {/* Скрытый зонд: даёт базовые ширины колонок для расчёта масштаба */}
             <span className="timeline__probe" aria-hidden="true">
               <i data-probe="column" />
               <i data-probe="date" />
             </span>
 
-            <div
-              className="timeline__grid"
-              ref={gridRef}
-              style={gridStyle}
-              data-stretch={stretchColumns || undefined}
-            >
+              <div
+                className="timeline__grid"
+                ref={gridRef}
+                style={gridStyle}
+                data-stretch={stretchColumns || undefined}
+              >
               <TimelineOverlay
                 gridRef={gridRef}
                 groups={groups}
@@ -585,6 +660,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
                   </div>
                 </>
               )}
+              </div>
             </div>
           </div>
         </div>

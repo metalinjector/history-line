@@ -3,7 +3,7 @@ import { countries, countryById } from './countries';
 import { buildColumns, effectiveCountryIds, impliedAncestors } from './columns';
 
 describe('линии-предшественники', () => {
-  it('у каждого предшественника ровно один наследник', () => {
+  it('назначает каждой исторической линии одну колонку-хозяина без заявления о правопреемстве', () => {
     const host = new Map<string, string>();
     for (const country of countries) {
       for (const ancestor of country.ancestors ?? []) {
@@ -50,5 +50,23 @@ describe('линии-предшественники', () => {
     const rome = columns.find((column) => column.id === 'ancient-rome')!;
     expect(italy.tracks).toHaveLength(1);
     expect(rome.tracks).toHaveLength(1);
+  });
+
+  it('не отбрасывает исторический контекст из-за лимита ручного объединения', () => {
+    const turkey = buildColumns(['turkey'], [])[0];
+    expect(turkey.tracks.map((track) => track.countryId)).toEqual([
+      'turkey',
+      'hittites',
+      'byzantium',
+      'ottoman-empire',
+    ]);
+
+    const iraq = buildColumns(['iraq'], [])[0];
+    expect(iraq.tracks.map((track) => track.countryId)).toEqual([
+      'iraq',
+      'mesopotamia',
+      'assyria',
+      'babylonia',
+    ]);
   });
 });
