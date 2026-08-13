@@ -11,7 +11,7 @@ import {
 } from '../data/columns';
 import { eraForYear, eras } from '../data/eras';
 import { intervalPeriods, periodContains, periodRange } from '../data/periods';
-import { builtinCountrySets, MAX_USER_SETS, normalizeSet } from '../data/countrySets';
+import { ANCIENT_LINES, builtinCountrySets, MAX_USER_SETS, normalizeSet } from '../data/countrySets';
 import { timelineItems } from '../data/timelineItems';
 import { layerById, layers as allLayers, MAX_ACTIVE_LAYERS } from '../data/layers';
 import { applyLayers, materializeLayerItems, type LayerPlacements } from './layers';
@@ -201,6 +201,18 @@ export function useTimelineState() {
     for (const item of matching) counts[item.country] += 1;
     return counts;
   }, [allItems, filter]);
+
+  /**
+   * Сколько объектов до нашей эры дали бы выбранные линии, если бы шкала
+   * до н. э. была включена. Ноль означает, что переключатель «До н. э.»
+   * в этом наборе ничего не изменит, — и об этом надо честно сказать.
+   */
+  const bceCount = useMemo(
+    () =>
+      filterItems(allItems, { ...filter, showBce: true, period: undefined }).filter((item) => item.year < 0)
+        .length,
+    [allItems, filter],
+  );
 
   /** Последний год базы: по нему строится сетка интервалов в фильтре периода. */
   const maxYear = useMemo(
@@ -409,6 +421,16 @@ export function useTimelineState() {
     },
     [setActiveCountryIds, setColumnGroups],
   );
+
+  /**
+   * Добавить к выбору линии, на которых держится древность.
+   * Именно добавить, а не заменить: читатель пришёл сюда из подсказки,
+   * а не из наборов, и терять свою раскладку не должен.
+   */
+  const addAncientLines = useCallback(() => {
+    setActiveCountryIds((current) => normalizeSet([...current, ...ANCIENT_LINES]));
+    setShowBceRaw(true);
+  }, [setActiveCountryIds, setShowBceRaw]);
 
   /** Сохранить текущий выбор как свой набор. */
   const saveCountrySet = useCallback(
@@ -748,8 +770,10 @@ export function useTimelineState() {
     showRelations,
     setShowRelations,
     toggleCountry,
+    bceCount,
     countrySets,
     applyCountrySet,
+    addAncientLines,
     saveCountrySet,
     removeCountrySet,
     onlyCountry,

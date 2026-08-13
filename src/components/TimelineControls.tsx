@@ -14,6 +14,8 @@ type Props = {
   period?: Period;
   /** Показывать ли на общей шкале даты до нашей эры. */
   showBce: boolean;
+  /** Сколько объектов до н. э. дали бы выбранные линии. Ноль — переключатель бессилен. */
+  bceCount: number;
   tags: string[];
   zoom: number;
   /** Верхняя граница шкалы — по ней строится сетка интервалов. */
@@ -29,6 +31,8 @@ type Props = {
   onKeyOnlyChange: (value: boolean) => void;
   onPeriodChange: (period?: Period) => void;
   onShowBceChange: (value: boolean) => void;
+  /** Добавить к выбору линии, на которых держится древность. */
+  onAddAncientLines: () => void;
   onTagsChange: (tags: string[]) => void;
   onZoomChange: (zoom: number) => void;
   onFitToWidth: () => void;
@@ -69,6 +73,7 @@ export function TimelineControls(props: Props) {
     keyOnly,
     period,
     showBce,
+    bceCount,
     tags,
     zoom,
     maxYear,
@@ -82,6 +87,7 @@ export function TimelineControls(props: Props) {
     onKeyOnlyChange,
     onPeriodChange,
     onShowBceChange,
+    onAddAncientLines,
     onTagsChange,
     onZoomChange,
     onFitToWidth,
@@ -309,6 +315,7 @@ export function TimelineControls(props: Props) {
                       <span className="toggle__thumb" />
                     </span>
                     До н. э.
+                    {bceCount > 0 ? <span className="toggle__count">{bceCount}</span> : null}
                   </button>
 
                   <button
@@ -342,6 +349,22 @@ export function TimelineControls(props: Props) {
                     ) : null}
                   </button>
                 </div>
+
+                {/*
+                  Молчаливый переключатель — худший вид неработающей кнопки.
+                  Если в выбранных линиях нет ни одной даты до нашей эры,
+                  честнее сказать об этом и предложить починку одним нажатием.
+                */}
+                {bceCount === 0 ? (
+                  <p className="settings-group__note">
+                    В выбранных линиях нет дат до нашей эры, поэтому переключатель ничего не меняет.
+                    Древность в этой базе живёт отдельными линиями: Древний Рим — не Италия,
+                    Древняя Греция — не современная Греция.
+                    <button type="button" className="settings-group__fix" onClick={onAddAncientLines}>
+                      Добавить античные линии
+                    </button>
+                  </p>
+                ) : null}
               </section>
 
               <section className="settings-group settings-group--wide">

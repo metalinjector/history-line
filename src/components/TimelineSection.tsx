@@ -369,6 +369,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
           keyOnly={keyOnly}
           period={period}
           showBce={showBce}
+          bceCount={state.bceCount}
           tags={tags}
           zoom={zoom}
           maxYear={state.maxYear}
@@ -382,6 +383,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
           onKeyOnlyChange={setKeyOnly}
           onPeriodChange={setPeriod}
           onShowBceChange={setShowBce}
+          onAddAncientLines={state.addAncientLines}
           onTagsChange={setTags}
           onZoomChange={setZoom}
           onFitToWidth={fitToWidth}
