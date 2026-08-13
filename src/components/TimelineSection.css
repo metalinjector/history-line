@@ -108,6 +108,21 @@
   --viewport-height: clamp(520px, calc(100vh - 290px), 940px);
 }
 
+/*
+ * На широком экране окно шкалы образует верхний слой «каскада»:
+ * после того как оно дошло до шапки сайта, оно остаётся под ней, а инструменты
+ * и редакторские блоки ниже продолжают прокручиваться под непрозрачным полем.
+ * Внутренняя прокрутка viewport по-прежнему отвечает за годы, а .thead — за
+ * строку стран, поэтому внешняя и внутренняя прокрутки не конкурируют.
+ */
+@media (min-width: 721px) and (min-height: 680px) {
+  .timeline__stage {
+    position: sticky;
+    top: calc(var(--header-height) + 8px);
+    z-index: 20;
+  }
+}
+
 .timeline__stage[data-expanded] {
   --viewport-height: calc(100vh - var(--header-height) - 36px);
 }
