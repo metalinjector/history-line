@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { CountryId, KindFilter, Period, RelationDraftInput, ThemeName, TimelineItem } from '../types';
+import type { CountryId, CountrySet, KindFilter, Period, RelationDraftInput, ThemeName, TimelineItem } from '../types';
 import { allCountryIds, countries, countryById, defaultCountryIds } from '../data/countries';
 import {
   buildColumns,
@@ -11,6 +11,7 @@ import {
 } from '../data/columns';
 import { eraForYear, eras } from '../data/eras';
 import { intervalPeriods, periodContains, periodRange } from '../data/periods';
+import { builtinCountrySets, MAX_USER_SETS, normalizeSet } from '../data/countrySets';
 import { timelineItems } from '../data/timelineItems';
 import { layerById, layers as allLayers, MAX_ACTIVE_LAYERS } from '../data/layers';
 import { applyLayers, materializeLayerItems, type LayerPlacements } from './layers';
@@ -71,6 +72,8 @@ export function useTimelineState() {
   );
   /** Связи, созданные пользователем вместе с добавленными объектами. */
   const [addedRelations, setAddedRelations] = usePersistentState<Relation[]>('added-relations', []);
+  /** Свои наборы стран. Живут в браузере рядом с остальными настройками читателя. */
+  const [userCountrySets, setUserCountrySets] = usePersistentState<CountrySet[]>('country-sets', []);
   /** Личные заметки читателя. Хранятся отдельно от базы фактов и не смешиваются с ней. */
   const [notes, setNotes] = usePersistentState<Record<string, string>>('notes', {});
   /** Включённые слои и их размещение — по умолчанию слоёв нет. */
@@ -390,7 +393,49 @@ export function useTimelineState() {
     [setActiveCountryIds],
   );
 
-  const showAllCountries = useCallback(() => setActiveCountryIds(allCountryIds), [setActiveCountryIds]);
+  /**
+   * Применить набор стран.
+   *
+   * Набор заменяет выбор целиком, а не добавляется к нему: смысл набора в том,
+   * чтобы одним нажатием получить предсказуемую раскладку. Объединения колонок
+   * при этом сбрасываются — они были сделаны для прежнего состава.
+   */
+  const applyCountrySet = useCallback(
+    (ids: CountryId[]) => {
+      const next = normalizeSet(ids);
+      if (next.length === 0) return;
+      setActiveCountryIds(next);
+      setColumnGroups([]);
+    },
+    [setActiveCountryIds, setColumnGroups],
+  );
+
+  /** Сохранить текущий выбор как свой набор. */
+  const saveCountrySet = useCallback(
+    (label: string) => {
+      const trimmed = label.trim();
+      if (!trimmed) return;
+      setUserCountrySets((current) => [
+        ...current.filter((set) => set.label !== trimmed),
+        { id: `user-${Date.now()}`, label: trimmed, countries: activeCountryIds },
+      ].slice(-MAX_USER_SETS));
+    },
+    [activeCountryIds, setUserCountrySets],
+  );
+
+  const removeCountrySet = useCallback(
+    (id: string) => setUserCountrySets((current) => current.filter((set) => set.id !== id)),
+    [setUserCountrySets],
+  );
+
+  /** Встроенные и свои наборы в одном списке — UI их не различает. */
+  const countrySets = useMemo(
+    () => [
+      ...builtinCountrySets.map((set) => ({ ...set, builtin: true })),
+      ...userCountrySets,
+    ],
+    [userCountrySets],
+  );
 
   /** Добавить страну в колонку другой страны. */
   const mergeCountry = useCallback(
@@ -703,7 +748,10 @@ export function useTimelineState() {
     showRelations,
     setShowRelations,
     toggleCountry,
-    showAllCountries,
+    countrySets,
+    applyCountrySet,
+    saveCountrySet,
+    removeCountrySet,
     onlyCountry,
     mergeCountry,
     detachCountry,

@@ -174,6 +174,21 @@ export type Country = {
   aliases?: string[];
 };
 
+/**
+ * Набор стран — сохранённая подборка линий.
+ *
+ * Встроенные наборы приходят из data/countrySets.ts, свои читатель собирает сам;
+ * различие только в `builtin`, всё остальное устроено одинаково.
+ */
+export type CountrySet = {
+  id: string;
+  label: string;
+  /** Короткое пояснение: чем этот набор полезен. Своим наборам не нужно. */
+  note?: string;
+  countries: CountryId[];
+  builtin?: boolean;
+};
+
 /** Слой фильтрации по типу объекта. */
 export type KindFilter = 'all' | 'events' | 'people';
 

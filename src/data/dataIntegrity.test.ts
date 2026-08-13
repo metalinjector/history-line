@@ -42,6 +42,12 @@ function expectValidItem(item: TimelineItem) {
   // Верхняя граница ловит ошибки разбора римских цифр при импорте:
   // «XI в.» прочитанное как «XL в.» даёт объект, датированный 3901 годом.
   expect(item.year, item.id).toBeLessThanOrEqual(new Date().getFullYear());
+  // Обратная ошибка того же импорта: «18 января 1871 г.» разобрано так, что
+  // год стал единицей, а «187» осталось в подписи. Подпись с трёх-четырёхзначным
+  // числом не может принадлежать объекту первого века.
+  if (item.dateLabel && /\d{3}/.test(item.dateLabel)) {
+    expect(Math.abs(item.year), `${item.id}: ${item.dateLabel}`).toBeGreaterThanOrEqual(100);
+  }
   if (item.month !== undefined) expect(item.month).toBeGreaterThanOrEqual(1);
   if (item.month !== undefined) expect(item.month).toBeLessThanOrEqual(12);
   if (item.day !== undefined) {

@@ -4420,8 +4420,8 @@ export const referenceItems: TimelineItem[] = [
   {
     "id": "ref-p064-provozglashenie-germanskoy-imperii",
     "country": "germany",
-    "year": 1,
-    "dateLabel": "18 января 187 1 г.",
+    "year": 1871,
+    "dateLabel": "18 января 1871 г.",
     "kind": "event",
     "title": "Провозглашение Германской империи",
     "summary": "После капитуляции Франции во Франко-прусской войне в Зеркальной галерее Версальского дворца была провозглашена Германская империя, а ее кайзером был объявлен Вильгельм I.",

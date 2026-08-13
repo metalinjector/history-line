@@ -68,7 +68,6 @@ export function TimelineSection({ state, sectionRef }: Props) {
     openDay,
     openRelation,
     toggleCountry,
-    showAllCountries,
     onlyCountry,
     mergeCountry,
     detachCountry,
@@ -403,8 +402,11 @@ export function TimelineSection({ state, sectionRef }: Props) {
             maxColumns={maxColumns}
             maxPerColumn={maxPerColumn}
             onToggle={toggleCountry}
-            onShowAll={showAllCountries}
             onOnly={onlyCountry}
+            countrySets={state.countrySets}
+            onApplySet={state.applyCountrySet}
+            onSaveSet={state.saveCountrySet}
+            onRemoveSet={state.removeCountrySet}
             onMerge={mergeCountry}
             onDetach={detachCountry}
             onResetColumns={resetColumns}

@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import type { Country, CountryId, TimelineColumn } from '../types';
+import type { Country, CountryId, CountrySet, TimelineColumn } from '../types';
 import { countryById, countryRegionLabels } from '../data/countries';
+import { sameSet, suggestSetName } from '../data/countrySets';
 import './CountryTogglePanel.css';
 
 type Props = {
@@ -13,8 +14,12 @@ type Props = {
   maxColumns: number;
   maxPerColumn: number;
   onToggle: (id: CountryId) => void;
-  onShowAll: () => void;
   onOnly: (id: CountryId) => void;
+  /** Встроенные и свои наборы стран в одном списке. */
+  countrySets: CountrySet[];
+  onApplySet: (ids: CountryId[]) => void;
+  onSaveSet: (label: string) => void;
+  onRemoveSet: (id: string) => void;
   onMerge: (target: CountryId, source: CountryId) => void;
   onDetach: (id: CountryId) => void;
   onResetColumns: () => void;
@@ -36,8 +41,11 @@ export function CountryTogglePanel({
   maxColumns,
   maxPerColumn,
   onToggle,
-  onShowAll,
   onOnly,
+  countrySets,
+  onApplySet,
+  onSaveSet,
+  onRemoveSet,
   onMerge,
   onDetach,
   onResetColumns,
@@ -45,11 +53,12 @@ export function CountryTogglePanel({
   const [openMenu, setOpenMenu] = useState<CountryId | undefined>(undefined);
   const [catalogTab, setCatalogTab] = useState<'selected' | 'modern' | 'historical' | 'all'>('selected');
   const [catalogQuery, setCatalogQuery] = useState('');
+  const [savingSet, setSavingSet] = useState(false);
+  const [setName, setSetName] = useState('');
   const panelRef = useRef<HTMLDivElement>(null);
   const menuId = useId();
 
   const activeSet = new Set(activeIds);
-  const allVisible = activeIds.length === countries.length;
   const query = catalogQuery.trim().toLocaleLowerCase('ru').replaceAll('ё', 'е');
   const visibleCatalogCountries = countries.filter((country) => {
     if (catalogTab === 'selected' && !activeSet.has(country.id)) return false;
@@ -106,6 +115,93 @@ export function CountryTogglePanel({
       aria-label="Показать, скрыть и объединить страны"
       ref={panelRef}
     >
+      {/*
+        Наборы стоят перед каталогом: в каталоге больше сотни линий, и почти
+        всегда читателю нужен не поиск конкретной страны, а готовая раскладка.
+      */}
+      <div className="country-sets">
+        <div className="country-sets__list">
+          {countrySets.map((set) => {
+            const current = sameSet(set.countries, activeIds);
+            return (
+              <span className="country-set" data-current={current || undefined} key={set.id}>
+                <button
+                  type="button"
+                  className="country-set__main"
+                  aria-pressed={current}
+                  title={set.note ?? `${set.countries.length} линий`}
+                  onClick={() => onApplySet(set.countries)}
+                >
+                  {set.label}
+                  <span className="country-set__count">{set.countries.length}</span>
+                </button>
+                {set.builtin ? null : (
+                  <button
+                    type="button"
+                    className="country-set__remove"
+                    title={`Удалить набор «${set.label}»`}
+                    onClick={() => onRemoveSet(set.id)}
+                  >
+                    <span aria-hidden="true">×</span>
+                    <span className="visually-hidden">Удалить набор {set.label}</span>
+                  </button>
+                )}
+              </span>
+            );
+          })}
+        </div>
+
+        {savingSet ? (
+          <form
+            className="country-sets__form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              onSaveSet(setName.trim() || suggestSetName(activeIds, (id) => countryById[id]?.label ?? id));
+              setSavingSet(false);
+              setSetName('');
+            }}
+          >
+            <input
+              autoFocus
+              type="text"
+              value={setName}
+              placeholder={suggestSetName(activeIds, (id) => countryById[id]?.label ?? id)}
+              aria-label="Название набора"
+              onChange={(event) => setSetName(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Escape') {
+                  setSavingSet(false);
+                  setSetName('');
+                }
+              }}
+            />
+            <button type="submit" className="btn btn--sm btn--primary">
+              Сохранить
+            </button>
+            <button
+              type="button"
+              className="btn btn--sm btn--ghost"
+              onClick={() => {
+                setSavingSet(false);
+                setSetName('');
+              }}
+            >
+              Отмена
+            </button>
+          </form>
+        ) : (
+          <button
+            type="button"
+            className="country-sets__add"
+            onClick={() => setSavingSet(true)}
+            title="Сохранить текущий выбор линий как свой набор"
+          >
+            <span aria-hidden="true">＋</span>
+            Сохранить набор
+          </button>
+        )}
+      </div>
+
       <div className="country-catalog">
         <div className="country-catalog__tabs" role="tablist" aria-label="Разделы каталога стран">
           {([
@@ -279,21 +375,13 @@ export function CountryTogglePanel({
         ) : null}
       </div>
 
-      <div className="country-toggles__actions">
-        {sharedColumns.length > 0 ? (
+      {sharedColumns.length > 0 ? (
+        <div className="country-toggles__actions">
           <button type="button" className="btn btn--sm btn--ghost" onClick={onResetColumns}>
             Разъединить колонки
           </button>
-        ) : null}
-        <button
-          type="button"
-          className="btn btn--sm"
-          onClick={onShowAll}
-          disabled={allVisible}
-        >
-          Выбрать все линии
-        </button>
-      </div>
+        </div>
+      ) : null}
 
       {tooManyColumns ? (
         <p className="country-toggles__note">
