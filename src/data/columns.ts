@@ -98,6 +98,7 @@ function trackOf(id: CountryId, inherited = false): Track {
     colorInk: country.colorInk,
     kind: 'country' as const,
     countryId: country.id,
+    ...(country.lineSpan ? { lineSpan: country.lineSpan } : {}),
     ...(inherited ? { inherited: true } : {}),
   };
 }

@@ -401,6 +401,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
 
   const virtualItems = rowVirtualizer.getVirtualItems();
   const virtualRangeKey = virtualItems.map((item) => item.index).join(',');
+  const displayedMinYear = groups[0]?.year ?? stats.minYear;
+  const displayedMaxYear = groups[groups.length - 1]?.year ?? stats.maxYear;
 
   return (
     <section className="timeline" id="timeline" ref={sectionRef}>
@@ -590,14 +592,14 @@ export function TimelineSection({ state, sectionRef }: Props) {
                     <div className="timeline__origin-inner">
                       <span
                         className="timeline__origin-year"
-                        data-long={formatYearLabel(stats.minYear).length > 4 || undefined}
+                        data-long={formatYearLabel(displayedMinYear).length > 4 || undefined}
                       >
-                        {formatYearLabel(stats.minYear)}
+                        {formatYearLabel(displayedMinYear)}
                       </span>
                       <span className="timeline__origin-text">
                         Начало текущей выборки. Время идёт сверху вниз: чем ниже строка, тем ближе
                         к сегодняшнему дню. Расстояние между строками не пропорционально годам —
-                        показаны только те даты, где что-то отмечено.
+                        показаны даты событий и границы исторических линий.
                       </span>
                     </div>
                   </div>
@@ -648,6 +650,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
                           <TimelineRow
                             group={group}
                             columns={columns}
+                            previousYear={groups[virtualRow.index - 1]?.year}
+                            nextYear={groups[virtualRow.index + 1]?.year}
                             selectedId={selectedItem?.id}
                             selectedCountry={selectedItem?.country}
                             query={query}
@@ -661,7 +665,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
                   </div>
 
                   <div className="timeline__tail" role="row">
-                    <span>Конец текущей выборки · {stats.maxYear} год</span>
+                    <span>Конец текущей выборки · {formatYearLabel(displayedMaxYear)}</span>
                   </div>
                 </>
               )}

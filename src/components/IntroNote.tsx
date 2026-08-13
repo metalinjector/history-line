@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { countries } from '../data/countries';
+import { formatHistoricalLineSpan } from '../lib/format';
 import './IntroNote.css';
 
 /**
@@ -35,7 +36,12 @@ export function IntroNote() {
             {countries.map((country) => (
               <li key={country.id} style={{ '--c': `hsl(${country.color})` } as React.CSSProperties}>
                 <span className="intro-note__dot" aria-hidden="true" />
-                <b>{country.label}.</b> {country.note}
+                <b>{country.label}.</b> {country.note}{' '}
+                {country.lineSpan ? (
+                  <span className="intro-note__period">
+                    Период линии: {formatHistoricalLineSpan(country.lineSpan)}.
+                  </span>
+                ) : null}
               </li>
             ))}
           </ul>

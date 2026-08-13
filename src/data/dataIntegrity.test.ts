@@ -105,6 +105,36 @@ describe('historical data integrity', () => {
       expect(country.kind, country.id).toBeDefined();
       expect(country.region, country.id).toBeDefined();
       expect(countryById[country.id], country.id).toBe(country);
+      if (country.kind === 'historical') {
+        expect(country.lineSpan, `${country.id}: historical line span`).toBeDefined();
+        expect(Number.isInteger(country.lineSpan?.from), country.id).toBe(true);
+        expect(Number.isInteger(country.lineSpan?.to), country.id).toBe(true);
+        expect(country.lineSpan?.from, country.id).not.toBe(0);
+        expect(country.lineSpan?.to, country.id).not.toBe(0);
+        expect(country.lineSpan!.from, country.id).toBeLessThanOrEqual(country.lineSpan!.to);
+        expect(country.lineSpan!.to, country.id).toBeLessThan(new Date().getFullYear());
+        expect(country.lineSpan!.sources.length, `${country.id}: line-span sources`).toBeGreaterThan(0);
+        expectSourceShape(country.lineSpan!.sources);
+        expect(
+          country.lineSpan!.sources.some(
+            (source) =>
+              Boolean(source.url) &&
+              (source.kind === 'institution' || source.kind === 'academic' || source.kind === 'archive'),
+          ),
+          `${country.id}: line span needs an authoritative linked source`,
+        ).toBe(true);
+      } else {
+        expect(country.lineSpan, `${country.id}: only historical lines are bounded`).toBeUndefined();
+      }
+    }
+  });
+
+  it('keeps every historical object inside the lifespan of its named line', () => {
+    for (const item of timelineItems) {
+      const lineSpan = countryById[item.country]?.lineSpan;
+      if (!lineSpan) continue;
+      expect(item.year, `${item.id}: before ${item.country} starts`).toBeGreaterThanOrEqual(lineSpan.from);
+      expect(item.endYear ?? item.year, `${item.id}: after ${item.country} ends`).toBeLessThanOrEqual(lineSpan.to);
     }
   });
 

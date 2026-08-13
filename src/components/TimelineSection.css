@@ -574,6 +574,7 @@
    две расходятся симметрично на --rail-gap друг от друга. */
 .tcell__rail {
   --rail-i: 0;
+  --rail-cap-y: calc(var(--row-gap) + 20px);
   position: absolute;
   left: calc(var(--rail-center) + (var(--rail-i) - (var(--rail-n) - 1) / 2) * var(--rail-gap));
   top: -1px;
@@ -583,6 +584,48 @@
   background: var(--c);
   opacity: var(--rail-opacity);
   transition: opacity var(--dur-mid) var(--ease-out);
+}
+
+/* Историческая линия существует только в подписанном интервале. На первой
+   и последней строке она получает видимый колпачок, а вне интервала сам
+   элемент не рендерится. Современные территориальные линии остаются сквозными. */
+.tcell__rail[data-segment='start'] {
+  top: var(--rail-cap-y);
+}
+
+.tcell__rail[data-segment='end'] {
+  bottom: calc(100% - var(--rail-cap-y));
+}
+
+.tcell__rail[data-segment='single'] {
+  top: var(--rail-cap-y);
+  bottom: auto;
+  height: 2px;
+}
+
+.tcell__rail[data-segment='start']::before,
+.tcell__rail[data-segment='end']::after,
+.tcell__rail[data-segment='single']::after {
+  content: '';
+  position: absolute;
+  left: -2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 0 2px var(--paper-sunken);
+}
+
+.tcell__rail[data-segment='start']::before {
+  top: -3px;
+}
+
+.tcell__rail[data-segment='end']::after {
+  bottom: -3px;
+}
+
+.tcell__rail[data-segment='single']::after {
+  top: -2px;
 }
 
 .tcell:not([data-empty]) .tcell__rail {
@@ -1205,8 +1248,19 @@
   font-variant-numeric: tabular-nums;
 }
 
+.trow__line-boundary {
+  max-width: 78px;
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-align: right;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
 /* В режиме месяцев и дней подпись строки короче — уменьшаем кегль */
-.trow__year:not(:only-child) {
+.trow__date-inner:has(.trow__sub) .trow__year {
   font-size: calc(13px * var(--zoom));
 }
 

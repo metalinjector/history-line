@@ -1,4 +1,5 @@
 import type { CountryId, TimelineColumn } from '../types';
+import { formatHistoricalLineSpan } from '../lib/format';
 
 type Props = {
   columns: TimelineColumn[];
@@ -69,6 +70,11 @@ export function TimelineHeader({
                   className="thead__line"
                   key={track.id}
                   data-kind={track.kind}
+                  title={
+                    track.lineSpan
+                      ? `${track.label}: линия ${formatHistoricalLineSpan(track.lineSpan)}`
+                      : undefined
+                  }
                   style={
                     {
                       '--c': `hsl(${track.color})`,

@@ -98,6 +98,12 @@
   font-weight: 600;
 }
 
+.intro-note__period {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
 .intro-note__dot {
   position: absolute;
   left: 0;

@@ -1,4 +1,10 @@
-import type { Country, CountryId, CountryRegion } from '../types';
+import type {
+  Country,
+  CountryId,
+  CountryRegion,
+  HistoricalLineSpan,
+  SourceLink,
+} from '../types';
 
 type CountrySeed = Omit<Country, 'color' | 'colorInk'>;
 
@@ -11,13 +17,33 @@ const modern = (
   aliases: string[] = [],
 ): CountrySeed => ({ id, label, short, region, note, aliases, kind: 'modern' });
 
+const institution = (label: string, url: string): SourceLink => ({
+  label,
+  url,
+  kind: 'institution',
+});
+
+const academic = (label: string, url: string): SourceLink => ({
+  label,
+  url,
+  kind: 'academic',
+});
+
+const span = (
+  from: number,
+  to: number,
+  sources: SourceLink[],
+  approximate = false,
+): HistoricalLineSpan => ({ from, to, sources, ...(approximate ? { approximate: true } : {}) });
+
 const historical = (
   id: string,
   label: string,
   short: string,
   note: string,
+  lineSpan: HistoricalLineSpan,
   aliases: string[] = [],
-): CountrySeed => ({ id, label, short, region: 'historical', note, aliases, kind: 'historical' });
+): CountrySeed => ({ id, label, short, region: 'historical', note, lineSpan, aliases, kind: 'historical' });
 
 /**
  * Полный каталог географических линий справочника.
@@ -128,41 +154,236 @@ const seeds: CountrySeed[] = [
   modern('ethiopia', 'Эфиопия', 'ET', 'africa', 'Эфиопская империя, итальянское вторжение и современная Эфиопия.', ['Абиссиния']),
   modern('afghanistan', 'Афганистан', 'AF', 'asia', 'Афганские эмираты, войны с Британской империей и современный Афганистан.'),
 
-  historical('prehistory', 'Первобытное общество', 'ДО', 'Общечеловеческая линия антропогенеза, расселения и неолитической революции.'),
-  historical('ancient-egypt', 'Древний Египет', 'ЕГ', 'Государства долины Нила от ранних царств до эллинистического завоевания.'),
-  historical('mesopotamia', 'Месопотамия · Шумер', 'МЕ', 'Города и государства Междуречья до возвышения Вавилона и Ассирии.', ['Шумер', 'Аккад']),
-  historical('phoenicia', 'Финикия', 'ФН', 'Финикийские города-государства Восточного Средиземноморья.'),
-  historical('elam', 'Элам', 'ЭЛ', 'Древнее государство на юго-западе Иранского нагорья.'),
-  historical('hittites', 'Хеттская держава', 'ХТ', 'Государство хеттов в Малой Азии бронзового века.'),
-  historical('ancient-israel', 'Древний Израиль · Иудея', 'ИУ', 'Израильское и Иудейское царства древности.'),
-  historical('assyria', 'Ассирия', 'АС', 'Ассирийские государства Северной Месопотамии.'),
-  historical('babylonia', 'Вавилония', 'ВА', 'Вавилонские царства и Нововавилонская держава.'),
+  historical(
+    'prehistory',
+    'Первобытное общество',
+    'ДО',
+    'Общечеловеческая линия антропогенеза, расселения и неолитической революции; условно завершается с появлением ранней письменности.',
+    span(
+      -3_000_000,
+      -3000,
+      [institution('Smithsonian Human Origins: хронология эволюции человека', 'https://humanorigins.si.edu/evidence/human-evolution-interactive-timeline')],
+      true,
+    ),
+  ),
+  historical(
+    'ancient-egypt',
+    'Древний Египет',
+    'ЕГ',
+    'Государства долины Нила от раннединастической эпохи до завоевания Александром Македонским.',
+    span(-3100, -332, [institution('The Met: List of Rulers of Ancient Egypt and Nubia', 'https://www.metmuseum.org/toah/hd/phar/hd_phar.htm')], true),
+  ),
+  historical(
+    'mesopotamia',
+    'Шумер · ранняя Месопотамия',
+    'МЕ',
+    'Ранние города и государства Междуречья до падения III династии Ура.',
+    span(-4500, -2004, [institution('The Met: Mesopotamia, 8000–2000 B.C.', 'https://www.metmuseum.org/toah/ht/02/wam.html')], true),
+    ['Месопотамия', 'Шумер', 'Аккад'],
+  ),
+  historical(
+    'phoenicia',
+    'Финикия',
+    'ФН',
+    'Финикийские города-государства Восточного Средиземноморья до включения последних центров в римскую державу.',
+    span(-3000, -117, [institution('The Met: Eastern Mediterranean, 1000 B.C.–1 A.D.', 'https://www.metmuseum.org/toah/ht/04/wae.html')], true),
+  ),
+  historical(
+    'elam',
+    'Элам',
+    'ЭЛ',
+    'Государства Элама на юго-западе Иранского нагорья до включения области в державу Ахеменидов.',
+    span(-2700, -539, [academic('Encyclopaedia Iranica: Elam', 'https://www.iranicaonline.org/articles/elam-i/')], true),
+  ),
+  historical(
+    'hittites',
+    'Хетты · Хеттская держава',
+    'ХТ',
+    'Хеттские общности и государство в Малой Азии бронзового века до гибели столицы около 1200 года до н. э.',
+    span(-2000, -1200, [institution('The Met: The Hittites', 'https://www.metmuseum.org/essays/the-hittites')], true),
+  ),
+  historical(
+    'ancient-israel',
+    'Древний Израиль · Иудея',
+    'ИУ',
+    'Древнеизраильские объединения, Израильское и Иудейское царства до падения Иерусалима.',
+    span(-1300, -586, [institution('The Met: Eastern Mediterranean, 1000 B.C.–1 A.D.', 'https://www.metmuseum.org/toah/ht/04/wae.html')], true),
+  ),
+  historical(
+    'assyria',
+    'Древняя Ассирия',
+    'АС',
+    'Ассирийские государства Северной Месопотамии до падения Ниневии и распада империи.',
+    span(-2000, -612, [institution('The Met: Mesopotamia, 1000 B.C.–1 A.D.', 'https://www.metmuseum.org/toah/ht/04/wam.html')], true),
+    ['Ассирия'],
+  ),
+  historical(
+    'babylonia',
+    'Вавилония',
+    'ВА',
+    'Вавилонские царства и Нововавилонская держава до завоевания Киром Великим.',
+    span(-1900, -539, [institution('British Museum: Mesopotamia 1500–539 BC', 'https://www.britishmuseum.org/collection/galleries/mesopotamia-1500-539-bc')], true),
+  ),
   historical(
     'achaemenid-persia',
     'Древняя Персия · Ахемениды',
     'ПЕ',
     'Ранние объединения персов и империя Ахеменидов VI–IV веков до н. э.',
+    span(-1000, -331, [institution('The Met: Mesopotamia, 1000 B.C.–1 A.D.', 'https://www.metmuseum.org/toah/ht/04/wam.html')], true),
     ['Персия', 'Ахемениды'],
   ),
-  historical('ancient-greece', 'Древняя Греция', 'ЭЛЛ', 'Минойский и микенский мир, греческие полисы и эллинистическая культура.'),
-  historical('ancient-macedonia', 'Древняя Македония', 'МАК', 'Македонское царство Филиппа II и Александра.'),
-  historical('ancient-rome', 'Древний Рим', 'РИМ', 'Римское царство, республика и единая империя.'),
-  historical('byzantium', 'Византия', 'ВИЗ', 'Восточная Римская империя со столицей в Константинополе.'),
-  historical('frankish-empire', 'Франкская империя', 'ФРК', 'Государство франков и империя Карла Великого.'),
-  historical('arab-caliphate', 'Арабский халифат', 'ХАЛ', 'Халифаты и арабские завоевания VII–X веков.'),
-  historical('holy-roman-empire', 'Священная Римская империя', 'СРИ', 'Надгосударственное объединение Центральной Европы 962–1806 годов.'),
-  historical('kievan-rus', 'Древняя Русь', 'РУС', 'Древнерусское государство и княжества до монгольского нашествия.'),
-  historical('mongol-empire', 'Монгольская империя', 'МОН', 'Империя Чингисхана, улусы и завоевания XIII века.'),
-  historical('khwarezm', 'Хорезм', 'ХОР', 'Среднеазиатское государство Хорезмшахов.'),
-  historical('delhi-sultanate', 'Делийский султанат', 'ДС', 'Мусульманские династии Северной Индии XIII–XVI веков.'),
-  historical('timurid-empire', 'Держава Тимура', 'ТИМ', 'Государство Тимура в Средней Азии и Иране.'),
-  historical('ottoman-empire', 'Османская империя', 'ОСМ', 'Многонациональная империя Османов в Европе, Азии и Африке.'),
-  historical('mughal-empire', 'Империя Великих Моголов', 'МОГ', 'Государство Великих Моголов на Индийском субконтиненте.'),
-  historical('olmec', 'Цивилизация ольмеков', 'ОЛЬ', 'Ранняя цивилизация Мезоамерики.'),
-  historical('aztec', 'Государство ацтеков', 'АЦТ', 'Мезоамериканская держава с центром в Теночтитлане.'),
-  historical('inca', 'Государство инков', 'ИНК', 'Андская империя Тауантинсуйу.'),
-  historical('songhai', 'Сонгай', 'СОН', 'Западноафриканская держава XV–XVI веков.'),
-  historical('kingdom-kongo', 'Королевство Конго', 'КОН', 'Историческое государство в нижнем течении реки Конго.'),
+  historical(
+    'ancient-greece',
+    'Древняя Греция',
+    'ЭЛЛ',
+    'Минойский и микенский мир, греческие полисы и эллинистические государства до римского завоевания.',
+    span(-2100, -31, [institution('The Met: Europe, 1000 B.C.–1 A.D.', 'https://www.metmuseum.org/toah/ht/04/eusb.html')], true),
+  ),
+  historical(
+    'ancient-macedonia',
+    'Древняя Македония',
+    'МАК',
+    'Македонское царство от ранней династии Аргеадов до превращения в римскую провинцию.',
+    span(-496, -168, [institution('The Met: List of Rulers of the Ancient Greek World', 'https://www.metmuseum.org/toah/hd/gkru/hd_gkru.htm')]),
+  ),
+  historical(
+    'ancient-rome',
+    'Древний Рим',
+    'РИМ',
+    'Римское царство, республика и Западная Римская империя; восточная традиция после 476 года продолжается отдельной линией Византии.',
+    span(
+      -753,
+      476,
+      [
+        institution('British Museum: Roman Empire', 'https://www.britishmuseum.org/collection/galleries/roman-empire'),
+        institution('British Museum: Introduction to ancient Rome', 'https://www.britishmuseum.org/exhibitions/nero-man-behind-myth/introduction-to-ancient-rome'),
+      ],
+      true,
+    ),
+  ),
+  historical(
+    'byzantium',
+    'Византия',
+    'ВИЗ',
+    'Восточная Римская империя со столицей в Константинополе — от основания новой столицы до её завоевания османами.',
+    span(330, 1453, [institution('The Met: List of Byzantine Rulers', 'https://www.metmuseum.org/toah/hd/byru/hd_byru.htm')]),
+  ),
+  historical(
+    'frankish-empire',
+    'Франкская империя',
+    'ФРК',
+    'Империя Карла Великого от императорской коронации до раздела по Верденскому договору.',
+    span(800, 843, [institution('The Met: Western Europe, 500–1000 A.D.', 'https://www.metmuseum.org/toah/ht/06/euwf.html')]),
+  ),
+  historical(
+    'arab-caliphate',
+    'Ранний ислам · Арабский халифат',
+    'ХАЛ',
+    'От хиджры и мединской общины до Праведного, Омейядского и Аббасидского халифатов; линия завершается падением Багдада.',
+    span(622, 1258, [institution('The Met: List of Rulers of the Islamic World', 'https://www.metmuseum.org/toah/hd/isru/hd_isru.htm')], true),
+    ['Арабский халифат', 'Праведный халифат', 'Омейяды', 'Аббасиды'],
+  ),
+  historical(
+    'holy-roman-empire',
+    'Священная Римская империя',
+    'СРИ',
+    'Надгосударственное объединение Центральной Европы от коронации Оттона I до отречения Франца II.',
+    span(962, 1806, [institution('Deutsches Historisches Museum: Heiliges Römisches Reich 962–1806', 'https://www.dhm.de/archiv/ausstellungen/heiliges-roemisches-reich/index_3.html')]),
+  ),
+  historical(
+    'kievan-rus',
+    'Древняя Русь',
+    'РУС',
+    'Древнерусское государство и земли-княжества IX — середины XIII века; это историографическая, а не современная национальная линия.',
+    span(882, 1242, [academic('Институт истории Украины НАН Украины: Киевская Русь', 'https://history.org.ua/?termin=Kyivska_Rus')], true),
+  ),
+  historical(
+    'mongol-empire',
+    'Монгольская империя',
+    'МОН',
+    'Империя, основанная провозглашением Темучина Чингисханом, и её улусы до падения монгольской династии Юань в Китае.',
+    span(1206, 1368, [institution('The Met: China, 1000–1400 A.D.', 'https://www.metmuseum.org/toah/ht/07/eac.html')]),
+  ),
+  historical(
+    'khwarezm',
+    'Держава хорезмшахов',
+    'ХОР',
+    'Держава хорезмшахов из династии Ануштегинидов до гибели последнего правителя Джелал ад-Дина.',
+    span(1077, 1231, [academic('Encyclopaedia Iranica: Khwarazmshahs, the line of Anuštigin', 'https://www.iranicaonline.org/articles/khwarazmshah/iii-the-line-of-anustigin/')]),
+    ['Хорезм', 'Хорезмшахи'],
+  ),
+  historical(
+    'delhi-sultanate',
+    'Делийский султанат',
+    'ДС',
+    'Сменявшие друг друга мусульманские династии Северной Индии от основания султаната до победы Бабура.',
+    span(1206, 1526, [institution('The Met: South Asia, 1000–1400 A.D.', 'https://www.metmuseum.org/toah/ht/07/ssn.html')]),
+  ),
+  historical(
+    'timurid-empire',
+    'Держава Тимуридов',
+    'ТИМ',
+    'Государство Тимура и его преемников в Средней Азии и Иране до падения тимуридского Герата.',
+    span(1370, 1507, [institution('The Met: Central and North Asia, 1400–1600 A.D.', 'https://www.metmuseum.org/toah/ht/08/nc.html')]),
+    ['Держава Тимура', 'Тимуриды'],
+  ),
+  historical(
+    'ottoman-empire',
+    'Османская империя',
+    'ОСМ',
+    'Многонациональная империя Османов от традиционной даты основания династии до упразднения султаната.',
+    span(1299, 1922, [institution('The Met: West Asia, 1400–1600 A.D.', 'https://www.metmuseum.org/toah/ht/08/waa.html')], true),
+  ),
+  historical(
+    'mughal-empire',
+    'Империя Великих Моголов',
+    'МОГ',
+    'Государство Великих Моголов от завоеваний Бабура до низложения последнего падишаха Бахадур-шаха II.',
+    span(1526, 1858, [institution('The Met: List of Rulers of South Asia', 'https://www.metmuseum.org/toah/hd/ssar/hd_ssar.htm')]),
+  ),
+  historical(
+    'olmec',
+    'Цивилизация ольмеков',
+    'ОЛЬ',
+    'Ранняя цивилизация Мезоамерики, периодизация которой задаётся археологическими культурами.',
+    span(-1500, -400, [institution('The Met: Mesoamerica, 2000–1000 B.C.', 'https://www.metmuseum.org/toah/ht/03/ca.html')], true),
+  ),
+  historical(
+    'aztec',
+    'Государство ацтеков',
+    'АЦТ',
+    'Держава Мешикского тройственного союза с центром в Теночтитлане до испанского завоевания.',
+    span(1428, 1521, [institution('INAH: El origen del Estado mexica', 'https://inah.gob.mx/boletines/analizaran-el-origen-del-estado-mexica-en-el-museo-nacional-de-antropologia')]),
+  ),
+  historical(
+    'inca',
+    'Государство инков',
+    'ИНК',
+    'Андская империя Тауантинсуйу от экспансии Пачакутека до испанского завоевания центральной власти.',
+    span(1438, 1532, [institution('The Met: South America, 1400–1600 A.D.', 'https://www.metmuseum.org/toah/ht/08/sanc.html')]),
+  ),
+  historical(
+    'songhai',
+    'Сонгайская империя',
+    'СОН',
+    'Западноафриканская империя от возвышения при Сонни Али до марокканского завоевания.',
+    span(1465, 1591, [institution('The Met: Western and Central Sudan, 1400–1600 A.D.', 'https://www.metmuseum.org/toah/ht/08/afu.html')]),
+  ),
+  historical(
+    'kingdom-kongo',
+    'Королевство Конго',
+    'КОН',
+    'Историческое государство в нижнем течении реки Конго от конца XIV века до окончательной ликвидации Португалией.',
+    span(
+      1390,
+      1914,
+      [
+        institution('Royal Museum for Central Africa: Kongo kingdom', 'https://www.africamuseum.be/en/discover/history_articles/kongo-kingdom'),
+        institution('South African History Online: Kingdom of Kongo 1390–1914', 'https://sahistory.org.za/article/kingdom-kongo-1390-1914'),
+      ],
+      true,
+    ),
+  ),
 ];
 
 /**
