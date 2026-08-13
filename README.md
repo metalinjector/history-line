@@ -208,6 +208,8 @@ src/
 файл источников в `content/items/`.
 
 Массовый импорт справочника повторяется командой из `scripts/import_history_reference.py`.
+Правила выбора основной исторической линии и защита проверенных исключений
+описаны в [`docs/HISTORICAL-ATTRIBUTION.md`](docs/HISTORICAL-ATTRIBUTION.md).
 Итоговое покрытие, сопоставленные дубликаты и распределение по линиям зафиксированы в
 **[docs/reference-import-report.md](docs/reference-import-report.md)**.
 

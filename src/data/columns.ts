@@ -8,7 +8,7 @@ import { allCountryIds, countryById } from './countries';
  */
 export const MAX_COLUMNS = 6;
 
-/** Больше трёх линий в одной колонке уже не читается: узлы сливаются. */
+/** Больше трёх вручную объединённых стран в одной колонке уже не читается. */
 export const MAX_PER_COLUMN = 3;
 
 /**
@@ -107,7 +107,7 @@ function makeColumn(countryIds: CountryId[], inherited: CountryId[] = []): Timel
   const tracks: Track[] = [
     ...countryIds.map((id) => trackOf(id)),
     ...inherited.map((id) => trackOf(id, true)),
-  ].slice(0, MAX_PER_COLUMN);
+  ];
 
   return {
     id: countryIds.join('+'),

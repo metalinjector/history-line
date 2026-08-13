@@ -161,7 +161,7 @@ export const referenceItems: TimelineItem[] = [
   {
     "id": "ref-p006-vozniknovenie-pervyh-gosudarstv-v-doline-n",
     "country": "ancient-egypt",
-    "year": -3900,
+    "year": -3100,
     "dateLabel": "Конец 4-го тысячелетия до н. э.",
     "kind": "event",
     "title": "Возникновение первых государств в долине Нила",
@@ -230,7 +230,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p007-novoe-carstvo-v-egipte",
-    "country": "world",
+    "country": "ancient-egypt",
     "year": -1100,
     "dateLabel": "XVI – XI вв. до н. э.",
     "kind": "event",
@@ -239,8 +239,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "После изгнания гиксосов (середина XVI в. до н. э.) в Египте начинается период усиления государства. В эту эпоху египетская цивилизация достигла вершины развития и могущества. Египтяне подчинили огромные территории вдоль средиземноморского побережья Передней Азии. В период правления царицы Хатшепсут и фараона Аменхотепа III были созданы выдающиеся архитектурные сооружения.",
     "tags": [
       "Цивилизации Древнего Востока и Америки",
-      "государство",
-      "всемирная история"
+      "государство"
     ],
     "importance": 2,
     "approximate": true,
@@ -266,7 +265,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p007-pravlenie-ehnatona-amenhotepa-iv",
-    "country": "world",
+    "country": "ancient-egypt",
     "year": -1400,
     "dateLabel": "XIV в. до н. э.",
     "kind": "event",
@@ -320,7 +319,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p008-period-oslableniya-egipta",
-    "country": "world",
+    "country": "ancient-egypt",
     "year": -700,
     "dateLabel": "XI – VII вв. до н. э.",
     "kind": "event",
@@ -328,8 +327,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Ослабление царской власти сопровождалось усилением влияния местной знати и жречества.",
     "detail": "Ослабление царской власти сопровождалось усилением влияния местной знати и жречества. Египет утратил прежнее положение в международной политике; были потеряны все завоеванные территории. На север страны проникали ливийские племена. На юге Египта все больше ощущалось влияние нубийцев. На северо-востоке появилась угроза в лице ассирийцев. В результате единое государство распалось на несколько частей.",
     "tags": [
-      "Цивилизации Древнего Востока и Америки",
-      "всемирная история"
+      "Цивилизации Древнего Востока и Америки"
     ],
     "importance": 2,
     "approximate": true,
@@ -338,7 +336,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p008-zavoevanie-egipta-persiey",
-    "country": "world",
+    "country": "achaemenid-persia",
     "year": -600,
     "dateLabel": "VI в. до н. э.",
     "kind": "event",
@@ -346,8 +344,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Египет был завоеван персидским царем Камбизом II и стал одной из персидских провинций.",
     "detail": "Египет был завоеван персидским царем Камбизом II и стал одной из персидских провинций.",
     "tags": [
-      "Цивилизации Древнего Востока и Америки",
-      "всемирная история"
+      "Цивилизации Древнего Востока и Америки"
     ],
     "importance": 2,
     "approximate": true,
@@ -356,7 +353,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p008-zavoevanie-egipta-aleksandrom-makedonskim",
-    "country": "world",
+    "country": "ancient-macedonia",
     "year": -332,
     "dateLabel": "332 г. до н. э.",
     "kind": "event",
@@ -364,8 +361,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Войска Александра Македонского, вторгшиеся на территорию Египта, не встретили сильного сопротивления со стороны местного населения.",
     "detail": "Войска Александра Македонского, вторгшиеся на территорию Египта, не встретили сильного сопротивления со стороны местного населения. Завоеватель был провозглашен фараоном.",
     "tags": [
-      "Цивилизации Древнего Востока и Америки",
-      "всемирная история"
+      "Цивилизации Древнего Востока и Америки"
     ],
     "importance": 2,
     "approximate": false,
@@ -392,7 +388,7 @@ export const referenceItems: TimelineItem[] = [
   {
     "id": "ref-p008-vozniknovenie-pervyh-gorodov-gosudarstv-v-",
     "country": "mesopotamia",
-    "year": -3900,
+    "year": -3100,
     "dateLabel": "Конец 4-го тысячелетия до н. э.",
     "kind": "event",
     "title": "Возникновение первых городов-государств в долине Тигра и Евфрата и изобретение клинописного письма",
@@ -447,17 +443,16 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p009-vozniknovenie-goroda-gosudarstva-apipur",
-    "country": "world",
-    "year": -1100,
+    "country": "assyria",
+    "year": -2000,
     "dateLabel": "Начало 2-го тысячелетия до н. э.",
     "kind": "event",
-    "title": "Возникновение города-государства Апипур",
+    "title": "Возникновение города-государства Ашшур",
     "summary": "Ашшур возник на севере Месопотамии, преимущественно в гористой местности.",
     "detail": "Ашшур возник на севере Месопотамии, преимущественно в гористой местности. Через его территорию проходили торговые пути, соединявшие Восточное Средиземноморье и Малую Азию на северо-западе с Южной Месопотамией и Эламом на юго-востоке.",
     "tags": [
       "Цивилизации Древнего Востока и Америки",
-      "государство",
-      "всемирная история"
+      "государство"
     ],
     "importance": 2,
     "approximate": true,
@@ -467,7 +462,7 @@ export const referenceItems: TimelineItem[] = [
   {
     "id": "ref-p009-vtorzhenie-hettov-v-maluyu-aziyu",
     "country": "hittites",
-    "year": -1100,
+    "year": -2000,
     "dateLabel": "Начало 2-го тысячелетия до н. э.",
     "kind": "event",
     "title": "Вторжение хеттов в Малую Азию",
@@ -536,7 +531,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p010-prihod-evreyskih-plemen-v-palestinu",
-    "country": "world",
+    "country": "ancient-israel",
     "year": -1300,
     "dateLabel": "XII- – XIII вв. до н. э.",
     "kind": "event",
@@ -544,8 +539,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "На территории Палестины еврейские племена столкнулись с местным населением.",
     "detail": "На территории Палестины еврейские племена столкнулись с местным населением. Особенно упорное сопротивлениие оказали филистимляне, от имени которых произошло название Палестины.",
     "tags": [
-      "Цивилизации Древнего Востока и Америки",
-      "всемирная история"
+      "Цивилизации Древнего Востока и Америки"
     ],
     "importance": 2,
     "approximate": true,
@@ -589,8 +583,8 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p011-vozniknovenie-plemennogo-soyuza-persov",
-    "country": "world",
-    "year": -100,
+    "country": "achaemenid-persia",
+    "year": -1000,
     "dateLabel": "Начало 1-го тысячелетия до н. э.",
     "kind": "event",
     "title": "Возникновение племенного союза персов",
@@ -625,7 +619,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p011-razdelenie-izrailskogo-carstva-na-dva-gosu",
-    "country": "israel",
+    "country": "ancient-israel",
     "year": -1000,
     "dateLabel": "X в. до н. э.",
     "kind": "event",
@@ -929,7 +923,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p016-poyavlenie-cheloveka-v-amerike",
-    "country": "ancient-greece",
+    "country": "prehistory",
     "year": -14000,
     "dateLabel": "12 – 14 тыс. лет назад",
     "kind": "event",
@@ -964,7 +958,7 @@ export const referenceItems: TimelineItem[] = [
   {
     "id": "ref-p016-vozniknovenie-gorodov-gosudarstv-na-ostrov",
     "country": "ancient-greece",
-    "year": -2900,
+    "year": -2100,
     "dateLabel": "Конец 3-го тысячелетия до н. э.",
     "kind": "event",
     "title": "Возникновение городов-государств на острове Крит",
@@ -1300,7 +1294,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p021-pravlenie-aleksandra-makedonskogo",
-    "country": "ancient-rome",
+    "country": "ancient-macedonia",
     "year": -336,
     "dateLabel": "336 – 323 гг. до н. э.",
     "kind": "event",
@@ -1318,7 +1312,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p021-vostochnye-pohody-aleksandra-makedonskogo",
-    "country": "ancient-rome",
+    "country": "ancient-macedonia",
     "year": -334,
     "dateLabel": "334 – 324 гг. до н. э.",
     "kind": "event",
@@ -1873,7 +1867,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p029-arabskoe-zavoevanie-pireneyskogo-poluostro",
-    "country": "world",
+    "country": "arab-caliphate",
     "year": 701,
     "dateLabel": "Начало VIII в.",
     "kind": "event",
@@ -1881,8 +1875,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Арабы вторглись на Пиренейский полуостров и разгромили королевство вестготов.",
     "detail": "Арабы вторглись на Пиренейский полуостров и разгромили королевство вестготов.",
     "tags": [
-      "Раннее средневековье",
-      "всемирная история"
+      "Раннее средневековье"
     ],
     "importance": 2,
     "approximate": true,
@@ -1927,7 +1920,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p029-raspad-frankskoy-imperii",
-    "country": "world",
+    "country": "frankish-empire",
     "year": 843,
     "dateLabel": "843 г.",
     "kind": "event",
@@ -1936,8 +1929,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Государство франков распалось на три части при внуках Карла Великого. Они разделили империю между собой на Верденском съезде. Тем самым было положено начало формированию Франции, Германии, Италии.",
     "tags": [
       "Раннее средневековье",
-      "государство",
-      "всемирная история"
+      "государство"
     ],
     "importance": 3,
     "approximate": false,
@@ -2055,7 +2047,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p031-obrazovanie-arabskogo-halifata-i-arabskie-",
-    "country": "world",
+    "country": "arab-caliphate",
     "year": 701,
     "dateLabel": "VII – VIII вв.",
     "kind": "event",
@@ -2063,8 +2055,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Молодое арабское государство, ядро которого создал Мухаммед, называлось халифатом по названию правителей — халифов (араб.",
     "detail": "Молодое арабское государство, ядро которого создал Мухаммед, называлось халифатом по названию правителей — халифов (араб. «заместители пророка»). После смерти Мухаммеда шло активное расширение границ халифата. Арабы завоевали не только земли Аравии, но также территории Сирии, Палестины, Ирака, Ирана, Египта. Затем они вторглись в Европу, заняли почти весь Пиренейский полуостров, столкнулись с державой франков, но были остановлены. Территория халифата занимала огромные пространства от Атлантического океана до Индии.",
     "tags": [
-      "Цивилизации Азии и Африки",
-      "всемирная история"
+      "Цивилизации Азии и Африки"
     ],
     "importance": 3,
     "approximate": true,
@@ -2090,7 +2081,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p032-rascvet-arabskogo-halifata",
-    "country": "world",
+    "country": "arab-caliphate",
     "year": 801,
     "dateLabel": "IX в.",
     "kind": "event",
@@ -2098,8 +2089,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Халифат вел активную торговлю с государствами Азии и Европы.",
     "detail": "Халифат вел активную торговлю с государствами Азии и Европы. В самом государстве проводилась политика арабизации и исламизации, шел процесс формирования арабо-исламской культуры.",
     "tags": [
-      "Цивилизации Азии и Африки",
-      "всемирная история"
+      "Цивилизации Азии и Африки"
     ],
     "importance": 2,
     "approximate": true,
@@ -2108,7 +2098,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p032-raspad-arabskogo-halifata",
-    "country": "world",
+    "country": "arab-caliphate",
     "year": 890,
     "dateLabel": "Конец IX в.",
     "kind": "event",
@@ -2116,8 +2106,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Восстания покоренных народов подрывали власть халифата.",
     "detail": "Восстания покоренных народов подрывали власть халифата. Но Главной причиной его ослабления было усиление Власти правителей отдельных провинций, что подрывало централизованную власть. В результате Арабский халифат распался на отдельные самостоятельные государства.",
     "tags": [
-      "Цивилизации Азии и Африки",
-      "всемирная история"
+      "Цивилизации Азии и Африки"
     ],
     "importance": 3,
     "approximate": true,
@@ -2255,7 +2244,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p034-razgrom-arabov-obedinennym-voyskom-korolev",
-    "country": "world",
+    "country": "spain",
     "year": 1212,
     "dateLabel": "1212 г.",
     "kind": "event",
@@ -2264,8 +2253,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Это событие стало важным шагом на пути отвоевания христианами Пиренейского полуострова у арабов.",
     "tags": [
       "Высокое средневековье",
-      "государство",
-      "всемирная история"
+      "государство"
     ],
     "importance": 2,
     "approximate": false,
@@ -2328,7 +2316,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p035-prinyatie-hristianstva-na-rusi",
-    "country": "world",
+    "country": "kievan-rus",
     "year": 988,
     "dateLabel": "988 г.",
     "kind": "event",
@@ -2337,8 +2325,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Самым знаменательным событием в правлении Владимира Святославовича стало крещение Руси по византийскому обряду. Во главе церковной организации встал киевский митрополит. Благодаря принятию христианства киевский князь упрочил свою власть.",
     "tags": [
       "Славянские страны",
-      "религия",
-      "всемирная история"
+      "религия"
     ],
     "importance": 2,
     "approximate": false,
@@ -2418,7 +2405,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p036-pohody-batyya-na-rus",
-    "country": "world",
+    "country": "mongol-empire",
     "year": 1237,
     "dateLabel": "1237 – 1240 гг.",
     "kind": "event",
@@ -2426,8 +2413,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "В результате вторжения монголов древнерусские княжества на два с половиной столетия оказались в зависимом положении от Золотой Орды.",
     "detail": "В результате вторжения монголов древнерусские княжества на два с половиной столетия оказались в зависимом положении от Золотой Орды.",
     "tags": [
-      "Славянские страны",
-      "всемирная история"
+      "Славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -2437,7 +2423,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p036-bitva-na-neve",
-    "country": "world",
+    "country": "kievan-rus",
     "year": 1240,
     "dateLabel": "1240 г.",
     "kind": "event",
@@ -2446,8 +2432,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Сражение на реке Неве между новгородским войском под предводительством князя Александра Ярославича и шведским войском. Высокое средневековье 37 За победу над шведами Александр Ярославич получил почетное прозвище Невский.",
     "tags": [
       "Славянские страны",
-      "война",
-      "всемирная история"
+      "война"
     ],
     "importance": 2,
     "approximate": false,
@@ -2526,7 +2511,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p037-obrazovanie-mongolskogo-gosudarstva",
-    "country": "world",
+    "country": "mongol-empire",
     "year": 1101,
     "dateLabel": "Начало XII в.",
     "kind": "event",
@@ -2535,8 +2520,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Хан Темучин объединил все монгольские племена и принял титул великого хана — Чингисхана, тем самым заложив основы единого государства. Затем началась эпоха монгольских завоеваний. Крупнейшая в мировой истории империя охватывала земли от Восточной Европы до Сибири. Однако единое монгольское государство просуществовало недолго, распавшись на отдельные территории.",
     "tags": [
       "Цивилизации Азии",
-      "государство",
-      "всемирная история"
+      "государство"
     ],
     "importance": 3,
     "approximate": true,
@@ -2545,7 +2529,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p038-obrazovanie-deliyskogo-sultanata",
-    "country": "world",
+    "country": "delhi-sultanate",
     "year": 1206,
     "dateLabel": "1206 г.",
     "kind": "event",
@@ -2553,8 +2537,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "В результате вторжений тюрков-мусульман в Северной Индии возникло новое государство — Делийский султанат.",
     "detail": "В результате вторжений тюрков-мусульман в Северной Индии возникло новое государство — Делийский султанат. Это было первое крупное мусульманское государственное образование на территории Индии.",
     "tags": [
-      "Цивилизации Азии",
-      "всемирная история"
+      "Цивилизации Азии"
     ],
     "importance": 3,
     "approximate": false,
@@ -2563,7 +2546,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p038-mongolskie-pohody-v-kitay-srednyuyu-aziyu-",
-    "country": "china",
+    "country": "mongol-empire",
     "year": 1201,
     "dateLabel": "Первая половина XIII в.",
     "kind": "event",
@@ -2632,7 +2615,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p039-izobretenie-knigopechataniya-v-evrope",
-    "country": "world",
+    "country": "germany",
     "year": 1445,
     "dateLabel": "Около 1445 г.",
     "kind": "event",
@@ -2642,8 +2625,7 @@ export const referenceItems: TimelineItem[] = [
     "tags": [
       "Позднее средневековье",
       "культура",
-      "наука и техника",
-      "всемирная история"
+      "наука и техника"
     ],
     "importance": 2,
     "approximate": true,
@@ -2723,7 +2705,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p040-otkrytie-kolumbom-ameriki",
-    "country": "world",
+    "country": "spain",
     "year": 1492,
     "dateLabel": "12 октября 1492 г.",
     "kind": "event",
@@ -2731,8 +2713,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "В результате первой морской экспедиции испанского мореплавателя Христофора Колумба была обнаружена земля, оказавшаяся впоследствии новым для европейцев континентом, который был назван Америкой.",
     "detail": "В результате первой морской экспедиции испанского мореплавателя Христофора Колумба была обнаружена земля, оказавшаяся впоследствии новым для европейцев континентом, который был назван Америкой. Морская экспедиция Колумба положила начало европейской колонизации Америки.",
     "tags": [
-      "Позднее средневековье",
-      "всемирная история"
+      "Позднее средневековье"
     ],
     "importance": 2,
     "approximate": false,
@@ -2743,7 +2724,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p040-otkrytie-vasko-da-gamoy-morskogo-puti-v-in",
-    "country": "india",
+    "country": "portugal",
     "year": 1498,
     "dateLabel": "1498 г.",
     "kind": "event",
@@ -2760,7 +2741,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p041-pravlenie-ivana-kality-1325-1340-usilenie-",
-    "country": "world",
+    "country": "russia",
     "year": 1301,
     "dateLabel": "Первая половина XIV в.",
     "kind": "event",
@@ -2768,8 +2749,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Великий князь Иван Калита укреплял Московское княжество благодаря союзу с Золотой Ордой.",
     "detail": "Великий князь Иван Калита укреплял Московское княжество благодаря союзу с Золотой Ордой. Он стал главным сборщиком дани с княжеств Северо-Восточной Руси, что способствовало росту его богатства и влияния.",
     "tags": [
-      "Славянские страны",
-      "всемирная история"
+      "Славянские страны"
     ],
     "importance": 2,
     "approximate": true,
@@ -2851,7 +2831,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p042-kazn-yana-gusa",
-    "country": "world",
+    "country": "czechia",
     "year": 1415,
     "dateLabel": "1415 г.",
     "kind": "event",
@@ -2859,8 +2839,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Ян Гус выступал с проповедями, в которых осуждал стремление церкви к роскоши, считал, что не папа римский, а Иисус Христос является высшим главой церкви.",
     "detail": "Ян Гус выступал с проповедями, в которых осуждал стремление церкви к роскоши, считал, что не папа римский, а Иисус Христос является высшим главой церкви. На церковном соборе в Констанце он был обвинен в ереси, отказался отречься от своих взглядов и был сожжен на костре.",
     "tags": [
-      "Славянские страны",
-      "всемирная история"
+      "Славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -2869,7 +2848,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p042-gusitskie-voyny",
-    "country": "world",
+    "country": "czechia",
     "year": 1419,
     "dateLabel": "1419 – 1434 гг.",
     "kind": "event",
@@ -2877,8 +2856,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "В ответ на казнь Яна Гуса его сторонники подняли восстание.",
     "detail": "В ответ на казнь Яна Гуса его сторонники подняли восстание. В нем приняли участие горожане, крестьяне, многие чешские феодалы. Восстание было направлено против католической церкви и немецкого господства в Чехии. Повстанцы были разгромлены только после того, как крупные феодалы и богатые горожане пошли на соглашение с императором и папой римским.",
     "tags": [
-      "Славянские страны",
-      "всемирная история"
+      "Славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -2888,7 +2866,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p042-pravlenie-ivana-iii",
-    "country": "world",
+    "country": "russia",
     "year": 1462,
     "dateLabel": "1462 – 1505 гг.",
     "kind": "event",
@@ -2896,8 +2874,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "В период правления великого князя Ивана Ill Московскому великому княжеству подчинились все северо-восточные княжества Руси, Позднее средневековье 43 а также Великий Новгород.",
     "detail": "В период правления великого князя Ивана Ill Московскому великому княжеству подчинились все северо-восточные княжества Руси, Позднее средневековье 43 а также Великий Новгород. При нем окончательно оформилась независимость Русского государства.",
     "tags": [
-      "Славянские страны",
-      "всемирная история"
+      "Славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -2924,7 +2901,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p043-sudebnik-ivana-iii",
-    "country": "world",
+    "country": "russia",
     "year": 1497,
     "dateLabel": "1497 г.",
     "kind": "event",
@@ -2932,8 +2909,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Судебник представлял собой свод законов, вводивший единую правовую систему в государстве.",
     "detail": "Судебник представлял собой свод законов, вводивший единую правовую систему в государстве. Им было положено начало законодательного закрепощения крестьян. Цивилизации Азии, Африки и Америки",
     "tags": [
-      "Славянские страны",
-      "всемирная история"
+      "Славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -3029,7 +3005,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p044-upadok-deliyskogo-sultanata",
-    "country": "world",
+    "country": "delhi-sultanate",
     "year": 1401,
     "dateLabel": "XV в.",
     "kind": "event",
@@ -3037,8 +3013,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "В конце XIV в. в Делийский султанат вторглись войска Тимура, в результате султанат был разорен и пришел в упадок, его территория сильно сократилась.",
     "detail": "В конце XIV в. в Делийский султанат вторглись войска Тимура, в результате султанат был разорен и пришел в упадок, его территория сильно сократилась.",
     "tags": [
-      "Славянские страны",
-      "всемирная история"
+      "Славянские страны"
     ],
     "importance": 2,
     "approximate": true,
@@ -3047,31 +3022,13 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p045-rascvet-gosudarstv-inkov-i-actekov-v-ameri",
-    "country": "aztec",
+    "country": "world",
     "year": 1401,
     "dateLabel": "XV в.",
     "kind": "event",
     "title": "Расцвет государств инков и ацтеков в Америке",
     "summary": "Крупнейшими государственными образованиями Центральной и Южной Америки были империи ацтеков и инков.",
     "detail": "Крупнейшими государственными образованиями Центральной и Южной Америки были империи ацтеков и инков. Ацтеки занимали территорию Мексики, инки проживали на территории современного Перу. Оба государства подчинили своей власти соседние народы, достигли высот в монументальном строительстве.",
-    "tags": [
-      "Позднее средневековье",
-      "государство"
-    ],
-    "importance": 2,
-    "approximate": true,
-    "verification": "reference",
-    "referencePage": 45
-  },
-  {
-    "id": "ref-p045-vozvyshenie-songayskogo-gosudarstva",
-    "country": "world",
-    "year": 1401,
-    "dateLabel": "XV в.",
-    "kind": "event",
-    "title": "Возвышение Сонгайского государства",
-    "summary": "Сонгайское государство возникло из маленького царства в бассейне реки Нигер на территории современных государств Мали, Нигер и Нигерия в Африке.",
-    "detail": "Сонгайское государство возникло из маленького царства в бассейне реки Нигер на территории современных государств Мали, Нигер и Нигерия в Африке. Начало его возвышения приходится на время правления Али Бера Великого. Он считается создателем Сонгайской империи, которая просуществовала до конца XVI в.",
     "tags": [
       "Позднее средневековье",
       "государство",
@@ -3083,8 +3040,26 @@ export const referenceItems: TimelineItem[] = [
     "referencePage": 45
   },
   {
+    "id": "ref-p045-vozvyshenie-songayskogo-gosudarstva",
+    "country": "songhai",
+    "year": 1401,
+    "dateLabel": "XV в.",
+    "kind": "event",
+    "title": "Возвышение Сонгайского государства",
+    "summary": "Сонгайское государство возникло из маленького царства в бассейне реки Нигер на территории современных государств Мали, Нигер и Нигерия в Африке.",
+    "detail": "Сонгайское государство возникло из маленького царства в бассейне реки Нигер на территории современных государств Мали, Нигер и Нигерия в Африке. Начало его возвышения приходится на время правления Али Бера Великого. Он считается создателем Сонгайской империи, которая просуществовала до конца XVI в.",
+    "tags": [
+      "Позднее средневековье",
+      "государство"
+    ],
+    "importance": 2,
+    "approximate": true,
+    "verification": "reference",
+    "referencePage": 45
+  },
+  {
     "id": "ref-p046-izdanie-knigi-t-mora-utopiya",
-    "country": "world",
+    "country": "england",
     "year": 1516,
     "dateLabel": "1516 г.",
     "kind": "event",
@@ -3093,8 +3068,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Т. Мор, один из великих мечтателей эпохи Возрождения, описал гуманное общество, в котором торжествует справедливость, нет частной собственности и все граждане равны. Он мечтал о том, чтобы на земле установились мир и процветание, а люди жили так, как граждане его «Утопии» — «места, которого нет».",
     "tags": [
       "Западная Европа и Северная Америка",
-      "культура",
-      "всемирная история"
+      "культура"
     ],
     "importance": 2,
     "approximate": false,
@@ -3121,7 +3095,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p046-pravlenie-karla-v",
-    "country": "world",
+    "country": "holy-roman-empire",
     "year": 1519,
     "dateLabel": "1519 – 1556 гг.",
     "kind": "event",
@@ -3129,8 +3103,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Император Священной Римской империи Карл У стремился к созданию мирового католического государства.",
     "detail": "Император Священной Римской империи Карл У стремился к созданию мирового католического государства. В период Реформации он принял сторону Рима и бескомпромиссно боролся против протестантов. Непрерывные войны подорвали силы империи. Не достигнув своей цели, разочарованный монарх отрекся от власти.",
     "tags": [
-      "Западная Европа и Северная Америка",
-      "всемирная история"
+      "Западная Европа и Северная Америка"
     ],
     "importance": 2,
     "approximate": false,
@@ -3159,7 +3132,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p047-tridcatiletnyaya-voyna",
-    "country": "world",
+    "country": "holy-roman-empire",
     "year": 1618,
     "dateLabel": "1618 – 1648 гг.",
     "kind": "event",
@@ -3168,8 +3141,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Война отражала борьбу за власть между германскими князьямипротестантами и императором Священной Римской империи, мечтавшим создать единую католическую империю. Военные действия проходили с переменным успехом. В результате Тридцатилетней ВОЙНЫ Германия оказалась полностью разорена, половина ее населения погибла в сражениях или умерла от голода.",
     "tags": [
       "Западная Европа и Северная Америка",
-      "война",
-      "всемирная история"
+      "война"
     ],
     "importance": 2,
     "approximate": false,
@@ -3290,7 +3262,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p050-voyna-severoamerikanskih-koloniy-za-nezavi",
-    "country": "england",
+    "country": "usa",
     "year": 1775,
     "dateLabel": "1775 – 1783 гг.",
     "kind": "event",
@@ -3347,7 +3319,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p052-deklaraciya-prav-cheloveka-i-grazhdanina",
-    "country": "world",
+    "country": "france",
     "year": 1789,
     "dateLabel": "26 августа 1789 г.",
     "kind": "event",
@@ -3356,8 +3328,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Это важнейший документ Французской революции, принятый Национальным учредительным собранием. Декларация провозгласила равенство людей в правах и закрепила их священные права на свободу личности, свободу слова, свободу совести, безопасность и собственность. «Все, что не воспрещено законом, то дозволено» — говорилось в Декларации.",
     "tags": [
       "Западная Европа и Северная Америка",
-      "право",
-      "всемирная история"
+      "право"
     ],
     "importance": 2,
     "approximate": false,
@@ -3368,7 +3339,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p052-prinyatie-ivanom-iv-carskogo-titula",
-    "country": "world",
+    "country": "russia",
     "year": 1547,
     "dateLabel": "1547 г.",
     "kind": "event",
@@ -3376,8 +3347,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Царями (лат. «цезарь» на Руси называли правителей Священной Римской империи и ордынских ханов.",
     "detail": "Царями (лат. «цезарь» на Руси называли правителей Священной Римской империи и ордынских ханов. Царский титул московского правителя подчеркивал полную независимость Руси (России) и значительно возвышал его над остальными князьями.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -3386,7 +3356,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p052-deyatelnost-izbrannoy-rady",
-    "country": "world",
+    "country": "russia",
     "year": 1547,
     "dateLabel": "1547 – 1560 гг.",
     "kind": "event",
@@ -3394,8 +3364,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Избранной радой называлась группа советников, объединенных вокруг царя Ивана М (дворянин Алексей Адашев, священник Сильвестр и др.).",
     "detail": "Избранной радой называлась группа советников, объединенных вокруг царя Ивана М (дворянин Алексей Адашев, священник Сильвестр и др.). С их помощью царь проводил реформы, старясь учитывать интересы как служилого дворянства, так и боярства.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -3405,7 +3374,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p052-sozyv-zemskogo-sobora",
-    "country": "world",
+    "country": "russia",
     "year": 1549,
     "dateLabel": "1549 г.",
     "kind": "event",
@@ -3413,8 +3382,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Созыв «Собора от всей земли» свидетельствовал о превращении России в сословно-представительную монархию.",
     "detail": "Созыв «Собора от всей земли» свидетельствовал о превращении России в сословно-представительную монархию.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -3423,7 +3391,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p053-sudebnik-ivana-iv",
-    "country": "world",
+    "country": "russia",
     "year": 1550,
     "dateLabel": "1550 г.",
     "kind": "event",
@@ -3431,8 +3399,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Судебник ограничивал власть наместников, отменял податные льготы монастырей, регулировал военную службу дворян и боярских детей, учреждал стрелецкое войско.",
     "detail": "Судебник ограничивал власть наместников, отменял податные льготы монастырей, регулировал военную службу дворян и боярских детей, учреждал стрелецкое войско. Переход крестьян ограничивался неделей до и после Юрьева дня.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -3516,7 +3483,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p054-pravlenie-borisa-godunova",
-    "country": "world",
+    "country": "russia",
     "year": 1598,
     "dateLabel": "1598 – 1605 гг.",
     "kind": "event",
@@ -3524,8 +3491,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Борис Годунов был первым русским царем, получившим трон не по наследству, а путем выборов.",
     "detail": "Борис Годунов был первым русским царем, получившим трон не по наследству, а путем выборов. Новый царь опирался не на бояр, а на служилых людей (дворян), высшее духовенство и горожан. В интересах помещиков был установлен пятилетний срок сыска беглых крестьян и холопов (1597), учреждено патриаршество (1589), расширилась торговля с Англией, Голландией и Персией.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -3535,7 +3501,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p054-vosstanie-pod-predvoditelstvom-ivana-bolot",
-    "country": "world",
+    "country": "russia",
     "year": 1606,
     "dateLabel": "1606 – 1607 гг.",
     "kind": "event",
@@ -3544,8 +3510,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Самое массовое народное восстание в период Смуты. Иван Болотников объявил себя воеводой чудом спасшегося царевича Дмитрия, чем привлек на свою сторону простой люд. Отряды повстанцев разгромили войско Василия Шуйского, но взять Москву им не удалось. Через четыре месяца Болотников был схвачен и убит.",
     "tags": [
       "Российское государство и славянские страны",
-      "война",
-      "всемирная история"
+      "война"
     ],
     "importance": 2,
     "approximate": false,
@@ -3555,7 +3520,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p054-nachalo-carstvovaniya-dinastii-romanovyh",
-    "country": "world",
+    "country": "russia",
     "year": 1613,
     "dateLabel": "1613 г.",
     "kind": "event",
@@ -3564,8 +3529,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "После освобождения Москвы от польских интервентов Земский собор избрал царем 16-летнего Михаила Федоровича Романова, выходца из известного боярского рода, внука Ивана Грозного по женской линии. Избранный царь принял условие собора «вершить дела, советуясь со всей землей», т. е. с Земским собором и Боярской думой.",
     "tags": [
       "Российское государство и славянские страны",
-      "государство",
-      "всемирная история"
+      "государство"
     ],
     "importance": 2,
     "approximate": false,
@@ -3574,7 +3538,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p055-prinyatie-sobornogo-ulozheniya",
-    "country": "world",
+    "country": "russia",
     "year": 1649,
     "dateLabel": "1649 г.",
     "kind": "event",
@@ -3582,8 +3546,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Свод законов, принятых Земским собором. Соборное уложение законодательно оформляло в России крепостное право, отменяло «урочные лета» — срок сыска беглых крестьян — и налагало штраф за их укрывательство.",
     "detail": "Свод законов, принятых Земским собором. Соборное уложение законодательно оформляло в России крепостное право, отменяло «урочные лета» — срок сыска беглых крестьян — и налагало штраф за их укрывательство. Крестьяне навсегда становились собственностью феодала и передавались вместе с землей по наследству или продавались вместе с землей.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -3592,7 +3555,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p055-vosstanie-stepana-razina",
-    "country": "world",
+    "country": "russia",
     "year": 1670,
     "dateLabel": "1670 – 1671 гг.",
     "kind": "event",
@@ -3601,8 +3564,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Восстание носило антифеодальный характер. Восставшие взяли Царицын, Саратов и Самару, опустошали окрестности Симбирска, Тамбова, Нижнего Новгорода. В октябре 1670 г. повстанцы потерпели поражение под Симбирском. Разин был схвачен казачьей верхушкой, выдан властям и казнен на Болотной площади в Москве.",
     "tags": [
       "Российское государство и славянские страны",
-      "война",
-      "всемирная история"
+      "война"
     ],
     "importance": 2,
     "approximate": false,
@@ -3612,7 +3574,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p055-reformy-petra-i",
-    "country": "world",
+    "country": "russia",
     "year": 1697,
     "dateLabel": "1697 – 1725 гг.",
     "kind": "event",
@@ -3620,8 +3582,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Преобразования в государственной и общественной жизни России, осуществленные в период правления Петра I.",
     "detail": "Преобразования в государственной и общественной жизни России, осуществленные в период правления Петра I. Реформы способствовали превращению России в одну из крупнейших держав мира.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -3651,7 +3612,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p056-ukaz-petra-i-o-edinonasledii",
-    "country": "world",
+    "country": "russia",
     "year": 1718,
     "dateLabel": "1718 г.",
     "kind": "event",
@@ -3659,8 +3620,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Согласно указу поместья становились наследственными владениями дворян.",
     "detail": "Согласно указу поместья становились наследственными владениями дворян.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -3669,7 +3629,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p056-prinyatie-petrom-i-titula-imperatora",
-    "country": "world",
+    "country": "russia",
     "year": 1721,
     "dateLabel": "22 октября 1721 г.",
     "kind": "event",
@@ -3677,8 +3637,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Русский царь принял титул императора всероссийского, а Сенат наименовал его Великим и Отцом Отечества.",
     "detail": "Русский царь принял титул императора всероссийского, а Сенат наименовал его Великим и Отцом Отечества. Русское царство превратилось в Российскую империю. Это вызвало протест многих европейских государств. Но вскоре они приняли новый титул русского государя, а Россию признали великой европейской державой.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -3689,7 +3648,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p056-vvedenie-tabeli-o-rangah",
-    "country": "world",
+    "country": "russia",
     "year": 1722,
     "dateLabel": "1722 г.",
     "kind": "event",
@@ -3697,8 +3656,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Табель о рангах устанавливала порядок продвижения чинов по гражданской и военной службе в зависимости от способностей.",
     "detail": "Табель о рангах устанавливала порядок продвижения чинов по гражданской и военной службе в зависимости от способностей.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -3707,7 +3665,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p056-osnovanie-moskovskogo-universiteta",
-    "country": "world",
+    "country": "russia",
     "year": 1755,
     "dateLabel": "1755 г.",
     "kind": "event",
@@ -3716,8 +3674,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Университет был создан при участии М. В. Ломоносова. Ло сих пор является центром подготовки ученых и преподавателей в России.",
     "tags": [
       "Российское государство и славянские страны",
-      "культура",
-      "всемирная история"
+      "культура"
     ],
     "importance": 2,
     "approximate": false,
@@ -3744,7 +3701,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p056-russko-tureckie-voyny",
-    "country": "turkey",
+    "country": "russia",
     "year": 1787,
     "dateLabel": "1768 – 1774, 1787 – 1791 г.",
     "kind": "event",
@@ -3817,7 +3774,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p058-pervoe-krugosvetnoe-puteshestvie-fernana-m",
-    "country": "world",
+    "country": "spain",
     "year": 1519,
     "dateLabel": "1519 – 1522 гг.",
     "kind": "event",
@@ -3825,8 +3782,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Морскую экспедицию португальца Ф. Магеллана снарядила Испания.",
     "detail": "Морскую экспедицию португальца Ф. Магеллана снарядила Испания. Путешествие, которое длилось три года, на практике доказало, что Земля имеет форму шара.",
     "tags": [
-      "Страны Азии, Африки и Латинской Америки",
-      "всемирная история"
+      "Страны Азии, Африки и Латинской Америки"
     ],
     "importance": 2,
     "approximate": false,
@@ -3836,7 +3792,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p058-pravlenie-suleymana-velikolepnogo",
-    "country": "world",
+    "country": "ottoman-empire",
     "year": 1520,
     "dateLabel": "1520 – 1566 гг.",
     "kind": "event",
@@ -3844,8 +3800,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "В период правления султана Сулеймана Великолепного Османская империя достигла наивысшего могущества.",
     "detail": "В период правления султана Сулеймана Великолепного Османская империя достигла наивысшего могущества. Сулейман продолжил завоевательные войны своих предшественников и присоединил к Турции Венгерское королевство, Хорватию, Армению, часть Ирана (Персии) и Ирака, территории Северной Африки.",
     "tags": [
-      "Страны Азии, Африки и Латинской Америки",
-      "всемирная история"
+      "Страны Азии, Африки и Латинской Америки"
     ],
     "importance": 2,
     "approximate": false,
@@ -3890,7 +3845,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p058-stroitelstvo-mavzoleya-tadzh-mahal",
-    "country": "world",
+    "country": "mughal-empire",
     "year": 1630,
     "dateLabel": "Около 1630 – 1652 гг.",
     "kind": "event",
@@ -3898,8 +3853,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Мовзолей возведен в индийском городе Агру по приказу могольского императора Шах-Джахана в память о его жене Мумтаз- Махал.",
     "detail": "Мовзолей возведен в индийском городе Агру по приказу могольского императора Шах-Джахана в память о его жене Мумтаз- Махал. ПЕРИОД XIX — НАЧАЛО ХХ в.",
     "tags": [
-      "Страны Азии, Африки и Латинской Америки",
-      "всемирная история"
+      "Страны Азии, Африки и Латинской Америки"
     ],
     "importance": 2,
     "approximate": true,
@@ -4116,7 +4070,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p061-vosstanie-grekov-protiv-osmanskoy-imperii",
-    "country": "ottoman-empire",
+    "country": "greece",
     "year": 1821,
     "dateLabel": "1821 – 1829 гг.",
     "kind": "event",
@@ -4194,7 +4148,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p062-gosudarstvennyy-perevorot-lui-bonaparta",
-    "country": "world",
+    "country": "france",
     "year": 1851,
     "dateLabel": "2 декабря 1851 г.",
     "kind": "event",
@@ -4203,8 +4157,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Президент распустил Законодательное собрание и фактически восстановил монархию. Официально был провозглашен императором под именем Наполеона Ill (установление Второй империи).",
     "tags": [
       "Страны Азии, Африки и Латинской Америки",
-      "государство",
-      "всемирная история"
+      "государство"
     ],
     "importance": 2,
     "approximate": false,
@@ -4253,7 +4206,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p062-prinyatie-kongressom-gomsted-akta",
-    "country": "world",
+    "country": "usa",
     "year": 1862,
     "dateLabel": "Май 1862 г.",
     "kind": "event",
@@ -4261,8 +4214,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "В соответствии с актом каждый желающий в США мог получить за небольшую плату участок земли (гомстед) в 65 га.",
     "detail": "В соответствии с актом каждый желающий в США мог получить за небольшую плату участок земли (гомстед) в 65 га. Этого давно уже добивались фермеры и рабочие.",
     "tags": [
-      "Страны Азии, Африки и Латинской Америки",
-      "всемирная история"
+      "Страны Азии, Африки и Латинской Америки"
     ],
     "importance": 2,
     "approximate": false,
@@ -4364,7 +4316,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p063-avstro-vengerskoe-soglashenie",
-    "country": "world",
+    "country": "austria",
     "year": 1867,
     "dateLabel": "1867 г.",
     "kind": "event",
@@ -4372,8 +4324,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Австрийская империя Габсбургов преобразовалась в двуединую монархию Австро-Венгрия.",
     "detail": "Австрийская империя Габсбургов преобразовалась в двуединую монархию Австро-Венгрия. Венгрии вернули конституцию 1848 г., ав Австрии издали новую конституцию. Австро-Венгерская империя стала конституционной монархией.",
     "tags": [
-      "Страны Азии, Африки и Латинской Америки",
-      "всемирная история"
+      "Страны Азии, Африки и Латинской Америки"
     ],
     "importance": 2,
     "approximate": false,
@@ -4515,7 +4466,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p065-berlinskaya-konferenciya",
-    "country": "germany",
+    "country": "world",
     "year": 1884,
     "dateLabel": "1884 – 1885 гг.",
     "kind": "event",
@@ -4571,7 +4522,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p066-otkrytie-rentgenovskih-luchey",
-    "country": "world",
+    "country": "germany",
     "year": 1895,
     "dateLabel": "1895 г.",
     "kind": "event",
@@ -4579,8 +4530,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Это открытие немецкого ученого В. Рентгена сразу стало применяться в медицине и технике.",
     "detail": "Это открытие немецкого ученого В. Рентгена сразу стало применяться в медицине и технике.",
     "tags": [
-      "Страны Азии, Африки и Латинской Америки",
-      "всемирная история"
+      "Страны Азии, Африки и Латинской Америки"
     ],
     "importance": 2,
     "approximate": false,
@@ -4589,7 +4539,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p066-izobretenie-kinoapparata",
-    "country": "world",
+    "country": "france",
     "year": 1895,
     "dateLabel": "1895 г.",
     "kind": "event",
@@ -4598,8 +4548,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Аппарат для съемки и проецирования «движущихся фотографий», или кинематограф, был изобретен французами братьями Люмьер.",
     "tags": [
       "Страны Азии, Африки и Латинской Америки",
-      "наука и техника",
-      "всемирная история"
+      "наука и техника"
     ],
     "importance": 2,
     "approximate": false,
@@ -4626,7 +4575,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p066-britansko-francuzskoe-soglashenie",
-    "country": "england",
+    "country": "world",
     "year": 1904,
     "dateLabel": "1904 г.",
     "kind": "event",
@@ -4634,7 +4583,8 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Ноправлено против Германии. Стало вторым шагом на пути к созданию Антанты.",
     "detail": "Ноправлено против Германии. Стало вторым шагом на пути к созданию Антанты.",
     "tags": [
-      "Страны Азии, Африки и Латинской Америки"
+      "Страны Азии, Африки и Латинской Америки",
+      "всемирная история"
     ],
     "importance": 2,
     "approximate": false,
@@ -4661,7 +4611,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p066-russko-britanskoe-soglashenie",
-    "country": "england",
+    "country": "world",
     "year": 1907,
     "dateLabel": "1907 г.",
     "kind": "event",
@@ -4669,7 +4619,8 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Соглашение между Россией и Великобританией завершило создание Антанты — союза Франции, Великобритании и России.",
     "detail": "Соглашение между Россией и Великобританией завершило создание Антанты — союза Франции, Великобритании и России. ПЕРИОД XIX — НАЧАЛО ХХ в.",
     "tags": [
-      "Страны Азии, Африки и Латинской Америки"
+      "Страны Азии, Африки и Латинской Америки",
+      "всемирная история"
     ],
     "importance": 2,
     "approximate": false,
@@ -4758,7 +4709,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p067-zagranichnyy-pohod-russkoy-armii",
-    "country": "world",
+    "country": "russia",
     "year": 1813,
     "dateLabel": "1813 – 1814 гг.",
     "kind": "event",
@@ -4766,8 +4717,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Активные боевые действия велись на территории Пруссии и Саксонии, затем переместились на территорию Франции и завершились взятием Парижа и отречением Наполеона от власти.",
     "detail": "Активные боевые действия велись на территории Пруссии и Саксонии, затем переместились на территорию Франции и завершились взятием Парижа и отречением Наполеона от власти.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -4777,7 +4727,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p068-nachalo-vtorogo-serbskogo-vosstaniya",
-    "country": "world",
+    "country": "serbia",
     "year": 1815,
     "dateLabel": "1815 г.",
     "kind": "event",
@@ -4786,8 +4736,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Восстание возглавил воевода Милош Обренович. После поражения в Русско-турецкой войне (1828—1829) Османская империя признала автономию Сербии (1830). Полную независимость Сербия обрела в 1878 г.",
     "tags": [
       "Российское государство и славянские страны",
-      "война",
-      "всемирная история"
+      "война"
     ],
     "importance": 2,
     "approximate": false,
@@ -4910,7 +4859,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p069-russko-tureckaya-voyna",
-    "country": "turkey",
+    "country": "russia",
     "year": 1877,
     "dateLabel": "1877 – 1878 гг.",
     "kind": "event",
@@ -4929,7 +4878,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p070-izobretenie-radio",
-    "country": "world",
+    "country": "russia",
     "year": 1895,
     "dateLabel": "1895 г.",
     "kind": "event",
@@ -4938,8 +4887,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Русский ученый А. С. Попов открыл способ излучения и приема электромагнитных волн для беспроволочной связи. Так было изобретено радио, которое на долгое время стало важнейшим источником информации для всего мира.",
     "tags": [
       "Российское государство и славянские страны",
-      "наука и техника",
-      "всемирная история"
+      "наука и техника"
     ],
     "importance": 2,
     "approximate": false,
@@ -4948,7 +4896,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p070-i-sezd-rsdrp",
-    "country": "world",
+    "country": "russia",
     "year": 1898,
     "dateLabel": "1 – 3 марта 1898 г.",
     "kind": "event",
@@ -4956,8 +4904,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "I съезд Российской социал-демократической рабочей партии (РСДРП) нелегально состоялся в Минске.",
     "detail": "I съезд Российской социал-демократической рабочей партии (РСДРП) нелегально состоялся в Минске. Съезд стал началом нового этапа в развитии российской социал-демократии.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -4968,7 +4915,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p070-ii-sezd-rsdrp",
-    "country": "world",
+    "country": "russia",
     "year": 1903,
     "dateLabel": "1903 г.",
     "kind": "event",
@@ -4976,8 +4923,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Программа партии, принятая на съезде в Лондоне, предусматривала свержение самодержавной власти в России, установление демократической республики, введение 8-часового рабочего дня и наделение крестьян землей.",
     "detail": "Программа партии, принятая на съезде в Лондоне, предусматривала свержение самодержавной власти в России, установление демократической республики, введение 8-часового рабочего дня и наделение крестьян землей. Конечной целью провозглашалось свершение социалистической революции и установление диктатуры пролетариата. На съезде произошел раскол РСДРП на большевиков и меньшевиков.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -4986,7 +4932,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p070-nachalo-russko-yaponskoy-voyny",
-    "country": "world",
+    "country": "russia",
     "year": 1904,
     "dateLabel": "8 февраля 1904 г.",
     "kind": "event",
@@ -4994,8 +4940,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Боевые действия начались с нападения Японии на русские корабли в Порт-Артуре и Чемульпо.",
     "detail": "Боевые действия начались с нападения Японии на русские корабли в Порт-Артуре и Чемульпо. Завершилась война 23 августа (5 сентября) 1905 г. поражением России. По Портсмутскому мирному договору Россия уступала Японии Порт-Артур и Ляодунский полуостров. Победа позволила Японии начать установление контроля над Кореей.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -5006,7 +4951,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p070-krovavoe-voskresene",
-    "country": "world",
+    "country": "russia",
     "year": 1905,
     "dateLabel": "9 января 1905 г.",
     "kind": "event",
@@ -5014,8 +4959,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Расстрел мирного шествия петербургских рабочих к Зимнему дворцу с целью вручения царю Николаю II коллективной петиции.",
     "detail": "Расстрел мирного шествия петербургских рабочих к Зимнему дворцу с целью вручения царю Николаю II коллективной петиции. Это событие послужило толчком к началу Первой русской революции.",
     "tags": [
-      "Российское государство и славянские страны",
-      "всемирная история"
+      "Российское государство и славянские страны"
     ],
     "importance": 2,
     "approximate": false,
@@ -5045,7 +4989,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p071-provozglashenie-nezavisimosti-bolgarii-ot-",
-    "country": "ottoman-empire",
+    "country": "bulgaria",
     "year": 1908,
     "dateLabel": "22 сентября 1908 г.",
     "kind": "event",
@@ -5613,7 +5557,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p078-obrazovanie-nemeckoy-rabochey-partii",
-    "country": "world",
+    "country": "germany",
     "year": 1919,
     "dateLabel": "Январь 1919 г.",
     "kind": "event",
@@ -5621,8 +5565,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Немецкая рабочая партия — первая фашистская организация в Германии.",
     "detail": "Немецкая рабочая партия — первая фашистская организация в Германии. С 1920 г. стола называться Национал-социалистической немецкой рабочей партией (НСДАП). В своей программе требовала отмены Версальского договора и создания Великой Германии (включая Австрию и другие земли, где проживали немцы). В 1921 г. председателем НСДАП стол А. Гитлер.",
     "tags": [
-      "Страны Европы и США",
-      "всемирная история"
+      "Страны Европы и США"
     ],
     "importance": 3,
     "approximate": false,
@@ -5671,7 +5614,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p079-vengerskaya-sovetskaya-respublika",
-    "country": "russia",
+    "country": "hungary",
     "year": 1919,
     "dateLabel": "21 марта – 1 августа 1919 г.",
     "kind": "event",
@@ -5691,7 +5634,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p079-bavarskaya-sovetskaya-respublika",
-    "country": "russia",
+    "country": "germany",
     "year": 1919,
     "dateLabel": "13 апреля – 1 мая 1919 г.",
     "kind": "event",
@@ -5731,7 +5674,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p080-prinyatie-veymarskoy-konstitucii",
-    "country": "world",
+    "country": "germany",
     "year": 1919,
     "dateLabel": "1919 г.",
     "kind": "event",
@@ -5740,8 +5683,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Новая конституция, принятая Национальным собранием в Веймаре, учредила в Германии президентскую республику. Конституция закрепляла демократические права и социальные достижения трудящихся.",
     "tags": [
       "Страны Европы и США",
-      "право",
-      "всемирная история"
+      "право"
     ],
     "importance": 3,
     "approximate": false,
@@ -5806,7 +5748,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p081-vashingtonskaya-konferenciya",
-    "country": "usa",
+    "country": "world",
     "year": 1921,
     "dateLabel": "12 ноября 1921 г. – 6 февраля 1922 г.",
     "kind": "event",
@@ -6090,7 +6032,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p084-pobeda-narodnogo-fronta-na-parlamentskih-v",
-    "country": "world",
+    "country": "france",
     "year": 1936,
     "dateLabel": "Апрель – май 1936 г.",
     "kind": "event",
@@ -6098,8 +6040,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Для предупреждения угрозы фашизма французские коммунисты и социалисты объединились в Народный фронт.",
     "detail": "Для предупреждения угрозы фашизма французские коммунисты и социалисты объединились в Народный фронт. На парламентских выборах в мае 1936 г. Народный фронт одержал победу и в июне сформировал правительство во главе с Л. Блюмом. Правительство Народного фронта осуществило ряд демократических преобразований. В апреле 1938 г. правительство Блюма ушло в отстовку. Внутри Народного фронта усилились противоречия, что привело к его распаду.",
     "tags": [
-      "Страны Европы и США",
-      "всемирная история"
+      "Страны Европы и США"
     ],
     "importance": 2,
     "approximate": false,
@@ -6166,7 +6107,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p085-myunhenskaya-konferenciya-germanii-italii-",
-    "country": "germany",
+    "country": "world",
     "year": 1938,
     "dateLabel": "29 – 30 сентября 1938 г.",
     "kind": "event",
@@ -6186,7 +6127,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p086-okkupaciya-chehoslovakii-germanskimi-voysk",
-    "country": "germany",
+    "country": "czechia",
     "year": 1939,
     "dateLabel": "15 марта 1939 г.",
     "kind": "event",
@@ -6414,7 +6355,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p090-podpisanie-sovetsko-germanskogo-dogovora-o",
-    "country": "germany",
+    "country": "russia",
     "year": 1926,
     "dateLabel": "24 апреля 1926 г.",
     "kind": "event",
@@ -6470,7 +6411,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p091-podpisanie-sovetsko-francuzskogo-dogovora-",
-    "country": "france",
+    "country": "russia",
     "year": 1935,
     "dateLabel": "2 мая 1935 г.",
     "kind": "event",
@@ -6510,7 +6451,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p091-podpisanie-sovetsko-germanskogo-pakta-o-ne",
-    "country": "germany",
+    "country": "russia",
     "year": 1939,
     "dateLabel": "23 августа 1939 г.",
     "kind": "event",
@@ -6756,7 +6697,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p095-napadenie-germanii-na-polshu-nachalo-vtoro",
-    "country": "germany",
+    "country": "world",
     "year": 1939,
     "dateLabel": "1 сентября 1939 г.",
     "kind": "event",
@@ -6764,7 +6705,8 @@ export const referenceItems: TimelineItem[] = [
     "summary": "ВОЙНЫ В этот день фашистская Германия напала на Польшу.",
     "detail": "ВОЙНЫ В этот день фашистская Германия напала на Польшу. 3 сентября союзники Польши — Англия и Франция — объявили Германии войну. Началась Вторая мировая война. Германия рассчитывала утвердить свое господство в Европе, а затем выступить против СССР.",
     "tags": [
-      "Вторая мировая война"
+      "Вторая мировая война",
+      "всемирная история"
     ],
     "importance": 3,
     "approximate": false,
@@ -6775,7 +6717,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p096-podpisanie-troystvennogo-pakta-mezhdu-yapo",
-    "country": "germany",
+    "country": "world",
     "year": 1940,
     "dateLabel": "27 сентября 1940 г.",
     "kind": "event",
@@ -6795,7 +6737,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p096-podpisanie-velikobritaniey-i-ssha-atlantic",
-    "country": "england",
+    "country": "world",
     "year": 1941,
     "dateLabel": "14 августа 1941 г.",
     "kind": "event",
@@ -6804,7 +6746,8 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Хартия о совместной борьбе против фашизма заложила основы антифашистской коалиции. СССР одобрил содержание хартии.",
     "tags": [
       "Вторая мировая война",
-      "право"
+      "право",
+      "всемирная история"
     ],
     "importance": 2,
     "approximate": false,
@@ -6834,7 +6777,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p097-moskovskaya-bitva",
-    "country": "world",
+    "country": "russia",
     "year": 1941,
     "dateLabel": "30 сентября 1941 г. – 20 апреля 1942 г.",
     "kind": "event",
@@ -6843,8 +6786,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Крупнейшее сражение первого периода Великой Отечественной войны. В конце октября гитлеровское наступление было остановлено. Советские войска под командованием Г. К. Жукова и И. С. Конева перешли в контрнаступление и разгромили противника. Историческое значение победы в битве под Москвой заключалось в том, что был развеян миф о непобедимости немецко-фашистской армии и сорван план блицкрига, укрепился моральный дух Красной армии и всего советского народа.",
     "tags": [
       "Вторая мировая война",
-      "война",
-      "всемирная история"
+      "война"
     ],
     "importance": 2,
     "approximate": false,
@@ -6855,7 +6797,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p097-napadenie-yaponii-na-perl-harbor-vstupleni",
-    "country": "japan",
+    "country": "world",
     "year": 1941,
     "dateLabel": "7 декабря 1941 г.",
     "kind": "event",
@@ -6863,7 +6805,8 @@ export const referenceItems: TimelineItem[] = [
     "summary": "В результате нападения флот США понес большие потери.",
     "detail": "В результате нападения флот США понес большие потери. США и Великобритания объявили войну Японии, что, в свою очередь, вызвало объявление войны Соединенным Штатам со стороны Германии и Италии.",
     "tags": [
-      "Вторая мировая война"
+      "Вторая мировая война",
+      "всемирная история"
     ],
     "importance": 3,
     "approximate": false,
@@ -6957,7 +6900,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p098-kurskaya-bitva",
-    "country": "world",
+    "country": "russia",
     "year": 1943,
     "dateLabel": "5 июля – 23 августа 1943 г.",
     "kind": "event",
@@ -6966,8 +6909,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Курская битва также известна как битва на Курской дуге. По своим масштабам, результатам и военно-политическим последствиям является одним из ключевых сражений Второй мировой и Великой Отечественной войн. В сражении участвовали около 2 млн человек, 6 тыс. танков, 4 тыс. самолетов. Победа на Курской дуге и дальнейшее наступление советских войск летом — осенью 1943 г. ознаменовали завершение коренного перелома в ходе Великой Отечественной войны и, как следствие, во Второй мировой войне. Инициатива в ведении войны окончательно перешла к Советскому Союзу.",
     "tags": [
       "Вторая мировая война",
-      "война",
-      "всемирная история"
+      "война"
     ],
     "importance": 2,
     "approximate": false,
@@ -6978,7 +6920,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p098-podpisanie-italiey-peremiriya-s-anglo-amer",
-    "country": "usa",
+    "country": "world",
     "year": 1943,
     "dateLabel": "8 сентября 1943 г.",
     "kind": "event",
@@ -6986,7 +6928,8 @@ export const referenceItems: TimelineItem[] = [
     "summary": "В июле 1943 г. союзники высадились на острове Сицилия и начали освобождение Италии.",
     "detail": "В июле 1943 г. союзники высадились на острове Сицилия и начали освобождение Италии. В этих условиях Б. Муссолини был снят с должности премьер-министра и арестован. Новое правительство подписало перемирие и вскоре объявило войну Германии.",
     "tags": [
-      "Вторая мировая война"
+      "Вторая мировая война",
+      "всемирная история"
     ],
     "importance": 2,
     "approximate": false,
@@ -7036,7 +6979,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p099-vysadka-anglo-amerikanskih-voysk-v-evrope-",
-    "country": "usa",
+    "country": "world",
     "year": 1944,
     "dateLabel": "6 июня 1944 г.",
     "kind": "event",
@@ -7044,7 +6987,8 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Нормандская операция (операция «Оверлорд») — крупнейшая военно-стратегическая операция союзников по высадке войск в Нормандии (Северная Франция) под общим командованием генерала Д.",
     "detail": "Нормандская операция (операция «Оверлорд») — крупнейшая военно-стратегическая операция союзников по высадке войск в Нормандии (Северная Франция) под общим командованием генерала Д. Эйзенхауэра. Операция открыла Западный, или Второй, фронт в Европе. Она закончилась освобождением Парижа и выходом союзных войск к франко-германской границе в конце августа 1944 г.",
     "tags": [
-      "Вторая мировая война"
+      "Вторая мировая война",
+      "всемирная история"
     ],
     "importance": 2,
     "approximate": false,
@@ -7075,7 +7019,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p100-berlinskaya-nastupatelnaya-operaciya",
-    "country": "germany",
+    "country": "russia",
     "year": 1945,
     "dateLabel": "16 апреля – 2 мая 1945 г.",
     "kind": "event",
@@ -7094,7 +7038,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p100-okonchanie-velikoy-otechestvennoy-voyny",
-    "country": "world",
+    "country": "russia",
     "year": 1945,
     "dateLabel": "9 мая 1945 г.",
     "kind": "event",
@@ -7102,8 +7046,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "9 мая в Москве состоялся салют в честь Дня Победы.",
     "detail": "9 мая в Москве состоялся салют в честь Дня Победы.",
     "tags": [
-      "Вторая мировая война",
-      "всемирная история"
+      "Вторая мировая война"
     ],
     "importance": 2,
     "approximate": false,
@@ -7176,7 +7119,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p101-obyavlenie-voyny-yaponii",
-    "country": "japan",
+    "country": "russia",
     "year": 1945,
     "dateLabel": "8 августа 1945 г.",
     "kind": "event",
@@ -7195,7 +7138,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p101-manchzhurskaya-operaciya",
-    "country": "world",
+    "country": "russia",
     "year": 1945,
     "dateLabel": "9 августа – 2 сентября 1945 г.",
     "kind": "event",
@@ -7203,8 +7146,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Военная операция по уничтожению Квантунской армии.",
     "detail": "Военная операция по уничтожению Квантунской армии. Осуществлялась под общим командованием маршала А. М. Василевского. Квантунская армия была разбита. 14 августа Япония заявила о капитуляции.",
     "tags": [
-      "Вторая мировая война",
-      "всемирная история"
+      "Вторая мировая война"
     ],
     "importance": 2,
     "approximate": false,
@@ -7390,7 +7332,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p104-vengerskoe-vosstanie-1956-g",
-    "country": "world",
+    "country": "hungary",
     "year": 1956,
     "dateLabel": "23 октября – 9 ноября 1956 г.",
     "kind": "event",
@@ -7399,8 +7341,7 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Вооруженное восстание против просоветского режима Венгерской Народной Республики. Подавлено советскими войсками. Венгерское восстание 1950 г. в посткоммунистической Венгрии известно как Венгерская революция 1950 г., в советских источниках — как Венгерский контрреволюционный мятеж 1956 г.",
     "tags": [
       "Страны Европы и США",
-      "война",
-      "всемирная история"
+      "война"
     ],
     "importance": 2,
     "approximate": false,
@@ -7433,7 +7374,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p104-vyhod-francii-iz-voennoy-struktury-nato",
-    "country": "world",
+    "country": "france",
     "year": 1966,
     "dateLabel": "1966 г.",
     "kind": "event",
@@ -7871,7 +7812,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p111-voyna-soprotivleniya-vetnamskogo-naroda-pr",
-    "country": "france",
+    "country": "vietnam",
     "year": 1945,
     "dateLabel": "1945 – 1954 гг.",
     "kind": "event",
@@ -7908,7 +7849,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p111-predostavlenie-nezavisimosti-britanskoy-in",
-    "country": "england",
+    "country": "india",
     "year": 1947,
     "dateLabel": "1947 г.",
     "kind": "event",
@@ -8188,7 +8129,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p115-trebovanie-knr-o-peresmotre-granic-s-sssr",
-    "country": "russia",
+    "country": "china",
     "year": 1963,
     "dateLabel": "Март 1963 г.",
     "kind": "event",
@@ -8244,7 +8185,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p115-borba-vetnamskogo-naroda-protiv-agressii-s",
-    "country": "usa",
+    "country": "vietnam",
     "year": 1965,
     "dateLabel": "1965 – 1973 гг.",
     "kind": "event",
@@ -8336,7 +8277,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p117-vtorzhenie-tureckoy-armii-na-kipr",
-    "country": "turkey",
+    "country": "cyprus",
     "year": 1974,
     "dateLabel": "20 июля 1974 г.",
     "kind": "event",
@@ -8751,7 +8692,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p122-san-francisskiy-mirnyy-dogovor",
-    "country": "france",
+    "country": "world",
     "year": 1951,
     "dateLabel": "8 сентября 1951 г.",
     "kind": "event",
@@ -8760,7 +8701,8 @@ export const referenceItems: TimelineItem[] = [
     "detail": "Сан-Францисский мирный договор был подписан между странами антигитлеровской коалиции и Японией в Сан-Франциско. Договор официально завершил Вторую мировую войну, закрепил порядок выплаты репараций союзникам и компенсаций странам, пострадавшим от японской агрессии. На конференцию в Сан-Франциско не были приглашены представители КНР. В тексте договора не были закреплены территориальные права Китая на Тайвань, Пескадорские и Парасельские острова, а также суверенитет СССР над Южным Сахалином и Курильскими островами. Представители СССР Чехословакии и Польши, участвовавшие в конференции, отказались его подписать. После вступления договора в силу американские войска покинули Японию.",
     "tags": [
       "Страны Азии, Африки и Латинской Америки",
-      "право"
+      "право",
+      "всемирная история"
     ],
     "importance": 2,
     "approximate": false,
@@ -8771,7 +8713,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p122-pervoe-ispytanie-vodorodnoy-bomby",
-    "country": "world",
+    "country": "russia",
     "year": 1953,
     "dateLabel": "20 августа 1953 г.",
     "kind": "event",
@@ -8779,8 +8721,7 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Испытав водородную бомбу первым, СССР перехватил у США инициативу в создании самого современного оружия массового уничтожения.",
     "detail": "Испытав водородную бомбу первым, СССР перехватил у США инициативу в создании самого современного оружия массового уничтожения.",
     "tags": [
-      "Страны Азии, Африки и Латинской Америки",
-      "всемирная история"
+      "Страны Азии, Африки и Латинской Америки"
     ],
     "importance": 2,
     "approximate": false,
@@ -8791,7 +8732,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p122-podpisanie-sovetsko-yaponskoy-deklaracii",
-    "country": "russia",
+    "country": "world",
     "year": 1956,
     "dateLabel": "Октябрь 1956 г.",
     "kind": "event",
@@ -8800,7 +8741,8 @@ export const referenceItems: TimelineItem[] = [
     "detail": "В соответствии с декларацией состояние войны между СССР и Японией прекращалось. Между двумя государствами восстанавливались мир и добрососедские отношения. СССР и Япония согласились продолжить переговоры о заключении мирного договора. Однако позже японская сторона отказалась от подписания мирного договора под давлением США, требуя возвращения «северных территорий» (четырех островов Курильской гряды).",
     "tags": [
       "Страны Азии, Африки и Латинской Америки",
-      "право"
+      "право",
+      "всемирная история"
     ],
     "importance": 2,
     "approximate": false,
@@ -8909,7 +8851,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p124-ustanovlenie-otnosheniy-knr-s-ssha",
-    "country": "china",
+    "country": "world",
     "year": 1972,
     "dateLabel": "Февраль 1972 г.",
     "kind": "event",
@@ -8917,7 +8859,8 @@ export const referenceItems: TimelineItem[] = [
     "summary": "Во время визита президента США Р. Никсона было достигнуто соглашение об установлении отношений и налаживании торговли между двумя странами.",
     "detail": "Во время визита президента США Р. Никсона было достигнуто соглашение об установлении отношений и налаживании торговли между двумя странами. Официальные дипломатические отношения между КНР и США были установлены в 1979 г.",
     "tags": [
-      "Страны Азии, Африки и Латинской Америки"
+      "Страны Азии, Африки и Латинской Америки",
+      "всемирная история"
     ],
     "importance": 2,
     "approximate": false,
@@ -8986,7 +8929,7 @@ export const referenceItems: TimelineItem[] = [
   },
   {
     "id": "ref-p124-konferenciya-oon-po-okruzhayuschey-srede-i",
-    "country": "brazil",
+    "country": "world",
     "year": 1992,
     "dateLabel": "Июнь 1992 г.",
     "kind": "event",

@@ -24,6 +24,22 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_TS = ROOT / "src/data/items/reference.ts"
 OUTPUT_CONTENT = ROOT / "content/items/reference"
 REPORT = ROOT / "docs/reference-import-report.md"
+COUNTRY_OVERRIDES_PATH = ROOT / "scripts/reference_country_overrides.json"
+
+# Некоторые заголовки принципиально неоднозначны: в них названы сразу несколько
+# государств, место конференции не совпадает с её исторической линией или имя
+# деятеля важнее формулировки OCR. Этот проверенный список применяется по
+# стабильному id после общей эвристики и не даёт повторному импорту вернуть уже
+# исправленные атрибуции.
+REFERENCE_COUNTRY_OVERRIDES: dict[str, str] = json.loads(
+    COUNTRY_OVERRIDES_PATH.read_text(encoding="utf-8"),
+)
+
+# Исправление опечатки в заголовке не должно менять публичный id карточки и
+# ломать сохранённые ссылки/связи.
+STABLE_REFERENCE_IDS: dict[str, str] = {
+    "Возникновение города-государства Ашшур": "ref-p009-vozniknovenie-goroda-gosudarstva-apipur",
+}
 
 MONTHS = {
     "январ": 1,
@@ -95,6 +111,7 @@ TEXT_REPLACEMENTS = {
     "Аполлон-1 |": "Аполлон-11",
     "Тутмос I!": "Тутмос III",
     "Тир (Cyp)": "Тир",
+    "Апипур": "Ашшур",
     "на I 2 деревянных": "на 12 деревянных",
     "Kaролингская": "Каролингская",
     "NANA ПОД HATUCKOM": "пала под натиском",
@@ -408,7 +425,9 @@ def parse_date(raw: str) -> tuple[str, ParsedDate | None]:
     match = re.search(r"(?:(конец|начало|середина)\s+)?(\d+)-?(?:го|е)?\s+тысячелет", lower)
     if match:
         qualifier, millennium = match.group(1) or "", int(match.group(2))
-        offset = 100 if qualifier == "конец" else 900 if qualifier == "начало" else 500
+        # В датах до н. э. начало тысячелетия имеет больший модуль года:
+        # начало II тысячелетия ≈ 2000 г. до н. э., конец ≈ 1100 г. до н. э.
+        offset = 900 if qualifier == "конец" else 0 if qualifier == "начало" else 500
         return label, ParsedDate(-(millennium * 1000 - offset), approximate=True)
 
     match = re.search(r"(?:около\s+)?(\d+)\s+тыс\.\s+лет\s+до", lower)
@@ -674,14 +693,14 @@ def main() -> None:
             duplicates.append((event, duplicate))
             continue
 
-        country = classify(event)
-        base_id = f"ref-p{page:03d}-{slugify(title)}"
+        base_id = STABLE_REFERENCE_IDS.get(title, f"ref-p{page:03d}-{slugify(title)}")
         identifier = base_id
         suffix = 2
         while identifier in ids:
             identifier = f"{base_id}-{suffix}"
             suffix += 1
         ids.add(identifier)
+        country = REFERENCE_COUNTRY_OVERRIDES.get(identifier, classify(event))
 
         item: dict[str, object] = {
             "id": identifier,
@@ -742,6 +761,7 @@ def main() -> None:
         f"- Добавлено новых объектов: **{len(generated)}**",
         f"- Сопоставлено с существующей авторской базой: **{len(duplicates)}**",
         f"- Не удалось безопасно разобрать дату: **{len(unparsed)}**",
+        f"- Редакционно проверено исключений атрибуции: **{len(REFERENCE_COUNTRY_OVERRIDES)}**",
         "",
         "## Распределение новых объектов по линиям",
         "",

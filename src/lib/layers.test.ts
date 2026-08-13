@@ -13,14 +13,14 @@ describe('layer placement', () => {
     expect(materializeLayerItems(result.state.placed.map((layer) => layer.id), {}, 'france')).toHaveLength(0);
   });
 
-  it('applies the three-track cap to countries and layers together', () => {
+  it('keeps historical context visible but rejects a layer after the manual three-country cap', () => {
     const result = applyLayers(
       buildColumns(['germany', 'england', 'france'], [['germany', 'england', 'france']]),
       ['einstein'],
       { einstein: 'germany' },
     );
 
-    expect(result.columns[0].tracks).toHaveLength(3);
+    expect(result.columns[0].tracks).toHaveLength(5);
     expect(result.state.placed).toHaveLength(0);
     expect(result.state.unplacedReasons.einstein).toBe('full-host');
   });
