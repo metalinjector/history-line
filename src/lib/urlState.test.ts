@@ -8,7 +8,7 @@ describe('timeline URL state', () => {
       kind: 'events',
       query: 'революция 1917',
       keyOnly: true,
-      era: 'world-wars',
+      period: { type: 'era', id: 'world-wars' },
       tags: ['война', 'политика'],
       zoom: 1.55,
       activeLayerIds: ['einstein'],
@@ -26,7 +26,7 @@ describe('timeline URL state', () => {
     const parsed = parseTimelineUrl(new URL(url).search);
     expect(parsed).toMatchObject({
       countries: ['france', 'russia'], kind: 'events', query: 'революция 1917', keyOnly: true,
-      era: 'world-wars', tags: ['война', 'политика'], zoom: 1.55,
+      period: { type: 'era', id: 'world-wars' }, tags: ['война', 'политика'], zoom: 1.55,
       activeLayerIds: ['einstein'], layerPlacements: { einstein: 'own' },
       columnGroups: [['france', 'russia']],
       selectedId: 'ru-1917', openedId: 'ru-1917', openedDayKey: '1917',
@@ -38,13 +38,25 @@ describe('timeline URL state', () => {
   });
 
   it('drops invalid enum values and clamps zoom', () => {
-    expect(parseTimelineUrl('?c=france,moon&kind=bad&era=nope&z=99&layers=unknown')).toEqual({
+    expect(parseTimelineUrl('?c=france,moon&kind=bad&period=era:nope&z=99&layers=unknown')).toEqual({
       countries: ['france'], kind: undefined, query: undefined, keyOnly: undefined,
-      era: undefined, tags: [], zoom: 1.9, activeLayerIds: undefined,
+      period: undefined, tags: [], zoom: 1.9, activeLayerIds: undefined,
       layerPlacements: undefined, columnGroups: undefined, selectedId: undefined, openedId: undefined,
       openedDayKey: undefined, openedRelationId: undefined, showRelations: undefined,
       storyId: undefined, storyStep: undefined,
     });
+  });
+
+  it('round-trips an interval period and rejects one that is off the grid', () => {
+    const url = buildTimelineUrl(
+      { period: { type: 'interval', from: 301, to: 600 } },
+      'https://example.test/history',
+    );
+    expect(new URL(url).searchParams.get('period')).toBe('int:301');
+    expect(parseTimelineUrl(new URL(url).search).period).toEqual({ type: 'interval', from: 301, to: 600 });
+
+    expect(parseTimelineUrl('?period=int:350').period).toBeUndefined();
+    expect(parseTimelineUrl('?period=nonsense').period).toBeUndefined();
   });
 
   it('uses the session marker to override local defaults explicitly', () => {

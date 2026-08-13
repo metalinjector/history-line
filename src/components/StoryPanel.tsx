@@ -1,8 +1,52 @@
 import type { Story, TimelineItem } from '../types';
 import './StoryPanel.css';
 
-type Props = {
+/**
+ * Маршруты разделены на две части не случайно.
+ *
+ * **Выбор маршрута** — это не настройка и не фильтр, а отдельное занятие,
+ * поэтому список сюжетов стоит под шкалой, вместе с остальными инструментами:
+ * читатель находит его, когда уже посмотрел на таблицу и захотел большего.
+ *
+ * **Плеер** — наоборот, появляется над шкалой и только когда маршрут запущен:
+ * пока он идёт, это главное, что происходит на экране.
+ */
+
+type ChooserProps = {
   stories: Story[];
+  activeStoryId?: string;
+  onStart: (storyId: string) => void;
+};
+
+export function StoryChooser({ stories, activeStoryId, onStart }: ChooserProps) {
+  return (
+    <details className="stories" open={false}>
+      <summary>
+        <span>
+          <b>Кураторские маршруты</b>
+          <small>пройти сюжет шаг за шагом: маршрут сам покажет нужную страну и проведёт по карточкам</small>
+        </span>
+        <span className="stories__count">{stories.length}</span>
+      </summary>
+      <div className="stories__grid">
+        {stories.map((story) => (
+          <article className="story-card" key={story.id} data-active={story.id === activeStoryId || undefined}>
+            <span className="story-card__meta">
+              {story.steps.length} шагов · ≈ {story.minutes} мин
+            </span>
+            <h4>{story.title}</h4>
+            <p>{story.summary}</p>
+            <button type="button" className="btn btn--sm" onClick={() => onStart(story.id)}>
+              {story.id === activeStoryId ? 'Начать заново →' : 'Начать маршрут →'}
+            </button>
+          </article>
+        ))}
+      </div>
+    </details>
+  );
+}
+
+type PlayerProps = {
   activeStory?: Story;
   step: number;
   activeItem?: TimelineItem;
@@ -10,43 +54,24 @@ type Props = {
   onStop: () => void;
 };
 
-export function StoryPanel({ stories, activeStory, step, activeItem, onStep, onStop }: Props) {
-  if (!activeStory) {
-    return (
-      <section className="stories" aria-labelledby="stories-title">
-        <div className="stories__intro">
-          <div>
-            <p className="eyebrow">Кураторские маршруты</p>
-            <h3 id="stories-title">Пройти сюжет шаг за шагом</h3>
-          </div>
-          <p>Маршрут временно уберёт мешающие фильтры, покажет нужную страну и проведёт по карточкам.</p>
-        </div>
-        <div className="stories__grid">
-          {stories.map((story) => (
-            <article className="story-card" key={story.id}>
-              <span className="story-card__meta">{story.steps.length} шагов · ≈ {story.minutes} мин</span>
-              <h4>{story.title}</h4>
-              <p>{story.summary}</p>
-              <button type="button" className="btn btn--sm" onClick={() => onStep(story.id, 0)}>
-                Начать маршрут →
-              </button>
-            </article>
-          ))}
-        </div>
-      </section>
-    );
-  }
+export function StoryPlayer({ activeStory, step, activeItem, onStep, onStop }: PlayerProps) {
+  if (!activeStory) return null;
 
   const current = activeStory.steps[step] ?? activeStory.steps[0];
   const currentStep = activeStory.steps.indexOf(current);
+
   return (
     <section className="stories stories--active" aria-labelledby="active-story-title">
       <header className="story-player__head">
         <div>
-          <span className="story-player__meta">Маршрут · {currentStep + 1}/{activeStory.steps.length}</span>
+          <span className="story-player__meta">
+            Маршрут · {currentStep + 1}/{activeStory.steps.length}
+          </span>
           <h3 id="active-story-title">{activeStory.title}</h3>
         </div>
-        <button type="button" className="btn btn--ghost btn--sm" onClick={onStop}>Завершить</button>
+        <button type="button" className="btn btn--ghost btn--sm" onClick={onStop}>
+          Завершить
+        </button>
       </header>
 
       <ol className="story-player__rail" aria-label="Шаги маршрута">

@@ -11,7 +11,7 @@ import { TimelineRow } from './TimelineRow';
 import { TimelineOverlay } from './TimelineOverlay';
 import { LayerMenu } from './LayerMenu';
 import { fitZoomToWidth } from '../lib/zoom';
-import { StoryPanel } from './StoryPanel';
+import { StoryChooser, StoryPlayer } from './StoryPanel';
 import { EditorialDashboard } from './EditorialDashboard';
 import { ResearchTools } from './ResearchTools';
 import './TimelineSection.css';
@@ -46,14 +46,14 @@ export function TimelineSection({ state, sectionRef }: Props) {
     layer,
     query,
     keyOnly,
-    era,
+    period,
     tags,
     zoom,
     expanded,
     setLayer,
     setQuery,
     setKeyOnly,
-    setEra,
+    setPeriod,
     setTags,
     setZoom,
     setExpanded,
@@ -245,14 +245,14 @@ export function TimelineSection({ state, sectionRef }: Props) {
           <h2 className="timeline__title">Одно время — восемь линий</h2>
         </div>
         <p className="timeline__hint lede">
-          Тащите поле мышью, приближайте ползунком, отключайте лишние страны. Нажмите на карточку — слева
-          подсветится год, а значок <span className="timeline__hint-glyph">¶</span> откроет полный текст.
+          Тащите поле мышью, читайте строку поперёк — это одно и то же время в разных странах. Нажмите
+          на карточку: слева подсветится год, а значок <span className="timeline__hint-glyph">¶</span> откроет
+          полный текст. Масштаб, страны и слои — в «Настройках».
         </p>
       </header>
 
       <div className="timeline__body shell">
-        <StoryPanel
-          stories={state.stories}
+        <StoryPlayer
           activeStory={state.activeStory}
           step={state.storyStep}
           activeItem={state.activeStoryItem}
@@ -260,15 +260,15 @@ export function TimelineSection({ state, sectionRef }: Props) {
           onStop={state.stopStory}
         />
 
-        <ResearchTools state={state} />
-
         <TimelineControls
           layer={layer}
           query={query}
           keyOnly={keyOnly}
-          era={era}
+          period={period}
           tags={tags}
           zoom={zoom}
+          maxYear={state.maxYear}
+          periodCounts={state.periodCounts}
           total={stats.total}
           events={stats.events}
           people={stats.people}
@@ -276,7 +276,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
           onLayerChange={setLayer}
           onQueryChange={setQuery}
           onKeyOnlyChange={setKeyOnly}
-          onEraChange={setEra}
+          onPeriodChange={setPeriod}
           onTagsChange={setTags}
           onZoomChange={setZoom}
           onFitToWidth={fitToWidth}
@@ -287,50 +287,36 @@ export function TimelineSection({ state, sectionRef }: Props) {
           onToggleRelations={() => setShowRelations(!showRelations)}
           granularityLabel={state.granularityLabel}
           splitRows={state.splitRows}
-        />
+        >
+          <CountryTogglePanel
+            countries={countries}
+            activeIds={activeCountryIds}
+            counts={countryCounts}
+            sharedColumns={sharedColumns}
+            columnCount={columns.length}
+            maxColumns={maxColumns}
+            maxPerColumn={maxPerColumn}
+            onToggle={toggleCountry}
+            onShowAll={showAllCountries}
+            onOnly={onlyCountry}
+            onMerge={mergeCountry}
+            onDetach={detachCountry}
+            onResetColumns={resetColumns}
+          />
 
-        <CountryTogglePanel
-          countries={countries}
-          activeIds={activeCountryIds}
-          counts={countryCounts}
-          sharedColumns={sharedColumns}
-          columnCount={columns.length}
-          maxColumns={maxColumns}
-          maxPerColumn={maxPerColumn}
-          onToggle={toggleCountry}
-          onShowAll={showAllCountries}
-          onOnly={onlyCountry}
-          onMerge={mergeCountry}
-          onDetach={detachCountry}
-          onResetColumns={resetColumns}
-        />
-
-        <LayerMenu
-          activeLayerIds={state.activeLayerIds}
-          layerState={state.layerState}
-          maxLayers={state.maxLayers}
-          countries={countries}
-          activeCountryIds={activeCountryIds}
-          placementOf={state.placementOf}
-          onToggleLayer={state.toggleLayer}
-          onRemoveLayer={state.removeLayer}
-          onPlaceLayer={state.placeLayer}
-          onDragLayer={setDraggingLayerId}
-        />
-
-        <EditorialDashboard
-          items={state.allItems}
-          countries={countries}
-          onSelect={(countryId, eraId) => {
-            state.stopStory();
-            onlyCountry(countryId);
-            setLayer('all');
-            setQuery('');
-            setKeyOnly(false);
-            setTags([]);
-            setEra(eraId);
-          }}
-        />
+          <LayerMenu
+            activeLayerIds={state.activeLayerIds}
+            layerState={state.layerState}
+            maxLayers={state.maxLayers}
+            countries={countries}
+            activeCountryIds={activeCountryIds}
+            placementOf={state.placementOf}
+            onToggleLayer={state.toggleLayer}
+            onRemoveLayer={state.removeLayer}
+            onPlaceLayer={state.placeLayer}
+            onDragLayer={setDraggingLayerId}
+          />
+        </TimelineControls>
 
         {availableEras.length > 1 ? (
           <nav className="era-rail" aria-label="Быстрый переход по эпохам" data-no-pan>
@@ -455,6 +441,30 @@ export function TimelineSection({ state, sectionRef }: Props) {
               )}
             </div>
           </div>
+        </div>
+
+        <div className="timeline__tools">
+          <StoryChooser
+            stories={state.stories}
+            activeStoryId={state.activeStory?.id}
+            onStart={(storyId) => state.goToStoryStep(storyId, 0)}
+          />
+
+          <ResearchTools state={state} />
+
+          <EditorialDashboard
+            items={state.allItems}
+            countries={countries}
+            onSelect={(countryId, eraId) => {
+              state.stopStory();
+              onlyCountry(countryId);
+              setLayer('all');
+              setQuery('');
+              setKeyOnly(false);
+              setTags([]);
+              setPeriod({ type: 'era', id: eraId });
+            }}
+          />
         </div>
       </div>
 

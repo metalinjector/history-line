@@ -112,9 +112,21 @@
   --viewport-height: calc(100vh - var(--header-height) - 36px);
 }
 
+/* Инструменты после шкалы: маршруты, экспорт, редакторская матрица.
+   Всё это нужно уже после того, как читатель посмотрел на таблицу. */
+.timeline__tools {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
 .timeline__viewport {
   position: relative;
   height: var(--viewport-height);
+  /* Докрутив поле до конца, читатель не должен внезапно уехать на страницу
+     ниже — там уже нет ни дат, ни шкалы. Прокрутка остаётся в поле. */
+  overscroll-behavior: contain;
   overflow: auto;
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
@@ -123,7 +135,6 @@
     var(--paper-sunken);
   box-shadow: var(--shadow-md), inset 0 0 60px color-mix(in oklab, var(--ink) 5%, transparent);
   cursor: grab;
-  overscroll-behavior-x: contain;
 }
 
 .timeline__viewport[data-panning] {

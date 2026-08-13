@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { CountryId, EraId, KindFilter, RelationDraftInput, ThemeName, TimelineItem } from '../types';
+import type { CountryId, KindFilter, Period, RelationDraftInput, ThemeName, TimelineItem } from '../types';
 import { allCountryIds, countries, countryById } from '../data/countries';
 import {
   buildColumns,
@@ -9,7 +9,8 @@ import {
   MAX_PER_COLUMN,
   type ColumnGroups,
 } from '../data/columns';
-import { eraForYear } from '../data/eras';
+import { eraForYear, eras } from '../data/eras';
+import { intervalPeriods, periodContains } from '../data/periods';
 import { timelineItems } from '../data/timelineItems';
 import { layerById, layers as allLayers, MAX_ACTIVE_LAYERS } from '../data/layers';
 import { applyLayers, materializeLayerItems, type LayerPlacements } from './layers';
@@ -48,7 +49,7 @@ export function useTimelineState() {
   const [layer, setLayer] = useState<KindFilter>(initialUrlState.kind ?? 'all');
   const [query, setQuery] = useState(initialUrlState.query ?? '');
   const [keyOnly, setKeyOnly] = useState(initialUrlState.keyOnly ?? false);
-  const [era, setEra] = useState<EraId | undefined>(initialUrlState.era);
+  const [period, setPeriod] = useState<Period | undefined>(initialUrlState.period);
   const [tags, setTags] = useState<string[]>(initialUrlState.tags ?? []);
   const [zoom, setZoomRaw] = usePersistentState<number>('zoom', 1, initialUrlState.zoom);
   const [activeCountryIds, setActiveCountryIds] = usePersistentState<CountryId[]>(
@@ -151,8 +152,8 @@ export function useTimelineState() {
   );
 
   const filter = useMemo(
-    () => ({ layer, countries: activeCountryIds, query, tags, keyOnly, era }),
-    [layer, activeCountryIds, query, tags, keyOnly, era],
+    () => ({ layer, countries: activeCountryIds, query, tags, keyOnly, period }),
+    [layer, activeCountryIds, query, tags, keyOnly, period],
   );
 
   const filteredItems = useMemo(() => filterItems(allItems, filter), [allItems, filter]);
@@ -178,6 +179,41 @@ export function useTimelineState() {
     for (const item of matching) counts[item.country] += 1;
     return counts;
   }, [allItems, filter]);
+
+  /** Последний год базы: по нему строится сетка интервалов в фильтре периода. */
+  const maxYear = useMemo(
+    () => allItems.reduce((max, item) => Math.max(max, item.endYear ?? item.year), 1),
+    [allItems],
+  );
+
+  /**
+   * Сколько объектов дал бы каждый отрезок времени при остальных фильтрах.
+   * Считается один раз на все эпохи и интервалы: список периодов короткий,
+   * а читателю важно видеть, что в раннем Средневековье пусто, ещё до выбора.
+   */
+  const periodCounts = useMemo(() => {
+    const matching = filterItems(allItems, { ...filter, period: undefined });
+    const counts = {
+      eras: Object.fromEntries(eras.map((era) => [era.id, 0])) as Record<string, number>,
+      intervals: Object.fromEntries(intervalPeriods(maxYear).map((interval) => [interval.from, 0])) as Record<
+        number,
+        number
+      >,
+    };
+
+    for (const item of matching) {
+      for (const era of eras) {
+        if (periodContains({ type: 'era', id: era.id }, item.year, item.endYear)) counts.eras[era.id] += 1;
+      }
+      for (const interval of intervalPeriods(maxYear)) {
+        if (periodContains({ type: 'interval', ...interval }, item.year, item.endYear)) {
+          counts.intervals[interval.from] += 1;
+        }
+      }
+    }
+
+    return counts;
+  }, [allItems, filter, maxYear]);
 
   const selectedItem = useMemo(
     () => filteredItems.find((item) => item.id === selectedId),
@@ -368,7 +404,7 @@ export function useTimelineState() {
     setLayer('all');
     setQuery('');
     setKeyOnly(false);
-    setEra(undefined);
+    setPeriod(undefined);
     setTags([]);
   }, []);
 
@@ -396,7 +432,7 @@ export function useTimelineState() {
       setLayer('all');
       setQuery('');
       setKeyOnly(false);
-      setEra(undefined);
+      setPeriod(undefined);
       setTags([]);
       setSelectedId(item.id);
       setScrollTarget({ id: item.id, nonce: Date.now() });
@@ -420,7 +456,7 @@ export function useTimelineState() {
         kind: layer,
         query,
         keyOnly,
-        era,
+        period,
         tags,
         zoom,
         activeLayerIds,
@@ -442,13 +478,13 @@ export function useTimelineState() {
     activeLayerIds,
     activeStory?.id,
     columnGroups,
-    era,
     keyOnly,
     layer,
     layerPlacements,
     openedId,
     openedDayKey,
     openedRelationId,
+    period,
     query,
     selectedId,
     showRelations,
@@ -529,7 +565,7 @@ export function useTimelineState() {
       }
       ensureCountryVisible(item.country);
       setKeyOnly(false);
-      setEra(undefined);
+      setPeriod(undefined);
       setTags([]);
       setQuery('');
       if (layer === 'events' && item.kind === 'person') setLayer('all');
@@ -578,6 +614,8 @@ export function useTimelineState() {
     stats,
     totalStats,
     countryCounts,
+    periodCounts,
+    maxYear,
     selectedItem,
     openedItem,
     openedCountry: openedItem ? countryById[openedItem.country] : undefined,
@@ -612,7 +650,7 @@ export function useTimelineState() {
     layer,
     query,
     keyOnly,
-    era,
+    period,
     tags,
     zoom,
     granularity,
@@ -625,7 +663,7 @@ export function useTimelineState() {
     setLayer,
     setQuery,
     setKeyOnly,
-    setEra,
+    setPeriod,
     setTags,
     toggleTag,
     setZoom,

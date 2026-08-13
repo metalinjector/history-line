@@ -1,15 +1,16 @@
 import type {
   CountryId,
-  EraId,
   Granularity,
   Importance,
   KindFilter,
+  Period,
   TimelineColumn,
   TimelineGroup,
   TimelineItem,
 } from '../types';
 import { columnOfItem } from '../data/columns';
 import { eraForYear } from '../data/eras';
+import { periodContains } from '../data/periods';
 import { MONTHS_NOMINATIVE, timeKey } from './format';
 
 export type FilterState = {
@@ -21,8 +22,8 @@ export type FilterState = {
   tags: string[];
   /** Показывать только опорные вехи (importance = 3). */
   keyOnly: boolean;
-  /** Ограничение по эпохе; undefined — все эпохи. */
-  era?: EraId;
+  /** Ограничение по отрезку времени — эпоха или интервал; undefined — вся шкала. */
+  period?: Period;
 };
 
 export const emptyFilter: FilterState = {
@@ -54,7 +55,7 @@ export function matchesQuery(item: TimelineItem, query: string): boolean {
 export function filterItems(items: TimelineItem[], filter: FilterState): TimelineItem[] {
   const countrySet = new Set(filter.countries);
   const tagSet = new Set(filter.tags);
-  const era = filter.era;
+  const period = filter.period;
 
   return items.filter((item) => {
     // Объект слоя живёт по правилам своего слоя, а не колонки страны.
@@ -62,10 +63,7 @@ export function filterItems(items: TimelineItem[], filter: FilterState): Timelin
     if (filter.layer === 'events' && item.kind !== 'event') return false;
     if (filter.layer === 'people' && item.kind !== 'person') return false;
     if (filter.keyOnly && (item.importance ?? 2) < 3) return false;
-    if (era) {
-      const itemEra = eraForYear(item.year);
-      if (itemEra.id !== era) return false;
-    }
+    if (period && !periodContains(period, item.year, item.endYear)) return false;
     if (tagSet.size > 0 && !item.tags.some((tag) => tagSet.has(tag))) return false;
     if (filter.query && !matchesQuery(item, filter.query)) return false;
     return true;

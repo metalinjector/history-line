@@ -5,6 +5,7 @@ import {
   researchSessionToMarkdown,
   type ResearchSession,
 } from '../lib/researchExport';
+import { periodLabel } from '../data/periods';
 import './ResearchTools.css';
 
 type Props = { state: TimelineState };
@@ -46,7 +47,7 @@ export function ResearchTools({ state }: Props) {
         kind: state.layer,
         query: state.query,
         keyOnly: state.keyOnly,
-        era: state.era,
+        period: state.period ? periodLabel(state.period) : undefined,
         tags: state.tags,
         zoom: state.zoom,
         layers: state.activeLayerIds,
@@ -132,7 +133,7 @@ function ResearchPrint({ session }: { session: ResearchSession }) {
         <p>Сформировано: {new Date(session.generatedAt).toLocaleString('ru-RU')}</p>
         <p>
           Страны: {session.filters.countries.join(', ')} · тип: {session.filters.kind} ·
-          эпоха: {session.filters.era ?? 'все'} · объектов: {session.items.length}
+          период: {session.filters.period ?? 'вся шкала'} · объектов: {session.items.length}
         </p>
       </header>
       {session.items.map((item) => (

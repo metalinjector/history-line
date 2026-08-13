@@ -5,7 +5,7 @@ export type ResearchFilters = {
   kind: string;
   query: string;
   keyOnly: boolean;
-  era?: string;
+  period?: string;
   tags: string[];
   zoom: number;
   layers: string[];
@@ -56,7 +56,7 @@ export function researchSessionToMarkdown(session: ResearchSession): string {
   const filterLines = [
     `- Страны: ${session.filters.countries.join(', ') || 'все'}`,
     `- Тип: ${session.filters.kind}`,
-    `- Эпоха: ${session.filters.era ?? 'все'}`,
+    `- Период: ${session.filters.period ?? 'вся шкала'}`,
     `- Поиск: ${session.filters.query || 'нет'}`,
     `- Теги: ${session.filters.tags.join(', ') || 'нет'}`,
     `- Только вехи: ${session.filters.keyOnly ? 'да' : 'нет'}`,

@@ -1,9 +1,10 @@
-import type { CountryId, EraId, KindFilter, LayerPlacement } from '../types';
+import type { CountryId, KindFilter, LayerPlacement, Period } from '../types';
 import { OWN_COLUMN } from '../types';
 import { allCountryIds } from '../data/countries';
 import { normalizeGroups, type ColumnGroups } from '../data/columns';
-import { eras } from '../data/eras';
+import { decodePeriod, encodePeriod } from '../data/periods';
 import { layers } from '../data/layers';
+import { timelineItems } from '../data/timelineItems';
 import { clampZoom } from './zoom';
 
 export type TimelineUrlState = {
@@ -11,7 +12,7 @@ export type TimelineUrlState = {
   kind?: KindFilter;
   query?: string;
   keyOnly?: boolean;
-  era?: EraId;
+  period?: Period;
   tags?: string[];
   zoom?: number;
   activeLayerIds?: string[];
@@ -27,8 +28,9 @@ export type TimelineUrlState = {
 };
 
 const validKinds = new Set<KindFilter>(['all', 'events', 'people']);
-const validEras = new Set(eras.map((era) => era.id));
 const validLayers = new Set(layers.map((layer) => layer.id));
+/** Верхняя граница шкалы: по ней проверяются интервалы из ссылки. */
+const maxYear = timelineItems.reduce((max, item) => Math.max(max, item.endYear ?? item.year), 1);
 
 function unique<T>(items: T[]): T[] {
   return Array.from(new Set(items));
@@ -41,7 +43,6 @@ export function parseTimelineUrl(search: string): TimelineUrlState {
     (params.get('c') ?? '').split(',').filter((id): id is CountryId => allCountryIds.includes(id as CountryId)),
   );
   const kind = params.get('kind') as KindFilter | null;
-  const era = params.get('era') as EraId | null;
   const rawZoom = Number(params.get('z'));
   const layerIds = unique((params.get('layers') ?? '').split(',').filter((id) => validLayers.has(id)));
   const placements: Record<string, LayerPlacement> = {};
@@ -65,7 +66,7 @@ export function parseTimelineUrl(search: string): TimelineUrlState {
     kind: kind && validKinds.has(kind) ? kind : shared ? 'all' : undefined,
     query: params.get('q') || undefined,
     keyOnly: params.get('key') === '1' || undefined,
-    era: era && validEras.has(era) ? era : undefined,
+    period: decodePeriod(params.get('period'), maxYear),
     tags: unique(params.getAll('tag').map((tag) => tag.trim()).filter(Boolean)),
     zoom: Number.isFinite(rawZoom) && params.has('z') ? clampZoom(rawZoom) : shared ? 1 : undefined,
     activeLayerIds: layerIds.length ? layerIds : shared ? [] : undefined,
@@ -85,7 +86,7 @@ export function parseTimelineUrl(search: string): TimelineUrlState {
 export function buildTimelineUrl(state: TimelineUrlState, href: string): string {
   const url = new URL(href);
   const params = url.searchParams;
-  ['view', 'c', 'kind', 'q', 'key', 'era', 'tag', 'z', 'layers', 'place', 'groups', 'focus', 'item', 'day', 'relation', 'threads', 'story', 'step'].forEach((key) =>
+  ['view', 'c', 'kind', 'q', 'key', 'period', 'tag', 'z', 'layers', 'place', 'groups', 'focus', 'item', 'day', 'relation', 'threads', 'story', 'step'].forEach((key) =>
     params.delete(key),
   );
   params.set('view', '1');
@@ -97,7 +98,7 @@ export function buildTimelineUrl(state: TimelineUrlState, href: string): string 
   if (state.kind && state.kind !== 'all') params.set('kind', state.kind);
   if (state.query) params.set('q', state.query);
   if (state.keyOnly) params.set('key', '1');
-  if (state.era) params.set('era', state.era);
+  if (state.period) params.set('period', encodePeriod(state.period));
   for (const tag of state.tags ?? []) params.append('tag', tag);
   if (state.zoom !== undefined && Math.abs(state.zoom - 1) > 0.001) params.set('z', String(state.zoom));
   if (state.activeLayerIds?.length) params.set('layers', state.activeLayerIds.join(','));

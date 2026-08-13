@@ -150,6 +150,14 @@ export type Country = {
 /** Слой фильтрации по типу объекта. */
 export type KindFilter = 'all' | 'events' | 'people';
 
+/**
+ * Выбранный отрезок времени — либо содержательная эпоха, либо механический
+ * интервал в 300 лет. Выбран может быть только один: см. data/periods.ts.
+ */
+export type Period =
+  | { type: 'era'; id: EraId }
+  | { type: 'interval'; from: number; to: number };
+
 /** Тема оформления. */
 export type ThemeName = 'parchment' | 'atlas';
 
