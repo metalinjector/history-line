@@ -1,4 +1,5 @@
 import type { SourceLink, TimelineItem } from '../types';
+import { formatYearLabel } from './format';
 
 export type ResearchFilters = {
   countries: string[];
@@ -6,6 +7,7 @@ export type ResearchFilters = {
   query: string;
   keyOnly: boolean;
   period?: string;
+  showBce: boolean;
   tags: string[];
   zoom: number;
   layers: string[];
@@ -60,6 +62,7 @@ export function researchSessionToMarkdown(session: ResearchSession): string {
     `- Поиск: ${session.filters.query || 'нет'}`,
     `- Теги: ${session.filters.tags.join(', ') || 'нет'}`,
     `- Только вехи: ${session.filters.keyOnly ? 'да' : 'нет'}`,
+    `- Даты до н. э.: ${session.filters.showBce ? 'показаны' : 'скрыты'}`,
     `- Масштаб: ${session.filters.zoom}`,
     `- Слои: ${session.filters.layers.join(', ') || 'нет'}`,
     `- Общие колонки: ${session.filters.columnGroups.map((group) => group.join(' + ')).join('; ') || 'нет'}`,
@@ -70,7 +73,7 @@ export function researchSessionToMarkdown(session: ResearchSession): string {
       ? `\n\nИсточники:\n${item.sources.map((source) => `- ${source.label}${source.url ? ` — ${source.url}` : ''}`).join('\n')}`
       : '';
     const note = item.note ? `\n\n> Личная заметка: ${item.note.replaceAll('\n', '\n> ')}` : '';
-    return `## ${item.year} · ${item.title}\n\n${item.summary}\n\n${item.detail}${note}${sources}`;
+    return `## ${formatYearLabel(item.year)} · ${item.title}\n\n${item.summary}\n\n${item.detail}${note}${sources}`;
   });
 
   return [

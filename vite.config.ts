@@ -4,5 +4,6 @@ import { markdownContent } from './plugins/markdownContent.ts'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/history-line/',
   plugins: [markdownContent(), react()],
 })

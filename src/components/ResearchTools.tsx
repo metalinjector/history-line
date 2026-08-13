@@ -48,6 +48,7 @@ export function ResearchTools({ state }: Props) {
         query: state.query,
         keyOnly: state.keyOnly,
         period: state.period ? periodLabel(state.period) : undefined,
+        showBce: state.showBce,
         tags: state.tags,
         zoom: state.zoom,
         layers: state.activeLayerIds,
@@ -133,7 +134,8 @@ function ResearchPrint({ session }: { session: ResearchSession }) {
         <p>Сформировано: {new Date(session.generatedAt).toLocaleString('ru-RU')}</p>
         <p>
           Страны: {session.filters.countries.join(', ')} · тип: {session.filters.kind} ·
-          период: {session.filters.period ?? 'вся шкала'} · объектов: {session.items.length}
+          период: {session.filters.period ?? 'вся шкала'} · до н. э.:{' '}
+          {session.filters.showBce ? 'показаны' : 'скрыты'} · объектов: {session.items.length}
         </p>
       </header>
       {session.items.map((item) => (

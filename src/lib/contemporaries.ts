@@ -16,9 +16,15 @@ export function findContemporaries(
   reference: TimelineItem,
   items: TimelineItem[],
   limit = 6,
+  maxDistanceYears = 50,
 ): Contemporary[] {
   const candidates = items
-    .filter((item) => item.id !== reference.id && item.country !== reference.country)
+    .filter(
+      (item) =>
+        item.id !== reference.id &&
+        item.country !== reference.country &&
+        Math.abs(item.year - reference.year) <= maxDistanceYears,
+    )
     .map((item) => ({
       item,
       distanceYears: Math.abs(item.year - reference.year),

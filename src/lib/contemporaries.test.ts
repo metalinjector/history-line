@@ -22,4 +22,18 @@ describe('findContemporaries', () => {
     expect(new Set(result.map((entry) => entry.item.country)).size).toBe(3);
     expect(result.every((entry) => entry.item.country !== 'germany')).toBe(true);
   });
+
+  it('does not call events from another era contemporaries just to fill the limit', () => {
+    const reference = item('ref', 'germany', 9);
+    const result = findContemporaries(reference, [
+      reference,
+      item('near', 'china', 25),
+      item('edge', 'england', 59),
+      item('too-far', 'france', 60),
+      item('centuries-later', 'japan', 550),
+    ]);
+
+    expect(result.map((entry) => entry.item.id)).toEqual(['near', 'edge']);
+    expect(result.every((entry) => entry.distanceYears <= 50)).toBe(true);
+  });
 });

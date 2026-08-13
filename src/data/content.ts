@@ -26,9 +26,19 @@ type ContentModule = {
 const modules = import.meta.glob<ContentModule>('../../content/*/*/*.md', { eager: true });
 
 const collected = Object.entries(modules).map(([path, module]) => {
-  const id = module.meta.id ?? path.split('/').pop()!.replace(/\.md$/, '');
-  return { id, ...module };
+  const filenameId = path.split('/').pop()!.replace(/\.md$/, '');
+  const declaredId = module.meta.id;
+  const id = declaredId ?? filenameId;
+  return { path, filenameId, declaredId, id, ...module };
 });
+
+/** Метаданные всех Markdown-файлов для тестов целостности редакционной базы. */
+export const contentManifest = collected.map(({ path, filenameId, declaredId, id }) => ({
+  path,
+  filenameId,
+  declaredId,
+  id,
+}));
 
 /** Развёрнутые статьи в Markdown. Ключ — идентификатор объекта хронологии. */
 export const articles: Record<string, string> = Object.fromEntries(

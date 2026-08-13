@@ -1,11 +1,10 @@
 ---
 id: fr-third-republic-1871
 sources:
-  - kind: archive
-    label: "Конституционные законы 1875 года и документы Коммуны, Archives nationales"
   - kind: institution
-    label: "Musée d’Histoire vivante, Монтрёй: собрание по Парижской коммуне"
-  - kind: encyclopedia
-    label: "Britannica: Paris Commune"
+    label: "Vie publique: La IIIe République (1870–1940)"
+    url: "https://www.vie-publique.fr/fiches/268977-la-iiie-republique-1870-1940-installation-definitive-de-la-republique"
+  - kind: institution
+    label: "Élysée: Louis-Napoléon Bonaparte — хронология падения Второй империи"
+    url: "https://www.elysee.fr/en/louis-napoleon-bonaparte"
 ---
-

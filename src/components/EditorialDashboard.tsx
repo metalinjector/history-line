@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import type { Country, CountryId, EraId, TimelineItem } from '../types';
 import { eras } from '../data/eras';
 import { buildEditorialMatrix } from '../lib/editorialMetrics';
+import { formatEraRange } from '../lib/format';
 import './EditorialDashboard.css';
 
 type Props = {
@@ -40,7 +41,7 @@ export function EditorialDashboard({ items, countries, onSelect }: Props) {
             <thead>
               <tr>
                 <th>Линия</th>
-                {eras.map((era) => <th key={era.id} title={era.label}>{era.from}–{era.to > 2099 ? '…' : era.to}</th>)}
+                {eras.map((era) => <th key={era.id} title={era.label}>{formatEraRange(era.from, era.to)}</th>)}
               </tr>
             </thead>
             <tbody>

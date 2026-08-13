@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { KindFilter, Period } from '../types';
 import { eras } from '../data/eras';
@@ -12,6 +12,8 @@ type Props = {
   query: string;
   keyOnly: boolean;
   period?: Period;
+  /** Показывать ли на общей шкале даты до нашей эры. */
+  showBce: boolean;
   tags: string[];
   zoom: number;
   /** Верхняя граница шкалы — по ней строится сетка интервалов. */
@@ -26,6 +28,7 @@ type Props = {
   onQueryChange: (query: string) => void;
   onKeyOnlyChange: (value: boolean) => void;
   onPeriodChange: (period?: Period) => void;
+  onShowBceChange: (value: boolean) => void;
   onTagsChange: (tags: string[]) => void;
   onZoomChange: (zoom: number) => void;
   onFitToWidth: () => void;
@@ -65,6 +68,7 @@ export function TimelineControls(props: Props) {
     query,
     keyOnly,
     period,
+    showBce,
     tags,
     zoom,
     maxYear,
@@ -77,6 +81,7 @@ export function TimelineControls(props: Props) {
     onQueryChange,
     onKeyOnlyChange,
     onPeriodChange,
+    onShowBceChange,
     onTagsChange,
     onZoomChange,
     onFitToWidth,
@@ -90,15 +95,34 @@ export function TimelineControls(props: Props) {
     children,
   } = props;
 
+  /**
+   * Пустые интервалы внутри шкалы показываем — читателю полезно видеть,
+   * что в 301–600 годах у нас всего девять объектов. А вот хвост из пустых
+   * интервалов за последней записью — просто мусор, его отрезаем.
+   */
+  const visibleIntervals = useMemo(() => {
+    const all = intervalPeriods(maxYear);
+    const lastFilled = all.reduce(
+      (last, interval, index) => ((periodCounts.intervals[interval.from] ?? 0) > 0 ? index : last),
+      -1,
+    );
+    return all.slice(0, lastFilled + 1);
+  }, [maxYear, periodCounts]);
+
   const [settingsOpen, setSettingsOpen] = useState(false);
   const zoomId = useId();
   const searchId = useId();
   const periodId = useId();
 
-  const isFiltered = layer !== 'all' || query !== '' || keyOnly || period !== undefined || tags.length > 0;
+  const isFiltered =
+    layer !== 'all' || query !== '' || keyOnly || !showBce || period !== undefined || tags.length > 0;
   /** Сколько настроек отличается от значений по умолчанию — цифра на кнопке. */
   const changedSettings =
-    (keyOnly ? 1 : 0) + (showRelations ? 0 : 1) + (tags.length > 0 ? 1 : 0) + (Math.abs(zoom - 1) > 0.01 ? 1 : 0);
+    (keyOnly ? 1 : 0) +
+    (showBce ? 0 : 1) +
+    (showRelations ? 0 : 1) +
+    (tags.length > 0 ? 1 : 0) +
+    (Math.abs(zoom - 1) > 0.01 ? 1 : 0);
 
   return (
     <div className="controls" data-no-pan>
@@ -170,8 +194,13 @@ export function TimelineControls(props: Props) {
                 </option>
               ))}
             </optgroup>
-            <optgroup label={`Интервалы по ${INTERVAL_SPAN} лет`}>
-              {intervalPeriods(maxYear).map((interval) => (
+            {/*
+              Интервалы нарезаны только по нашей эре: шкала уходит на миллионы лет
+              назад, и равные отрезки там дали бы тысячи пунктов. Всё, что до н. э.,
+              делится эпохами — они для того и существуют.
+            */}
+            <optgroup label={`Интервалы по ${INTERVAL_SPAN} лет, наша эра`}>
+              {visibleIntervals.map((interval) => (
                 <option key={interval.from} value={`int:${interval.from}`}>
                   {interval.from}–{interval.to} · {periodCounts.intervals[interval.from] ?? 0}
                 </option>
@@ -268,6 +297,20 @@ export function TimelineControls(props: Props) {
                 </div>
 
                 <div className="settings-group__row">
+                  <button
+                    type="button"
+                    className="toggle"
+                    data-active={showBce || undefined}
+                    aria-pressed={showBce}
+                    onClick={() => onShowBceChange(!showBce)}
+                    title="Показывать или скрывать на общей шкале все даты до нашей эры"
+                  >
+                    <span className="toggle__track" aria-hidden="true">
+                      <span className="toggle__thumb" />
+                    </span>
+                    До н. э.
+                  </button>
+
                   <button
                     type="button"
                     className="toggle"

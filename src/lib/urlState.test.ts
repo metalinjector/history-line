@@ -9,6 +9,7 @@ describe('timeline URL state', () => {
       query: 'революция 1917',
       keyOnly: true,
       period: { type: 'era', id: 'world-wars' },
+      showBce: false,
       tags: ['война', 'политика'],
       zoom: 1.55,
       activeLayerIds: ['einstein'],
@@ -26,7 +27,7 @@ describe('timeline URL state', () => {
     const parsed = parseTimelineUrl(new URL(url).search);
     expect(parsed).toMatchObject({
       countries: ['france', 'russia'], kind: 'events', query: 'революция 1917', keyOnly: true,
-      period: { type: 'era', id: 'world-wars' }, tags: ['война', 'политика'], zoom: 1.55,
+      period: { type: 'era', id: 'world-wars' }, showBce: false, tags: ['война', 'политика'], zoom: 1.55,
       activeLayerIds: ['einstein'], layerPlacements: { einstein: 'own' },
       columnGroups: [['france', 'russia']],
       selectedId: 'ru-1917', openedId: 'ru-1917', openedDayKey: '1917',
@@ -40,7 +41,7 @@ describe('timeline URL state', () => {
   it('drops invalid enum values and clamps zoom', () => {
     expect(parseTimelineUrl('?c=france,moon&kind=bad&period=era:nope&z=99&layers=unknown')).toEqual({
       countries: ['france'], kind: undefined, query: undefined, keyOnly: undefined,
-      period: undefined, tags: [], zoom: 1.9, activeLayerIds: undefined,
+      period: undefined, showBce: undefined, tags: [], zoom: 1.9, activeLayerIds: undefined,
       layerPlacements: undefined, columnGroups: undefined, selectedId: undefined, openedId: undefined,
       openedDayKey: undefined, openedRelationId: undefined, showRelations: undefined,
       storyId: undefined, storyStep: undefined,
@@ -75,5 +76,19 @@ describe('timeline URL state', () => {
     expect(parsed.layerPlacements).toEqual({});
     expect(parsed.columnGroups).toEqual([]);
     expect(parsed.showRelations).toBe(true);
+  });
+
+  it('keeps shared layers and guided-story progress inside UI bounds', () => {
+    const parsed = parseTimelineUrl(
+      '?view=1&layers=einstein,napoleon,curie,plagues&story=print-networks&step=999',
+    );
+
+    expect(parsed.activeLayerIds).toEqual(['einstein', 'napoleon', 'curie']);
+    expect(parsed.storyId).toBe('print-networks');
+    expect(parsed.storyStep).toBe(7);
+    expect(parseTimelineUrl('?story=missing&step=2')).toMatchObject({
+      storyId: undefined,
+      storyStep: undefined,
+    });
   });
 });

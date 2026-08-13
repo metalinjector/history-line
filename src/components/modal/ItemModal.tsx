@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import type { Country, Era, Relation, TimelineItem } from '../../types';
 import { countryById } from '../../data/countries';
-import { formatItemDate } from '../../lib/format';
+import { formatItemDate, formatYearLabel } from '../../lib/format';
 import { itemToMarkdown, resolveWikiLinks } from '../../lib/markdown';
 import { Modal, ModalClose } from './Modal';
 import { MarkdownView } from './MarkdownView';
@@ -9,6 +9,7 @@ import { Viewpoints } from './Viewpoints';
 import { NoteEditor } from './NoteEditor';
 import { hasVerifiedSources, isRelationVerified } from '../../lib/provenance';
 import type { Contemporary } from '../../lib/contemporaries';
+import { relationHint, relationPresentation } from '../../lib/relationPresentation';
 
 type Props = {
   item: TimelineItem;
@@ -104,10 +105,16 @@ export function ItemModal({
             title={
               hasVerifiedSources(item.sources)
                 ? 'Указано не менее двух независимых источников, из которых хотя бы один не энциклопедия'
+                : item.verification === 'reference'
+                  ? `Запись перенесена из печатного справочника${item.referencePage ? `, страница ${item.referencePage}` : ''}; независимая проверка ещё не завершена`
                 : 'Для этой записи ещё не опубликован полный комплект источников'
             }
           >
-            {hasVerifiedSources(item.sources) ? '✓ источники указаны' : '△ источники не опубликованы'}
+            {hasVerifiedSources(item.sources)
+              ? '✓ источники указаны'
+              : item.verification === 'reference'
+                ? '▤ по справочнику'
+                : '△ источники не опубликованы'}
           </span>
         </div>
         <ModalClose />
@@ -117,7 +124,7 @@ export function ItemModal({
         <p className="modal__date">
           {formatItemDate(item)}
           {item.endYear && item.endYear !== item.year ? (
-            <span className="modal__life">период до {item.endYear}</span>
+            <span className="modal__life">период до {formatYearLabel(item.endYear)}</span>
           ) : null}
           {item.life ? <span className="modal__life">Годы жизни: {item.life}</span> : null}
         </p>
@@ -155,7 +162,7 @@ export function ItemModal({
                       />
                       <span className="contemporaries__text">
                         <b>{contemporary.title}</b>
-                        <small>{otherCountry.label} · {contemporary.year}</small>
+                        <small>{otherCountry.label} · {formatYearLabel(contemporary.year)}</small>
                       </span>
                       <span className="contemporaries__distance">
                         {exactYear ? 'тот же год' : `${distanceYears} г. ${later ? 'позже' : 'раньше'}`}
@@ -195,12 +202,14 @@ export function ItemModal({
                       onClick={() => onOpenRelation(relation)}
                     >
                       <span className="modal__relation-arrow" aria-hidden="true">
-                        {isSource ? '→' : '←'}
+                        {relation.kind === 'influence'
+                          ? (isSource ? '→' : '←')
+                          : relationPresentation[relation.kind].arrow}
                       </span>
                       <span>
                         <b>{relation.label}</b>
                         <span className="modal__relation-hint">
-                          {isSource ? 'это событие повлияло на' : 'повлияло на это событие'}
+                          {relationHint(relation, item.id)}
                           {other ? ` · ${other.title}` : ''}
                           {otherCountry ? ` (${otherCountry.label})` : ''}
                           {!isRelationVerified(relation) ? ' · черновая связь' : ''}
@@ -244,7 +253,7 @@ export function ItemModal({
           >
             <span aria-hidden="true">↑</span>
             <span className="modal__nav-text">
-              {previous ? `${previous.year} · ${previous.title}` : 'Раньше ничего нет'}
+              {previous ? `${formatYearLabel(previous.year)} · ${previous.title}` : 'Раньше ничего нет'}
             </span>
           </button>
           <button
@@ -255,7 +264,7 @@ export function ItemModal({
           >
             <span aria-hidden="true">↓</span>
             <span className="modal__nav-text">
-              {next ? `${next.year} · ${next.title}` : 'Позже ничего нет'}
+              {next ? `${formatYearLabel(next.year)} · ${next.title}` : 'Позже ничего нет'}
             </span>
           </button>
         </nav>
