@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { resolveTimelinePin, TIMELINE_PIN_GAP } from './timelinePin';
+import {
+  resolveTimelinePin,
+  TIMELINE_PIN_BOTTOM_GAP,
+  TIMELINE_PIN_GAP,
+} from './timelinePin';
 
 const base = {
   enabled: true,
@@ -19,7 +23,7 @@ describe('каскадная фиксация окна хронологии', ()
       top: 60 + TIMELINE_PIN_GAP,
       left: 175,
       width: 1560,
-      height: 900 - 60 - TIMELINE_PIN_GAP,
+      height: 900 - 60 - TIMELINE_PIN_GAP - TIMELINE_PIN_BOTTOM_GAP,
     });
   });
 
@@ -28,7 +32,7 @@ describe('каскадная фиксация окна хронологии', ()
       top: 60 + TIMELINE_PIN_GAP,
       left: 175,
       width: 1560,
-      height: 900 - 60 - TIMELINE_PIN_GAP,
+      height: 900 - 60 - TIMELINE_PIN_GAP - TIMELINE_PIN_BOTTOM_GAP,
     });
   });
 
@@ -36,8 +40,10 @@ describe('каскадная фиксация окна хронологии', ()
     expect(resolveTimelinePin({ ...base, enabled: false, anchorTop: -5000 })).toBeUndefined();
   });
 
-  it('растягивает закреплённое окно точно до нижней границы экрана', () => {
+  it('оставляет безопасный просвет над нижней границей экрана', () => {
     const geometry = resolveTimelinePin({ ...base, anchorTop: -200 });
-    expect(geometry && geometry.top + geometry.height).toBe(base.viewportHeight);
+    expect(geometry && geometry.top + geometry.height).toBe(
+      base.viewportHeight - TIMELINE_PIN_BOTTOM_GAP,
+    );
   });
 });
