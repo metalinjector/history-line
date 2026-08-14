@@ -5,8 +5,8 @@ import './StoryPanel.css';
  * Маршруты разделены на две части не случайно.
  *
  * **Выбор маршрута** — это не настройка и не фильтр, а отдельное занятие,
- * поэтому список сюжетов стоит под шкалой, вместе с остальными инструментами:
- * читатель находит его, когда уже посмотрел на таблицу и захотел большего.
+ * поэтому список сюжетов живёт в рабочем меню верхней панели: читатель может
+ * открыть его из любой точки длинной шкалы, не теряя текущую позицию.
  *
  * **Плеер** — наоборот, появляется над шкалой и только когда маршрут запущен:
  * пока он идёт, это главное, что происходит на экране.
@@ -16,32 +16,50 @@ type ChooserProps = {
   stories: Story[];
   activeStoryId?: string;
   onStart: (storyId: string) => void;
+  standalone?: boolean;
 };
 
-export function StoryChooser({ stories, activeStoryId, onStart }: ChooserProps) {
+export function StoryChooser({ stories, activeStoryId, onStart, standalone = false }: ChooserProps) {
+  const heading = (
+    <>
+      <span>
+        <b>Кураторские маршруты</b>
+        <small>пройти сюжет шаг за шагом: маршрут сам покажет нужную страну и проведёт по карточкам</small>
+      </span>
+      <span className="stories__count">{stories.length}</span>
+    </>
+  );
+
+  const grid = (
+    <div className="stories__grid">
+      {stories.map((story) => (
+        <article className="story-card" key={story.id} data-active={story.id === activeStoryId || undefined}>
+          <span className="story-card__meta">
+            {story.steps.length} шагов · ≈ {story.minutes} мин
+          </span>
+          <h4>{story.title}</h4>
+          <p>{story.summary}</p>
+          <button type="button" className="btn btn--sm" onClick={() => onStart(story.id)}>
+            {story.id === activeStoryId ? 'Начать заново →' : 'Начать маршрут →'}
+          </button>
+        </article>
+      ))}
+    </div>
+  );
+
+  if (standalone) {
+    return (
+      <section className="stories stories--workspace" aria-label="Кураторские маршруты">
+        <header className="stories__head">{heading}</header>
+        {grid}
+      </section>
+    );
+  }
+
   return (
-    <details className="stories" open={false}>
-      <summary>
-        <span>
-          <b>Кураторские маршруты</b>
-          <small>пройти сюжет шаг за шагом: маршрут сам покажет нужную страну и проведёт по карточкам</small>
-        </span>
-        <span className="stories__count">{stories.length}</span>
-      </summary>
-      <div className="stories__grid">
-        {stories.map((story) => (
-          <article className="story-card" key={story.id} data-active={story.id === activeStoryId || undefined}>
-            <span className="story-card__meta">
-              {story.steps.length} шагов · ≈ {story.minutes} мин
-            </span>
-            <h4>{story.title}</h4>
-            <p>{story.summary}</p>
-            <button type="button" className="btn btn--sm" onClick={() => onStart(story.id)}>
-              {story.id === activeStoryId ? 'Начать заново →' : 'Начать маршрут →'}
-            </button>
-          </article>
-        ))}
-      </div>
+    <details className="stories">
+      <summary>{heading}</summary>
+      {grid}
     </details>
   );
 }

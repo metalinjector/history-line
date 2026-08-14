@@ -1,4 +1,4 @@
-import type { TimelineItem } from '../types';
+import type { HistoricalLineSpan, TimelineItem } from '../types';
 
 export const MONTHS_NOMINATIVE = [
   'январь',
@@ -61,6 +61,13 @@ export function formatEraRange(from: number, to: number): string {
     return `${Math.abs(from).toLocaleString('ru-RU')}–${formatYearLabel(to)}`;
   }
   return `${formatYearLabel(from)}–${formatYearLabel(to)}`;
+}
+
+/** Подпись проверенного интервала исторической линии. */
+export function formatHistoricalLineSpan(
+  lineSpan: Pick<HistoricalLineSpan, 'from' | 'to' | 'approximate'>,
+): string {
+  return `${lineSpan.approximate ? 'ок. ' : ''}${formatEraRange(lineSpan.from, lineSpan.to)}`;
 }
 
 /** Склонение существительных по числу: 3 события, 21 событие, 5 событий. */

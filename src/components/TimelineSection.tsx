@@ -14,9 +14,7 @@ import { TimelineOverlay } from './TimelineOverlay';
 import { LayerMenu } from './LayerMenu';
 import { fitZoomToWidth } from '../lib/zoom';
 import { resolveTimelinePin, type TimelinePinGeometry } from '../lib/timelinePin';
-import { StoryChooser, StoryPlayer } from './StoryPanel';
-import { EditorialDashboard } from './EditorialDashboard';
-import { ResearchTools } from './ResearchTools';
+import { StoryPlayer } from './StoryPanel';
 import './TimelineSection.css';
 
 // Окна тянут за собой разбор Markdown, KaTeX и загрузчик Mermaid,
@@ -85,8 +83,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
   const rowsRef = useRef<HTMLDivElement>(null);
   /**
    * Якорь остаётся в потоке страницы, когда само окно становится fixed.
-   * Благодаря этому нет скачка разметки, а нижние разделы могут пройти под
-   * окном вместо того, чтобы вытолкнуть его за верхнюю панель.
+   * Благодаря этому нет скачка разметки, а окно остаётся на месте до конца
+   * страницы, не ограничиваясь границей родительской секции.
    */
   const stageAnchorRef = useRef<HTMLDivElement>(null);
   const [pinnedStage, setPinnedStage] = useState<TimelinePinGeometry>();
@@ -111,6 +109,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
         anchorLeft: anchorRect.left,
         anchorWidth: anchorRect.width,
         headerBottom,
+        viewportHeight: window.innerHeight,
       });
 
       setPinnedStage((previous) => {
@@ -118,7 +117,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
         if (
           previous?.top === next.top &&
           previous.left === next.left &&
-          previous.width === next.width
+          previous.width === next.width &&
+          previous.height === next.height
         ) {
           return previous;
         }
@@ -401,6 +401,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
 
   const virtualItems = rowVirtualizer.getVirtualItems();
   const virtualRangeKey = virtualItems.map((item) => item.index).join(',');
+  const displayedMinYear = groups[0]?.year ?? stats.minYear;
+  const displayedMaxYear = groups[groups.length - 1]?.year ?? stats.maxYear;
 
   return (
     <section className="timeline" id="timeline" ref={sectionRef}>
@@ -519,7 +521,12 @@ export function TimelineSection({ state, sectionRef }: Props) {
             data-pinned={pinnedStage ? true : undefined}
             style={
               pinnedStage
-                ? { top: pinnedStage.top, left: pinnedStage.left, width: pinnedStage.width }
+                ? {
+                    top: pinnedStage.top,
+                    left: pinnedStage.left,
+                    width: pinnedStage.width,
+                    '--viewport-height': `${pinnedStage.height}px`,
+                  } as React.CSSProperties
                 : undefined
             }
           >
@@ -585,14 +592,14 @@ export function TimelineSection({ state, sectionRef }: Props) {
                     <div className="timeline__origin-inner">
                       <span
                         className="timeline__origin-year"
-                        data-long={formatYearLabel(stats.minYear).length > 4 || undefined}
+                        data-long={formatYearLabel(displayedMinYear).length > 4 || undefined}
                       >
-                        {formatYearLabel(stats.minYear)}
+                        {formatYearLabel(displayedMinYear)}
                       </span>
                       <span className="timeline__origin-text">
                         Начало текущей выборки. Время идёт сверху вниз: чем ниже строка, тем ближе
                         к сегодняшнему дню. Расстояние между строками не пропорционально годам —
-                        показаны только те даты, где что-то отмечено.
+                        показаны даты событий и границы исторических линий.
                       </span>
                     </div>
                   </div>
@@ -643,6 +650,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
                           <TimelineRow
                             group={group}
                             columns={columns}
+                            previousYear={groups[virtualRow.index - 1]?.year}
+                            nextYear={groups[virtualRow.index + 1]?.year}
                             selectedId={selectedItem?.id}
                             selectedCountry={selectedItem?.country}
                             query={query}
@@ -656,7 +665,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
                   </div>
 
                   <div className="timeline__tail" role="row">
-                    <span>Конец текущей выборки · {stats.maxYear} год</span>
+                    <span>Конец текущей выборки · {formatYearLabel(displayedMaxYear)}</span>
                   </div>
                 </>
               )}
@@ -665,29 +674,6 @@ export function TimelineSection({ state, sectionRef }: Props) {
           </div>
         </div>
 
-        <div className="timeline__tools">
-          <StoryChooser
-            stories={state.stories}
-            activeStoryId={state.activeStory?.id}
-            onStart={(storyId) => state.goToStoryStep(storyId, 0)}
-          />
-
-          <ResearchTools state={state} />
-
-          <EditorialDashboard
-            items={state.allItems}
-            countries={countries}
-            onSelect={(countryId, eraId) => {
-              state.stopStory();
-              onlyCountry(countryId);
-              setLayer('all');
-              setQuery('');
-              setKeyOnly(false);
-              setTags([]);
-              setPeriod({ type: 'era', id: eraId });
-            }}
-          />
-        </div>
       </div>
 
       {state.openedItem || state.openedDay || state.openedRelation ? (

@@ -34,6 +34,7 @@ export function countryTrack(id: CountryId): Track {
     colorInk: country.colorInk,
     kind: 'country',
     countryId: country.id,
+    ...(country.lineSpan ? { lineSpan: country.lineSpan } : {}),
   };
 }
 

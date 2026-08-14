@@ -1,26 +1,42 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { SiteHeader } from './components/SiteHeader';
 import { Hero } from './components/Hero';
 import { IntroNote } from './components/IntroNote';
 import { TimelineSection } from './components/TimelineSection';
-import { PeopleBuilder } from './components/PeopleBuilder';
-import { MethodSection } from './components/MethodSection';
-import { SiteFooter } from './components/SiteFooter';
+import { WorkspacePanel } from './components/WorkspacePanel';
+import type { WorkspaceSectionId } from './components/workspaceSections';
 import { useTimelineState } from './lib/useTimelineState';
 
 export default function App() {
   const state = useTimelineState();
   const timelineRef = useRef<HTMLElement>(null);
+  const [activeWorkspace, setActiveWorkspace] = useState<WorkspaceSectionId | null>(null);
+
+  const closeWorkspace = useCallback(() => setActiveWorkspace(null), []);
 
   const jumpToTimeline = useCallback(() => {
-    timelineRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, []);
+    closeWorkspace();
+    window.requestAnimationFrame(() => {
+      timelineRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }, [closeWorkspace]);
 
   return (
     <>
       <SiteHeader
         theme={state.theme}
         onToggleTheme={state.toggleTheme}
+        onJumpToTimeline={jumpToTimeline}
+        activeWorkspace={activeWorkspace}
+        onOpenWorkspace={setActiveWorkspace}
+        onCloseWorkspace={closeWorkspace}
+      />
+
+      <WorkspacePanel
+        activeSection={activeWorkspace}
+        state={state}
+        onSectionChange={setActiveWorkspace}
+        onClose={closeWorkspace}
         onJumpToTimeline={jumpToTimeline}
       />
 
@@ -37,19 +53,7 @@ export default function App() {
         </div>
 
         <TimelineSection state={state} sectionRef={timelineRef} />
-
-        <PeopleBuilder
-          addedPeople={state.addedPeople}
-          allItems={state.allItems}
-          onAdd={state.addPerson}
-          onRemove={state.removePerson}
-          onSelect={(item) => state.selectItem(item, { scroll: true })}
-        />
-
-        <MethodSection />
       </main>
-
-      <SiteFooter itemCount={state.totalStats.total} />
     </>
   );
 }

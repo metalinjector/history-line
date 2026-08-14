@@ -1,11 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { resolveTimelinePin, TIMELINE_PIN_GAP } from './timelinePin';
+import {
+  resolveTimelinePin,
+  TIMELINE_PIN_BOTTOM_GAP,
+  TIMELINE_PIN_GAP,
+} from './timelinePin';
 
 const base = {
   enabled: true,
   anchorLeft: 175,
   anchorWidth: 1560,
   headerBottom: 60,
+  viewportHeight: 900,
 };
 
 describe('каскадная фиксация окна хронологии', () => {
@@ -18,6 +23,7 @@ describe('каскадная фиксация окна хронологии', ()
       top: 60 + TIMELINE_PIN_GAP,
       left: 175,
       width: 1560,
+      height: 900 - 60 - TIMELINE_PIN_GAP - TIMELINE_PIN_BOTTOM_GAP,
     });
   });
 
@@ -26,10 +32,18 @@ describe('каскадная фиксация окна хронологии', ()
       top: 60 + TIMELINE_PIN_GAP,
       left: 175,
       width: 1560,
+      height: 900 - 60 - TIMELINE_PIN_GAP - TIMELINE_PIN_BOTTOM_GAP,
     });
   });
 
   it('отключает каскад там, где окно заняло бы почти весь экран', () => {
     expect(resolveTimelinePin({ ...base, enabled: false, anchorTop: -5000 })).toBeUndefined();
+  });
+
+  it('оставляет безопасный просвет над нижней границей экрана', () => {
+    const geometry = resolveTimelinePin({ ...base, anchorTop: -200 });
+    expect(geometry && geometry.top + geometry.height).toBe(
+      base.viewportHeight - TIMELINE_PIN_BOTTOM_GAP,
+    );
   });
 });

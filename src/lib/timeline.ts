@@ -28,6 +28,15 @@ export type FilterState = {
   showBce: boolean;
 };
 
+export type BuildGroupOptions = {
+  /**
+   * Добавить пустые строки на границах исторических линий внутри видимого
+   * интервала. Так линия может закончиться ровно в 476 или 1806 году, даже
+   * если в этом году нет отдельной карточки текущей выборки.
+   */
+  lineBoundaryRange?: { from: number; to: number };
+};
+
 export const emptyFilter: FilterState = {
   layer: 'all',
   countries: [],
@@ -142,6 +151,7 @@ export function buildGroups(
   items: TimelineItem[],
   columns: TimelineColumn[],
   granularity: Granularity = 'year',
+  options: BuildGroupOptions = {},
 ): TimelineGroup[] {
   // Порядок дорожек внутри колонки — для устойчивой сортировки в ячейке.
   const trackOrder = new Map<string, number>();
@@ -158,6 +168,22 @@ export function buildGroups(
     const bucket = buckets.get(key);
     if (bucket) bucket.push(item);
     else buckets.set(key, [item]);
+  }
+
+  // Пустая выдача должна оставаться пустой: границы линий не являются
+  // результатами поиска и не должны превращать «ничего не найдено» в сетку.
+  if (items.length > 0 && options.lineBoundaryRange) {
+    const { from, to } = options.lineBoundaryRange;
+    for (const column of columns) {
+      for (const track of column.tracks) {
+        if (!track.lineSpan) continue;
+        for (const year of [track.lineSpan.from, track.lineSpan.to]) {
+          if (year < from || year > to) continue;
+          const key = year < 0 ? `b${Math.abs(year)}` : String(year);
+          if (!buckets.has(key)) buckets.set(key, []);
+        }
+      }
+    }
   }
 
   const groups: TimelineGroup[] = [];

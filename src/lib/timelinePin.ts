@@ -1,9 +1,12 @@
 export const TIMELINE_PIN_GAP = 8;
+/** Небольшой просвет над нижней границей окна/системной панелью. */
+export const TIMELINE_PIN_BOTTOM_GAP = 12;
 
 export type TimelinePinGeometry = {
   top: number;
   left: number;
   width: number;
+  height: number;
 };
 
 type TimelinePinInput = {
@@ -12,6 +15,7 @@ type TimelinePinInput = {
   anchorLeft: number;
   anchorWidth: number;
   headerBottom: number;
+  viewportHeight: number;
 };
 
 /**
@@ -31,5 +35,6 @@ export function resolveTimelinePin(input: TimelinePinInput): TimelinePinGeometry
     top,
     left: input.anchorLeft,
     width: input.anchorWidth,
+    height: Math.max(0, input.viewportHeight - top - TIMELINE_PIN_BOTTOM_GAP),
   };
 }

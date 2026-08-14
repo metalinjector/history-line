@@ -198,9 +198,23 @@ export function useTimelineState() {
 
   const filteredItems = useMemo(() => filterItems(allItems, filter), [allItems, filter]);
 
+  /**
+   * Точные строки начала/конца исторических линий показываем в обычном режиме
+   * чтения. При текстовом или тематическом поиске пустые технические строки
+   * только засоряли бы выдачу и создавали ложное ощущение найденных объектов.
+   */
+  const lineBoundaryRange = useMemo(() => {
+    if (layer !== 'all' || query.trim() || tags.length > 0 || keyOnly) return undefined;
+    const selectedRange = period ? periodRange(period) : undefined;
+    return {
+      from: Math.max(showBce ? Number.NEGATIVE_INFINITY : 1, selectedRange?.from ?? Number.NEGATIVE_INFINITY),
+      to: selectedRange?.to ?? Number.POSITIVE_INFINITY,
+    };
+  }, [keyOnly, layer, period, query, showBce, tags.length]);
+
   const groups = useMemo(
-    () => buildGroups(filteredItems, columns, granularity),
-    [filteredItems, columns, granularity],
+    () => buildGroups(filteredItems, columns, granularity, { lineBoundaryRange }),
+    [filteredItems, columns, granularity, lineBoundaryRange],
   );
 
   /** Сколько строк реально раздробилось — показываем это в подсказке масштаба. */
