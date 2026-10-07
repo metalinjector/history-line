@@ -198,7 +198,9 @@
   margin-top: 0.15em;
 }
 
-[data-orientation='horizontal'] .thead__cell[data-empty] .thead__inherited,
+/* В тонкой полосе места хватает на одну подпись: древняя линия-предшественник
+   уступает её своему наследнику. */
+[data-orientation='horizontal'] .thead__cell[data-empty] .thead__line[data-inherited],
 [data-orientation='horizontal'] .thead__cell[data-empty] .thead__underline {
   display: none;
 }

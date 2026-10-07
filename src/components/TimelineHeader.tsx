@@ -89,6 +89,7 @@ export function TimelineHeader({
                   className="thead__line"
                   key={track.id}
                   data-kind={track.kind}
+                  data-inherited={track.inherited || undefined}
                   style={
                     {
                       '--c': `hsl(${track.color})`,
