@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type {
   CountryId,
+  Relation,
   RelationDraftInput,
   SourceKind,
   TimelineItem,
@@ -8,21 +9,31 @@ import type {
 } from '../types';
 import { countries, countryById } from '../data/countries';
 import { suggestedPeople } from '../data/suggestedPeople';
-import { suggestRelations } from '../lib/suggestRelations';
+import { suggestRelations, type RelationCandidate } from '../lib/suggestRelations';
+import { buildCustomExport, parseCustomImport, relationIsComplete, type CustomImport } from '../lib/customObjects';
+import { formatYearLabel, plural } from '../lib/format';
 import { useReveal } from '../lib/useReveal';
 import './PeopleBuilder.css';
 
+type ItemDraft = Omit<TimelineItem, 'id' | 'custom'>;
+
 type Props = {
   addedPeople: TimelineItem[];
+  /** Связи, которые читатель провёл от своих объектов. */
+  addedRelations: Relation[];
   /** Все объекты базы — по ним считаются подсказки связей. */
   allItems: TimelineItem[];
-  onAdd: (
-    draft: Omit<TimelineItem, 'id' | 'custom'>,
-    links?: RelationDraftInput[],
-  ) => void;
+  /** Линии, которые сейчас на шкале: после импорта предлагается включить недостающие. */
+  activeCountryIds: CountryId[];
+  onAdd: (draft: ItemDraft, links?: RelationDraftInput[]) => void;
+  onUpdate: (id: string, draft: ItemDraft, links?: RelationDraftInput[]) => void;
+  onImport: (items: TimelineItem[], relations: Relation[]) => void;
+  onShowCountries: (ids: CountryId[]) => void;
   onRemove: (id: string) => void;
   onSelect: (item: TimelineItem) => void;
 };
+
+type ImportReport = CustomImport & { hiddenCountries: CountryId[] };
 
 const sourceKinds: { value: SourceKind; label: string }[] = [
   { value: 'academic', label: 'Академический' },
@@ -31,25 +42,15 @@ const sourceKinds: { value: SourceKind; label: string }[] = [
   { value: 'encyclopedia', label: 'Энциклопедия' },
 ];
 
-function isWebUrl(value?: string): boolean {
-  if (!value) return false;
-  try {
-    const url = new URL(value);
-    return url.protocol === 'http:' || url.protocol === 'https:';
-  } catch {
-    return false;
-  }
-}
-
-function relationIsComplete(relation: RelationDraftInput): boolean {
-  const sources = relation.sources ?? [];
-  return (
-    relation.label.trim().length > 3 &&
-    relation.detail.trim().length >= 20 &&
-    sources.length >= 2 &&
-    sources.every((source) => source.label.trim().length > 1 && isWebUrl(source.url)) &&
-    sources.some((source) => source.kind !== 'encyclopedia')
-  );
+function downloadJson(data: unknown, filename: string) {
+  const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
 const principles = [
@@ -67,22 +68,60 @@ const principles = [
   },
 ];
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 const emptyDraft = {
   title: '',
   country: 'germany' as CountryId,
   year: 1500,
+  /** Год окончания процесса; пустая строка — объект без длительности. */
+  endYear: '' as number | '',
   kind: 'person' as TimelineItemKind,
   summary: '',
   detail: '',
   life: '',
   tags: '',
+  milestone: false,
 };
 
-export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect }: Props) {
+type Draft = typeof emptyDraft;
+
+function draftOf(item: TimelineItem): Draft {
+  return {
+    title: item.title,
+    country: item.country,
+    year: item.year,
+    endYear: item.endYear ?? '',
+    kind: item.kind,
+    summary: item.summary,
+    detail: item.detail === item.summary ? '' : item.detail,
+    life: item.life ?? '',
+    tags: item.tags.join(', '),
+    milestone: (item.importance ?? 2) >= 3,
+  };
+}
+
+export function PeopleBuilder({
+  addedPeople,
+  addedRelations,
+  allItems,
+  activeCountryIds,
+  onAdd,
+  onUpdate,
+  onImport,
+  onShowCountries,
+  onRemove,
+  onSelect,
+}: Props) {
   const [formOpen, setFormOpen] = useState(false);
+  /** Объект, который сейчас правится; без него форма добавляет новый. */
+  const [editingId, setEditingId] = useState<string>();
   const [draft, setDraft] = useState(emptyDraft);
   const [chosenLinks, setChosenLinks] = useState<Record<string, RelationDraftInput>>({});
+  const [report, setReport] = useState<ImportReport>();
   const sectionRef = useRef<HTMLElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
   useReveal(sectionRef);
 
   const draftTags = useMemo(
@@ -90,26 +129,31 @@ export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect
     [draft.tags],
   );
 
+  const itemsById = useMemo(() => new Map(allItems.map((item) => [item.id, item])), [allItems]);
+  const chosenKey = Object.keys(chosenLinks).join('|');
+
   /**
    * Потенциальные исторические связи считаются сразу при вводе — до сохранения.
    * Это подсказка, а не автоматическое создание связи: причинность
-   * подтверждает человек, см. docs/AI-CONTRIBUTING.md.
+   * подтверждает человек, см. docs/AI-CONTRIBUTING.md. Уже отмеченные связи
+   * остаются в списке, даже если после правки года или тегов перестали
+   * быть подсказкой: молча их не теряем и молча не сохраняем.
    */
-  const candidates = useMemo(
-    () =>
-      suggestRelations({ country: draft.country, year: Number(draft.year) || 1, tags: draftTags }, allItems),
-    [allItems, draft.country, draft.year, draftTags],
-  );
-
-  // Подсказки зависят от страны, года и тегов. Если пользователь изменил черновик,
-  // связи с исчезнувшими кандидатами не должны тихо сохраниться в localStorage.
-  useEffect(() => {
-    const available = new Set(candidates.map((candidate) => candidate.item.id));
-    setChosenLinks((current) => {
-      const entries = Object.entries(current).filter(([id]) => available.has(id));
-      return entries.length === Object.keys(current).length ? current : Object.fromEntries(entries);
-    });
-  }, [candidates]);
+  const candidates = useMemo(() => {
+    const suggested = suggestRelations(
+      { id: editingId, country: draft.country, year: Number(draft.year) || 1, tags: draftTags },
+      allItems,
+    );
+    const shown = new Set(suggested.map((candidate) => candidate.item.id));
+    const kept = chosenKey
+      .split('|')
+      .filter((id) => id && !shown.has(id))
+      .flatMap((id): RelationCandidate[] => {
+        const item = itemsById.get(id);
+        return item ? [{ item, score: 0, reasons: ['отмечено раньше'], sharedTags: [] }] : [];
+      });
+    return [...suggested, ...kept];
+  }, [allItems, chosenKey, draft.country, draft.year, draftTags, editingId, itemsById]);
 
   /** Подсказки, которые уже стоят на шкале, помечаются как добавленные. */
   const addedKeys = useMemo(
@@ -117,35 +161,73 @@ export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect
     [addedPeople],
   );
 
+  const year = Number(draft.year);
+  const yearValid = Number.isInteger(year) && year !== 0 && year >= -3_500_000 && year <= CURRENT_YEAR;
+  const endYearValid =
+    draft.endYear === '' || (Number.isInteger(draft.endYear) && draft.endYear >= year && draft.endYear <= CURRENT_YEAR);
+
   const selectedRelations = Object.values(chosenLinks);
   const canSubmit =
     draft.title.trim().length > 1 &&
     draft.summary.trim().length > 1 &&
+    yearValid &&
+    endYearValid &&
     selectedRelations.every(relationIsComplete);
+
+  const closeForm = () => {
+    setFormOpen(false);
+    setEditingId(undefined);
+    setDraft((current) => ({ ...emptyDraft, country: current.country }));
+    setChosenLinks({});
+  };
+
+  const startEdit = (item: TimelineItem) => {
+    setEditingId(item.id);
+    setDraft(draftOf(item));
+    setChosenLinks(
+      Object.fromEntries(
+        addedRelations
+          .filter((relation) => relation.from === item.id && itemsById.has(relation.to))
+          .map((relation) => [
+            relation.to,
+            { to: relation.to, kind: relation.kind, label: relation.label, detail: relation.detail, sources: relation.sources },
+          ]),
+      ),
+    );
+    setFormOpen(true);
+    window.requestAnimationFrame(() => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }));
+  };
 
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
     if (!canSubmit) return;
-    onAdd(
-      {
+    const item: ItemDraft = {
       country: draft.country,
-      year: Number(draft.year) || 1,
+      year,
+      ...(draft.endYear !== '' && draft.endYear > year ? { endYear: draft.endYear } : {}),
       kind: draft.kind,
       title: draft.title.trim(),
       summary: draft.summary.trim(),
       detail: draft.detail.trim() || draft.summary.trim(),
       life: draft.kind === 'person' && draft.life.trim() ? draft.life.trim() : undefined,
-      tags: draft.tags
-        .split(',')
-        .map((tag) => tag.trim())
-        .filter(Boolean),
-      importance: 2,
-      },
-      selectedRelations,
+      tags: draftTags,
+      importance: draft.milestone ? 3 : 2,
+    };
+    if (editingId) onUpdate(editingId, item, selectedRelations);
+    else onAdd(item, selectedRelations);
+    closeForm();
+  };
+
+  const importFile = async (file: File) => {
+    const imported = parseCustomImport(await file.text(), {
+      knownIds: new Set(allItems.filter((item) => !item.custom).map((item) => item.id)),
+      customIds: new Set(addedPeople.map((item) => item.id)),
+    });
+    if (imported.items.length > 0) onImport(imported.items, imported.relations);
+    const hiddenCountries = Array.from(new Set(imported.items.map((item) => item.country))).filter(
+      (id) => !activeCountryIds.includes(id),
     );
-    setDraft({ ...emptyDraft, country: draft.country });
-    setChosenLinks({});
-    setFormOpen(false);
+    setReport({ ...imported, hiddenCountries });
   };
 
   return (
@@ -180,20 +262,108 @@ export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect
 
         <div className="builder__toolbar">
           <h3 className="builder__subtitle">Готовые карточки</h3>
-          <button
-            type="button"
-            className="btn btn--sm"
-            onClick={() => setFormOpen((value) => !value)}
-            aria-expanded={formOpen}
-          >
-            <span aria-hidden="true">{formOpen ? '−' : '+'}</span>
-            Свой объект
-          </button>
+          <div className="builder__toolbar-actions">
+            <button
+              type="button"
+              className="btn btn--ghost btn--sm"
+              onClick={() => fileRef.current?.click()}
+              title="Добавить объекты и связи из файла, сохранённого кнопкой «Экспорт»"
+            >
+              <span aria-hidden="true">↑</span> Импорт
+            </button>
+            <button
+              type="button"
+              className="btn btn--ghost btn--sm"
+              disabled={addedPeople.length === 0}
+              onClick={() =>
+                downloadJson(buildCustomExport(addedPeople, addedRelations), 'history-line-objects.json')
+              }
+              title="Сохранить свои объекты и связи в JSON-файл"
+            >
+              <span aria-hidden="true">↓</span> Экспорт
+            </button>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="application/json,.json"
+              hidden
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                event.target.value = '';
+                if (file) void importFile(file);
+              }}
+            />
+            <button
+              type="button"
+              className="btn btn--sm"
+              onClick={() => (formOpen ? closeForm() : setFormOpen(true))}
+              aria-expanded={formOpen}
+            >
+              <span aria-hidden="true">{formOpen ? '−' : '+'}</span>
+              Свой объект
+            </button>
+          </div>
         </div>
 
+        {report ? (
+          <div className="builder__report panel" role="status">
+            <p>
+              {report.items.length > 0
+                ? `Добавлено: ${report.items.length} ${plural(report.items.length, ['объект', 'объекта', 'объектов'])}` +
+                  (report.relations.length > 0
+                    ? `, ${report.relations.length} ${plural(report.relations.length, ['связь', 'связи', 'связей'])}`
+                    : '') +
+                  '.'
+                : 'Новых объектов в файле нет.'}
+              {report.duplicates > 0 ? ` Уже были на шкале: ${report.duplicates}.` : ''}
+            </p>
+            {report.hiddenCountries.length > 0 ? (
+              <p>
+                Линии новых объектов сейчас скрыты:{' '}
+                {report.hiddenCountries.map((id) => countryById[id].label).join(', ')}.{' '}
+                <button
+                  type="button"
+                  className="builder__report-action"
+                  onClick={() => {
+                    onShowCountries(report.hiddenCountries);
+                    setReport({ ...report, hiddenCountries: [] });
+                  }}
+                >
+                  Показать их
+                </button>
+              </p>
+            ) : null}
+            {report.skipped.length > 0 ? (
+              <>
+                <p>Не принято:</p>
+                <ul>
+                  {report.skipped.map((reason, index) => (
+                    <li key={index}>{reason}</li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
+            <button
+              type="button"
+              className="builder__report-close"
+              onClick={() => setReport(undefined)}
+              title="Скрыть отчёт"
+            >
+              <span aria-hidden="true">×</span>
+              <span className="visually-hidden">Скрыть отчёт об импорте</span>
+            </button>
+          </div>
+        ) : null}
+
         {formOpen ? (
-          <form className="builder__form panel" onSubmit={submit}>
+          <form className="builder__form panel" onSubmit={submit} ref={formRef}>
             <div className="builder__form-inner">
+              {editingId ? (
+                <p className="builder__form-title field--full">
+                  Правка объекта: <b>{addedPeople.find((item) => item.id === editingId)?.title}</b>
+                </p>
+              ) : null}
+
               <label className="field field--wide">
                 <span>Заголовок</span>
                 <input
@@ -222,10 +392,29 @@ export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect
                 <span>Год действия</span>
                 <input
                   type="number"
-                  min={1}
-                  max={2100}
+                  min={-3_500_000}
+                  max={CURRENT_YEAR}
+                  step={1}
                   value={draft.year}
+                  aria-invalid={!yearValid || undefined}
+                  title="Минус — до нашей эры: −500 значит 500 год до н. э."
                   onChange={(event) => setDraft({ ...draft, year: Number(event.target.value) })}
+                />
+              </label>
+
+              <label className="field field--narrow">
+                <span>Год окончания</span>
+                <input
+                  type="number"
+                  min={-3_500_000}
+                  max={CURRENT_YEAR}
+                  step={1}
+                  value={draft.endYear}
+                  placeholder="если это процесс"
+                  aria-invalid={!endYearValid || undefined}
+                  onChange={(event) =>
+                    setDraft({ ...draft, endYear: event.target.value === '' ? '' : Number(event.target.value) })
+                  }
                 />
               </label>
 
@@ -273,7 +462,7 @@ export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect
                 />
               </label>
 
-              <label className="field field--full">
+              <label className="field field--wide">
                 <span>Теги через запятую</span>
                 <input
                   value={draft.tags}
@@ -281,6 +470,23 @@ export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect
                   placeholder="наука, астрономия"
                 />
               </label>
+
+              <label className="field field--check field--wide">
+                <input
+                  type="checkbox"
+                  checked={draft.milestone}
+                  onChange={(event) => setDraft({ ...draft, milestone: event.target.checked })}
+                />
+                <span>Опорная веха эпохи — карточка получит звезду</span>
+              </label>
+
+              {!yearValid || !endYearValid ? (
+                <p className="builder__form-error field--full" role="alert">
+                  {!yearValid
+                    ? `Год — целое число от −3 500 000 до ${CURRENT_YEAR}, без нулевого: минус означает «до н. э.».`
+                    : 'Год окончания не может быть раньше года действия или позже текущего года.'}
+                </p>
+              ) : null}
 
               {candidates.length > 0 ? (
                 <div className="field field--full">
@@ -451,9 +657,9 @@ export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect
 
               <div className="builder__form-actions">
                 <button type="submit" className="btn btn--primary btn--sm" disabled={!canSubmit}>
-                  Добавить в хронологию
+                  {editingId ? 'Сохранить изменения' : 'Добавить в хронологию'}
                 </button>
-                <button type="button" className="btn btn--ghost btn--sm" onClick={() => setFormOpen(false)}>
+                <button type="button" className="btn btn--ghost btn--sm" onClick={closeForm}>
                   Отмена
                 </button>
               </div>
@@ -520,14 +726,26 @@ export function PeopleBuilder({ addedPeople, allItems, onAdd, onRemove, onSelect
                       style={{ background: `hsl(${countryById[item.country].color})` }}
                       aria-hidden="true"
                     />
-                    <b>{item.year}</b>
+                    <b>{formatYearLabel(item.year)}</b>
                     {item.title}
                     <span className="builder__added-country">{countryById[item.country].short}</span>
                   </button>
                   <button
                     type="button"
+                    className="builder__added-edit"
+                    onClick={() => startEdit(item)}
+                    title={`Изменить «${item.title}»`}
+                  >
+                    <span aria-hidden="true">✎</span>
+                    <span className="visually-hidden">Изменить {item.title}</span>
+                  </button>
+                  <button
+                    type="button"
                     className="builder__added-remove"
-                    onClick={() => onRemove(item.id)}
+                    onClick={() => {
+                      if (item.id === editingId) closeForm();
+                      onRemove(item.id);
+                    }}
                     title={`Убрать «${item.title}» со шкалы`}
                   >
                     <span aria-hidden="true">×</span>

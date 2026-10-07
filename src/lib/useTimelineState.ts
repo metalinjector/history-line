@@ -37,6 +37,7 @@ import {
   summarize,
 } from './timeline';
 import { timeKey } from './format';
+import { newCustomId, relationsFromDrafts } from './customObjects';
 import { usePersistentState } from './usePersistentState';
 import { clampZoom, visualZoom } from './zoom';
 import { stories as storyRoutes } from '../data/stories';
@@ -684,27 +685,12 @@ export function useTimelineState() {
 
 
   /**
-   * Добавление деятеля из конструктора.
-   * Страна автоматически становится видимой, слой сбрасывается, если персоналии скрыты,
-   * а сам объект выделяется и подтягивает к себе прокрутку.
+   * Показывает объект из конструктора: страна становится видимой, фильтры,
+   * которые его спрятали бы, сбрасываются, а сам объект выделяется
+   * и подтягивает к себе прокрутку.
    */
-  const addPerson = useCallback(
-    (draft: Omit<TimelineItem, 'id' | 'custom'>, links: RelationDraftInput[] = []) => {
-      const id = `custom-${draft.country}-${draft.year}-${Math.random().toString(36).slice(2, 8)}`;
-      const item: TimelineItem = { ...draft, id, custom: true };
-
-      setAddedPeople((current) => [...current, item]);
-      if (links.length > 0) {
-        setAddedRelations((current) => [
-          ...current,
-          ...links.map((link, index) => ({
-            id: `${id}-rel-${index}`,
-            from: id,
-            ...link,
-            verification: 'verified' as const,
-          })),
-        ]);
-      }
+  const revealCustomItem = useCallback(
+    (item: TimelineItem) => {
       ensureCountryVisible(item.country);
       setKeyOnly(false);
       setPeriod(undefined);
@@ -713,11 +699,54 @@ export function useTimelineState() {
       setQuery('');
       if (layer === 'events' && item.kind === 'person') setLayer('all');
       if (layer === 'people' && item.kind === 'event') setLayer('all');
-      setSelectedId(id);
-      setScrollTarget({ id, nonce: Date.now() });
+      setSelectedId(item.id);
+      setScrollTarget({ id: item.id, nonce: Date.now() });
+    },
+    [ensureCountryVisible, layer, setPeriod, setShowBce],
+  );
+
+  /** Добавление деятеля или события из конструктора — вместе с подтверждёнными связями. */
+  const addPerson = useCallback(
+    (draft: Omit<TimelineItem, 'id' | 'custom'>, links: RelationDraftInput[] = []) => {
+      const id = newCustomId(draft);
+      const item: TimelineItem = { ...draft, id, custom: true };
+
+      setAddedPeople((current) => [...current, item]);
+      if (links.length > 0) setAddedRelations((current) => [...current, ...relationsFromDrafts(id, links)]);
+      revealCustomItem(item);
       return item;
     },
-    [ensureCountryVisible, layer, setAddedPeople, setAddedRelations, setPeriod, setShowBce],
+    [revealCustomItem, setAddedPeople, setAddedRelations],
+  );
+
+  /** Правка своего объекта: id и место в списке сохраняются, его связи заменяются новыми. */
+  const updatePerson = useCallback(
+    (id: string, draft: Omit<TimelineItem, 'id' | 'custom'>, links: RelationDraftInput[] = []) => {
+      const item: TimelineItem = { ...draft, id, custom: true };
+      setAddedPeople((current) => current.map((candidate) => (candidate.id === id ? item : candidate)));
+      setAddedRelations((current) => [
+        ...current.filter((relation) => relation.from !== id),
+        ...relationsFromDrafts(id, links),
+      ]);
+      revealCustomItem(item);
+    },
+    [revealCustomItem, setAddedPeople, setAddedRelations],
+  );
+
+  /** Объекты и связи из файла — уже проверенные lib/customObjects.ts. */
+  const importCustom = useCallback(
+    (items: TimelineItem[], relations: Relation[]) => {
+      setAddedPeople((current) => [...current, ...items]);
+      setAddedRelations((current) => [...current, ...relations]);
+    },
+    [setAddedPeople, setAddedRelations],
+  );
+
+  /** Включает сразу несколько линий, сохраняя порядок каталога. */
+  const showCountries = useCallback(
+    (ids: CountryId[]) =>
+      setActiveCountryIds((current) => allCountryIds.filter((value) => ids.includes(value) || current.includes(value))),
+    [setActiveCountryIds],
   );
 
   const removePerson = useCallback(
@@ -843,6 +872,9 @@ export function useTimelineState() {
     stopStory,
     resetFilters,
     addPerson,
+    updatePerson,
+    importCustom,
+    showCountries,
     removePerson,
     toggleTheme,
   };

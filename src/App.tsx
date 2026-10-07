@@ -46,8 +46,13 @@ export default function App() {
 
         <PeopleBuilder
           addedPeople={state.addedPeople}
+          addedRelations={state.addedRelations}
           allItems={state.allItems}
+          activeCountryIds={state.activeCountryIds}
           onAdd={state.addPerson}
+          onUpdate={state.updatePerson}
+          onImport={state.importCustom}
+          onShowCountries={state.showCountries}
           onRemove={state.removePerson}
           onSelect={(item) => state.selectItem(item, { scroll: true })}
         />
