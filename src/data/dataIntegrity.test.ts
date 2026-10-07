@@ -8,6 +8,7 @@ import { hasVerifiedSources, isRelationVerified } from '../lib/provenance';
 import type { SourceLink, TimelineItem } from '../types';
 import { stories } from './stories';
 import { contentManifest, withContent } from './content';
+import { referenceItems } from './items/reference';
 
 const sourceKinds = new Set<SourceLink['kind']>(['archive', 'academic', 'institution', 'encyclopedia', 'reference']);
 
@@ -120,6 +121,20 @@ describe('historical data integrity', () => {
     expect(new Set(contentIds)).toEqual(new Set(ids));
     for (const entry of contentManifest) {
       expect(entry.declaredId, `${entry.path}: missing front-matter id`).toBe(entry.filenameId);
+    }
+  });
+
+  it('lets a rewritten handbook record replace its reference entry under the same id', () => {
+    const referenceIds = new Set(referenceItems.map((item) => item.id));
+    const promoted = fullItems.filter((item) => referenceIds.has(item.id) && item.verification !== 'reference');
+    for (const item of promoted) {
+      // Выверенная карточка — уже не запись справочника: свои источники, без страницы книги.
+      expect(item.referencePage, item.id).toBeUndefined();
+      expectValidSources(item.sources);
+    }
+    // Каждая карточка с id справочника действительно заменяет его запись, а не висит отдельно.
+    for (const item of fullItems.filter((entry) => entry.id.startsWith('ref-'))) {
+      expect(referenceIds.has(item.id), `${item.id}: нет такой записи в reference.json`).toBe(true);
     }
   });
 

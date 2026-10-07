@@ -17,7 +17,7 @@ import { referenceItems } from './items/reference';
  * добавить новую страну — значит добавить один файл и одну строку здесь,
  * а также запись в data/countries.ts.
  */
-export const timelineItems: TimelineItem[] = [
+const authoredItems: TimelineItem[] = [
   ...germany,
   ...england,
   ...france,
@@ -26,7 +26,19 @@ export const timelineItems: TimelineItem[] = [
   ...spain,
   ...china,
   ...japan,
-  ...referenceItems,
+];
+
+/**
+ * Справочник — запасной слой. Запись из него, которую редакция выверила
+ * и переписала, переезжает в файл своей линии под тем же id: id уже живут
+ * в ссылках и заметках читателей. Авторская карточка заменяет запись
+ * справочника, а reference.json остаётся таким, каким его сгенерировал импорт.
+ */
+const authoredIds = new Set(authoredItems.map((item) => item.id));
+
+export const timelineItems: TimelineItem[] = [
+  ...authoredItems,
+  ...referenceItems.filter((item) => !authoredIds.has(item.id)),
 ].map((item) => ({
   // Статьи, источники и трактовки хранятся отдельно (content/) и грузятся
   // вместе с модальным окном. Здесь подмешивается только их сводка.

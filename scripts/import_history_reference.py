@@ -489,6 +489,18 @@ def normalized_title(value: str) -> str:
     return " ".join(word for word in re.findall(r"[а-яa-z0-9]+", value) if word not in stop)
 
 
+def authored_ids() -> set[str]:
+    """Records of the reference that the editors rewrote keep their ids in the
+    authored country files. They must not be regenerated, and their content
+    files (with verified sources and articles) must not be overwritten."""
+    ids: set[str] = set()
+    for path in (ROOT / "src/data/items").glob("*.ts"):
+        if path.name == "reference.ts":
+            continue
+        ids.update(re.findall(r"id:\s*'(ref-[^']+)'", path.read_text(encoding="utf-8")))
+    return ids
+
+
 def existing_items() -> list[tuple[str, int, str]]:
     result: list[tuple[str, int, str]] = []
     pattern = re.compile(
@@ -651,6 +663,7 @@ def main() -> None:
 
     raw_events = json.loads(args.input.read_text(encoding="utf-8"))
     existing = existing_items()
+    promoted = authored_ids()
     generated: list[dict[str, object]] = []
     duplicates: list[tuple[dict[str, object], str]] = []
     unparsed: list[dict[str, object]] = []
@@ -682,6 +695,9 @@ def main() -> None:
             identifier = f"{base_id}-{suffix}"
             suffix += 1
         ids.add(identifier)
+        if identifier in promoted:
+            # Rewritten by the editors: the authored card and its content file win.
+            continue
 
         item: dict[str, object] = {
             "id": identifier,
