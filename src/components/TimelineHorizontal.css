@@ -416,6 +416,31 @@
   height: 2px;
 }
 
+/* Полоса периода идёт вдоль линии полосы — слева направо */
+[data-orientation='horizontal'] .tperiod {
+  top: calc(
+    var(--h-rail-center) + (var(--rail-i) - (var(--rail-n) - 1) / 2) * var(--rail-gap) - 2px + var(--slot) *
+      var(--side) * 7px
+  );
+  bottom: auto;
+  left: -1px;
+  right: -1px;
+  width: auto;
+  height: 6px;
+}
+
+[data-orientation='horizontal'] .tperiod[data-starts] {
+  left: var(--period-at);
+  border-radius: 3px 0 0 3px;
+}
+
+[data-orientation='horizontal'] .tperiod[data-ends] {
+  right: auto;
+  width: calc(var(--period-at) + 1px);
+  height: 6px;
+  border-radius: 0 3px 3px 0;
+}
+
 [data-orientation='horizontal'] .tcell__rail[data-kind='layer'] {
   background: repeating-linear-gradient(90deg, var(--c) 0 7px, transparent 7px 13px);
 }

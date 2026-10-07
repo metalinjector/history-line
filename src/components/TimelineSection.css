@@ -582,6 +582,45 @@
   opacity: calc(var(--rail-opacity) + 0.32);
 }
 
+/* ---------- Полоса периода ---------- */
+
+/*
+  Объект с endYear продолжается во времени: линия его страны утолщается
+  от узла карточки до отметки года окончания. Каждая группа рисует свой
+  кусок полосы, куски складываются в одну. Пересекающиеся периоды одной
+  линии встают рядами (--slot) наружу от соседней дорожки (--side).
+*/
+.tperiod {
+  --period-at: calc(var(--row-gap) + 21px);
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  left: calc(
+    var(--rail-center) + (var(--rail-i) - (var(--rail-n) - 1) / 2) * var(--rail-gap) - 2px + var(--slot) *
+      var(--side) * 7px
+  );
+  width: 6px;
+  background: color-mix(in oklab, var(--c) 32%, transparent);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+[data-orientation='vertical'] .tperiod[data-starts] {
+  top: var(--period-at);
+  border-radius: 3px 3px 0 0;
+}
+
+[data-orientation='vertical'] .tperiod[data-ends] {
+  bottom: auto;
+  height: calc(var(--period-at) + 1px);
+  border-radius: 0 0 3px 3px;
+}
+
+.tperiod:hover,
+.tperiod[data-selected] {
+  background: color-mix(in oklab, var(--c) 60%, transparent);
+}
+
 .tcell[data-empty] {
   min-height: calc(32px * var(--zoom));
 }

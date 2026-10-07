@@ -21,6 +21,7 @@ import { StoryChooser, StoryPlayer } from './StoryPanel';
 import { EditorialDashboard } from './EditorialDashboard';
 import { ResearchTools } from './ResearchTools';
 import { TimelineNavigator } from './TimelineNavigator';
+import { periodSegments } from '../lib/periods';
 import './TimelineSection.css';
 import './TimelineHorizontal.css';
 
@@ -279,6 +280,9 @@ export function TimelineSection({ state, sectionRef }: Props) {
     }
     return new Set(columns.filter((column) => !filled.has(column.id)).map((column) => column.id));
   }, [columns, groups]);
+
+  /** Полосы периодов (объекты с endYear), разложенные по группам. */
+  const periods = useMemo(() => periodSegments(groups, columns), [groups, columns]);
 
   /**
    * Нити измеряют координаты реальных DOM-узлов. Поэтому группы с концами
@@ -1063,6 +1067,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
                             selectedCountry={selectedItem?.country}
                             query={query}
                             emptyColumnIds={emptyColumnIds}
+                            periods={periods.get(virtualRow.index)}
                             onSelect={handleSelect}
                             onOpen={handleOpen}
                             onOpenDay={openDay}

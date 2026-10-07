@@ -2,7 +2,8 @@ import { memo } from 'react';
 import type { CountryId, TimelineColumn, TimelineGroup, TimelineItem } from '../types';
 import { countryById } from '../data/countries';
 import { trackOfItem } from '../lib/layers';
-import { plural } from '../lib/format';
+import { formatYearLabel, plural } from '../lib/format';
+import type { PeriodSegment } from '../lib/periods';
 import { TimelineCard } from './TimelineCard';
 
 const countryColor = (id: CountryId) => `hsl(${countryById[id].color})`;
@@ -15,6 +16,8 @@ type Props = {
   query: string;
   /** Колонки, у которых в выборке нет ни одного объекта: они ужаты. */
   emptyColumnIds: Set<string>;
+  /** Куски полос периодов, которые проходят через эту группу. */
+  periods?: PeriodSegment[];
   onSelect: (item: TimelineItem) => void;
   onOpen: (item: TimelineItem) => void;
   /** Открыть окно со всеми событиями этого года. */
@@ -38,6 +41,7 @@ export const TimelineRow = memo(function TimelineRow({
   selectedCountry,
   query,
   emptyColumnIds,
+  periods,
   onSelect,
   onOpen,
   onOpenDay,
@@ -131,6 +135,31 @@ export const TimelineRow = memo(function TimelineRow({
                 }
               />
             ))}
+
+            {periods
+              ?.filter((segment) => segment.columnId === column.id)
+              .map((segment) => (
+                // Полоса дублирует карточку периода, поэтому скрыта от экранного
+                // чтеца и не ловит фокус; щелчок по ней выбирает карточку.
+                <span
+                  className="tperiod"
+                  key={segment.item.id}
+                  aria-hidden="true"
+                  data-starts={segment.starts || undefined}
+                  data-ends={segment.ends || undefined}
+                  data-selected={segment.item.id === selectedId || undefined}
+                  title={`${segment.item.title}: ${formatYearLabel(segment.item.year)} — ${formatYearLabel(segment.item.endYear!)}`}
+                  style={
+                    {
+                      '--rail-i': segment.track,
+                      '--slot': segment.slot,
+                      '--side': segment.side,
+                      '--c': `hsl(${(column.tracks[segment.track] ?? column.tracks[0]).color})`,
+                    } as React.CSSProperties
+                  }
+                  onClick={() => onSelect(segment.item)}
+                />
+              ))}
 
             {items.map((item) => {
               const railIndex = trackOfItem(item, column);
