@@ -1,6 +1,6 @@
 import { load } from 'js-yaml';
 import type { Plugin } from 'vite';
-import { hasVerifiedSources } from '../src/lib/provenance.ts';
+import { hasVerifiedSources } from '../src/lib/sourceRule.ts';
 import type { ContentSummary, SourceLink, Viewpoint } from '../src/types.ts';
 
 /**
