@@ -264,9 +264,10 @@ export function TimelineSection({ state, sectionRef }: Props) {
   }, [groups]);
 
   /**
-   * Линии, у которых в текущей выборке нет ни одного объекта. В горизонтальной
-   * шкале такая полоса ужимается до тонкой линии с подписью: после поиска
-   * или выбора эпохи экран не должен заполняться пустыми полосами.
+   * Линии, у которых в текущей выборке нет ни одного объекта. Такая колонка
+   * ужимается до узкой полоски с кодом линии, а полоса горизонтальной шкалы —
+   * до тонкой линии с подписью: после поиска или выбора эпохи экран
+   * не должен заполняться пустыми колонками.
    */
   const emptyColumnIds = useMemo(() => {
     const filled = new Set<string>();
@@ -624,10 +625,14 @@ export function TimelineSection({ state, sectionRef }: Props) {
     }
 
     const column = probe('column');
+    const columnEmpty = probe('column-empty');
     const date = probe('date');
-    if (!column || !date) return undefined;
-    const size = date.offsetWidth + column.offsetWidth * columns.length;
-    return size > 0 ? { size, fixed: 0, available: viewport.clientWidth } : undefined;
+    if (!column || !columnEmpty || !date) return undefined;
+    const empty = emptyColumnIds.size;
+    const filled = columns.length - empty;
+    const size = date.offsetWidth + column.offsetWidth * filled + columnEmpty.offsetWidth * empty;
+    // Ужатые пустые колонки от масштаба не зависят.
+    return size > 0 ? { size, fixed: columnEmpty.offsetWidth * empty, available: viewport.clientWidth } : undefined;
   }, [columns.length, emptyColumnIds, horizontal, viewportRef]);
 
   /** Если колонки уже, чем поле, они растягиваются и заполняют его целиком.
@@ -690,9 +695,15 @@ export function TimelineSection({ state, sectionRef }: Props) {
           .join(' '),
       } as React.CSSProperties)
     : ({
-        '--cols': stretchColumns
-          ? `repeat(${columns.length}, minmax(var(--col-width), 1fr))`
-          : `repeat(${columns.length}, var(--col-width))`,
+        '--cols': columns
+          .map((column) =>
+            emptyColumnIds.has(column.id)
+              ? 'var(--col-width-empty)'
+              : stretchColumns
+                ? 'minmax(var(--col-width), 1fr)'
+                : 'var(--col-width)',
+          )
+          .join(' '),
       } as React.CSSProperties);
 
   const virtualItems = rowVirtualizer.getVirtualItems();
@@ -833,6 +844,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
             {/* Скрытый зонд: даёт базовые размеры раскладки для расчёта масштаба */}
             <span className="timeline__probe" aria-hidden="true">
               <i data-probe="column" />
+              <i data-probe="column-empty" />
               <i data-probe="date" />
               <i data-probe="lane" />
               <i data-probe="lane-fixed" />
@@ -970,6 +982,7 @@ export function TimelineSection({ state, sectionRef }: Props) {
                             selectedId={selectedItem?.id}
                             selectedCountry={selectedItem?.country}
                             query={query}
+                            emptyColumnIds={emptyColumnIds}
                             onSelect={handleSelect}
                             onOpen={handleOpen}
                             onOpenDay={openDay}

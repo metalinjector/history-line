@@ -13,6 +13,8 @@ type Props = {
   selectedId?: string;
   selectedCountry?: CountryId;
   query: string;
+  /** Колонки, у которых в выборке нет ни одного объекта: они ужаты. */
+  emptyColumnIds: Set<string>;
   onSelect: (item: TimelineItem) => void;
   onOpen: (item: TimelineItem) => void;
   /** Открыть окно со всеми событиями этого года. */
@@ -35,6 +37,7 @@ export const TimelineRow = memo(function TimelineRow({
   selectedId,
   selectedCountry,
   query,
+  emptyColumnIds,
   onSelect,
   onOpen,
   onOpenDay,
@@ -108,6 +111,7 @@ export const TimelineRow = memo(function TimelineRow({
             role="gridcell"
             key={column.id}
             data-empty={items.length === 0 || undefined}
+            data-column-empty={emptyColumnIds.has(column.id) || undefined}
             data-shared={column.shared || undefined}
             data-selected-column={holdsSelected || undefined}
             data-layer-only={column.layerOnly || undefined}

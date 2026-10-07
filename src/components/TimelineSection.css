@@ -197,6 +197,11 @@
   width: var(--col-width);
 }
 
+.timeline__probe [data-probe='column-empty'] {
+  display: block;
+  width: var(--col-width-empty);
+}
+
 .timeline__probe [data-probe='date'] {
   display: block;
   width: var(--date-width);
@@ -579,6 +584,76 @@
 
 .tcell[data-empty] {
   min-height: calc(32px * var(--zoom));
+}
+
+/* ---------- Пустая колонка ---------- */
+
+/* У линии нет объектов в выборке: колонка ужата до полоски, линии
+   стоят по её центру, в шапке — точка и код линии. */
+[data-orientation='vertical'] .tcell[data-column-empty] {
+  --rail-center: calc(50% - 1px);
+  padding-inline: 0;
+}
+
+[data-orientation='vertical'] .thead__cell[data-empty] {
+  padding-inline: 4px;
+}
+
+[data-orientation='vertical'] .thead__cell[data-empty] .thead__stack {
+  align-items: center;
+  gap: 7px;
+  opacity: 0.6;
+}
+
+[data-orientation='vertical'] .thead__cell[data-empty] .thead__line {
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+[data-orientation='vertical'] .thead__cell[data-empty] .thead__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+[data-orientation='vertical'] .thead__cell[data-empty] .thead__short {
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+[data-orientation='vertical'] .thead__cell[data-empty] .thead__inherited {
+  display: none;
+}
+
+/* Крестик «скрыть» не помещается рядом — встаёт в угол поверх кода */
+[data-orientation='vertical'] .thead__cell[data-empty] .thead__hide {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  margin: 0;
+  background: var(--paper-raised);
+}
+
+[data-orientation='vertical'] .thead__cell[data-empty] .thead__line {
+  position: relative;
+}
+
+[data-orientation='vertical'] .thead__cell[data-empty] .thead__underline {
+  left: 8px;
+  right: 8px;
+}
+
+[data-orientation='vertical'] .thead__cell[data-empty] .thead__drop-hint {
+  left: 0;
+  right: 0;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0;
 }
 
 /* ---------- Карточка ---------- */

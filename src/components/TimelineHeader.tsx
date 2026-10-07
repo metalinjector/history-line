@@ -145,7 +145,12 @@ export function TimelineHeader({
               ))}
             </span>
 
-            {canAcceptLayer ? <span className="thead__drop-hint">положить слой сюда</span> : null}
+            {canAcceptLayer ? (
+              <span className="thead__drop-hint">
+                {/* Ужатой пустой колонке хватает места только на знак */}
+                {emptyColumnIds.has(column.id) && orientation === 'vertical' ? '+ слой' : 'положить слой сюда'}
+              </span>
+            ) : null}
           </div>
         );
       })}
