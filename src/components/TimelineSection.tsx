@@ -20,6 +20,7 @@ import { fitZoom } from '../lib/zoom';
 import { StoryChooser, StoryPlayer } from './StoryPanel';
 import { EditorialDashboard } from './EditorialDashboard';
 import { ResearchTools } from './ResearchTools';
+import { TimelineNavigator } from './TimelineNavigator';
 import './TimelineSection.css';
 import './TimelineHorizontal.css';
 
@@ -356,24 +357,50 @@ export function TimelineSection({ state, sectionRef }: Props) {
   );
 
   /**
+   * Номер последнего прыжка и время, когда читатель сам взялся за поле.
+   * Доводка прыжка приходит через несколько кадров; если за это время начался
+   * новый прыжок или читатель прокрутил поле сам, старая доводка вернула бы
+   * шкалу к прежней цели — поэтому она отменяется.
+   */
+  const jumpGeneration = useRef(0);
+  const userScrolledAt = useRef(0);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const mark = () => {
+      userScrolledAt.current = performance.now();
+    };
+    const events = ['wheel', 'touchstart', 'pointerdown', 'keydown'] as const;
+    for (const name of events) viewport.addEventListener(name, mark, { passive: true });
+    return () => {
+      for (const name of events) viewport.removeEventListener(name, mark);
+    };
+  }, [viewportRef]);
+
+  /**
    * Прыжок вдоль времени к группе. Виртуализатор подвозит её, доизмеряет
    * соседей и сам поправляет прокрутку. На iOS поправки, пришедшие во время
    * прокрутки, он копит и применяет, когда она закончится, — поверх уже
    * точной цели, и шкала уезжала на тысячи пикселей. Поэтому, когда всё
    * успокоится, цель ставится ещё раз через scrollToOffset: он забывает
-   * накопленное. После этого вызывается then.
+   * накопленное. После этого вызывается then. Возвращает номер прыжка.
    */
   const jumpToGroup = useCallback(
     (index: number, align: 'start' | 'center', behavior: ScrollBehavior = 'auto', then?: () => void) => {
+      const generation = ++jumpGeneration.current;
+      const startedAt = performance.now();
       rowVirtualizer.scrollToIndex(index, { align, behavior });
       whenAtRest(
         () => rowVirtualizer.scrollOffset ?? undefined,
         () => {
+          if (generation !== jumpGeneration.current || userScrolledAt.current > startedAt) return;
           const target = rowVirtualizer.getOffsetForIndex(index, align);
           if (target) rowVirtualizer.scrollToOffset(target[0]);
           then?.();
         },
       );
+      return generation;
     },
     [rowVirtualizer],
   );
@@ -415,8 +442,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
       // прокрутку к своей цели, а в высокой строке 1917 года карточка
       // уезжала бы под шапку. Если карточки так и нет, заходим второй раз:
       // размеры соседних групп к этому времени уже измерены.
-      const approach = (retries: number) =>
-        jumpToGroup(rowIndex, 'center', behavior, () =>
+      const approach = (retries: number) => {
+        const generation = jumpToGroup(rowIndex, 'center', behavior, () =>
           whenAtRest(
             () => {
               const rect = card()?.getBoundingClientRect();
@@ -424,10 +451,12 @@ export function TimelineSection({ state, sectionRef }: Props) {
               return rowVirtualizer.scrollOffset ?? undefined;
             },
             () => {
+              if (generation !== jumpGeneration.current) return;
               if (!settle() && retries > 0) approach(retries - 1);
             },
           ),
         );
+      };
       approach(1);
     },
     [columns, granularity, groupIndexByKey, horizontal, jumpToGroup, ordered, rowVirtualizer, viewportRef],
@@ -677,6 +706,39 @@ export function TimelineSection({ state, sectionRef }: Props) {
       .map((item) => ({ ...item, rowKey: firstRowByEra.get(item.id)! }));
   }, [groups]);
 
+  /** Короткая подсветка подписи группы — чтобы взгляд нашёл, куда привёл переход. */
+  const flashGroup = useCallback((key: string) => {
+    const row = document.getElementById(`row-${key}`);
+    if (!row) return;
+    delete row.dataset.flash;
+    void row.offsetWidth; // перезапуск анимации, если подсветка ещё идёт
+    row.dataset.flash = '';
+    window.setTimeout(() => delete row.dataset.flash, 1700);
+  }, []);
+
+  const goToGroup = useCallback(
+    (index: number) => {
+      const key = groups[index]?.key;
+      jumpToGroup(index, 'start', 'auto', () => {
+        if (key) flashGroup(key);
+      });
+    },
+    [flashGroup, groups, jumpToGroup],
+  );
+
+  const scrubToGroup = useCallback(
+    (index: number) => {
+      // Перетаскивание по мини-карте отменяет доводку прежнего прыжка.
+      jumpGeneration.current++;
+      rowVirtualizer.scrollToIndex(index, { align: 'center' });
+    },
+    [rowVirtualizer],
+  );
+
+  const selectedGroupIndex = selectedItem
+    ? groupIndexByKey.get(groupKeyOf(selectedItem, granularity))
+    : undefined;
+
   const jumpToRow = useCallback(
     (rowKey: string) => {
       const rowIndex = groupIndexByKey.get(rowKey);
@@ -707,6 +769,14 @@ export function TimelineSection({ state, sectionRef }: Props) {
       } as React.CSSProperties);
 
   const virtualItems = rowVirtualizer.getVirtualItems();
+  // Видимые группы для окна мини-карты. Первой считается группа, которая видна
+  // из-под липкой шапки больше чем на 12 px, а не спрятанная под ней.
+  const range = rowVirtualizer.range;
+  const firstVisible = rowVirtualizer.getVirtualItemForOffset((rowVirtualizer.scrollOffset ?? 0) + stickyHead + 12);
+  const visibleRange = range && {
+    startIndex: Math.min(Math.max(firstVisible?.index ?? range.startIndex, range.startIndex), range.endIndex),
+    endIndex: range.endIndex,
+  };
   const virtualRangeKey = virtualItems.map((item) => item.index).join(',');
   const totalSize = rowVirtualizer.getTotalSize();
 
@@ -828,6 +898,16 @@ export function TimelineSection({ state, sectionRef }: Props) {
             ))}
           </nav>
         ) : null}
+
+        <TimelineNavigator
+          groups={groups}
+          visible={visibleRange}
+          selectedIndex={selectedGroupIndex}
+          showBce={showBce}
+          onJump={(index, align) => jumpToGroup(index, align)}
+          onGoTo={goToGroup}
+          onScrub={scrubToGroup}
+        />
 
         <div className="timeline__stage" data-expanded={expanded || undefined} data-orientation={orientation}>
           <div
