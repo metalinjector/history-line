@@ -23,9 +23,14 @@ import { ResearchTools } from './ResearchTools';
 import './TimelineSection.css';
 import './TimelineHorizontal.css';
 
-// Окна тянут за собой разбор Markdown, KaTeX и загрузчик Mermaid,
-// поэтому грузятся одним чанком при первом открытии.
-const ModalHost = lazy(() => import('./modal/ModalHost'));
+// Окна тянут за собой разбор Markdown, KaTeX, загрузчик Mermaid и редакционную
+// базу (статьи и источники), поэтому живут в отдельном чанке. Первый экран
+// его не ждёт: чанк начинает грузиться, когда браузер освободится, — к первому
+// клику окно обычно уже готово. Ошибку фоновой загрузки можно не замечать:
+// lazy повторит запрос, когда окно понадобится.
+const loadModalHost = () => import('./modal/ModalHost');
+const ModalHost = lazy(loadModalHost);
+const prefetchModalHost = () => void loadModalHost().catch(() => undefined);
 
 type Props = {
   state: TimelineState;
@@ -167,6 +172,16 @@ export function TimelineSection({ state, sectionRef }: Props) {
    * идёт виртуализация, прокрутка и навигация; раскладку меняет CSS.
    */
   const horizontal = orientation === 'horizontal';
+
+  useEffect(() => {
+    // requestIdleCallback нет в Safari — там хватает обычной задержки.
+    if (typeof window.requestIdleCallback !== 'function') {
+      const timer = window.setTimeout(prefetchModalHost, 2000);
+      return () => window.clearTimeout(timer);
+    }
+    const handle = window.requestIdleCallback(prefetchModalHost, { timeout: 5000 });
+    return () => window.cancelIdleCallback(handle);
+  }, []);
 
   const { ref: viewportRef, isPanning, onPointerDown, didPan } = usePanning<HTMLDivElement>();
   useWheelAlongTime(viewportRef, horizontal);

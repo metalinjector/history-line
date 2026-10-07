@@ -1,4 +1,6 @@
+import { useMemo } from 'react';
 import type { TimelineState } from '../../lib/useTimelineState';
+import { withContent } from '../../data/content';
 import { ItemModal } from './ItemModal';
 import { DayModal } from './DayModal';
 import { RelationModal } from './RelationModal';
@@ -11,8 +13,9 @@ type Props = {
 /**
  * Единая точка входа для всех модальных окон.
  *
- * Собрана в один ленивый чанк вместе с разбором Markdown, KaTeX и загрузчиком
- * Mermaid: пока читатель не открыл ни одной статьи, ничего этого не грузится.
+ * Собрана в один ленивый чанк вместе с разбором Markdown, KaTeX, загрузчиком
+ * Mermaid и редакционной базой (статьи, источники, трактовки — data/content.ts):
+ * пока читатель не открыл ни одной статьи, ничего этого не грузится.
  * Одновременно открыто не больше одного окна.
  */
 export default function ModalHost({ state }: Props) {
@@ -37,6 +40,9 @@ export default function ModalHost({ state }: Props) {
     toggleTag,
   } = state;
 
+  // На шкале у объекта только сводка редакционной базы; окну нужен полный текст.
+  const item = useMemo(() => (openedItem ? withContent(openedItem) : undefined), [openedItem]);
+
   if (openedRelation && openedRelationEnds) {
     return (
       <RelationModal
@@ -54,11 +60,11 @@ export default function ModalHost({ state }: Props) {
     );
   }
 
-  if (openedItem && openedCountry) {
+  if (item && openedCountry) {
     return (
       <ItemModal
-        key={openedItem.id}
-        item={openedItem}
+        key={item.id}
+        item={item}
         country={openedCountry}
         era={openedEra}
         previous={neighbours.previous}
@@ -73,7 +79,7 @@ export default function ModalHost({ state }: Props) {
           if (target) openItem(target, { scroll: true });
         }}
         onOpenRelation={openRelation}
-        note={notes[openedItem.id] ?? ''}
+        note={notes[item.id] ?? ''}
         onNoteChange={setNote}
         onBackToDay={openDay}
         onClose={closeModals}

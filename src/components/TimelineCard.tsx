@@ -102,7 +102,7 @@ export const TimelineCard = memo(function TimelineCard({
         <span className="visually-hidden">Открыть полный текст: {item.title}</span>
       </button>
 
-      {(item.viewpoints?.length ?? 0) > 1 ? (
+      {(item.viewpoints?.length ?? item.content?.viewpoints ?? 0) > 1 ? (
         <span className="tcard__disputed" title="Трактовки расходятся — см. полный текст">
           <span aria-hidden="true">⚖</span>
           <span className="visually-hidden">Есть несколько устоявшихся трактовок</span>

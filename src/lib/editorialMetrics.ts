@@ -1,5 +1,5 @@
 import type { CountryId, Era, EraId, TimelineItem } from '../types';
-import { hasVerifiedSources } from './provenance';
+import { isItemVerified } from './provenance';
 
 export type EditorialCell = {
   total: number;
@@ -30,8 +30,8 @@ export function buildEditorialMatrix(
     const cell = era ? matrix[item.country]?.[era.id] : undefined;
     if (!cell) continue;
     cell.total += 1;
-    if (hasVerifiedSources(item.sources)) cell.sourced += 1;
-    if (item.body) cell.articles += 1;
+    if (isItemVerified(item)) cell.sourced += 1;
+    if (item.body || item.content?.article) cell.articles += 1;
     if (item.month && item.day) cell.exactDates += 1;
     if ((item.importance ?? 2) === 3) cell.milestones += 1;
   }

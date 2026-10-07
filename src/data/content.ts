@@ -1,4 +1,4 @@
-import type { SourceLink, Viewpoint } from '../types';
+import type { SourceLink, TimelineItem, Viewpoint } from '../types';
 
 /**
  * Редакционное наполнение базы: статьи, источники и трактовки.
@@ -13,6 +13,9 @@ import type { SourceLink, Viewpoint } from '../types';
  * Такой формат выбран ради тех, кто наполняет базу: добавить факт — значит
  * создать один текстовый файл, а не править TypeScript. Правила наполнения —
  * в docs/AI-CONTRIBUTING.md.
+ *
+ * Модуль тяжёлый и в основной бандл не входит: его подгружают модальное окно
+ * и экспорт (динамическим import). Шкале хватает сводки — data/contentSummary.ts.
  */
 type ContentModule = {
   meta: { id?: string; sources?: SourceLink[]; viewpoints?: Viewpoint[] };
@@ -68,3 +71,20 @@ export const viewpointsByItem: Record<string, Viewpoint[]> = Object.fromEntries(
     .filter((entry) => entry.meta.viewpoints?.length)
     .map((entry) => [entry.id, entry.meta.viewpoints!]),
 );
+
+/**
+ * Объект вместе со статьёй, источниками и трактовками из редакционной базы.
+ * Объекты пользователя и всё, чего нет в базе, возвращаются как есть.
+ */
+export function withContent(item: TimelineItem): TimelineItem {
+  const body = articles[item.id];
+  const sources = sourcesByItem[item.id];
+  const viewpoints = viewpointsByItem[item.id];
+  if (!body && !sources && !viewpoints) return item;
+  return {
+    ...item,
+    ...(body ? { body } : {}),
+    ...(sources ? { sources } : {}),
+    ...(viewpoints ? { viewpoints } : {}),
+  };
+}

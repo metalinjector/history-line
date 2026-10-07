@@ -86,6 +86,19 @@ export type Viewpoint = {
   sources: SourceLink[];
 };
 
+/**
+ * Сводка редакционного файла объекта, которая собирается при сборке
+ * (plugins/markdownContent.ts, запрос `?summary`). Пустые поля опускаются.
+ */
+export type ContentSummary = {
+  /** У объекта есть авторская статья. */
+  article?: true;
+  /** Источники удовлетворяют правилу верификации — см. lib/provenance.ts. */
+  verified?: true;
+  /** Сколько у объекта трактовок. */
+  viewpoints?: number;
+};
+
 export type TimelineItem = {
   id: string;
   country: CountryId;
@@ -112,8 +125,16 @@ export type TimelineItem = {
   /** Короткая реплика о синхронности: что в это же время происходило рядом. */
   parallel?: string;
   /**
+   * Что есть у объекта в редакционной базе (Markdown-файл в content/) — без самих текстов.
+   * Статьи, источники и трактовки грузятся вместе с модальным окном,
+   * а шкале и сводке хватает этих флагов. См. data/contentSummary.ts.
+   */
+  content?: ContentSummary;
+  /**
    * Полный текст статьи в Markdown для модального окна.
    * Если поля нет, документ собирается из остальных полей — см. lib/markdown.ts.
+   * У объектов базы поле появляется, когда загружена редакционная база
+   * (data/content.ts → withContent).
    */
   body?: string;
   /**
