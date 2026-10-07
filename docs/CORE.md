@@ -131,9 +131,11 @@
 
 ## 🔴 5. Сборка и публикация
 
-- `base: '/history-line/'` в `vite.config.ts` — это адрес сайта на GitHub Pages.
-  С другим значением опубликованный сайт откроется пустым; e2e-тесты ходят именно
-  по этому пути и упадут.
+- `base` в `vite.config.ts` — путь сайта от корня домена. Не прописывайте его
+  руками: деплой берёт путь из настроек Pages (`SITE_BASE` из `actions/configure-pages`
+  в `deploy.yml`) — со своим доменом это `/`, без него `/history-line/`. С неверным
+  путём опубликованный сайт откроется пустым: ассеты будут искаться не там.
+  Локальная сборка, CI и e2e-тесты работают с путём по умолчанию `/history-line/`.
 - Группы чанков `vendor` и `data` (`isTimelineData`): `data/content.ts` исключён
   из `data` намеренно — см. раздел 3.
 - `src/data/items/reference.json` генерирует `scripts/import_history_reference.py`;

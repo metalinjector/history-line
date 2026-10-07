@@ -163,8 +163,19 @@ npm run test:e2e # смоук-тесты Playwright по собранной ве
 - Workflow `.github/workflows/deploy.yml` собирает проект (`npm ci` → `npm run build`)
   и публикует содержимое `dist/` через `actions/upload-pages-artifact@v3`
   и `actions/deploy-pages@v4`.
-- `base: '/history-line/'` в `vite.config.ts` обеспечивает правильные пути
-  ассетов на `https://metalinjector.github.io/history-line/`.
+- Путь сайта (`base` в `vite.config.ts`) деплой берёт из настроек Pages через
+  `actions/configure-pages`: со своим доменом это корень `/`, без него —
+  `/history-line/` (`https://metalinjector.github.io/history-line/`). Локальная сборка,
+  CI и e2e-тесты собирают с путём по умолчанию `/history-line/`.
+- **Первый запуск.** В репозитории: **Settings → Pages → Build and deployment →
+  Source: GitHub Actions**. Без этого шаг `configure-pages` падает с ошибкой
+  «Get Pages site failed».
+- **Свой домен.** Там же, в **Custom domain**, указывается домен, а у регистратора —
+  DNS-записи: для корневого домена четыре записи `A` на `185.199.108.153`,
+  `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (и запись `CNAME` для `www`
+  на `metalinjector.github.io`), для поддомена — одна `CNAME` на `metalinjector.github.io`.
+  Когда GitHub выпустит сертификат, включается **Enforce HTTPS**. Код менять не нужно:
+  следующий деплой сам соберёт сайт под корень домена.
 - Деплой можно запустить вручную через **Actions → Deploy to GitHub Pages → Run workflow**.
 - Перед деплоем должен пройти CI (`.github/workflows/ci.yml`: lint, test, build).
 

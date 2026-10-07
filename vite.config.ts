@@ -2,8 +2,16 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { markdownContent } from './plugins/markdownContent.ts'
 
-// ⚠ КАРКАС — docs/CORE.md, раздел 5: base — адрес сайта на GitHub Pages,
+// ⚠ КАРКАС — docs/CORE.md, раздел 5: base — путь сайта на GitHub Pages,
 // а data/content.ts исключён из чанка data намеренно (раздел 3).
+
+/**
+ * Путь сайта от корня домена. Деплой берёт его из настроек Pages
+ * (actions/configure-pages): со своим доменом сайт живёт в корне — `/`,
+ * без него — на metalinjector.github.io/history-line/. Локальная сборка,
+ * CI и e2e-тесты работают с путём по умолчанию.
+ */
+const base = process.env.SITE_BASE || '/history-line/'
 
 /**
  * База событий шкалы: файлы стран, справочник, слои, связи и сводка
@@ -15,7 +23,7 @@ const isTimelineData = (id: string) =>
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/history-line/',
+  base,
   plugins: [markdownContent(), react()],
   build: {
     rolldownOptions: {
