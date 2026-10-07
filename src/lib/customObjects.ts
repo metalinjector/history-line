@@ -3,6 +3,11 @@ import type { Relation, RelationDraftInput, SourceKind, SourceLink, TimelineItem
 import { hasVerifiedSources } from './provenance';
 
 /**
+ * ⚠ КОНТРАКТ — docs/CORE.md, раздел 4. Файлы history-line/custom-objects@1
+ * уже сохранены у читателей и должны импортироваться всегда: новые поля —
+ * только необязательные, несовместимое изменение — новая версия схемы,
+ * а импорт продолжает принимать @1. Замороженный файл — в src/contracts.test.ts.
+ *
  * Свои объекты читателя: обмен файлом.
  *
  * Объекты из конструктора живут в браузере. Экспорт сохраняет их вместе

@@ -1,3 +1,8 @@
+/*
+  ⚠ КОНТРАКТ — docs/CORE.md, раздел 4. Формат history-line/research-session@1
+  уже лежит в файлах читателей: новые поля — только необязательные,
+  несовместимое изменение — новая версия схемы.
+*/
 import type { SourceLink, TimelineItem } from '../types';
 import { formatYearLabel } from './format';
 

@@ -1,3 +1,8 @@
+/*
+  ⚠ КОНТРАКТ — docs/CORE.md, раздел 4. Ссылки на шкалу уже разосланы:
+  параметры только добавляются; переименованный параметр читается и под
+  старым именем. Замороженная ссылка — в src/contracts.test.ts.
+*/
 import type { CountryId, KindFilter, LayerPlacement, Orientation, Period } from '../types';
 import { OWN_COLUMN } from '../types';
 import { allCountryIds } from '../data/countries';

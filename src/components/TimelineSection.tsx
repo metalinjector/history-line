@@ -1,3 +1,9 @@
+/*
+  ⚠ КАРКАС — docs/CORE.md, разделы 1 и 2.
+  На этом файле держатся прокрутка, виртуализация и обе ориентации шкалы.
+  Дальние прыжки вдоль времени — только через jumpToGroup. Ошибки здесь
+  видны лишь в браузере: после правки прогоните npm run test:e2e.
+*/
 import { Suspense, lazy, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { defaultRangeExtractor, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual';
 import type { Orientation, TimelineItem } from '../types';
@@ -383,6 +389,8 @@ export function TimelineSection({ state, sectionRef }: Props) {
   }, [viewportRef]);
 
   /**
+   * ⚠ КАРКАС (docs/CORE.md, раздел 1): единственный путь дальних прыжков.
+   *
    * Прыжок вдоль времени к группе. Виртуализатор подвозит её, доизмеряет
    * соседей и сам поправляет прокрутку. На iOS поправки, пришедшие во время
    * прокрутки, он копит и применяет, когда она закончится, — поверх уже

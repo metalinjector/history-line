@@ -40,6 +40,9 @@ export function summarizeMarkdownModule({ meta, body }: MarkdownModule): Content
 }
 
 /**
+ * ⚠ КАРКАС — docs/CORE.md, разделы 3 и 5. Этот файл загружает конфиг Vite:
+ * из src/ импортируются только модули без собственных импортов, с `.ts`.
+ *
  * Превращает `content/**\/*.md` в обычный ES-модуль.
  *
  * Front-matter разбирается здесь, на этапе сборки, поэтому YAML-парсер

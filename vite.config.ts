@@ -2,6 +2,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { markdownContent } from './plugins/markdownContent.ts'
 
+// ⚠ КАРКАС — docs/CORE.md, раздел 5: base — адрес сайта на GitHub Pages,
+// а data/content.ts исключён из чанка data намеренно (раздел 3).
+
 /**
  * База событий шкалы: файлы стран, справочник, слои, связи и сводка
  * редакционной базы (`*.md?summary`). Полные статьи и источники
