@@ -46,7 +46,7 @@ export default function App() {
           onSelect={(item) => state.selectItem(item, { scroll: true })}
         />
 
-        <MethodSection />
+        <MethodSection orientation={state.orientation} />
       </main>
 
       <SiteFooter itemCount={state.totalStats.total} />

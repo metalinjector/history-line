@@ -1,0 +1,529 @@
+/* ============================================================
+   Горизонтальная шкала: время слева направо, линии — полосами.
+
+   Разметка та же, что у вертикальной шкалы, — здесь только поворот
+   раскладки. Шапка стран становится колонкой подписей слева, строка
+   года — столбцом, колонка дат — линейкой лет сверху, вертикальные
+   линии стран — горизонтальными, а узел карточки садится на линию
+   над ней, а не слева от неё.
+
+   Высота полосы постоянна: карточки одного года и одной линии стоят
+   рядом вдоль времени, а не друг под другом. Так растёт ширина столбца
+   (её меряет виртуализатор), а полосы остаются ровными по всей шкале —
+   ровно как в вертикальной шкале растёт высота строки при постоянной
+   ширине колонок.
+
+   Чтобы на экран помещались все линии набора, карточка здесь компактная:
+   тип, дата и заголовок. Описание раскрывается у выбранной карточки —
+   она вырастает поверх соседней полосы. Полоса, у которой в выборке
+   нет ни одного объекта, ужимается до тонкой линии с подписью.
+   ============================================================ */
+
+.timeline__stage[data-orientation='horizontal'] {
+  /* Полосы лежат друг под другом, поэтому полю нужно чуть больше высоты,
+     чем вертикальной шкале: при малом масштабе так помещаются семь линий. */
+  --viewport-height: clamp(520px, calc(100vh - 220px), 980px);
+  /* Колонка подписей полос слева: подпись важнее масштаба, поэтому
+     ширина от него зависит слабо. */
+  --lane-label-width: calc(96px * var(--zoom) + 84px);
+  /* Линейка лет сверху: часть растёт с масштабом, часть постоянна */
+  --date-fixed: 12px;
+  --date-height: calc(40px * var(--zoom) + var(--date-fixed));
+  /* Полоса над карточками, по которой идут линии дорожек. От масштаба
+     не зависит, как и отступ под линии в вертикальной шкале. */
+  --lane-pad: 30px;
+  --h-rail-center: 15px;
+  --h-card-width: calc(240px * var(--zoom));
+  /* Компактная карточка: строка типа и даты плюс две строки заголовка.
+     Текст растёт с масштабом, рамка и промежутки — нет. */
+  --h-card-text: calc(70px * var(--zoom));
+  --h-card-height: calc(var(--h-card-text) + 8px);
+  /* Постоянная часть полосы: линии дорожек, постоянная часть карточки
+     и поле под ней. «Уместить» уменьшает только остальное. */
+  --lane-fixed: calc(var(--lane-pad) + 8px + 8px);
+  --lane-height: calc(var(--lane-fixed) + var(--h-card-text));
+  /* Полоса без объектов в выборке: только линия и подпись */
+  --lane-height-empty: 34px;
+  --era-band-width: 40px;
+}
+
+.timeline__stage[data-orientation='horizontal'][data-expanded] {
+  --viewport-height: calc(100vh - var(--header-height) - 36px);
+}
+
+/* Поле ужимается до высоты полос: две линии не должны висеть
+   в половине пустого экрана. */
+[data-orientation='horizontal'] .timeline__viewport {
+  height: auto;
+  max-height: var(--viewport-height);
+}
+
+/* Зонды для «уместить»: высота линейки, полосы и предел высоты поля */
+.timeline__probe [data-probe='lane'] {
+  display: block;
+  height: var(--lane-height);
+}
+
+.timeline__probe [data-probe='lane-fixed'] {
+  display: block;
+  height: var(--lane-fixed);
+}
+
+.timeline__probe [data-probe='ruler-fixed'] {
+  display: block;
+  height: var(--date-fixed);
+}
+
+.timeline__probe [data-probe='lane-empty'] {
+  display: block;
+  height: var(--lane-height-empty);
+}
+
+.timeline__probe [data-probe='ruler'] {
+  display: block;
+  height: var(--date-height);
+}
+
+.timeline__probe [data-probe='frame'] {
+  display: block;
+  height: var(--viewport-height);
+}
+
+[data-orientation='horizontal'] .timeline__grid {
+  display: flex;
+  align-items: stretch;
+}
+
+/* ---------- Подписи полос: колонка слева ---------- */
+
+[data-orientation='horizontal'] .thead {
+  flex: none;
+  top: auto;
+  left: 0;
+  grid-template-columns: var(--lane-label-width);
+  grid-template-rows: var(--date-height) var(--lanes);
+  align-content: start;
+  border-bottom: none;
+  border-right: 1px solid var(--line);
+  box-shadow: 6px 0 18px -12px color-mix(in oklab, var(--ink) 45%, transparent);
+}
+
+/* Угол: над подписями полос и слева от линейки лет */
+[data-orientation='horizontal'] .thead__date {
+  top: 0;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: 6px 12px 5px;
+  border-right: none;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+[data-orientation='horizontal'] .thead__date-label {
+  align-self: flex-end;
+  font-size: 9px;
+}
+
+.thead__lanes-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+[data-orientation='horizontal'] .thead__cell {
+  padding: 10px 14px 10px 12px;
+  border-top: 1px solid var(--grid-line);
+}
+
+/* Подпись полосы может занять две строки: места по высоте хватает,
+   а «Священная Римская империя» не должна превращаться в «Священная Р…». */
+[data-orientation='horizontal'] .thead__line {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  column-gap: 7px;
+  row-gap: 1px;
+  align-items: start;
+}
+
+[data-orientation='horizontal'] .thead__dot {
+  align-self: start;
+  margin-top: 0.32em;
+}
+
+[data-orientation='horizontal'] .thead__label {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  hyphens: auto;
+  overflow-wrap: anywhere;
+  line-height: 1.22;
+  /* Мельче 11.5 px подпись уже не читается, а место по высоте есть */
+  font-size: max(11.5px, calc(14.5px * var(--zoom)));
+}
+
+[data-orientation='horizontal'] .thead__cell[data-shared] .thead__label,
+[data-orientation='horizontal'] .thead__line[data-kind='layer'] .thead__label {
+  font-size: max(11px, calc(12.5px * var(--zoom)));
+}
+
+/* Пустая полоса: подписи в одну строку, рядом, приглушённо */
+[data-orientation='horizontal'] .thead__cell[data-empty] {
+  padding-block: 0;
+  justify-content: center;
+}
+
+[data-orientation='horizontal'] .thead__cell[data-empty] .thead__stack {
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+  gap: 10px;
+  opacity: 0.6;
+}
+
+[data-orientation='horizontal'] .thead__cell[data-empty] .thead__line {
+  min-width: 0;
+}
+
+[data-orientation='horizontal'] .thead__cell[data-empty] .thead__label {
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  font-size: 11px;
+}
+
+[data-orientation='horizontal'] .thead__cell[data-empty] .thead__dot {
+  margin-top: 0.15em;
+}
+
+[data-orientation='horizontal'] .thead__cell[data-empty] .thead__inherited,
+[data-orientation='horizontal'] .thead__cell[data-empty] .thead__underline {
+  display: none;
+}
+
+/* Код страны дублирует подпись, которая здесь видна целиком */
+[data-orientation='horizontal'] .thead__short {
+  display: none;
+}
+
+[data-orientation='horizontal'] .thead__inherited {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* Крестик «скрыть» не отнимает ширину у подписи: он появляется поверх
+   её конца только при наведении. */
+[data-orientation='horizontal'] .thead__line {
+  position: relative;
+}
+
+[data-orientation='horizontal'] .thead__hide {
+  position: absolute;
+  top: -2px;
+  right: -9px;
+  background: var(--paper-raised);
+}
+
+/* Подчёркивание колонки становится чертой у правого края полосы */
+[data-orientation='horizontal'] .thead__underline {
+  top: 10px;
+  bottom: 10px;
+  left: auto;
+  right: 0;
+  width: 2px;
+  height: auto;
+  flex-direction: column;
+  transform-origin: top;
+  animation-name: rail-draw-y;
+}
+
+[data-orientation='horizontal'] .thead__cell[data-selected] .thead__underline {
+  width: 3px;
+  height: auto;
+}
+
+@keyframes rail-draw-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* ---------- Начало и конец выборки: колонки по краям ---------- */
+
+[data-orientation='horizontal'] .timeline__origin {
+  flex: none;
+  width: calc(190px * var(--zoom) + 70px);
+  border-bottom: none;
+  border-right: 1px solid var(--grid-line);
+  background: linear-gradient(90deg, color-mix(in oklab, var(--gold) 9%, transparent), transparent);
+}
+
+[data-orientation='horizontal'] .timeline__origin-inner {
+  top: 0;
+  left: auto;
+  flex-direction: column;
+  gap: 12px;
+  width: auto;
+  padding: 18px 20px;
+}
+
+[data-orientation='horizontal'] .timeline__origin-text {
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+[data-orientation='horizontal'] .timeline__tail {
+  flex: none;
+  align-self: flex-start;
+  top: 0;
+  left: auto;
+  width: 180px;
+  padding: 22px 20px;
+}
+
+[data-orientation='horizontal'] .timeline__rows {
+  flex: none;
+}
+
+/* Виртуальная группа: лента эпохи и столбец года стоят рядом */
+[data-orientation='horizontal'] .timeline__group {
+  display: flex;
+}
+
+/* ---------- Лента эпохи: узкая колонка с вертикальной подписью ---------- */
+
+[data-orientation='horizontal'] .era-band {
+  flex: none;
+  width: var(--era-band-width);
+  border-block: none;
+  border-inline: 1px solid var(--grid-line);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--ink) 7%, transparent), transparent 70%);
+}
+
+/* Подпись читается сверху вниз и прилипает к верху поля,
+   пока полосы прокручиваются по вертикали. */
+[data-orientation='horizontal'] .era-band__inner {
+  top: 0;
+  left: auto;
+  width: auto;
+  writing-mode: vertical-rl;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 0;
+  margin-inline: auto;
+}
+
+/* Пояснение эпохи в узкую колонку не помещается — оно во всплывающей подсказке */
+[data-orientation='horizontal'] .era-band__note {
+  display: none;
+}
+
+/* ---------- Столбец года ---------- */
+
+[data-orientation='horizontal'] .trow {
+  grid-template-columns: auto;
+  grid-template-rows: var(--date-height) var(--lanes);
+  align-content: start;
+  border-bottom: none;
+  border-right: 1px solid var(--grid-line);
+}
+
+[data-orientation='horizontal'] .trow[data-active] {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--accent) 11%, transparent),
+    color-mix(in oklab, var(--accent) 3%, transparent) 40%,
+    transparent 75%
+  );
+}
+
+/* Ячейка линейки лет: прилипает к верху поля */
+[data-orientation='horizontal'] .trow__date {
+  top: 0;
+  left: auto;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 var(--row-gap);
+  background: linear-gradient(180deg, var(--paper-sunken) calc(100% - 6px), transparent);
+  border-right: none;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+[data-orientation='horizontal'] .trow[data-active] .trow__date {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--accent) 14%, var(--paper-sunken)) calc(100% - 6px),
+    transparent
+  );
+}
+
+[data-orientation='horizontal'] .trow__date-inner {
+  align-items: flex-start;
+}
+
+[data-orientation='horizontal'] .trow[data-active] .trow__year {
+  transform-origin: left center;
+}
+
+/* Засечка смотрит вниз — на узел первой карточки столбца */
+[data-orientation='horizontal'] .trow__tick {
+  top: auto;
+  right: auto;
+  bottom: -1px;
+  left: calc(var(--row-gap) + 20.5px);
+  width: 1px;
+  height: 7px;
+}
+
+[data-orientation='horizontal'] .trow[data-active] .trow__tick {
+  width: 1px;
+  height: 12px;
+}
+
+[data-orientation='horizontal'] .trow__crossroads:hover {
+  transform: translateY(-1px);
+}
+
+/* ---------- Ячейка: карточки встают рядом вдоль времени ---------- */
+
+[data-orientation='horizontal'] .tcell {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+  padding: var(--lane-pad) var(--row-gap) 0;
+  border-left: none;
+  border-top: 1px solid var(--grid-line);
+}
+
+[data-orientation='horizontal'] .tcell[data-empty] {
+  min-height: 0;
+}
+
+/* Линии дорожек идут поперёк столбцов и сливаются в сплошные полосы */
+[data-orientation='horizontal'] .tcell__rail {
+  top: calc(var(--h-rail-center) + (var(--rail-i) - (var(--rail-n) - 1) / 2) * var(--rail-gap));
+  bottom: auto;
+  left: -1px;
+  right: -1px;
+  width: auto;
+  height: 2px;
+}
+
+[data-orientation='horizontal'] .tcell__rail[data-kind='layer'] {
+  background: repeating-linear-gradient(90deg, var(--c) 0 7px, transparent 7px 13px);
+}
+
+/* ---------- Карточка: одинаковой высоты, узел — над ней ---------- */
+
+[data-orientation='horizontal'] .tcard {
+  /* Вертикальное положение узла = позиция линии своей дорожки в полосе */
+  --rail-y: calc(var(--h-rail-center) + (var(--rail-i) - (var(--rail-n) - 1) / 2) * var(--rail-gap));
+  flex: none;
+  width: var(--h-card-width);
+  height: var(--h-card-height);
+}
+
+[data-orientation='horizontal'] .tcard__hit {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Выбранная карточка раскрывается поверх соседней полосы:
+   описание и годы жизни видны, раскладка полос не сдвигается. */
+[data-orientation='horizontal'] .tcard[data-selected] {
+  z-index: 6;
+  height: auto;
+  min-height: var(--h-card-height);
+  box-shadow:
+    0 0 0 1px var(--c),
+    var(--shadow-lg);
+}
+
+[data-orientation='horizontal'] .tcard[data-selected] .tcard__hit {
+  height: auto;
+}
+
+/* Соединитель спускается от линии к карточке */
+[data-orientation='horizontal'] .tcard::before {
+  left: calc(20px - 0.75px);
+  top: calc(var(--rail-y) - var(--lane-pad) + var(--node) / 2);
+  width: 1.5px;
+  height: calc(var(--lane-pad) - var(--rail-y) - var(--node) / 2);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--c) 65%, transparent), var(--card-border));
+}
+
+[data-orientation='horizontal'] .tcard__node {
+  left: calc(20px - var(--node) / 2);
+  top: calc(var(--rail-y) - var(--lane-pad) - var(--node) / 2);
+}
+
+/* Подъём карточки оторвал бы узел от горизонтальной линии */
+[data-orientation='horizontal'] .tcard:hover,
+[data-orientation='horizontal'] .tcard[data-selected] {
+  transform: none;
+}
+
+[data-orientation='horizontal'] .tcard__title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  /* место под значок «открыть», чтобы он не наезжал на вторую строку */
+  padding-right: 18px;
+}
+
+[data-orientation='horizontal'] .tcard__summary,
+[data-orientation='horizontal'] .tcard__life {
+  display: none;
+}
+
+[data-orientation='horizontal'] .tcard[data-selected] .tcard__summary {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+}
+
+[data-orientation='horizontal'] .tcard[data-selected] .tcard__life {
+  display: block;
+}
+
+/* Высота карточки постоянна, поэтому пометка «добавлено вами» садится на рамку */
+[data-orientation='horizontal'] .tcard__badge {
+  position: absolute;
+  left: 10px;
+  bottom: -8px;
+  margin: 0;
+  background: var(--paper-raised);
+}
+
+/* ---------- Узкий экран ---------- */
+
+@media (max-width: 720px) {
+  .timeline__stage[data-orientation='horizontal'] {
+    --lane-label-width: calc(40px * var(--zoom) + 88px);
+    --h-card-width: calc(208px * var(--zoom));
+  }
+
+  [data-orientation='horizontal'] .thead__cell {
+    padding-inline: 10px 8px;
+  }
+
+  [data-orientation='horizontal'] .thead__label,
+  [data-orientation='horizontal'] .thead__cell[data-shared] .thead__label {
+    font-size: 11px;
+  }
+
+  [data-orientation='horizontal'] .thead__inherited {
+    display: none;
+  }
+
+  [data-orientation='horizontal'] .timeline__origin {
+    width: 210px;
+  }
+}

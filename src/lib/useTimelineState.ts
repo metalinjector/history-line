@@ -1,5 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { CountryId, CountrySet, KindFilter, Period, RelationDraftInput, ThemeName, TimelineItem } from '../types';
+import type {
+  CountryId,
+  CountrySet,
+  KindFilter,
+  Orientation,
+  Period,
+  RelationDraftInput,
+  ThemeName,
+  TimelineItem,
+} from '../types';
 import { allCountryIds, countries, countryById, defaultCountryIds } from '../data/countries';
 import {
   buildColumns,
@@ -33,6 +42,7 @@ import { clampZoom, visualZoom } from './zoom';
 import { stories as storyRoutes } from '../data/stories';
 import { findContemporaries } from './contemporaries';
 import { buildTimelineUrl, parseTimelineUrl } from './urlState';
+import { DEFAULT_ORIENTATION, isOrientation } from './orientation';
 
 export type ScrollTarget = { id: string; nonce: number };
 
@@ -59,6 +69,14 @@ export function useTimelineState() {
   );
   const [tags, setTags] = useState<string[]>(initialUrlState.tags ?? []);
   const [zoom, setZoomRaw] = usePersistentState<number>('zoom', 1, initialUrlState.zoom);
+  /** Ось времени — личная настройка читателя, но ссылка на вид переносит и её. */
+  const [storedOrientation, setOrientation] = usePersistentState<Orientation>(
+    'orientation',
+    DEFAULT_ORIENTATION,
+    initialUrlState.orientation,
+  );
+  // В localStorage может лежать что угодно: незнакомое значение не должно ломать раскладку.
+  const orientation = isOrientation(storedOrientation) ? storedOrientation : DEFAULT_ORIENTATION;
   const [activeCountryIds, setActiveCountryIds] = usePersistentState<CountryId[]>(
     'countries',
     defaultCountryIds,
@@ -580,6 +598,7 @@ export function useTimelineState() {
         showBce,
         tags,
         zoom,
+        orientation,
         activeLayerIds,
         layerPlacements,
         columnGroups,
@@ -605,6 +624,7 @@ export function useTimelineState() {
     openedId,
     openedDayKey,
     openedRelationId,
+    orientation,
     period,
     query,
     selectedId,
@@ -777,6 +797,7 @@ export function useTimelineState() {
     showBce,
     tags,
     zoom,
+    orientation,
     granularity,
     granularityLabel: granularityLabel(granularity),
     splitRows,
@@ -792,6 +813,7 @@ export function useTimelineState() {
     setTags,
     toggleTag,
     setZoom,
+    setOrientation,
     setExpanded,
     selectItem,
     clearSelection,

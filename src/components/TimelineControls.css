@@ -553,3 +553,36 @@
     display: none;
   }
 }
+
+/* ---------- Ось времени ---------- */
+
+/* Переключатель стоит справа, рядом с «Развернуть»: оба меняют вид поля,
+   а не набор данных. */
+.controls__orientation {
+  margin-left: auto;
+}
+
+.controls__orientation + .controls__expand {
+  margin-left: 0;
+}
+
+.controls__orientation .segmented__option {
+  padding: 6px 12px;
+}
+
+.controls__orientation .segmented__text {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.controls__axis-icon {
+  flex: none;
+}
+
+/* На узком экране остаются только значки: подпись есть в aria-label и title. */
+@media (max-width: 1100px) {
+  .controls__orientation-label {
+    display: none;
+  }
+}

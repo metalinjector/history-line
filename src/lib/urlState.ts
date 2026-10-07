@@ -1,4 +1,4 @@
-import type { CountryId, KindFilter, LayerPlacement, Period } from '../types';
+import type { CountryId, KindFilter, LayerPlacement, Orientation, Period } from '../types';
 import { OWN_COLUMN } from '../types';
 import { allCountryIds } from '../data/countries';
 import { normalizeGroups, type ColumnGroups } from '../data/columns';
@@ -17,6 +17,8 @@ export type TimelineUrlState = {
   showBce?: boolean;
   tags?: string[];
   zoom?: number;
+  /** Ось времени. В ссылке хранится только горизонтальная: вертикальная — по умолчанию. */
+  orientation?: Orientation;
   activeLayerIds?: string[];
   layerPlacements?: Record<string, LayerPlacement>;
   columnGroups?: ColumnGroups;
@@ -47,6 +49,7 @@ export function parseTimelineUrl(search: string): TimelineUrlState {
   );
   const kind = params.get('kind') as KindFilter | null;
   const rawZoom = Number(params.get('z'));
+  const rawOrientation = params.get('o');
   const layerIds = unique((params.get('layers') ?? '').split(',').filter((id) => validLayers.has(id)))
     .slice(0, MAX_ACTIVE_LAYERS);
   const placements: Record<string, LayerPlacement> = {};
@@ -80,6 +83,7 @@ export function parseTimelineUrl(search: string): TimelineUrlState {
     showBce: params.get('bce') === '0' ? false : shared ? true : undefined,
     tags: unique(params.getAll('tag').map((tag) => tag.trim()).filter(Boolean)),
     zoom: Number.isFinite(rawZoom) && params.has('z') ? clampZoom(rawZoom) : shared ? 1 : undefined,
+    orientation: rawOrientation === 'h' ? 'horizontal' : (rawOrientation === 'v' || shared) ? 'vertical' : undefined,
     activeLayerIds: layerIds.length ? layerIds : shared ? [] : undefined,
     layerPlacements: Object.keys(placements).length ? placements : shared ? {} : undefined,
     columnGroups: columnGroups.length ? columnGroups : shared ? [] : undefined,
@@ -97,7 +101,7 @@ export function parseTimelineUrl(search: string): TimelineUrlState {
 export function buildTimelineUrl(state: TimelineUrlState, href: string): string {
   const url = new URL(href);
   const params = url.searchParams;
-  ['view', 'c', 'kind', 'q', 'key', 'bce', 'period', 'tag', 'z', 'layers', 'place', 'groups', 'focus', 'item', 'day', 'relation', 'threads', 'story', 'step'].forEach((key) =>
+  ['view', 'c', 'kind', 'q', 'key', 'bce', 'period', 'tag', 'z', 'o', 'layers', 'place', 'groups', 'focus', 'item', 'day', 'relation', 'threads', 'story', 'step'].forEach((key) =>
     params.delete(key),
   );
   params.set('view', '1');
@@ -113,6 +117,7 @@ export function buildTimelineUrl(state: TimelineUrlState, href: string): string 
   if (state.period) params.set('period', encodePeriod(state.period));
   for (const tag of state.tags ?? []) params.append('tag', tag);
   if (state.zoom !== undefined && Math.abs(state.zoom - 1) > 0.001) params.set('z', String(state.zoom));
+  if (state.orientation === 'horizontal') params.set('o', 'h');
   if (state.activeLayerIds?.length) params.set('layers', state.activeLayerIds.join(','));
 
   const placements = Object.entries(state.layerPlacements ?? {})

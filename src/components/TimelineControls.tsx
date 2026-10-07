@@ -1,10 +1,12 @@
 import { useId, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import type { KindFilter, Period } from '../types';
+import type { KindFilter, Orientation, Period } from '../types';
 import { eras } from '../data/eras';
 import { encodePeriod, decodePeriod, intervalPeriods, INTERVAL_SPAN } from '../data/periods';
 import { allTags } from '../data/timelineItems';
 import { plural } from '../lib/format';
+import { orientations } from '../lib/orientation';
+import { ZOOM_MAX, ZOOM_MIN } from '../lib/zoom';
 import './TimelineControls.css';
 
 type Props = {
@@ -18,6 +20,8 @@ type Props = {
   bceCount: number;
   tags: string[];
   zoom: number;
+  /** Куда идёт время: сверху вниз или слева направо. */
+  orientation: Orientation;
   /** Верхняя граница шкалы — по ней строится сетка интервалов. */
   maxYear: number;
   /** Сколько объектов дал бы каждый отрезок при остальных фильтрах. */
@@ -35,7 +39,9 @@ type Props = {
   onAddAncientLines: () => void;
   onTagsChange: (tags: string[]) => void;
   onZoomChange: (zoom: number) => void;
-  onFitToWidth: () => void;
+  onOrientationChange: (orientation: Orientation) => void;
+  /** Уместить линии поперёк времени: колонки по ширине, полосы по высоте. */
+  onFitToSpace: () => void;
   onToggleExpanded: () => void;
   onReset: () => void;
   showRelations: boolean;
@@ -55,9 +61,6 @@ const kinds: { id: KindFilter; label: string; hint: string }[] = [
   { id: 'people', label: 'Деятели', hint: 'Только персоналии' },
 ];
 
-const ZOOM_MIN = 0.65;
-const ZOOM_MAX = 1.9;
-
 /**
  * Управление хронологией.
  *
@@ -76,6 +79,7 @@ export function TimelineControls(props: Props) {
     bceCount,
     tags,
     zoom,
+    orientation,
     maxYear,
     periodCounts,
     total,
@@ -90,7 +94,8 @@ export function TimelineControls(props: Props) {
     onAddAncientLines,
     onTagsChange,
     onZoomChange,
-    onFitToWidth,
+    onOrientationChange,
+    onFitToSpace,
     onToggleExpanded,
     onReset,
     showRelations,
@@ -230,6 +235,38 @@ export function TimelineControls(props: Props) {
           </span>
         </button>
 
+        {/*
+          Ось времени — на виду, рядом с «Развернуть»: это не настройка
+          на один раз, а два способа смотреть на одну и ту же таблицу.
+        */}
+        <div className="segmented controls__orientation" role="radiogroup" aria-label="Ось времени">
+          {orientations.map((option) => (
+            <button
+              key={option.id}
+              type="button"
+              role="radio"
+              aria-checked={orientation === option.id}
+              aria-label={option.label}
+              className="segmented__option"
+              data-active={orientation === option.id || undefined}
+              title={option.hint}
+              onClick={() => onOrientationChange(option.id)}
+            >
+              {orientation === option.id ? (
+                <motion.span
+                  className="segmented__pill"
+                  layoutId="orientation-pill"
+                  transition={{ duration: 0.25 }}
+                />
+              ) : null}
+              <span className="segmented__text">
+                <AxisIcon orientation={option.id} />
+                <span className="controls__orientation-label">{option.label}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+
         <button
           type="button"
           className="btn btn--sm controls__expand"
@@ -295,8 +332,12 @@ export function TimelineControls(props: Props) {
                   <button
                     type="button"
                     className="controls__fit"
-                    onClick={onFitToWidth}
-                    title="Подобрать масштаб так, чтобы видимые страны поместились по ширине"
+                    onClick={onFitToSpace}
+                    title={
+                      orientation === 'horizontal'
+                        ? 'Подобрать масштаб так, чтобы видимые страны поместились по высоте'
+                        : 'Подобрать масштаб так, чтобы видимые страны поместились по ширине'
+                    }
                   >
                     уместить
                   </button>
@@ -404,5 +445,36 @@ export function TimelineControls(props: Props) {
         ) : null}
       </AnimatePresence>
     </div>
+  );
+}
+
+/** Значок оси: линия со стрелкой и засечками лет — вниз или вправо. */
+function AxisIcon({ orientation }: { orientation: Orientation }) {
+  return (
+    <svg
+      className="controls__axis-icon"
+      viewBox="0 0 16 16"
+      width="14"
+      height="14"
+      aria-hidden="true"
+      style={orientation === 'horizontal' ? { transform: 'rotate(-90deg)' } : undefined}
+    >
+      <path
+        d="M8 1.5v11.5M4.5 9.5 8 13l3.5-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M5.5 3.5h5M5.5 6.5h5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        opacity="0.55"
+      />
+    </svg>
   );
 }

@@ -30,7 +30,7 @@ export function IntroNote() {
         </div>
 
         <details className="intro-note__details">
-          <summary>Что именно означает каждая колонка</summary>
+          <summary>Что именно означает каждая линия</summary>
           <ul className="intro-note__list">
             {countries.map((country) => (
               <li key={country.id} style={{ '--c': `hsl(${country.color})` } as React.CSSProperties}>

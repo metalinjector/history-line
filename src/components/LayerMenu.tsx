@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import type { Country, Layer, LayerPlacement } from '../types';
+import type { Country, Layer, LayerPlacement, Orientation } from '../types';
 import { OWN_COLUMN } from '../types';
 import { groupedLayers, layerStartYear } from '../data/layers';
 import type { LayerState } from '../lib/layers';
+import { laneWords, type LaneWords } from '../lib/orientation';
 import './LayerMenu.css';
 
 type Props = {
@@ -11,6 +12,8 @@ type Props = {
   maxLayers: number;
   countries: Country[];
   activeCountryIds: string[];
+  /** От оси времени зависит только словарь: колонка или полоса. */
+  orientation: Orientation;
   placementOf: (layerId: string) => LayerPlacement;
   onToggleLayer: (layerId: string) => void;
   onRemoveLayer: (layerId: string) => void;
@@ -35,6 +38,7 @@ export function LayerMenu({
   maxLayers,
   countries,
   activeCountryIds,
+  orientation,
   placementOf,
   onToggleLayer,
   onRemoveLayer,
@@ -61,6 +65,7 @@ export function LayerMenu({
   }, [open]);
 
   const groups = groupedLayers();
+  const words = laneWords(orientation);
   const full = activeLayerIds.length >= maxLayers;
   const activeLayers = [...layerState.placed, ...layerState.homeless];
 
@@ -89,7 +94,7 @@ export function LayerMenu({
         {activeLayers.length === 0 ? (
           <p className="layers__empty">
             Слой — это отдельный сюжет поверх шкалы: биография, череда эпидемий, история
-            технологии. Включите слой и положите его на колонку любой страны.
+            технологии. Включите слой и положите его на {words.acc} любой страны.
           </p>
         ) : (
           <div className="layers__active">
@@ -102,6 +107,7 @@ export function LayerMenu({
                 placement={placementOf(layer.id)}
                 countries={countries}
                 activeCountryIds={activeCountryIds}
+                words={words}
                 onPlace={onPlaceLayer}
                 onRemove={onRemoveLayer}
                 onDragLayer={onDragLayer}
@@ -114,7 +120,7 @@ export function LayerMenu({
       {open ? (
         <div className="layers__menu" role="menu">
           <p className="layers__menu-hint">
-            Одновременно можно держать до {maxLayers} слоёв. Включённый слой ляжет на колонку
+            Одновременно можно держать до {maxLayers} слоёв. Включённый слой ляжет на {words.acc}{' '}
             своей страны — потом его можно перетащить на любую другую.
           </p>
 
@@ -176,6 +182,7 @@ type ChipProps = {
   placement: LayerPlacement;
   countries: Country[];
   activeCountryIds: string[];
+  words: LaneWords;
   onPlace: (layerId: string, placement: LayerPlacement) => void;
   onRemove: (layerId: string) => void;
   onDragLayer: (layerId?: string) => void;
@@ -189,13 +196,14 @@ function ActiveLayerChip({
   placement,
   countries,
   activeCountryIds,
+  words,
   onPlace,
   onRemove,
   onDragLayer,
 }: ChipProps) {
   const placementLabel =
     placement === OWN_COLUMN
-      ? 'своя колонка'
+      ? `своя ${words.one}`
       : (countries.find((country) => country.id === placement)?.label ?? placement);
 
   return (
@@ -215,7 +223,7 @@ function ActiveLayerChip({
           '--c-ink': `hsl(${layer.colorInk})`,
         } as React.CSSProperties
       }
-      title="Перетащите на колонку страны в таблице"
+      title={`Перетащите на ${words.acc} страны в таблице`}
     >
       <span className="layer-chip__grip" aria-hidden="true">
         ⠿
@@ -225,7 +233,7 @@ function ActiveLayerChip({
         <span className="layer-chip__where">
           {homeless
             ? unplacedReason === 'full-host'
-              ? 'в колонке уже три линии — выберите другую'
+              ? `в ${words.prep} уже три линии — выберите другую`
               : 'страна скрыта — выберите другую'
             : placementLabel}
         </span>
@@ -237,7 +245,7 @@ function ActiveLayerChip({
           value={placement}
           onChange={(event) => onPlace(layer.id, event.target.value as LayerPlacement)}
         >
-          <option value={OWN_COLUMN}>своя колонка</option>
+          <option value={OWN_COLUMN}>своя {words.one}</option>
           {countries
             .filter((country) => activeCountryIds.includes(country.id))
             .map((country) => (

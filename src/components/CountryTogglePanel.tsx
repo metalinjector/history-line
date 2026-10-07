@@ -1,7 +1,9 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import type { Country, CountryId, CountrySet, TimelineColumn } from '../types';
+import type { Country, CountryId, CountrySet, Orientation, TimelineColumn } from '../types';
 import { countryById, countryRegionLabels } from '../data/countries';
 import { sameSet, suggestSetName } from '../data/countrySets';
+import { plural } from '../lib/format';
+import { laneWords } from '../lib/orientation';
 import './CountryTogglePanel.css';
 
 type Props = {
@@ -13,6 +15,8 @@ type Props = {
   columnCount: number;
   maxColumns: number;
   maxPerColumn: number;
+  /** От оси времени зависит только словарь: колонка или полоса. */
+  orientation: Orientation;
   onToggle: (id: CountryId) => void;
   onOnly: (id: CountryId) => void;
   /** Встроенные и свои наборы стран в одном списке. */
@@ -40,6 +44,7 @@ export function CountryTogglePanel({
   columnCount,
   maxColumns,
   maxPerColumn,
+  orientation,
   onToggle,
   onOnly,
   countrySets,
@@ -57,6 +62,8 @@ export function CountryTogglePanel({
   const [setName, setSetName] = useState('');
   const panelRef = useRef<HTMLDivElement>(null);
   const menuId = useId();
+  const words = laneWords(orientation);
+  const Lane = words.one[0].toUpperCase() + words.one.slice(1);
 
   const activeSet = new Set(activeIds);
   const query = catalogQuery.trim().toLocaleLowerCase('ru').replaceAll('ё', 'е');
@@ -298,7 +305,7 @@ export function CountryTogglePanel({
                 <span className="country-chip__dot" aria-hidden="true" />
                 <span className="country-chip__label">{country.label}</span>
                 {columnPartners.length > 0 ? (
-                  <span className="country-chip__link" title="Делит колонку с соседом">
+                  <span className="country-chip__link" title={`Делит ${words.acc} с соседом`}>
                     {columnPartners.map((partner) => (
                       <span
                         key={partner.id}
@@ -314,9 +321,9 @@ export function CountryTogglePanel({
               {inherited.length > 0 ? (
                 <span
                   className="country-chip__inherited"
-                  title={`Колонка «${country.label}» показывает и древние линии: ${inherited
+                  title={`${Lane} «${country.label}» показывает и древние линии: ${inherited
                     .map((line) => line.label)
-                    .join(', ')}. Выберите такую линию отдельно, чтобы вынести её в свою колонку.`}
+                    .join(', ')}. Выберите такую линию отдельно, чтобы вынести её в свою ${words.acc}.`}
                 >
                   + {inherited.map((line) => line.label).join(', ')}
                 </span>
@@ -361,7 +368,7 @@ export function CountryTogglePanel({
                         setOpenMenu(undefined);
                       }}
                     >
-                      Вынести в свою колонку
+                      Вынести в свою {words.acc}
                       <span className="chip-menu__hint">
                         сейчас вместе с: {columnPartners.map((p) => p.label).join(', ')}
                       </span>
@@ -370,7 +377,7 @@ export function CountryTogglePanel({
 
                   {active && mergeTargets.length > 0 ? (
                     <>
-                      <p className="chip-menu__group">Добавить в колонку страны</p>
+                      <p className="chip-menu__group">Добавить в {words.acc} страны</p>
                       <div className="chip-menu__targets">
                         {mergeTargets.map((target) => (
                           <button
@@ -404,7 +411,7 @@ export function CountryTogglePanel({
       {sharedColumns.length > 0 ? (
         <div className="country-toggles__actions">
           <button type="button" className="btn btn--sm btn--ghost" onClick={onResetColumns}>
-            Разъединить колонки
+            Разъединить {words.many}
           </button>
         </div>
       ) : null}
@@ -415,8 +422,11 @@ export function CountryTogglePanel({
             ⇄
           </span>
           <span>
-            Сейчас {columnCount} колонок — без прокрутки в поле помещается около {maxColumns}.
-            Скройте лишние линии или через меню <b>⋯</b> добавьте страну в колонку соседа: тогда
+            Сейчас {columnCount} {plural(columnCount, words.counted)} —{' '}
+            {orientation === 'horizontal'
+              ? 'все сразу по высоте поля не поместятся: нажмите «уместить» у масштаба.'
+              : `без прокрутки в поле помещается около ${maxColumns}.`}{' '}
+            Скройте лишние линии или через меню <b>⋯</b> добавьте страну в {words.acc} соседа: тогда
             линии поделят одну дорожку, а события останутся различимы по цвету точки.
           </span>
         </p>

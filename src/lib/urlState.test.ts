@@ -12,6 +12,7 @@ describe('timeline URL state', () => {
       showBce: false,
       tags: ['война', 'политика'],
       zoom: 1.55,
+      orientation: 'horizontal',
       activeLayerIds: ['einstein'],
       layerPlacements: { einstein: 'own' },
       columnGroups: [['france', 'russia']],
@@ -28,7 +29,7 @@ describe('timeline URL state', () => {
     expect(parsed).toMatchObject({
       countries: ['france', 'russia'], kind: 'events', query: 'революция 1917', keyOnly: true,
       period: { type: 'era', id: 'world-wars' }, showBce: false, tags: ['война', 'политика'], zoom: 1.55,
-      activeLayerIds: ['einstein'], layerPlacements: { einstein: 'own' },
+      orientation: 'horizontal', activeLayerIds: ['einstein'], layerPlacements: { einstein: 'own' },
       columnGroups: [['france', 'russia']],
       selectedId: 'ru-1917', openedId: 'ru-1917', openedDayKey: '1917',
       openedRelationId: 'rel-1917', showRelations: false,
@@ -39,9 +40,9 @@ describe('timeline URL state', () => {
   });
 
   it('drops invalid enum values and clamps zoom', () => {
-    expect(parseTimelineUrl('?c=france,moon&kind=bad&period=era:nope&z=99&layers=unknown')).toEqual({
+    expect(parseTimelineUrl('?c=france,moon&kind=bad&period=era:nope&z=99&o=diagonal&layers=unknown')).toEqual({
       countries: ['france'], kind: undefined, query: undefined, keyOnly: undefined,
-      period: undefined, showBce: undefined, tags: [], zoom: 1.9, activeLayerIds: undefined,
+      period: undefined, showBce: undefined, tags: [], zoom: 1.9, orientation: undefined, activeLayerIds: undefined,
       layerPlacements: undefined, columnGroups: undefined, selectedId: undefined, openedId: undefined,
       openedDayKey: undefined, openedRelationId: undefined, showRelations: undefined,
       storyId: undefined, storyStep: undefined,
@@ -72,6 +73,8 @@ describe('timeline URL state', () => {
     expect(parsed.countries).toHaveLength(8);
     expect(parsed.kind).toBe('all');
     expect(parsed.zoom).toBe(1);
+    expect(parsed.orientation).toBe('vertical');
+    expect(new URL(url).searchParams.has('o')).toBe(false);
     expect(parsed.activeLayerIds).toEqual([]);
     expect(parsed.layerPlacements).toEqual({});
     expect(parsed.columnGroups).toEqual([]);
