@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "test": "vitest run",
+    "test:e2e": "playwright test",
     "validate:data": "vitest run src/data/dataIntegrity.test.ts",
     "preview": "vite preview"
   },
@@ -26,6 +27,7 @@
     "remark-math": "^6.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.56.1",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.17",

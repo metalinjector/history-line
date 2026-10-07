@@ -388,22 +388,28 @@ export function TimelineSection({ state, sectionRef }: Props) {
    * прокрутки, он копит и применяет, когда она закончится, — поверх уже
    * точной цели, и шкала уезжала на тысячи пикселей. Поэтому, когда всё
    * успокоится, цель ставится ещё раз через scrollToOffset: он забывает
-   * накопленное. После этого вызывается then. Возвращает номер прыжка.
+   * накопленное. Список к этому моменту может быть ещё ниже, чем нужно:
+   * новую полную высоту React дорисует кадром позже, а до тех пор браузер
+   * обрезает прокрутку. Поэтому цель ставится, пока поле до неё не дойдёт
+   * (не дольше нескольких кадров). После этого вызывается then.
+   * Возвращает номер прыжка.
    */
   const jumpToGroup = useCallback(
     (index: number, align: 'start' | 'center', behavior: ScrollBehavior = 'auto', then?: () => void) => {
       const generation = ++jumpGeneration.current;
       const startedAt = performance.now();
+      const settle = (attempts: number) => {
+        if (generation !== jumpGeneration.current || userScrolledAt.current > startedAt) return;
+        const target = rowVirtualizer.getOffsetForIndex(index, align)?.[0];
+        if (target !== undefined && Math.abs((rowVirtualizer.scrollOffset ?? 0) - target) > 1 && attempts > 0) {
+          rowVirtualizer.scrollToOffset(target);
+          window.requestAnimationFrame(() => settle(attempts - 1));
+          return;
+        }
+        then?.();
+      };
       rowVirtualizer.scrollToIndex(index, { align, behavior });
-      whenAtRest(
-        () => rowVirtualizer.scrollOffset ?? undefined,
-        () => {
-          if (generation !== jumpGeneration.current || userScrolledAt.current > startedAt) return;
-          const target = rowVirtualizer.getOffsetForIndex(index, align);
-          if (target) rowVirtualizer.scrollToOffset(target[0]);
-          then?.();
-        },
-      );
+      whenAtRest(() => rowVirtualizer.scrollOffset ?? undefined, () => settle(6));
       return generation;
     },
     [rowVirtualizer],
