@@ -529,3 +529,47 @@
     width: 210px;
   }
 }
+
+/* ---------- Телефон: полоса подписана кодом линии ---------- */
+
+/* Полное название отнимало бы у шкалы треть ширины экрана. Подпись
+   сжимается до цветной точки и кода (FR, RU, ФРК); само название
+   остаётся в разметке для экранного чтеца. */
+@media (max-width: 560px) {
+  .timeline__stage[data-orientation='horizontal'] {
+    --lane-label-width: 76px;
+  }
+
+  [data-orientation='horizontal'] .thead__date {
+    padding-inline: 10px 8px;
+  }
+
+  [data-orientation='horizontal'] .thead__cell {
+    padding-inline: 10px 6px;
+  }
+
+  [data-orientation='horizontal'] .thead__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  [data-orientation='horizontal'] .thead__short {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+
+  [data-orientation='horizontal'] .thead__line[data-selected] .thead__short {
+    color: var(--ink-strong);
+  }
+
+  /* Тонкая полоса без объектов: подписи наследника хватает и здесь */
+  [data-orientation='horizontal'] .thead__cell[data-empty] .thead__stack {
+    gap: 6px;
+  }
+}

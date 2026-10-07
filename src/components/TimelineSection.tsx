@@ -1,5 +1,5 @@
 import { Suspense, lazy, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { defaultRangeExtractor, useVirtualizer } from '@tanstack/react-virtual';
+import { defaultRangeExtractor, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual';
 import type { Orientation, TimelineItem } from '../types';
 import type { TimelineState } from '../lib/useTimelineState';
 import { eras } from '../data/eras';
@@ -46,15 +46,25 @@ type OrientationAnchor = { selectedId?: string; groupIndex: number };
   оборвала бы его на полпути.
 */
 
-/** Ставит дорожку (по её подписи в шапке) на долю share поля поперёк времени. */
+/**
+ * Ставит дорожку (по её подписи в шапке) на долю share поля поперёк времени.
+ * Начало поля закрывает липкий угол — колонка дат или линейка лет, — поэтому
+ * доля считается от остального места. Если дорожка в него не помещается
+ * (колонка на телефоне), она встаёт сразу за углом: подпись важнее хвоста.
+ */
 function scrollAcross(viewport: HTMLElement, cell: HTMLElement, horizontal: boolean, share: number) {
   const frame = viewport.getBoundingClientRect();
   const rect = cell.getBoundingClientRect();
+  const corner = viewport.querySelector<HTMLElement>('.thead__date');
   if (horizontal) {
-    const top = viewport.scrollTop + rect.top - frame.top - (frame.height - rect.height) * share;
+    const sticky = corner?.offsetHeight ?? 0;
+    const free = Math.max(0, viewport.clientHeight - sticky - rect.height);
+    const top = viewport.scrollTop + rect.top - frame.top - viewport.clientTop - sticky - free * share;
     viewport.scrollTo({ top: Math.max(0, top) });
   } else {
-    const left = viewport.scrollLeft + rect.left - frame.left - (frame.width - rect.width) * share;
+    const sticky = corner?.offsetWidth ?? 0;
+    const free = Math.max(0, viewport.clientWidth - sticky - rect.width);
+    const left = viewport.scrollLeft + rect.left - frame.left - viewport.clientLeft - sticky - free * share;
     viewport.scrollTo({ left: Math.max(0, left) });
   }
 }
@@ -82,17 +92,24 @@ function revealAcross(viewport: HTMLElement, card: HTMLElement, horizontal: bool
   }
 }
 
-/** Ставит карточку в середину поля вдоль времени. */
-function scrollAlong(viewport: HTMLElement, card: HTMLElement, horizontal: boolean, behavior: ScrollBehavior) {
+/**
+ * Ставит карточку в середину поля вдоль времени. Прокручивает через
+ * виртуализатор, а не самим полем: так он забывает поправки, отложенные
+ * на время прокрутки (см. jumpToGroup).
+ */
+function scrollAlong(
+  virtualizer: Virtualizer<HTMLDivElement, Element>,
+  viewport: HTMLElement,
+  card: HTMLElement,
+  horizontal: boolean,
+  behavior: ScrollBehavior,
+) {
   const frame = viewport.getBoundingClientRect();
   const rect = card.getBoundingClientRect();
-  if (horizontal) {
-    const left = viewport.scrollLeft + rect.left - frame.left + (rect.width - frame.width) / 2;
-    viewport.scrollTo({ left: Math.max(0, left), behavior });
-  } else {
-    const top = viewport.scrollTop + rect.top - frame.top + (rect.height - frame.height) / 2;
-    viewport.scrollTo({ top: Math.max(0, top), behavior });
-  }
+  const offset = horizontal
+    ? viewport.scrollLeft + rect.left - frame.left + (rect.width - frame.width) / 2
+    : viewport.scrollTop + rect.top - frame.top + (rect.height - frame.height) / 2;
+  virtualizer.scrollToOffset(Math.max(0, offset), { behavior });
 }
 
 /**
@@ -337,6 +354,29 @@ export function TimelineSection({ state, sectionRef }: Props) {
     [rowVirtualizer],
   );
 
+  /**
+   * Прыжок вдоль времени к группе. Виртуализатор подвозит её, доизмеряет
+   * соседей и сам поправляет прокрутку. На iOS поправки, пришедшие во время
+   * прокрутки, он копит и применяет, когда она закончится, — поверх уже
+   * точной цели, и шкала уезжала на тысячи пикселей. Поэтому, когда всё
+   * успокоится, цель ставится ещё раз через scrollToOffset: он забывает
+   * накопленное. После этого вызывается then.
+   */
+  const jumpToGroup = useCallback(
+    (index: number, align: 'start' | 'center', behavior: ScrollBehavior = 'auto', then?: () => void) => {
+      rowVirtualizer.scrollToIndex(index, { align, behavior });
+      whenAtRest(
+        () => rowVirtualizer.scrollOffset ?? undefined,
+        () => {
+          const target = rowVirtualizer.getOffsetForIndex(index, align);
+          if (target) rowVirtualizer.scrollToOffset(target[0]);
+          then?.();
+        },
+      );
+    },
+    [rowVirtualizer],
+  );
+
   const scrollItemIntoView = useCallback(
     (id: string, behavior: ScrollBehavior = 'smooth') => {
       const viewport = viewportRef.current;
@@ -355,29 +395,41 @@ export function TimelineSection({ state, sectionRef }: Props) {
 
       const settle = () => {
         const element = card();
-        if (!element) return;
+        if (!element) return false;
         revealAcross(viewport, element, horizontal);
-        scrollAlong(viewport, element, horizontal, behavior);
+        scrollAlong(rowVirtualizer, viewport, element, horizontal, behavior);
+        return true;
       };
+
+      const rowIndex = item ? groupIndexByKey.get(groupKeyOf(item, granularity)) : undefined;
+      if (rowIndex === undefined) {
+        settle();
+        return;
+      }
 
       // Если объект принадлежит группе, которая сейчас не отрендерена
       // (виртуализация), сначала её подвозит виртуализатор — он ставит
       // по центру всю группу. Доводку до самой карточки делаем, только когда
       // он закончил и карточка перестала сдвигаться: раньше он вернул бы
       // прокрутку к своей цели, а в высокой строке 1917 года карточка
-      // уезжала бы под шапку.
-      const rowIndex = item ? groupIndexByKey.get(groupKeyOf(item, granularity)) : undefined;
-      if (rowIndex === undefined) {
-        settle();
-        return;
-      }
-      rowVirtualizer.scrollToIndex(rowIndex, { align: 'center', behavior });
-      whenAtRest(() => {
-        const rect = card()?.getBoundingClientRect();
-        return rect && (horizontal ? rect.left : rect.top);
-      }, settle);
+      // уезжала бы под шапку. Если карточки так и нет, заходим второй раз:
+      // размеры соседних групп к этому времени уже измерены.
+      const approach = (retries: number) =>
+        jumpToGroup(rowIndex, 'center', behavior, () =>
+          whenAtRest(
+            () => {
+              const rect = card()?.getBoundingClientRect();
+              if (rect) return horizontal ? rect.left : rect.top;
+              return rowVirtualizer.scrollOffset ?? undefined;
+            },
+            () => {
+              if (!settle() && retries > 0) approach(retries - 1);
+            },
+          ),
+        );
+      approach(1);
     },
-    [columns, granularity, groupIndexByKey, horizontal, ordered, rowVirtualizer, viewportRef],
+    [columns, granularity, groupIndexByKey, horizontal, jumpToGroup, ordered, rowVirtualizer, viewportRef],
   );
 
   // Ссылка с выбранной карточкой открывает шкалу на ней, а не в начале.
@@ -452,9 +504,9 @@ export function TimelineSection({ state, sectionRef }: Props) {
     window.requestAnimationFrame(() => {
       if (!viewportRef.current) return;
       if (anchor.selectedId) scrollItemIntoView(anchor.selectedId, 'auto');
-      else rowVirtualizer.scrollToIndex(anchor.groupIndex, { align: 'start' });
+      else jumpToGroup(anchor.groupIndex, 'start');
     });
-  }, [orientation, rowVirtualizer, scrollItemIntoView, viewportRef]);
+  }, [jumpToGroup, orientation, scrollItemIntoView, viewportRef]);
 
   const handleSelect = useCallback(
     (item: TimelineItem) => {
@@ -626,9 +678,9 @@ export function TimelineSection({ state, sectionRef }: Props) {
       if (rowIndex === undefined) return;
       // Группа встаёт сразу за липкой шапкой (scrollPaddingStart), поэтому
       // лента эпохи перед первой строкой не прячется под подписями стран.
-      rowVirtualizer.scrollToIndex(rowIndex, { align: 'start' });
+      jumpToGroup(rowIndex, 'start');
     },
-    [groupIndexByKey, rowVirtualizer],
+    [groupIndexByKey, jumpToGroup],
   );
 
   const gridStyle = horizontal
