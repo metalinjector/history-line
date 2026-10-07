@@ -8,6 +8,13 @@ import { belarus } from './items/belarus';
 import { spain } from './items/spain';
 import { china } from './items/china';
 import { japan } from './items/japan';
+import { italy } from './items/italy';
+import { poland } from './items/poland';
+import { usa } from './items/usa';
+import { world } from './items/world';
+import { ancientRome } from './items/ancient-rome';
+import { byzantium } from './items/byzantium';
+import { kievanRus } from './items/kievan-rus';
 import { referenceItems } from './items/reference';
 
 /**
@@ -26,6 +33,13 @@ const authoredItems: TimelineItem[] = [
   ...spain,
   ...china,
   ...japan,
+  ...italy,
+  ...poland,
+  ...usa,
+  ...world,
+  ...ancientRome,
+  ...byzantium,
+  ...kievanRus,
 ];
 
 /**
