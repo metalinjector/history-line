@@ -1,5 +1,5 @@
 import type { TimelineItem } from '../types';
-import { articles, sourcesByItem, viewpointsByItem } from './content';
+import { contentSummaryById } from './contentSummary';
 import { germany } from './items/germany';
 import { england } from './items/england';
 import { france } from './items/france';
@@ -28,12 +28,10 @@ export const timelineItems: TimelineItem[] = [
   ...japan,
   ...referenceItems,
 ].map((item) => ({
-  // Статьи, источники и трактовки хранятся отдельно и подмешиваются
-  // по идентификатору, чтобы файлы стран оставались компактными списками карточек.
+  // Статьи, источники и трактовки хранятся отдельно (content/) и грузятся
+  // вместе с модальным окном. Здесь подмешивается только их сводка.
   ...item,
-  ...(articles[item.id] ? { body: articles[item.id] } : {}),
-  ...(sourcesByItem[item.id] ? { sources: sourcesByItem[item.id] } : {}),
-  ...(viewpointsByItem[item.id] ? { viewpoints: viewpointsByItem[item.id] } : {}),
+  ...(contentSummaryById[item.id] ? { content: contentSummaryById[item.id] } : {}),
 }));
 
 /** Все теги, встречающиеся в базе, по частоте использования. */

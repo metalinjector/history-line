@@ -21,7 +21,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_TS = ROOT / "src/data/items/reference.ts"
+OUTPUT_JSON = ROOT / "src/data/items/reference.json"
 OUTPUT_CONTENT = ROOT / "content/items/reference"
 REPORT = ROOT / "docs/reference-import-report.md"
 
@@ -724,12 +724,9 @@ def main() -> None:
             encoding="utf-8",
         )
 
-    OUTPUT_TS.write_text(
-        "import type { TimelineItem } from '../../types';\n\n"
-        "/** Events present in the supplied 2025 reference but absent from the authored base. */\n"
-        f"export const referenceItems: TimelineItem[] = {json.dumps(generated, ensure_ascii=False, indent=2)};\n",
-        encoding="utf-8",
-    )
+    # Events present in the supplied 2025 reference but absent from the authored base.
+    # src/data/items/reference.ts only types and re-exports this file.
+    OUTPUT_JSON.write_text(json.dumps(generated, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     by_country: dict[str, int] = {}
     for item in generated:

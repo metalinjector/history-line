@@ -6,6 +6,20 @@
   backdrop-filter: blur(14px) saturate(140%);
   background: color-mix(in oklab, var(--paper) 78%, transparent);
   border-bottom: 1px solid color-mix(in oklab, var(--line) 60%, transparent);
+  animation: header-in 0.7s var(--ease-out) both;
+}
+
+@keyframes header-in {
+  from {
+    opacity: 0;
+    translate: 0 -60px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header {
+    animation: none;
+  }
 }
 
 .site-header__inner {
@@ -98,6 +112,11 @@
   gap: 4px;
 }
 
+/* Кнопка меню нужна только на узком экране */
+.site-header__menu-toggle {
+  display: none;
+}
+
 .site-header__link {
   padding: 7px 13px;
   border-radius: 999px;
@@ -115,14 +134,73 @@
   background: color-mix(in oklab, var(--paper-raised) 80%, transparent);
 }
 
+.site-header__theme {
+  white-space: nowrap;
+}
+
+/* ---------- Узкий экран: разделы в меню, тема — значком ---------- */
+
 @media (max-width: 860px) {
+  .site-header__inner {
+    gap: 8px;
+  }
+
+  .site-header__menu {
+    position: relative;
+  }
+
+  .site-header__menu-toggle,
+  .site-header__theme {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    font-size: 16px;
+  }
+
+  .site-header__menu-toggle {
+    display: inline-flex;
+  }
+
   .site-header__nav {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    z-index: 1;
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 220px;
+    padding: 6px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--paper-raised);
+    box-shadow: var(--shadow-md);
+    animation: panel-in var(--dur-mid) var(--ease-out);
+  }
+
+  .site-header__nav[data-open] {
+    display: flex;
+  }
+
+  .site-header__link {
+    padding: 11px 14px;
+    border-radius: var(--radius-md);
+    font-size: 15px;
+  }
+
+  .site-header__theme-label {
     display: none;
   }
 }
 
-@media (max-width: 520px) {
-  .site-header__theme span[aria-hidden] + * {
+@media (max-width: 860px) and (prefers-reduced-motion: reduce) {
+  .site-header__nav {
+    animation: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .site-header__sub {
     display: none;
   }
 }

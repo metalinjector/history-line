@@ -54,13 +54,20 @@
   color: var(--ink-strong);
 }
 
+/* Подложка одна на переключатель и переезжает к выбранному варианту
+   (lib/useReveal.ts → useSlidingPill): ширину и сдвиг задаёт скрипт. */
 .segmented__pill {
   position: absolute;
-  inset: 0;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
   border-radius: 999px;
   background: var(--paper-raised);
   border: 1px solid var(--line-soft);
   box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--dur-mid) var(--ease-out),
+    width var(--dur-mid) var(--ease-out);
 }
 
 .segmented__text {
@@ -427,7 +434,7 @@
 }
 
 .controls__panel {
-  overflow: hidden;
+  animation: panel-in var(--dur-mid) var(--ease-out);
 }
 
 .controls__panel-inner {
@@ -550,6 +557,39 @@
 
 @media (max-width: 900px) {
   .controls__expand {
+    display: none;
+  }
+}
+
+/* ---------- Ось времени ---------- */
+
+/* Переключатель стоит справа, рядом с «Развернуть»: оба меняют вид поля,
+   а не набор данных. */
+.controls__orientation {
+  margin-left: auto;
+}
+
+.controls__orientation + .controls__expand {
+  margin-left: 0;
+}
+
+.controls__orientation .segmented__option {
+  padding: 6px 12px;
+}
+
+.controls__orientation .segmented__text {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.controls__axis-icon {
+  flex: none;
+}
+
+/* На узком экране остаются только значки: подпись есть в aria-label и title. */
+@media (max-width: 1100px) {
+  .controls__orientation-label {
     display: none;
   }
 }

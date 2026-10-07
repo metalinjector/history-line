@@ -1,7 +1,12 @@
-import type { CountryId, TimelineColumn } from '../types';
+import type { CountryId, Orientation, TimelineColumn } from '../types';
+import { laneWords } from '../lib/orientation';
 
 type Props = {
   columns: TimelineColumn[];
+  /** В горизонтальной шкале шапка становится колонкой подписей слева. */
+  orientation: Orientation;
+  /** Линии без объектов в текущей выборке: их полосы ужимаются. */
+  emptyColumnIds: Set<string>;
   selectedCountry?: CountryId;
   /** Идентификатор слоя, который сейчас тащат мышью, — колонки подсвечиваются как цели. */
   draggingLayerId?: string;
@@ -13,13 +18,17 @@ type Props = {
 };
 
 /**
- * Строка колонок. Прилипает к верхнему краю поля хронологии при прокрутке.
+ * Подписи линий. В вертикальной шкале это строка колонок, прилипающая
+ * к верхнему краю поля; в горизонтальной — колонка полос, прилипающая
+ * к левому. Разметка одна и та же, раскладку меняет CSS.
  *
  * Колонка показывает по подписи на каждую дорожку — страну или наложенный слой.
  * Пока пользователь тащит слой, колонки становятся зонами приёма.
  */
 export function TimelineHeader({
   columns,
+  orientation,
+  emptyColumnIds,
   selectedCountry,
   draggingLayerId,
   onHide,
@@ -27,10 +36,19 @@ export function TimelineHeader({
   onDropLayer,
   onRemoveLayer,
 }: Props) {
+  const words = laneWords(orientation);
+
   return (
     <div className="thead" role="row">
       <div className="thead__date" role="columnheader">
-        <span className="thead__date-label">Год</span>
+        <span className="thead__date-label">
+          Год{orientation === 'horizontal' ? <span aria-hidden="true"> →</span> : null}
+        </span>
+        {orientation === 'horizontal' ? (
+          <span className="thead__lanes-label" aria-hidden="true">
+            Линии ↓
+          </span>
+        ) : null}
       </div>
 
       {columns.map((column) => {
@@ -45,6 +63,8 @@ export function TimelineHeader({
             data-shared={column.shared || undefined}
             data-selected={holdsSelected || undefined}
             data-layer-only={column.layerOnly || undefined}
+            data-empty={emptyColumnIds.has(column.id) || undefined}
+            title={emptyColumnIds.has(column.id) ? 'В текущей выборке у этой линии нет объектов' : undefined}
             data-drop={canAcceptLayer || undefined}
             onDragOver={(event) => {
               if (!canAcceptLayer) return;
@@ -69,6 +89,7 @@ export function TimelineHeader({
                   className="thead__line"
                   key={track.id}
                   data-kind={track.kind}
+                  data-inherited={track.inherited || undefined}
                   style={
                     {
                       '--c': `hsl(${track.color})`,
@@ -97,7 +118,10 @@ export function TimelineHeader({
                     // Унаследованную дорожку нельзя скрыть отдельно: она пришла
                     // вместе со своим наследником и уйдёт вместе с ним. Крестик
                     // здесь означал бы «отделить», а не «скрыть», — лучше без него.
-                    <span className="thead__inherited" title={`Древняя линия колонки «${column.tracks[0].label}»`}>
+                    <span
+                      className="thead__inherited"
+                      title={`Древняя линия ${words.gen} «${column.tracks[0].label}»`}
+                    >
                       унаследована
                     </span>
                   ) : canHide ? (
@@ -121,7 +145,12 @@ export function TimelineHeader({
               ))}
             </span>
 
-            {canAcceptLayer ? <span className="thead__drop-hint">положить слой сюда</span> : null}
+            {canAcceptLayer ? (
+              <span className="thead__drop-hint">
+                {/* Ужатой пустой колонке хватает места только на знак */}
+                {emptyColumnIds.has(column.id) && orientation === 'vertical' ? '+ слой' : 'положить слой сюда'}
+              </span>
+            ) : null}
           </div>
         );
       })}

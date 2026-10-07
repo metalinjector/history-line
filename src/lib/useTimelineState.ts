@@ -1,5 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { CountryId, CountrySet, KindFilter, Period, RelationDraftInput, ThemeName, TimelineItem } from '../types';
+import type {
+  CountryId,
+  CountrySet,
+  KindFilter,
+  Orientation,
+  Period,
+  RelationDraftInput,
+  ThemeName,
+  TimelineItem,
+} from '../types';
 import { allCountryIds, countries, countryById, defaultCountryIds } from '../data/countries';
 import {
   buildColumns,
@@ -28,11 +37,13 @@ import {
   summarize,
 } from './timeline';
 import { timeKey } from './format';
+import { newCustomId, relationsFromDrafts } from './customObjects';
 import { usePersistentState } from './usePersistentState';
 import { clampZoom, visualZoom } from './zoom';
 import { stories as storyRoutes } from '../data/stories';
 import { findContemporaries } from './contemporaries';
 import { buildTimelineUrl, parseTimelineUrl } from './urlState';
+import { DEFAULT_ORIENTATION, isOrientation } from './orientation';
 
 export type ScrollTarget = { id: string; nonce: number };
 
@@ -59,6 +70,14 @@ export function useTimelineState() {
   );
   const [tags, setTags] = useState<string[]>(initialUrlState.tags ?? []);
   const [zoom, setZoomRaw] = usePersistentState<number>('zoom', 1, initialUrlState.zoom);
+  /** Ось времени — личная настройка читателя, но ссылка на вид переносит и её. */
+  const [storedOrientation, setOrientation] = usePersistentState<Orientation>(
+    'orientation',
+    DEFAULT_ORIENTATION,
+    initialUrlState.orientation,
+  );
+  // В localStorage может лежать что угодно: незнакомое значение не должно ломать раскладку.
+  const orientation = isOrientation(storedOrientation) ? storedOrientation : DEFAULT_ORIENTATION;
   const [activeCountryIds, setActiveCountryIds] = usePersistentState<CountryId[]>(
     'countries',
     defaultCountryIds,
@@ -580,6 +599,7 @@ export function useTimelineState() {
         showBce,
         tags,
         zoom,
+        orientation,
         activeLayerIds,
         layerPlacements,
         columnGroups,
@@ -605,6 +625,7 @@ export function useTimelineState() {
     openedId,
     openedDayKey,
     openedRelationId,
+    orientation,
     period,
     query,
     selectedId,
@@ -664,27 +685,12 @@ export function useTimelineState() {
 
 
   /**
-   * Добавление деятеля из конструктора.
-   * Страна автоматически становится видимой, слой сбрасывается, если персоналии скрыты,
-   * а сам объект выделяется и подтягивает к себе прокрутку.
+   * Показывает объект из конструктора: страна становится видимой, фильтры,
+   * которые его спрятали бы, сбрасываются, а сам объект выделяется
+   * и подтягивает к себе прокрутку.
    */
-  const addPerson = useCallback(
-    (draft: Omit<TimelineItem, 'id' | 'custom'>, links: RelationDraftInput[] = []) => {
-      const id = `custom-${draft.country}-${draft.year}-${Math.random().toString(36).slice(2, 8)}`;
-      const item: TimelineItem = { ...draft, id, custom: true };
-
-      setAddedPeople((current) => [...current, item]);
-      if (links.length > 0) {
-        setAddedRelations((current) => [
-          ...current,
-          ...links.map((link, index) => ({
-            id: `${id}-rel-${index}`,
-            from: id,
-            ...link,
-            verification: 'verified' as const,
-          })),
-        ]);
-      }
+  const revealCustomItem = useCallback(
+    (item: TimelineItem) => {
       ensureCountryVisible(item.country);
       setKeyOnly(false);
       setPeriod(undefined);
@@ -693,11 +699,54 @@ export function useTimelineState() {
       setQuery('');
       if (layer === 'events' && item.kind === 'person') setLayer('all');
       if (layer === 'people' && item.kind === 'event') setLayer('all');
-      setSelectedId(id);
-      setScrollTarget({ id, nonce: Date.now() });
+      setSelectedId(item.id);
+      setScrollTarget({ id: item.id, nonce: Date.now() });
+    },
+    [ensureCountryVisible, layer, setPeriod, setShowBce],
+  );
+
+  /** Добавление деятеля или события из конструктора — вместе с подтверждёнными связями. */
+  const addPerson = useCallback(
+    (draft: Omit<TimelineItem, 'id' | 'custom'>, links: RelationDraftInput[] = []) => {
+      const id = newCustomId(draft);
+      const item: TimelineItem = { ...draft, id, custom: true };
+
+      setAddedPeople((current) => [...current, item]);
+      if (links.length > 0) setAddedRelations((current) => [...current, ...relationsFromDrafts(id, links)]);
+      revealCustomItem(item);
       return item;
     },
-    [ensureCountryVisible, layer, setAddedPeople, setAddedRelations, setPeriod, setShowBce],
+    [revealCustomItem, setAddedPeople, setAddedRelations],
+  );
+
+  /** Правка своего объекта: id и место в списке сохраняются, его связи заменяются новыми. */
+  const updatePerson = useCallback(
+    (id: string, draft: Omit<TimelineItem, 'id' | 'custom'>, links: RelationDraftInput[] = []) => {
+      const item: TimelineItem = { ...draft, id, custom: true };
+      setAddedPeople((current) => current.map((candidate) => (candidate.id === id ? item : candidate)));
+      setAddedRelations((current) => [
+        ...current.filter((relation) => relation.from !== id),
+        ...relationsFromDrafts(id, links),
+      ]);
+      revealCustomItem(item);
+    },
+    [revealCustomItem, setAddedPeople, setAddedRelations],
+  );
+
+  /** Объекты и связи из файла — уже проверенные lib/customObjects.ts. */
+  const importCustom = useCallback(
+    (items: TimelineItem[], relations: Relation[]) => {
+      setAddedPeople((current) => [...current, ...items]);
+      setAddedRelations((current) => [...current, ...relations]);
+    },
+    [setAddedPeople, setAddedRelations],
+  );
+
+  /** Включает сразу несколько линий, сохраняя порядок каталога. */
+  const showCountries = useCallback(
+    (ids: CountryId[]) =>
+      setActiveCountryIds((current) => allCountryIds.filter((value) => ids.includes(value) || current.includes(value))),
+    [setActiveCountryIds],
   );
 
   const removePerson = useCallback(
@@ -777,6 +826,7 @@ export function useTimelineState() {
     showBce,
     tags,
     zoom,
+    orientation,
     granularity,
     granularityLabel: granularityLabel(granularity),
     splitRows,
@@ -792,6 +842,7 @@ export function useTimelineState() {
     setTags,
     toggleTag,
     setZoom,
+    setOrientation,
     setExpanded,
     selectItem,
     clearSelection,
@@ -821,6 +872,9 @@ export function useTimelineState() {
     stopStory,
     resetFilters,
     addPerson,
+    updatePerson,
+    importCustom,
+    showCountries,
     removePerson,
     toggleTheme,
   };

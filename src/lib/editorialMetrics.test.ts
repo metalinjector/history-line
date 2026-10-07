@@ -20,4 +20,16 @@ describe('buildEditorialMatrix', () => {
     });
     expect(matrix.germany['age-of-revolutions'].total).toBe(0);
   });
+
+  it('reads the content summary when full content is not loaded', () => {
+    const item: TimelineItem = {
+      id: 'y', country: 'france', year: 1789, kind: 'event',
+      title: 'y', summary: 'y', detail: 'y', tags: [],
+      content: { article: true, verified: true },
+    };
+    const matrix = buildEditorialMatrix([item], countries.map((country) => country.id), eras);
+    expect(matrix.france['age-of-revolutions']).toEqual({
+      total: 1, sourced: 1, articles: 1, exactDates: 0, milestones: 0,
+    });
+  });
 });

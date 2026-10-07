@@ -108,3 +108,7 @@
   background: var(--c);
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--c) 18%, transparent);
 }
+
+.intro-note__more {
+  margin-top: 14px;
+}

@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { SiteHeader } from './components/SiteHeader';
 import { Hero } from './components/Hero';
 import { IntroNote } from './components/IntroNote';
@@ -11,6 +11,12 @@ import { useTimelineState } from './lib/useTimelineState';
 export default function App() {
   const state = useTimelineState();
   const timelineRef = useRef<HTMLElement>(null);
+
+  // Линии на шкале в порядке колонок — для пояснений перед ней.
+  const lineIds = useMemo(
+    () => state.columns.flatMap((column) => column.tracks.flatMap((track) => track.countryId ?? [])),
+    [state.columns],
+  );
 
   const jumpToTimeline = useCallback(() => {
     timelineRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -33,20 +39,25 @@ export default function App() {
         />
 
         <div className="shell">
-          <IntroNote />
+          <IntroNote lineIds={lineIds} />
         </div>
 
         <TimelineSection state={state} sectionRef={timelineRef} />
 
         <PeopleBuilder
           addedPeople={state.addedPeople}
+          addedRelations={state.addedRelations}
           allItems={state.allItems}
+          activeCountryIds={state.activeCountryIds}
           onAdd={state.addPerson}
+          onUpdate={state.updatePerson}
+          onImport={state.importCustom}
+          onShowCountries={state.showCountries}
           onRemove={state.removePerson}
           onSelect={(item) => state.selectItem(item, { scroll: true })}
         />
 
-        <MethodSection />
+        <MethodSection orientation={state.orientation} />
       </main>
 
       <SiteFooter itemCount={state.totalStats.total} />

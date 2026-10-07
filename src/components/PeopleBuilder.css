@@ -68,11 +68,68 @@
   font-weight: 600;
 }
 
+.builder__toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.builder__toolbar-actions .btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* ---------- Отчёт об импорте ---------- */
+
+.builder__report {
+  position: relative;
+  margin-bottom: 18px;
+  padding: 16px 48px 16px 20px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  animation: panel-in var(--dur-mid) var(--ease-out);
+}
+
+.builder__report p + p,
+.builder__report ul {
+  margin-top: 6px;
+}
+
+.builder__report ul {
+  padding-left: 18px;
+  font-size: 13px;
+}
+
+.builder__report-action {
+  color: var(--accent);
+  font-weight: 550;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.builder__report-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 16px;
+  color: var(--ink-ghost);
+}
+
+.builder__report-close:hover {
+  background: color-mix(in oklab, var(--ink) 8%, transparent);
+  color: var(--ink-strong);
+}
+
 /* ---------- Форма ---------- */
 
 .builder__form {
-  overflow: hidden;
   margin-bottom: 18px;
+  animation: panel-in var(--dur-mid) var(--ease-out);
 }
 
 .builder__form-inner {
@@ -130,6 +187,44 @@
 
 .field--full {
   grid-column: 1 / -1;
+}
+
+/* Флажок: поле в строку, без рамки ввода */
+.field--check {
+  flex-direction: row;
+  align-items: center;
+  align-self: end;
+  gap: 10px;
+  min-height: 40px;
+}
+
+.field--check > span {
+  font-family: inherit;
+  font-size: 13.5px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-soft);
+}
+
+.field--check input {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  accent-color: var(--accent);
+}
+
+.field input[aria-invalid] {
+  border-color: var(--seal);
+}
+
+.builder__form-title {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.builder__form-error {
+  font-size: 13px;
+  color: var(--seal);
 }
 
 .builder__form-actions {
@@ -307,6 +402,21 @@
   font-size: 9px;
   letter-spacing: 0.1em;
   color: var(--ink-ghost);
+}
+
+.builder__added-edit {
+  padding: 0 10px;
+  font-size: 13px;
+  color: var(--ink-ghost);
+  border-left: 1px dashed var(--line-strong);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.builder__added-edit:hover {
+  background: color-mix(in oklab, var(--gold) 16%, transparent);
+  color: var(--ink-strong);
 }
 
 .builder__added-remove {

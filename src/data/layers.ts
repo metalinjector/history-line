@@ -1,6 +1,6 @@
 import type { Layer } from '../types';
 import { OWN_COLUMN } from '../types';
-import { articles, sourcesByItem, viewpointsByItem } from './content';
+import { contentSummaryById } from './contentSummary';
 
 /**
  * Наложенные слои.
@@ -512,17 +512,16 @@ const layerDefinitions: Layer[] = [
 ];
 
 /**
- * Источники объектов слоя подмешиваются из `content/layers/<слой>/<id>.md` —
+ * Источники объектов слоя лежат в `content/layers/<слой>/<id>.md` —
  * ровно так же, как у основной базы. Требование то же: два независимых
- * источника, хотя бы один не энциклопедия.
+ * источника, хотя бы один не энциклопедия. Здесь, как и у основной базы,
+ * подмешивается только сводка — полные данные грузит модальное окно.
  */
 export const layers: Layer[] = layerDefinitions.map((layer) => ({
   ...layer,
   items: layer.items.map((item) => ({
     ...item,
-    ...(sourcesByItem[item.id] ? { sources: sourcesByItem[item.id] } : {}),
-    ...(articles[item.id] ? { body: articles[item.id] } : {}),
-    ...(viewpointsByItem[item.id] ? { viewpoints: viewpointsByItem[item.id] } : {}),
+    ...(contentSummaryById[item.id] ? { content: contentSummaryById[item.id] } : {}),
   })),
 }));
 

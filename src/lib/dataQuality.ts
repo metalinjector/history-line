@@ -1,5 +1,5 @@
 import type { Relation, TimelineItem } from '../types';
-import { hasVerifiedSources, isRelationVerified } from './provenance';
+import { isItemVerified, isRelationVerified } from './provenance';
 
 export type DataQualityReport = {
   items: { total: number; verified: number; coverage: number };
@@ -8,7 +8,7 @@ export type DataQualityReport = {
 
 /** Машиночитаемый срез редакционного долга; используется тестами и будущей CMS. */
 export function buildDataQualityReport(items: TimelineItem[], relations: Relation[]): DataQualityReport {
-  const verifiedItems = items.filter((item) => hasVerifiedSources(item.sources)).length;
+  const verifiedItems = items.filter(isItemVerified).length;
   const verifiedRelations = relations.filter(isRelationVerified).length;
   const coverage = (verified: number, total: number) => (total ? verified / total : 1);
 

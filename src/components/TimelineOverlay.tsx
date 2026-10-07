@@ -1,17 +1,10 @@
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import type { Relation, TimelineGroup, TimelineItem } from '../types';
+import type { Orientation, Relation, TimelineGroup, TimelineItem } from '../types';
 import { isRelationVerified } from '../lib/provenance';
+import { leadShape, threadShape, type LeadShape, type Point } from '../lib/orientation';
 import { countryById } from '../data/countries';
 
-type Point = { x: number; y: number };
-
-type SelectionShape = {
-  color: string;
-  /** Линия к дате начала. */
-  start: { from: Point; to: Point };
-  /** Линия к дате окончания периода и вертикальная перемычка между ними. */
-  end?: { from: Point; to: Point };
-};
+type SelectionShape = LeadShape & { color: string };
 
 type ThreadShape = {
   relation: Relation;
@@ -29,6 +22,8 @@ type Props = {
   relations: Relation[];
   /** Любое изменение раскладки: масштаб, колонки, фильтры. */
   layoutKey: string;
+  /** Куда идёт время: от этого зависит, какая координата узла — дата. */
+  orientation: Orientation;
   onRelationClick: (relation: Relation) => void;
 };
 
@@ -49,8 +44,10 @@ function nodeCenter(grid: HTMLElement, itemId: string): Point | undefined {
  * и нити-связи между событиями разных стран.
  *
  * Всё рисуется по измеренным позициям узлов, поэтому не зависит от того,
- * в какой колонке стоит карточка, сколько линий делят дорожку и какой сейчас
- * масштаб. Пересчёт идёт в useLayoutEffect — до отрисовки кадра, без мигания.
+ * в какой колонке стоит карточка, сколько линий делят дорожку, какой сейчас
+ * масштаб и куда идёт время. Геометрия считается в координатах «вдоль
+ * времени / поперёк» (lib/orientation.ts) и поворачивается вместе со шкалой.
+ * Пересчёт идёт в useLayoutEffect — до отрисовки кадра, без мигания.
  */
 export function TimelineOverlay({
   gridRef,
@@ -58,48 +55,55 @@ export function TimelineOverlay({
   selectedItem,
   relations,
   layoutKey,
+  orientation,
   onRelationClick,
 }: Props) {
   const [selection, setSelection] = useState<SelectionShape | undefined>();
   const [threads, setThreads] = useState<ThreadShape[]>([]);
   const [hovered, setHovered] = useState<string | undefined>();
 
+  const horizontal = orientation === 'horizontal';
+
   /**
-   * Вертикальная координата произвольного года.
-   * Если строки с таким годом нет, позиция интерполируется между соседними —
-   * так конец периода попадает между строками, а не прыгает на ближайшую.
+   * Положение произвольного года вдоль оси времени.
+   * Если группы с таким годом нет, позиция интерполируется между соседними —
+   * так конец периода попадает между строками (столбцами горизонтальной
+   * шкалы), а не прыгает на ближайшую.
    */
-  const yForYear = useCallback(
+  const mainForYear = useCallback(
     (grid: HTMLElement, year: number): number | undefined => {
-      const gridTop = grid.getBoundingClientRect().top;
-      const rowY = (key: string) => {
+      const gridRect = grid.getBoundingClientRect();
+      const gridStart = horizontal ? gridRect.left : gridRect.top;
+      const groupMain = (key: string) => {
         const row = document.getElementById(`row-${key}`);
         if (!row) return undefined;
         const rect = row.getBoundingClientRect();
-        return rect.top - gridTop + Math.min(rect.height / 2, 34);
+        const start = horizontal ? rect.left : rect.top;
+        const size = horizontal ? rect.width : rect.height;
+        return start - gridStart + Math.min(size / 2, 34);
       };
 
-      let before: { year: number; y: number } | undefined;
-      let after: { year: number; y: number } | undefined;
+      let before: { year: number; main: number } | undefined;
+      let after: { year: number; main: number } | undefined;
 
       for (const group of groups) {
-        const y = rowY(group.key);
-        if (y === undefined) continue;
-        if (group.year === year) return y;
-        if (group.year < year) before = { year: group.year, y };
+        const main = groupMain(group.key);
+        if (main === undefined) continue;
+        if (group.year === year) return main;
+        if (group.year < year) before = { year: group.year, main };
         else {
-          after = { year: group.year, y };
+          after = { year: group.year, main };
           break;
         }
       }
 
       if (before && after) {
         const ratio = (year - before.year) / (after.year - before.year);
-        return before.y + (after.y - before.y) * ratio;
+        return before.main + (after.main - before.main) * ratio;
       }
-      return before?.y ?? after?.y;
+      return before?.main ?? after?.main;
     },
-    [groups],
+    [groups, horizontal],
   );
 
   const measure = useCallback(() => {
@@ -110,33 +114,22 @@ export function TimelineOverlay({
       return;
     }
 
-    // Правый край колонки дат — отсюда начинаются штриховые линии.
-    const dateEdge = grid.querySelector<HTMLElement>('.thead__date')?.offsetWidth ?? 0;
+    // Край оси дат поперёк времени: правый край колонки дат
+    // или нижний край линейки лет — отсюда начинаются штриховые линии.
+    const corner = grid.querySelector<HTMLElement>('.thead__date');
+    const axisEdge = (horizontal ? corner?.offsetHeight : corner?.offsetWidth) ?? 0;
 
     // --- Штриховые линии выбранной карточки ---
-    if (selectedItem) {
-      const point = nodeCenter(grid, selectedItem.id);
-      if (point) {
-        const color = `hsl(${countryById[selectedItem.country].color})`;
-        const shape: SelectionShape = {
-          color,
-          start: { from: { x: dateEdge, y: point.y }, to: point },
-        };
-
-        if (selectedItem.endYear && selectedItem.endYear !== selectedItem.year) {
-          const endY = yForYear(grid, selectedItem.endYear);
-          if (endY !== undefined && Math.abs(endY - point.y) > 4) {
-            shape.end = {
-              from: { x: dateEdge, y: endY },
-              to: { x: point.x, y: endY },
-            };
-          }
-        }
-
-        setSelection(shape);
-      } else {
-        setSelection(undefined);
-      }
+    const point = selectedItem ? nodeCenter(grid, selectedItem.id) : undefined;
+    if (selectedItem && point) {
+      const endMain =
+        selectedItem.endYear && selectedItem.endYear !== selectedItem.year
+          ? mainForYear(grid, selectedItem.endYear)
+          : undefined;
+      setSelection({
+        color: `hsl(${countryById[selectedItem.country].color})`,
+        ...leadShape(orientation, point, axisEdge, endMain),
+      });
     } else {
       setSelection(undefined);
     }
@@ -148,20 +141,9 @@ export function TimelineOverlay({
       const b = nodeCenter(grid, relation.to);
       if (!a || !b) continue;
 
-      const dx = b.x - a.x;
-      const dy = b.y - a.y;
-      // Провисание тем заметнее, чем дальше карточки друг от друга по горизонтали.
-      const sag = Math.min(70, Math.max(10, Math.abs(dx) * 0.18));
-      const c1 = { x: a.x + dx * 0.3, y: a.y + dy * 0.1 + sag };
-      const c2 = { x: b.x - dx * 0.3, y: b.y - dy * 0.1 + sag };
-
       shapes.push({
         relation,
-        path: `M ${a.x} ${a.y} C ${c1.x} ${c1.y}, ${c2.x} ${c2.y}, ${b.x} ${b.y}`,
-        midpoint: {
-          x: (a.x + 3 * c1.x + 3 * c2.x + b.x) / 8,
-          y: (a.y + 3 * c1.y + 3 * c2.y + b.y) / 8,
-        },
+        ...threadShape(orientation, a, b),
         active: selectedItem
           ? relation.from === selectedItem.id || relation.to === selectedItem.id
           : false,
@@ -169,7 +151,7 @@ export function TimelineOverlay({
     }
 
     setThreads(shapes);
-  }, [gridRef, relations, selectedItem, yForYear]);
+  }, [gridRef, horizontal, mainForYear, orientation, relations, selectedItem]);
 
   useLayoutEffect(() => {
     measure();
@@ -244,7 +226,7 @@ export function TimelineOverlay({
                 y2={selection.end.to.y}
               />
               <circle className="lead__cap" cx={selection.end.from.x} cy={selection.end.from.y} r={3.5} />
-              {/* Перемычка вдоль колонки: показывает длительность периода */}
+              {/* Перемычка вдоль дорожки: показывает длительность периода */}
               <line
                 className="lead__span"
                 x1={selection.start.to.x}

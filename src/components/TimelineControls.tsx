@@ -1,10 +1,12 @@
 import { useId, useMemo, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import type { KindFilter, Period } from '../types';
+import type { KindFilter, Orientation, Period } from '../types';
 import { eras } from '../data/eras';
 import { encodePeriod, decodePeriod, intervalPeriods, INTERVAL_SPAN } from '../data/periods';
 import { allTags } from '../data/timelineItems';
 import { plural } from '../lib/format';
+import { orientations } from '../lib/orientation';
+import { ZOOM_MAX, ZOOM_MIN } from '../lib/zoom';
+import { useSlidingPill } from '../lib/useReveal';
 import './TimelineControls.css';
 
 type Props = {
@@ -18,6 +20,8 @@ type Props = {
   bceCount: number;
   tags: string[];
   zoom: number;
+  /** Куда идёт время: сверху вниз или слева направо. */
+  orientation: Orientation;
   /** Верхняя граница шкалы — по ней строится сетка интервалов. */
   maxYear: number;
   /** Сколько объектов дал бы каждый отрезок при остальных фильтрах. */
@@ -35,7 +39,9 @@ type Props = {
   onAddAncientLines: () => void;
   onTagsChange: (tags: string[]) => void;
   onZoomChange: (zoom: number) => void;
-  onFitToWidth: () => void;
+  onOrientationChange: (orientation: Orientation) => void;
+  /** Уместить линии поперёк времени: колонки по ширине, полосы по высоте. */
+  onFitToSpace: () => void;
   onToggleExpanded: () => void;
   onReset: () => void;
   showRelations: boolean;
@@ -55,9 +61,6 @@ const kinds: { id: KindFilter; label: string; hint: string }[] = [
   { id: 'people', label: 'Деятели', hint: 'Только персоналии' },
 ];
 
-const ZOOM_MIN = 0.65;
-const ZOOM_MAX = 1.9;
-
 /**
  * Управление хронологией.
  *
@@ -76,6 +79,7 @@ export function TimelineControls(props: Props) {
     bceCount,
     tags,
     zoom,
+    orientation,
     maxYear,
     periodCounts,
     total,
@@ -90,7 +94,8 @@ export function TimelineControls(props: Props) {
     onAddAncientLines,
     onTagsChange,
     onZoomChange,
-    onFitToWidth,
+    onOrientationChange,
+    onFitToSpace,
     onToggleExpanded,
     onReset,
     showRelations,
@@ -116,6 +121,8 @@ export function TimelineControls(props: Props) {
   }, [maxYear, periodCounts]);
 
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const kindPill = useSlidingPill<HTMLDivElement>(layer);
+  const orientationPill = useSlidingPill<HTMLDivElement>(orientation);
   const zoomId = useId();
   const searchId = useId();
   const periodId = useId();
@@ -133,7 +140,8 @@ export function TimelineControls(props: Props) {
   return (
     <div className="controls" data-no-pan>
       <div className="controls__bar">
-        <div className="segmented" role="radiogroup" aria-label="Тип объектов">
+        <div className="segmented" role="radiogroup" aria-label="Тип объектов" ref={kindPill.ref}>
+          <span className="segmented__pill" aria-hidden="true" style={kindPill.style} />
           {kinds.map((option) => (
             <button
               key={option.id}
@@ -145,9 +153,6 @@ export function TimelineControls(props: Props) {
               title={option.hint}
               onClick={() => onLayerChange(option.id)}
             >
-              {layer === option.id ? (
-                <motion.span className="segmented__pill" layoutId="segmented-pill" transition={{ duration: 0.25 }} />
-              ) : null}
               <span className="segmented__text">{option.label}</span>
             </button>
           ))}
@@ -230,6 +235,37 @@ export function TimelineControls(props: Props) {
           </span>
         </button>
 
+        {/*
+          Ось времени — на виду, рядом с «Развернуть»: это не настройка
+          на один раз, а два способа смотреть на одну и ту же таблицу.
+        */}
+        <div
+          className="segmented controls__orientation"
+          role="radiogroup"
+          aria-label="Ось времени"
+          ref={orientationPill.ref}
+        >
+          <span className="segmented__pill" aria-hidden="true" style={orientationPill.style} />
+          {orientations.map((option) => (
+            <button
+              key={option.id}
+              type="button"
+              role="radio"
+              aria-checked={orientation === option.id}
+              aria-label={option.label}
+              className="segmented__option"
+              data-active={orientation === option.id || undefined}
+              title={option.hint}
+              onClick={() => onOrientationChange(option.id)}
+            >
+              <span className="segmented__text">
+                <AxisIcon orientation={option.id} />
+                <span className="controls__orientation-label">{option.label}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+
         <button
           type="button"
           className="btn btn--sm controls__expand"
@@ -258,151 +294,178 @@ export function TimelineControls(props: Props) {
         ) : null}
       </div>
 
-      <AnimatePresence initial={false}>
-        {settingsOpen ? (
-          <motion.div
-            className="controls__panel"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="controls__panel-inner">
-              <section className="settings-group">
-                <h4 className="settings-group__title">Вид шкалы</h4>
+      {settingsOpen ? (
+        <div className="controls__panel">
+          <div className="controls__panel-inner">
+            <section className="settings-group">
+              <h4 className="settings-group__title">Вид шкалы</h4>
 
-                <div className="controls__zoom" data-detail={granularityLabel !== 'годы' || undefined}>
-                  <label htmlFor={zoomId} className="controls__zoom-label">
-                    Масштаб
-                  </label>
-                  <input
-                    id={zoomId}
-                    type="range"
-                    min={ZOOM_MIN}
-                    max={ZOOM_MAX}
-                    step={0.01}
-                    value={zoom}
-                    onChange={(event) => onZoomChange(Number(event.target.value))}
-                    title="После 120% приближение дробит шкалу на месяцы, затем на дни"
-                  />
-                  <output className="controls__zoom-value">
-                    {Math.round(zoom * 100)}%
-                    <span className="controls__grain">
-                      {granularityLabel}
-                      {splitRows > 0 ? <b>+{splitRows}</b> : null}
-                    </span>
-                  </output>
-                  <button
-                    type="button"
-                    className="controls__fit"
-                    onClick={onFitToWidth}
-                    title="Подобрать масштаб так, чтобы видимые страны поместились по ширине"
-                  >
-                    уместить
-                  </button>
-                </div>
+              <div className="controls__zoom" data-detail={granularityLabel !== 'годы' || undefined}>
+                <label htmlFor={zoomId} className="controls__zoom-label">
+                  Масштаб
+                </label>
+                <input
+                  id={zoomId}
+                  type="range"
+                  min={ZOOM_MIN}
+                  max={ZOOM_MAX}
+                  step={0.01}
+                  value={zoom}
+                  onChange={(event) => onZoomChange(Number(event.target.value))}
+                  title="После 120% приближение дробит шкалу на месяцы, затем на дни"
+                />
+                <output className="controls__zoom-value">
+                  {Math.round(zoom * 100)}%
+                  <span className="controls__grain">
+                    {granularityLabel}
+                    {splitRows > 0 ? <b>+{splitRows}</b> : null}
+                  </span>
+                </output>
+                <button
+                  type="button"
+                  className="controls__fit"
+                  onClick={onFitToSpace}
+                  title={
+                    orientation === 'horizontal'
+                      ? 'Подобрать масштаб так, чтобы видимые страны поместились по высоте'
+                      : 'Подобрать масштаб так, чтобы видимые страны поместились по ширине'
+                  }
+                >
+                  уместить
+                </button>
+              </div>
 
-                <div className="settings-group__row">
-                  <button
-                    type="button"
-                    className="toggle"
-                    data-active={showBce || undefined}
-                    aria-pressed={showBce}
-                    onClick={() => onShowBceChange(!showBce)}
-                    title="Показывать или скрывать на общей шкале все даты до нашей эры"
-                  >
-                    <span className="toggle__track" aria-hidden="true">
-                      <span className="toggle__thumb" />
-                    </span>
-                    До н. э.
-                    {bceCount > 0 ? <span className="toggle__count">{bceCount}</span> : null}
-                  </button>
+              <div className="settings-group__row">
+                <button
+                  type="button"
+                  className="toggle"
+                  data-active={showBce || undefined}
+                  aria-pressed={showBce}
+                  onClick={() => onShowBceChange(!showBce)}
+                  title="Показывать или скрывать на общей шкале все даты до нашей эры"
+                >
+                  <span className="toggle__track" aria-hidden="true">
+                    <span className="toggle__thumb" />
+                  </span>
+                  До н. э.
+                  {bceCount > 0 ? <span className="toggle__count">{bceCount}</span> : null}
+                </button>
 
-                  <button
-                    type="button"
-                    className="toggle"
-                    data-active={keyOnly || undefined}
-                    aria-pressed={keyOnly}
-                    onClick={() => onKeyOnlyChange(!keyOnly)}
-                    title="Оставить только опорные вехи эпох"
-                  >
-                    <span className="toggle__track" aria-hidden="true">
-                      <span className="toggle__thumb" />
-                    </span>
-                    Только вехи
-                  </button>
+                <button
+                  type="button"
+                  className="toggle"
+                  data-active={keyOnly || undefined}
+                  aria-pressed={keyOnly}
+                  onClick={() => onKeyOnlyChange(!keyOnly)}
+                  title="Оставить только опорные вехи эпох"
+                >
+                  <span className="toggle__track" aria-hidden="true">
+                    <span className="toggle__thumb" />
+                  </span>
+                  Только вехи
+                </button>
 
-                  <button
-                    type="button"
-                    className="toggle"
-                    data-active={showRelations || undefined}
-                    aria-pressed={showRelations}
-                    onClick={onToggleRelations}
-                    title="Показать нити между связанными событиями разных стран"
-                  >
-                    <span className="toggle__track" aria-hidden="true">
-                      <span className="toggle__thumb" />
-                    </span>
-                    Связи
-                    {showRelations && relationCount > 0 ? (
-                      <span className="toggle__count">{relationCount}</span>
-                    ) : null}
-                  </button>
-                </div>
-
-                {/*
-                  Молчаливый переключатель — худший вид неработающей кнопки.
-                  Если в выбранных линиях нет ни одной даты до нашей эры,
-                  честнее сказать об этом и предложить починку одним нажатием.
-                */}
-                {bceCount === 0 ? (
-                  <p className="settings-group__note">
-                    В выбранных линиях нет дат до нашей эры, поэтому переключатель ничего не меняет.
-                    Древность в этой базе живёт отдельными линиями: Древний Рим — не Италия,
-                    Древняя Греция — не современная Греция.
-                    <button type="button" className="settings-group__fix" onClick={onAddAncientLines}>
-                      Добавить античные линии
-                    </button>
-                  </p>
-                ) : null}
-              </section>
-
-              <section className="settings-group settings-group--wide">
-                <h4 className="settings-group__title">
-                  Темы
-                  {tags.length > 0 ? (
-                    <button type="button" className="settings-group__clear" onClick={() => onTagsChange([])}>
-                      снять {tags.length}
-                    </button>
+                <button
+                  type="button"
+                  className="toggle"
+                  data-active={showRelations || undefined}
+                  aria-pressed={showRelations}
+                  onClick={onToggleRelations}
+                  title="Показать нити между связанными событиями разных стран"
+                >
+                  <span className="toggle__track" aria-hidden="true">
+                    <span className="toggle__thumb" />
+                  </span>
+                  Связи
+                  {showRelations && relationCount > 0 ? (
+                    <span className="toggle__count">{relationCount}</span>
                   ) : null}
-                </h4>
-                <div className="controls__tags-inner">
-                  {allTags.map(({ tag, count }) => {
-                    const active = tags.includes(tag);
-                    return (
-                      <button
-                        key={tag}
-                        type="button"
-                        className="tag tag--button"
-                        data-active={active || undefined}
-                        aria-pressed={active}
-                        onClick={() =>
-                          onTagsChange(active ? tags.filter((value) => value !== tag) : [...tags, tag])
-                        }
-                      >
-                        {tag}
-                        <span className="tag__count">{count}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </section>
+                </button>
+              </div>
 
-              {children}
-            </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+              {/*
+                Молчаливый переключатель — худший вид неработающей кнопки.
+                Если в выбранных линиях нет ни одной даты до нашей эры,
+                честнее сказать об этом и предложить починку одним нажатием.
+              */}
+              {bceCount === 0 ? (
+                <p className="settings-group__note">
+                  В выбранных линиях нет дат до нашей эры, поэтому переключатель ничего не меняет.
+                  Древность в этой базе живёт отдельными линиями: Древний Рим — не Италия,
+                  Древняя Греция — не современная Греция.
+                  <button type="button" className="settings-group__fix" onClick={onAddAncientLines}>
+                    Добавить античные линии
+                  </button>
+                </p>
+              ) : null}
+            </section>
+
+            <section className="settings-group settings-group--wide">
+              <h4 className="settings-group__title">
+                Темы
+                {tags.length > 0 ? (
+                  <button type="button" className="settings-group__clear" onClick={() => onTagsChange([])}>
+                    снять {tags.length}
+                  </button>
+                ) : null}
+              </h4>
+              <div className="controls__tags-inner">
+                {allTags.map(({ tag, count }) => {
+                  const active = tags.includes(tag);
+                  return (
+                    <button
+                      key={tag}
+                      type="button"
+                      className="tag tag--button"
+                      data-active={active || undefined}
+                      aria-pressed={active}
+                      onClick={() =>
+                        onTagsChange(active ? tags.filter((value) => value !== tag) : [...tags, tag])
+                      }
+                    >
+                      {tag}
+                      <span className="tag__count">{count}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            {children}
+          </div>
+        </div>
+      ) : null}
     </div>
+  );
+}
+
+/** Значок оси: линия со стрелкой и засечками лет — вниз или вправо. */
+function AxisIcon({ orientation }: { orientation: Orientation }) {
+  return (
+    <svg
+      className="controls__axis-icon"
+      viewBox="0 0 16 16"
+      width="14"
+      height="14"
+      aria-hidden="true"
+      style={orientation === 'horizontal' ? { transform: 'rotate(-90deg)' } : undefined}
+    >
+      <path
+        d="M8 1.5v11.5M4.5 9.5 8 13l3.5-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M5.5 3.5h5M5.5 6.5h5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        opacity="0.55"
+      />
+    </svg>
   );
 }

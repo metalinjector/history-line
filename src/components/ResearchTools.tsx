@@ -10,6 +10,13 @@ import './ResearchTools.css';
 
 type Props = { state: TimelineState };
 
+/**
+ * Источники объектов лежат в редакционной базе, которая грузится отдельно
+ * от шкалы (data/content.ts). Экспорт подгружает её сам; наведение на кнопки
+ * начинает загрузку заранее.
+ */
+const loadContent = () => import('../data/content');
+
 function downloadFile(content: string, type: string, filename: string) {
   const url = URL.createObjectURL(new Blob([content], { type }));
   const anchor = document.createElement('a');
@@ -41,8 +48,8 @@ export function ResearchTools({ state }: Props) {
   const [printSession, setPrintSession] = useState<ResearchSession>();
 
   const createSession = useCallback(
-    () =>
-      buildResearchSession(state.filteredItems, state.notes, {
+    async () =>
+      buildResearchSession(state.filteredItems.map((await loadContent()).withContent), state.notes, {
         countries: state.activeCountryIds,
         kind: state.layer,
         query: state.query,
@@ -62,6 +69,14 @@ export function ResearchTools({ state }: Props) {
     window.setTimeout(() => setStatus(''), 2600);
   };
 
+  const exportSession = async (save: (session: ResearchSession) => void) => {
+    try {
+      save(await createSession());
+    } catch {
+      notify('Не удалось подготовить экспорт — проверьте соединение');
+    }
+  };
+
   return (
     <>
       <section className="research-tools" aria-label="Поделиться и экспортировать исследование">
@@ -69,7 +84,11 @@ export function ResearchTools({ state }: Props) {
           <b>Исследовательская сессия</b>
           <span>{state.filteredItems.length} объектов · фильтры и открытая карточка уже записаны в URL</span>
         </div>
-        <div className="research-tools__actions">
+        <div
+          className="research-tools__actions"
+          onPointerEnter={() => void loadContent()}
+          onFocus={() => void loadContent()}
+        >
           <button
             type="button"
             className="btn btn--ghost btn--sm"
@@ -87,33 +106,37 @@ export function ResearchTools({ state }: Props) {
           <button
             type="button"
             className="btn btn--ghost btn--sm"
-            onClick={() => {
-              const session = createSession();
-              downloadFile(JSON.stringify(session, null, 2), 'application/json', 'history-line-session.json');
-              notify('JSON сохранён');
-            }}
+            onClick={() =>
+              exportSession((session) => {
+                downloadFile(JSON.stringify(session, null, 2), 'application/json', 'history-line-session.json');
+                notify('JSON сохранён');
+              })
+            }
           >
             {`{ }`} JSON
           </button>
           <button
             type="button"
             className="btn btn--ghost btn--sm"
-            onClick={() => {
-              downloadFile(researchSessionToMarkdown(createSession()), 'text/markdown;charset=utf-8', 'history-line-session.md');
-              notify('Markdown сохранён');
-            }}
+            onClick={() =>
+              exportSession((session) => {
+                downloadFile(researchSessionToMarkdown(session), 'text/markdown;charset=utf-8', 'history-line-session.md');
+                notify('Markdown сохранён');
+              })
+            }
           >
             ↓ Markdown
           </button>
           <button
             type="button"
             className="btn btn--ghost btn--sm"
-            onClick={() => {
-              const session = createSession();
-              setPrintSession(session);
-              notify('Откроется системный диалог печати');
-              window.requestAnimationFrame(() => window.requestAnimationFrame(() => window.print()));
-            }}
+            onClick={() =>
+              exportSession((session) => {
+                setPrintSession(session);
+                notify('Откроется системный диалог печати');
+                window.requestAnimationFrame(() => window.requestAnimationFrame(() => window.print()));
+              })
+            }
           >
             ⎙ PDF / печать
           </button>

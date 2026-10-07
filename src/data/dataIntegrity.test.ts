@@ -7,7 +7,7 @@ import { buildDataQualityReport } from '../lib/dataQuality';
 import { hasVerifiedSources, isRelationVerified } from '../lib/provenance';
 import type { SourceLink, TimelineItem } from '../types';
 import { stories } from './stories';
-import { contentManifest } from './content';
+import { contentManifest, withContent } from './content';
 
 const sourceKinds = new Set<SourceLink['kind']>(['archive', 'academic', 'institution', 'encyclopedia', 'reference']);
 
@@ -91,6 +91,8 @@ describe('historical data integrity', () => {
     layer.items.map((item) => ({ ...item, country: 'germany' as const, layerId: layer.id })),
   );
   const allItems = [...timelineItems, ...layerItems];
+  // Шкала знает только сводку редакционной базы; проверяются полные данные.
+  const fullItems = allItems.map(withContent);
   const ids = allItems.map((item) => item.id);
   const baseIds = new Set(timelineItems.map((item) => item.id));
 
@@ -122,7 +124,18 @@ describe('historical data integrity', () => {
   });
 
   it('keeps item fields and dates inside the domain contract', () => {
-    allItems.forEach(expectValidItem);
+    fullItems.forEach(expectValidItem);
+  });
+
+  it('keeps the content summary in step with the full content', () => {
+    allItems.forEach((item, index) => {
+      const full = fullItems[index];
+      expect(Boolean(item.content?.article), item.id).toBe(Boolean(full.body));
+      expect(Boolean(item.content?.verified), item.id).toBe(hasVerifiedSources(full.sources));
+      expect(item.content?.viewpoints ?? 0, item.id).toBe(full.viewpoints?.length ?? 0);
+      // Шкала не должна тянуть тексты: они грузятся вместе с модальным окном.
+      expect(item.body ?? item.sources ?? item.viewpoints, item.id).toBeUndefined();
+    });
   });
 
   it('does not leave dangling relation endpoints', () => {
