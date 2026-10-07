@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
 import type { Orientation } from '../types';
+import { useReveal } from '../lib/useReveal';
 import './MethodSection.css';
 
 const ZOOM_HINT =
@@ -97,9 +98,11 @@ const roadmap = [
 
 export function MethodSection({ orientation }: { orientation: Orientation }) {
   const steps = [...axisSteps[orientation], ...commonSteps];
+  const ref = useRef<HTMLElement>(null);
+  useReveal(ref);
 
   return (
-    <section className="method" id="method">
+    <section className="method" id="method" ref={ref}>
       <div className="shell">
         <header className="method__head">
           <p className="eyebrow">Как устроена эта карта</p>
@@ -108,18 +111,16 @@ export function MethodSection({ orientation }: { orientation: Orientation }) {
 
         <ol className="method__steps">
           {steps.map((step, index) => (
-            <motion.li
+            <li
               key={index}
               className="method__step"
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.5, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
+              data-reveal
+              style={{ '--reveal-delay': `${index * 70}ms` } as React.CSSProperties}
             >
               <span className="method__step-num">{index + 1}</span>
               <h3>{step.label}</h3>
               <p>{step.text}</p>
-            </motion.li>
+            </li>
           ))}
         </ol>
 

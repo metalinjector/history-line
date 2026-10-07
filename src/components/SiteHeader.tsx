@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import type { ThemeName } from '../types';
 import './SiteHeader.css';
 
@@ -16,12 +15,7 @@ const links = [
 
 export function SiteHeader({ theme, onToggleTheme, onJumpToTimeline }: Props) {
   return (
-    <motion.header
-      className="site-header"
-      initial={{ y: -60, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-    >
+    <header className="site-header">
       <div className="site-header__inner shell">
         <a
           className="site-header__brand"
@@ -71,6 +65,6 @@ export function SiteHeader({ theme, onToggleTheme, onJumpToTimeline }: Props) {
           {theme === 'parchment' ? 'Ночной атлас' : 'Пергамент'}
         </button>
       </div>
-    </motion.header>
+    </header>
   );
 }

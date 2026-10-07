@@ -54,13 +54,20 @@
   color: var(--ink-strong);
 }
 
+/* Подложка одна на переключатель и переезжает к выбранному варианту
+   (lib/useReveal.ts → useSlidingPill): ширину и сдвиг задаёт скрипт. */
 .segmented__pill {
   position: absolute;
-  inset: 0;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
   border-radius: 999px;
   background: var(--paper-raised);
   border: 1px solid var(--line-soft);
   box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--dur-mid) var(--ease-out),
+    width var(--dur-mid) var(--ease-out);
 }
 
 .segmented__text {
@@ -427,7 +434,7 @@
 }
 
 .controls__panel {
-  overflow: hidden;
+  animation: panel-in var(--dur-mid) var(--ease-out);
 }
 
 .controls__panel-inner {

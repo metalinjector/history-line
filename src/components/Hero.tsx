@@ -1,5 +1,4 @@
 import { useCallback, useRef } from 'react';
-import { motion } from 'framer-motion';
 import { countries, countryById, defaultCountryIds } from '../data/countries';
 import { formatYearLabel, plural } from '../lib/format';
 import './Hero.css';
@@ -25,11 +24,6 @@ const nodePattern: number[][] = [
 
 const heroCountries = defaultCountryIds.map((id) => countryById[id]);
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0 },
-};
-
 export function Hero({ itemCount, minYear, maxYear, onStart }: Props) {
   const stageRef = useRef<HTMLDivElement>(null);
 
@@ -54,31 +48,27 @@ export function Hero({ itemCount, minYear, maxYear, onStart }: Props) {
   return (
     <section className="hero" id="top">
       <div className="hero__inner shell">
-        <motion.div
-          className="hero__copy"
-          initial="hidden"
-          animate="show"
-          transition={{ staggerChildren: 0.09, delayChildren: 0.12 }}
-        >
-          <motion.p className="eyebrow" variants={fadeUp} transition={{ duration: 0.6 }}>
+        {/* Появление по очереди задаёт CSS: см. .hero__copy > * в Hero.css */}
+        <div className="hero__copy">
+          <p className="eyebrow">
             Синхронная хронология · {formatYearLabel(minYear)} — {maxYear}
-          </motion.p>
+          </p>
 
-          <motion.h1 className="hero__title" variants={fadeUp} transition={{ duration: 0.75 }}>
+          <h1 className="hero__title">
             <span>История — это не список дат,</span>
             <span>
               а <em>одновременность</em>.
             </span>
-          </motion.h1>
+          </h1>
 
-          <motion.p className="hero__lede lede" variants={fadeUp} transition={{ duration: 0.7 }}>
+          <p className="hero__lede lede">
             Современные страны, исторические государства и международные процессы идут параллельными
             линиями — от первых людей до сегодняшнего дня. Каталог не ограничен одним регионом: можно
             сопоставить Древний Египет и Месопотамию, революции Европы и Америки, деколонизацию Азии и
             Африки или собрать собственный набор линий.
-          </motion.p>
+          </p>
 
-          <motion.div className="hero__actions" variants={fadeUp} transition={{ duration: 0.6 }}>
+          <div className="hero__actions">
             <button type="button" className="btn btn--primary hero__cta" onClick={onStart}>
               Открыть хронологию
               <span aria-hidden="true">↓</span>
@@ -86,9 +76,9 @@ export function Hero({ itemCount, minYear, maxYear, onStart }: Props) {
             <a className="btn btn--ghost" href="#method">
               Как читать эту карту
             </a>
-          </motion.div>
+          </div>
 
-          <motion.dl className="hero__stats" variants={fadeUp} transition={{ duration: 0.6 }}>
+          <dl className="hero__stats">
             <div>
               <dt>Линий в каталоге</dt>
               <dd>{countries.length}</dd>
@@ -101,8 +91,8 @@ export function Hero({ itemCount, minYear, maxYear, onStart }: Props) {
               <dt>Охват</dt>
               <dd>3+ млн лет</dd>
             </div>
-          </motion.dl>
-        </motion.div>
+          </dl>
+        </div>
 
         <div
           className="hero__stage"
@@ -113,7 +103,7 @@ export function Hero({ itemCount, minYear, maxYear, onStart }: Props) {
         >
           <div className="hero__stage-inner">
             {heroCountries.map((country, index) => (
-              <motion.div
+              <div
                 className="hero__lane"
                 key={country.id}
                 style={
@@ -122,31 +112,16 @@ export function Hero({ itemCount, minYear, maxYear, onStart }: Props) {
                     '--lane-index': index,
                   } as React.CSSProperties
                 }
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.35 + index * 0.07, duration: 0.5 }}
               >
-                <motion.span
-                  className="hero__lane-line"
-                  initial={{ scaleY: 0 }}
-                  animate={{ scaleY: 1 }}
-                  transition={{ delay: 0.35 + index * 0.07, duration: 1.15, ease: [0.22, 1, 0.36, 1] }}
-                />
+                <span className="hero__lane-line" />
                 {nodePattern[index % nodePattern.length].map((position, nodeIndex) => (
-                  <motion.span
+                  <span
                     className="hero__node"
                     key={position}
-                    style={{ top: `${position * 100}%` }}
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{
-                      delay: 0.75 + index * 0.07 + nodeIndex * 0.08,
-                      duration: 0.45,
-                      ease: [0.22, 1.4, 0.36, 1],
-                    }}
+                    style={{ top: `${position * 100}%`, '--node-index': nodeIndex } as React.CSSProperties}
                   />
                 ))}
-              </motion.div>
+              </div>
             ))}
           </div>
 
@@ -163,15 +138,10 @@ export function Hero({ itemCount, minYear, maxYear, onStart }: Props) {
         </div>
       </div>
 
-      <motion.div
-        className="hero__scroll-hint"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.6, duration: 0.8 }}
-      >
+      <div className="hero__scroll-hint">
         <span className="eyebrow">Листайте вниз</span>
         <span className="hero__scroll-line" />
-      </motion.div>
+      </div>
     </section>
   );
 }

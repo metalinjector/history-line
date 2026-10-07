@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
 import { countries } from '../data/countries';
+import { useReveal } from '../lib/useReveal';
 import './IntroNote.css';
 
 /**
@@ -7,14 +8,11 @@ import './IntroNote.css';
  * не к современным государствам, а к территориям и традициям.
  */
 export function IntroNote() {
+  const ref = useRef<HTMLElement>(null);
+  useReveal(ref);
+
   return (
-    <motion.section
-      className="intro-note"
-      initial={{ opacity: 0, y: 22 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-    >
+    <section className="intro-note" ref={ref} data-reveal>
       <div className="intro-note__card panel">
         <div className="intro-note__main">
           <span className="intro-note__seal" aria-hidden="true">
@@ -41,6 +39,6 @@ export function IntroNote() {
           </ul>
         </details>
       </div>
-    </motion.section>
+    </section>
   );
 }

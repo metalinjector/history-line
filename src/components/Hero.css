@@ -15,6 +15,55 @@
   max-width: 680px;
 }
 
+/* Текст появляется по очереди, линии прорастают сверху, узлы вспыхивают —
+   всё на CSS, без JavaScript-анимаций. */
+.hero__copy > * {
+  animation: hero-rise 0.65s var(--ease-out) both;
+  animation-delay: calc(120ms + var(--i, 0) * 90ms);
+}
+
+.hero__copy > :nth-child(2) {
+  --i: 1;
+}
+
+.hero__copy > :nth-child(3) {
+  --i: 2;
+}
+
+.hero__copy > :nth-child(4) {
+  --i: 3;
+}
+
+.hero__copy > :nth-child(5) {
+  --i: 4;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes hero-grow {
+  from {
+    scale: 1 0;
+  }
+}
+
+@keyframes hero-pop {
+  from {
+    opacity: 0;
+    scale: 0;
+  }
+}
+
 .hero__title {
   display: flex;
   flex-direction: column;
@@ -114,6 +163,8 @@
 .hero__lane {
   position: relative;
   transform: translateZ(calc(var(--lane-index) * 6px));
+  animation: hero-fade 0.5s var(--ease-out) both;
+  animation-delay: calc(350ms + var(--lane-index) * 70ms);
 }
 
 .hero__lane-line {
@@ -124,6 +175,8 @@
   width: 2px;
   margin-left: -1px;
   transform-origin: top;
+  animation: hero-grow 1.15s var(--ease-out) both;
+  animation-delay: calc(350ms + var(--lane-index) * 70ms);
   border-radius: 2px;
   background: linear-gradient(
     180deg,
@@ -147,8 +200,14 @@
   box-shadow:
     0 0 0 3px var(--paper),
     0 0 18px color-mix(in oklab, var(--lane-color) 70%, transparent);
-  animation: node-float 6s var(--ease-in-out) infinite;
-  animation-delay: calc(var(--lane-index) * -0.7s);
+  /* Появление меняет scale, а покачивание — transform: свойства разные,
+     поэтому две анимации не мешают друг другу. */
+  animation:
+    hero-pop 0.45s cubic-bezier(0.22, 1.4, 0.36, 1) both,
+    node-float 6s var(--ease-in-out) infinite;
+  animation-delay:
+    calc(750ms + var(--lane-index) * 70ms + var(--node-index, 0) * 80ms),
+    calc(var(--lane-index) * -0.7s);
 }
 
 @keyframes node-float {
@@ -162,7 +221,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero__node {
+  .hero__copy > *,
+  .hero__lane,
+  .hero__lane-line,
+  .hero__node,
+  .hero__scroll-hint {
     animation: none;
   }
 }
@@ -208,6 +271,7 @@
   align-items: center;
   gap: 10px;
   pointer-events: none;
+  animation: hero-fade 0.8s var(--ease-out) 1.6s both;
 }
 
 .hero__scroll-line {

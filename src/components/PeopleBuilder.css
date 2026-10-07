@@ -71,8 +71,8 @@
 /* ---------- Форма ---------- */
 
 .builder__form {
-  overflow: hidden;
   margin-bottom: 18px;
+  animation: panel-in var(--dur-mid) var(--ease-out);
 }
 
 .builder__form-inner {
