@@ -37,6 +37,7 @@ export const referenceMerges: Record<string, string> = {
   'ref-p058-pervoe-krugosvetnoe-puteshestvie-fernana-m': 'es-magellan-1522',
   'ref-p060-srazhenie-pri-vaterloo': 'fr-waterloo-1815',
   'ref-p064-provozglashenie-germanskoy-imperii': 'de-empire-1871',
+  'ref-p066-ispano-amerikanskaya-voyna': 'es-1898',
   'ref-p066-izobretenie-kinoapparata': 'fr-lumiere-1895',
   'ref-p067-borodinskoe-srazhenie': 'ru-1812',
   'ref-p067-otechestvennaya-voyna-v-rossii': 'ru-1812',

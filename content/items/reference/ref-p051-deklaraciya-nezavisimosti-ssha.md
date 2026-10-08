@@ -1,6 +1,12 @@
 ---
 id: ref-p051-deklaraciya-nezavisimosti-ssha
 sources:
-  - label: "В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. 51."
-    kind: reference
+  - kind: archive
+    label: "U.S. National Archives, Milestone Documents: Declaration of Independence (1776)"
+    url: "https://www.archives.gov/milestone-documents/declaration-of-Independence"
+  - kind: archive
+    label: "U.S. National Archives, America’s Founding Documents: Declaration of Independence"
+    url: "https://www.archives.gov/historical-docs/declaration"
+  - kind: encyclopedia
+    label: "Britannica: Declaration of Independence"
 ---

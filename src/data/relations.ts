@@ -4856,6 +4856,399 @@ X съезд РКП(б) в марте 1921 года заменил развёр�
       { kind: 'institution', label: 'Dicastery for Promoting Christian Unity: The long road from the excommunication to the restoration of communion', url: 'https://www.christianunity.va/content/unitacristiani/en/cardinal-koch/2026/Conferenze/the-long-road-from-the-excommunication-to-the-restoration-of-com.html' },
     ],
   },
+  {
+    id: 'rel-us-declaration-french-alliance',
+    from: 'ref-p051-deklaraciya-nezavisimosti-ssha',
+    to: 'fr-us-alliance-1778',
+    kind: 'influence',
+    label: 'Объявленная независимость открывает путь к союзу с Францией',
+    detail: `
+Резолюция Ричарда Генри Ли, которую Континентальный конгресс одобрил 2 июля 1776 года, состояла из трёх частей: провозгласить независимость, искать иностранных союзов и составить план конфедерации. Декларация 4 июля выполнила первую часть и сделала возможной вторую.
+
+Пока колонии оставались мятежными подданными британской короны, европейская держава не могла заключить с ними официальный договор. Объявив себя суверенным государством, США смогли вести переговоры как равная сторона; после победы при Саратоге Франция подписала с ними в феврале 1778 года договор о союзе.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'U.S. National Archives, Milestone Documents: Declaration of Independence (1776)', url: 'https://www.archives.gov/milestone-documents/declaration-of-Independence' },
+      { kind: 'institution', label: 'BnF, France–Amériques: The French-American Treaty of Alliance, 1778', url: 'https://heritage.bnf.fr/france-ameriques/en/french-american-treaty-alliance-1778' },
+    ],
+  },
+  {
+    id: 'rel-us-constitution-bill-of-rights',
+    from: 'ref-p051-prinyatie-konstitucii-ssha',
+    to: 'us-bill-of-rights-1791',
+    kind: 'influence',
+    label: 'Спор о ратификации заставил дописать гарантии прав',
+    detail: `
+Противники конституции 1787 года опасались, что сильная федеральная власть без письменных гарантий станет угрозой личным свободам. Чтобы снять эти возражения, Первый конгресс в сентябре 1789 года предложил штатам 12 поправок, отвечавших на самые частые доводы против конституции.
+
+Десять из них ратифицировали к 15 декабря 1791 года — так появился Билль о правах. Механизм связи прямой: поправки были платой за согласие штатов на новую конституцию.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'U.S. National Archives, Milestone Documents: Bill of Rights (1791)', url: 'https://www.archives.gov/milestone-documents/bill-of-rights' },
+      { kind: 'institution', label: 'Library of Congress, Primary Source Timeline: The United States Constitution', url: 'https://www.loc.gov/classroom-materials/united-states-history-primary-source-timeline/new-nation-1783-1815/united-states-constitution/' },
+    ],
+  },
+  {
+    id: 'rel-us-napoleon-louisiana',
+    from: 'fr-napoleon-1799',
+    to: 'us-louisiana-1803',
+    kind: 'exchange',
+    label: 'Наполеон продаёт Луизиану Соединённым Штатам',
+    detail: `
+В 1803 году американские посланники Ливингстон и Монро были уполномочены купить у Франции только Новый Орлеан и Флориду, заплатив до 10 млн долларов. 11 апреля министр иностранных дел Талейран неожиданно предложил продать всю Луизиану.
+
+Сделку оформили договором 30 апреля 1803 года: за 15 млн долларов США получили около 828 тысяч квадратных миль к западу от Миссисипи. Решение принимал первый консул Бонапарт; для США покупка почти удвоила территорию.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'U.S. National Archives, Milestone Documents: Louisiana Purchase Treaty (1803)', url: 'https://www.archives.gov/milestone-documents/louisiana-purchase-treaty' },
+      { kind: 'archive', label: 'U.S. National Archives, Prologue Magazine (Spring 2003): The Louisiana Purchase', url: 'https://www.archives.gov/publications/prologue/2003/spring/louisiana-purchase' },
+    ],
+  },
+  {
+    id: 'rel-us-monroe-latin-independence',
+    from: 'us-monroe-1823',
+    to: 'es-ayacucho-1824',
+    kind: 'context',
+    label: 'США ограждают новые республики от возвращения Европы',
+    detail: `
+Доктрина Монро была ответом на распад Испанской империи в Америке: в начале 1820-х годов почти все её материковые колонии провозгласили независимость, а европейские монархии обсуждали помощь Испании в их возвращении. Послание 2 декабря 1823 года объявило Западное полушарие закрытым для новой колонизации и предупредило Европу не вмешиваться в дела новых республик.
+
+Через год битва при Аякучо окончательно решила исход войн за независимость в Южной Америке. Доктрина не была причиной этой победы — у США тогда не было сил её подкрепить, — но обе даты отмечают один процесс: уход Испании с континента и появление американской политики в отношении Латинской Америки.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'National Museum of American Diplomacy (U.S. Department of State): The Monroe Doctrine, the United States, and Latin American Independence', url: 'https://diplomacy.state.gov/stories/the-monroe-doctrine-the-united-states-and-latin-american-independence' },
+      { kind: 'archive', label: 'U.S. National Archives, Milestone Documents: Monroe Doctrine (1823)', url: 'https://www.archives.gov/milestone-documents/monroe-doctrine' },
+    ],
+  },
+  {
+    id: 'rel-us-mexican-war-gold-rush',
+    from: 'us-mexican-war-1846',
+    to: 'us-gold-rush-1848',
+    kind: 'context',
+    label: 'Золото найдено за девять дней до передачи Калифорнии США',
+    detail: `
+Джеймс Маршалл заметил золото у лесопилки Саттера 24 января 1848 года, когда Калифорния ещё формально принадлежала Мексике, хотя была занята американскими войсками. 2 февраля мирный договор в Гуадалупе-Идальго передал её Соединённым Штатам.
+
+Подписанты договора о находке не знали. Но совпадение определило судьбу региона: массовый приток старателей в 1849 году шёл уже на американскую территорию, и Калифорния стремительно заселялась.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'U.S. National Archives, Educator Resources: The Treaty of Guadalupe Hidalgo', url: 'https://www.archives.gov/education/lessons/guadalupe-hidalgo' },
+      { kind: 'institution', label: 'Smithsonian Institution, Newsdesk: Lucky Strike — the first piece of gold from Sutter’s Mill', url: 'https://si.edu/newsdesk/snapshot/lucky-strike' },
+    ],
+  },
+  {
+    id: 'rel-us-mexican-war-civil-war',
+    from: 'us-mexican-war-1846',
+    to: 'ref-p062-grazhdanskaya-voyna-v-ssha',
+    kind: 'influence',
+    label: 'Завоёванные земли обострили спор о рабстве',
+    detail: `
+По миру 1848 года Мексика уступила около 55 % своей территории — земли нынешних Калифорнии, Невады, Юты, Аризоны и других штатов. Сразу встал вопрос, будет ли на этих землях разрешено рабство.
+
+Спор о статусе новых территорий раскалывал Конгресс и политические партии всё следующее десятилетие. Когда в 1860 году президентом стал противник распространения рабства Авраам Линкольн, южные штаты вышли из Союза. Война с Мексикой не была единственной причиной Гражданской войны, но именно она превратила вопрос о рабстве на Западе в неотложный.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'American Battlefield Trust: A Brief Overview of the Mexican-American War, 1846–1848', url: 'https://www.battlefields.org/learn/articles/mexican-war-overview' },
+      { kind: 'archive', label: 'U.S. National Archives, Educator Resources: The Treaty of Guadalupe Hidalgo', url: 'https://www.archives.gov/education/lessons/guadalupe-hidalgo' },
+    ],
+  },
+  {
+    id: 'rel-us-emancipation-13th',
+    from: 'ref-p062-proklamaciya-ob-osvobozhdenii-negrov-rabov',
+    to: 'us-13th-amendment-1865',
+    kind: 'influence',
+    label: 'Ограниченная прокламация потребовала поправки к конституции',
+    detail: `
+Прокламация об освобождении действовала только на территориях, восставших против Союза, и не касалась лояльных пограничных рабовладельческих штатов. К тому же это была военная мера президента, которую после войны можно было оспорить.
+
+Поэтому сторонники отмены рабства добивались поправки к конституции. Сенат одобрил её в апреле 1864 года, Палата представителей — 31 января 1865 года, и 6 декабря 1865 года 13-я поправка вступила в силу, запретив рабство по всей стране.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'U.S. National Archives, Milestone Documents: 13th Amendment (1865)', url: 'https://www.archives.gov/milestone-documents/13th-amendment' },
+      { kind: 'archive', label: 'U.S. National Archives, Milestone Documents: Emancipation Proclamation (1863)', url: 'https://www.archives.gov/milestone-documents/emancipation-proclamation' },
+      { kind: 'academic', label: 'University of Nebraska–Lincoln, Teaching Legal History: 13th Amendment (1865)', url: 'https://teachinglegalhistory.unl.edu/s/oer/item/1009' },
+    ],
+  },
+  {
+    id: 'rel-us-13th-gb-slavery',
+    from: 'gb-slavery-1833',
+    to: 'us-13th-amendment-1865',
+    kind: 'comparison',
+    label: 'Отмена рабства: закон парламента и война',
+    detail: `
+Британская империя отменила рабство законом 1833 года, выплатив компенсацию владельцам. В США рабство было закреплено в экономике целого региона и в праве штатов, и его отмене предшествовала Гражданская война; окончательно её закрепила 13-я поправка 1865 года.
+
+Сопоставление показывает, насколько разными путями в XIX веке уходил несвободный труд: в одной стране — через решение имперского парламента, в другой — через раскол федерации и войну.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'U.S. National Archives, Milestone Documents: 13th Amendment (1865)', url: 'https://www.archives.gov/milestone-documents/13th-amendment' },
+      { kind: 'encyclopedia', label: 'Britannica: Slavery Abolition Act (1833)' },
+    ],
+  },
+  {
+    id: 'rel-us-civil-war-ru-1861',
+    from: 'ref-p062-grazhdanskaya-voyna-v-ssha',
+    to: 'ru-1861',
+    kind: 'comparison',
+    label: '1861 год: конец несвободного труда в России и США',
+    detail: `
+В марте 1861 года Александр II подписал манифест об отмене крепостного права, а в апреле в США началась Гражданская война, итогом которой стала отмена рабства. Прямой связи между событиями нет: они выросли из разных обществ и разных экономик.
+
+Но совпадение полезно для сравнения. Обе страны были крупными аграрными державами, в которых миллионы людей не распоряжались собой, и обе отказались от этой системы в одно десятилетие — Россия реформой сверху с выкупом земли, США войной и поправкой к конституции.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'U.S. National Archives, Milestone Documents: 13th Amendment (1865)', url: 'https://www.archives.gov/milestone-documents/13th-amendment' },
+      { kind: 'encyclopedia', label: 'Britannica: Emancipation Manifesto (Russia, 1861)' },
+    ],
+  },
+  {
+    id: 'rel-us-brown-montgomery',
+    from: 'us-brown-1954',
+    to: 'us-montgomery-1955',
+    kind: 'influence',
+    label: 'Принцип «раздельное — значит неравное» перенесли на автобусы',
+    detail: `
+Решение 1954 года по делу Брауна признало, что раздельные школы неравны по самой своей природе. Во время бойкота в Монтгомери адвокаты Фред Грей и Чарльз Лэнгфорд 1 февраля 1956 года подали федеральный иск «Браудер против Гейла», оспаривавший законы о сегрегации в автобусах.
+
+Суд признал эти законы неконституционными, а Верховный суд в ноябре 1956 года подтвердил решение. Мартин Лютер Кинг назвал его подтверждением принципа, что раздельные условия неравны по своей сути. После того как постановление пришло в Монтгомери, 20 декабря 1956 года бойкот был прекращён.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Martin Luther King, Jr. Research and Education Institute, Stanford: Browder v. Gayle, 352 U.S. 903', url: 'https://kinginstitute.stanford.edu/browder-v-gayle-352-us-903' },
+      { kind: 'institution', label: 'National Constitution Center: On this day, the Supreme Court rules against segregation', url: 'https://constitutioncenter.org/blog/on-this-day-the-supreme-court-rules-against-segregation' },
+    ],
+  },
+  {
+    id: 'rel-us-montgomery-march',
+    from: 'us-montgomery-1955',
+    to: 'us-march-washington-1963',
+    kind: 'influence',
+    label: 'Бойкот сделал Кинга лидером движения',
+    detail: `
+В день начала бойкота, 5 декабря 1955 года, была создана Ассоциация за улучшение Монтгомери, и её председателем избрали молодого пастора Мартина Лютера Кинга. За 381 день бойкота Кинг стал общенациональной фигурой и сторонником ненасильственного сопротивления по примеру Ганди.
+
+Опыт Монтгомери Кинг перенёс в Конференцию христианского руководства Юга, которую возглавлял с 1957 года. Через восемь лет после бойкота он был главным оратором «Марша на Вашингтон».
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Martin Luther King, Jr. Research and Education Institute, Stanford: Montgomery Bus Boycott', url: 'https://kinginstitute.stanford.edu/montgomery-bus-boycott' },
+      { kind: 'institution', label: 'University of Alabama Libraries, Alabama Authors: King, Martin Luther, Jr., 1929–1968', url: 'https://www.lib.ua.edu/Alabama_Authors/?p=2329' },
+    ],
+  },
+  {
+    id: 'rel-us-march-civil-rights-act',
+    from: 'us-march-washington-1963',
+    to: 'us-civil-rights-act-1964',
+    kind: 'influence',
+    label: 'Марш усилил давление ради федерального закона',
+    detail: `
+«Марш на Вашингтон за работу и свободу» 28 августа 1963 года собрал от 200 до 300 тысяч человек и требовал гражданских и экономических прав для афроамериканцев. К этому времени администрация Джона Кеннеди уже внесла законопроект о гражданских правах, и массовая демонстрация усилила давление на Конгресс.
+
+После гибели Кеннеди закон провёл его преемник Линдон Джонсон и подписал 2 июля 1964 года.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'Wikipedia: March on Washington for Jobs and Freedom', url: 'https://en.wikipedia.org/wiki/March_on_Washington' },
+      { kind: 'institution', label: 'NPR: The 1964 Civil Rights Act, 60 years later', url: 'https://www.npr.org/2024/07/02/1198912770/1964-civil-rights-act-60-years-later' },
+    ],
+  },
+  {
+    id: 'rel-us-crash-roosevelt',
+    from: 'us-crash-1929',
+    to: 'ref-p083-izbranie-ji-ruzvelta-prezidentom-ssha',
+    kind: 'influence',
+    label: 'Депрессия привела к поражению Гувера',
+    detail: `
+Крах биржи в октябре 1929 года открыл Великую депрессию. Президент Герберт Гувер считал, что выход из кризиса должны найти частный бизнес и благотворительность.
+
+К выборам 1932 года депрессия длилась третий год, и избиратели отдали победу Франклину Рузвельту, обещавшему активную роль государства — «новый курс». Демократы получили и большинство в обеих палатах Конгресса.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Herbert Hoover Presidential Library (NARA), Hoover Heads blog: Four Score and Seven Years Ago', url: 'https://hoover.blogs.archives.gov/2017/10/25/four-score-and-seven-years-ago' },
+      { kind: 'encyclopedia', label: 'EBSCO Research Starters: Franklin D. Roosevelt Elected U.S. President', url: 'https://www.ebsco.com/research-starters/history/franklin-d-roosevelt-elected-us-president' },
+    ],
+  },
+  {
+    id: 'rel-us-roosevelt-new-deal',
+    from: 'ref-p083-izbranie-ji-ruzvelta-prezidentom-ssha',
+    to: 'us-new-deal-1933',
+    kind: 'influence',
+    label: 'Обещание «нового курса» превращается в законы «ста дней»',
+    detail: `
+Рузвельт выиграл выборы под лозунгом «нового курса» и 4 марта 1933 года вступил в должность в разгар банковской паники.
+
+Уже 9 марта Конгресс собрался на специальную сессию, и до 16 июня по предложениям президента были приняты законы о банках, помощи безработным и поддержке сельского хозяйства. Победа на выборах вместе с большинством демократов в обеих палатах дала президенту возможность провести их быстро.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'FDR Foundation: The Real 100 Days', url: 'https://fdrfoundation.org/?p=1691' },
+      { kind: 'institution', label: 'FDR Presidential Library & Museum: Four Presidential Inaugurations', url: 'https://fdrlibrary.org/inaugurations' },
+    ],
+  },
+  {
+    id: 'rel-us-crash-world-crisis',
+    from: 'us-crash-1929',
+    to: 'ref-p083-mirovoy-ekonomicheskiy-krizis',
+    kind: 'influence',
+    label: 'Обвал на Уолл-стрит открывает мировой кризис',
+    detail: `
+После «чёрного четверга» 24 октября и «чёрного вторника» 29 октября 1929 года курсы акций в США упали больше чем на 40 % за неделю. Разорения, сжатие кредита и банковские паники следующих лет превратили биржевой крах в Великую депрессию.
+
+Американская экономика была крупнейшей в мире и главным кредитором Европы после Первой мировой войны, поэтому её спад ударил по торговле и финансам других стран. Историки спорят о том, насколько сам крах, а не последующая политика, определил глубину депрессии, но начало мирового кризиса принято отсчитывать именно от октября 1929 года.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Herbert Hoover Presidential Library (NARA), Hoover Heads blog: Four Score and Seven Years Ago', url: 'https://hoover.blogs.archives.gov/2017/10/25/four-score-and-seven-years-ago' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Wall Street crash of 1929', url: 'https://en.wikipedia.org/wiki/Wall_Street_crash_of_1929' },
+    ],
+  },
+  {
+    id: 'rel-us-manhattan-hiroshima',
+    from: 'us-manhattan-1942',
+    to: 'jp-1945',
+    kind: 'influence',
+    label: 'Бомбы, созданные Манхэттенским проектом, сброшены на Японию',
+    detail: `
+Манхэттенский проект создал два типа атомных бомб: урановую пушечного типа и плутониевую имплозивного. Плутониевую конструкцию, в работоспособности которой учёные не были уверены, проверили взрывом на полигоне Тринити в Нью-Мексико 16 июля 1945 года.
+
+Через три недели урановую бомбу сбросили на Хиросиму, а 9 августа на Нагасаки — плутониевую бомбу той же конструкции, что была испытана в Тринити.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'U.S. Army, White Sands Missile Range: Trinity Site History', url: 'https://home.army.mil/wsmr/index.php/contact/public-affairs-office/trinity-site-open-house/trinity-site-history' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Trinity (nuclear test)', url: 'https://en.wikipedia.org/wiki/Trinity_(nuclear_test)' },
+    ],
+  },
+  {
+    id: 'rel-us-truman-marshall',
+    from: 'ref-p102-provozglashenie-doktriny-trumena',
+    to: 'ref-p103-prinyatie-plana-marshalla',
+    kind: 'context',
+    label: 'Две части одной политики «сдерживания»',
+    detail: `
+В марте 1947 года Трумэн попросил у Конгресса 400 млн долларов военной и экономической помощи Греции и Турции, обосновав это необходимостью поддерживать «свободные народы». Через три месяца госсекретарь Маршалл предложил экономическую программу восстановления всей Европы.
+
+Библиотека Трумэна рассматривает доктрину и план вместе: первая отвечала на угрозу военной силой и деньгами в конкретных странах, второй — восстановлением экономики всей Западной Европы.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Harry S. Truman Library: The Truman Doctrine and The Marshall Plan (учебный материал)', url: 'https://www.trumanlibrary.gov/sites/default/files/20-Truman%20Doctrine%2C%20Marshall%20Plan_0.doc' },
+      { kind: 'archive', label: 'U.S. National Archives, Milestone Documents: Truman Doctrine (1947)', url: 'https://www.archives.gov/milestone-documents/truman-doctrine' },
+      { kind: 'institution', label: 'Library of Congress: For European Recovery — The Fiftieth Anniversary of the Marshall Plan', url: 'https://www.loc.gov/exhibits/marshall/marsh-overview.html' },
+    ],
+  },
+  {
+    id: 'rel-us-normandy-paris',
+    from: 'ref-p099-vysadka-anglo-amerikanskih-voysk-v-evrope-',
+    to: 'fr-liberation-1944',
+    kind: 'influence',
+    label: 'Высадка открыла союзникам путь к Парижу',
+    detail: `
+6 июня 1944 года почти 160 тысяч солдат США, Великобритании, Канады и их союзников под командованием Эйзенхауэра высадились в Нормандии. После двух месяцев тяжёлых боёв союзники прорвали немецкий фронт.
+
+Это позволило войскам союзников и силам Сопротивления освободить Париж 25 августа 1944 года.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'The National WWII Museum: D-Day Fact Sheet', url: 'https://www.nationalww2museum.org/sites/default/files/2024-05/D-Day%20Fact%20Sheet.pdf' },
+      { kind: 'institution', label: 'National Park Service, Eisenhower NHS: Eisenhower and the Men of D-Day', url: 'https://www.nps.gov/eise/learn/news/men-of-d-day.htm' },
+    ],
+  },
+  {
+    id: 'rel-us-ww1-washington-conference',
+    from: 'us-ww1-1917',
+    to: 'ref-p081-vashingtonskaya-konferenciya',
+    kind: 'context',
+    label: 'США после войны берутся устраивать порядок на Тихом океане',
+    detail: `
+Вступление в Первую мировую войну в апреле 1917 года сделало США одной из держав-победительниц и участником переговоров о послевоенном мире.
+
+Через три года после окончания войны, в ноябре 1921 года президент Гардинг собрал конференцию девяти держав по морским вооружениям и Восточной Азии. Связь — не прямая причина, а общий процесс: превращение США из нейтральной державы в участника мировой политики.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'U.S. National Archives at College Park: Zimmerman Telegram', url: 'https://www.archives.gov/college-park/highlights/zimmerman' },
+      { kind: 'institution', label: 'Office of the Historian, U.S. Department of State: The Washington Naval Conference, 1921–1922', url: 'https://history.state.gov/milestones/1921-1936/naval-conference' },
+    ],
+  },
+  {
+    id: 'rel-us-911-iraq',
+    from: 'ref-p106-terroristicheskie-akty-11-sentyabrya-2001-',
+    to: 'ref-p120-voennaya-operaciya-ssha-i-ih-soyuznikov-v-',
+    kind: 'context',
+    label: '«Война с терроризмом» и вторжение в Ирак',
+    detail: `
+После терактов 11 сентября администрация Джорджа Буша объявила «войну с терроризмом» и в 2003 году включила в неё войну против Ирака, обосновывая её угрозой оружия массового уничтожения.
+
+Комиссия по расследованию терактов в 2004 году пришла к выводу, что оперативной связи между «Аль-Каидой» и режимом Саддама Хусейна не было. Поэтому связь между событиями — политическая обстановка после 11 сентября, а не прямая причина.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'The 9/11 Commission Report: Executive Summary (NCJRS abstract)', url: 'https://www.ojp.gov/ncjrs/virtual-library/abstracts/911-commission-report-executive-summary' },
+      { kind: 'academic', label: 'Miller Center, University of Virginia: The “Mission Accomplished” moment', url: 'https://millercenter.org/node/89821' },
+    ],
+  },
+  {
+    id: 'rel-us-19th-fr-women-vote',
+    from: 'us-19th-amendment-1920',
+    to: 'fr-women-vote-1944',
+    kind: 'comparison',
+    label: 'Женское избирательное право: 1920 и 1944',
+    detail: `
+19-я поправка вступила в силу после ратификации Теннесси 18 августа 1920 года и запретила лишать граждан права голоса по признаку пола. Во Франции женщины получили избирательное право только в 1944 году, после освобождения страны.
+
+Сравнение показывает разный темп: в США право закрепили поправкой к федеральной конституции сразу после Первой мировой войны, во Франции — только в конце Второй.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'U.S. National Archives, Prologue blog: Putting the “Rat” in Ratification — Tennessee’s role in the 19th amendment', url: 'https://prologue.blogs.archives.gov/2017/08/01/putting-the-rat-in-ratification-tennessees-role-in-the-19th-amendment' },
+      { kind: 'institution', label: 'Colonial Williamsburg, We the People: 19th Amendment — Women’s Right to Vote', url: 'https://podcasts.history.org/pf/weThePeople/amendment19.cfm' },
+    ],
+  },
+  {
+    id: 'rel-us-jamestown-quebec',
+    from: 'us-jamestown-1607',
+    to: 'fr-quebec-1608',
+    kind: 'comparison',
+    label: 'Англия и Франция закрепляются в Северной Америке',
+    detail: `
+В мае 1607 года колонисты Виргинской компании заложили форт Джеймстаун, а в 1608 году Самюэль де Шамплен основал Квебек. Через год друг от друга две державы получили постоянные опорные пункты на атлантическом побережье Северной Америки.
+
+Джеймстаун был предприятием частной Виргинской компании, получившей хартию короля Якова I. С этих двух поселений начинаются английская и французская колониальные системы, которые полтора века будут соперничать за континент.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'National Park Service, Historic Jamestowne: Chronology of Jamestown Events', url: 'https://www.nps.gov/jame/learn/historyculture/chronology-of-jamestown-events.htm' },
+      { kind: 'encyclopedia', label: 'Britannica: Samuel de Champlain' },
+    ],
+  },
+  {
+    id: 'rel-us-declaration-french-declaration',
+    from: 'ref-p051-deklaraciya-nezavisimosti-ssha',
+    to: 'ref-p052-deklaraciya-prav-cheloveka-i-grazhdanina',
+    kind: 'comparison',
+    label: 'Две декларации прав конца XVIII века',
+    detail: `
+Американская Декларация независимости 1776 года обосновывала разрыв с Британией тем, что все люди сотворены равными и наделены неотчуждаемыми правами, а правительства держатся на согласии управляемых. Французская Декларация прав человека и гражданина 1789 года провозгласила естественные права и суверенитет нации.
+
+Оба текста выросли из одной политической философии Просвещения и стали образцами для последующих конституций. Различие в задаче: американский документ объявлял о создании нового государства, французский — о новом устройстве старого.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'U.S. National Archives, Milestone Documents: Declaration of Independence (1776)', url: 'https://www.archives.gov/milestone-documents/declaration-of-Independence' },
+      { kind: 'encyclopedia', label: 'Britannica: Declaration of the Rights of Man and of the Citizen' },
+    ],
+  },
 ];
 
 /** Быстрый доступ к связям по идентификатору объекта. */
