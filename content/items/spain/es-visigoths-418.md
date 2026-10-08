@@ -1,5 +1,9 @@
 ---
 id: es-visigoths-418
+detail: |-
+  Первой столицей стала Тулуза. После поражения от франков Хлодвига при Вуйе в 507 году вестготы потеряли почти все земли в Галлии, кроме узкой полосы на побережье, и центр королевства переместился за Пиренеи; с середины VI века столицей стал Толедо. В 589 году на Третьем Толедском соборе король Реккаред и вестготская знать отказались от арианства и приняли католичество, что объединило их с местным населением. Королевство соединило римское население и право с германской военной знатью и просуществовало до 711 года.
+parallel: |-
+  Почти одновременно в Галлии складывается королевство франков; именно столкновение с ними через девяносто лет выдавит вестготов в Испанию.
 sources:
   - kind: archive
     label: "Идаций, «Хроника»; Исидор Севильский, «История готов» — публикации текстов"
@@ -7,5 +11,14 @@ sources:
     label: "Museo de los Concilios y de la Cultura Visigoda, Толедо"
   - kind: encyclopedia
     label: "Britannica: Visigoth"
+  - kind: encyclopedia
+    label: "Wikipedia: Visigothic Kingdom — Тулуза (418–507), Барселона, Толедо (с 542 года)"
+    url: "https://en.wikipedia.org/wiki/Visigothic_Kingdom"
+  - kind: encyclopedia
+    label: "Encyclopædia Universalis: Wisigoths — галльский этап (412–507)"
+    url: "https://www.universalis.fr/encyclopedie/wisigoths-visigoths/2-la-phase-gauloise-412-507/"
+  - kind: encyclopedia
+    label: "Biografías y Vidas: Recaredo I — III Толедский собор 589 года"
+    url: "https://www.biografiasyvidas.com/biografia/r/recaredo.htm"
 ---
 

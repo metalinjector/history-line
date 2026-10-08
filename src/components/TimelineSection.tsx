@@ -28,6 +28,7 @@ import { EditorialDashboard } from './EditorialDashboard';
 import { ResearchTools } from './ResearchTools';
 import { TimelineNavigator } from './TimelineNavigator';
 import { periodSegments } from '../lib/periods';
+import { loadContent } from '../data/loadContent';
 import './TimelineSection.css';
 import './TimelineHorizontal.css';
 
@@ -207,6 +208,13 @@ export function TimelineSection({ state, sectionRef }: Props) {
     const handle = window.requestIdleCallback(prefetchModalHost, { timeout: 5000 });
     return () => window.cancelIdleCallback(handle);
   }, []);
+
+  // Код окна лёгкий и грузится заранее, а полные тексты — только когда читатель
+  // выбрал карточку: следующий шаг — открыть её, и текст уже будет на месте.
+  const selectedItemId = selectedItem?.id;
+  useEffect(() => {
+    if (selectedItemId) void loadContent().catch(() => undefined);
+  }, [selectedItemId]);
 
   const { ref: viewportRef, isPanning, onPointerDown, didPan } = usePanning<HTMLDivElement>();
   useWheelAlongTime(viewportRef, horizontal);

@@ -7,7 +7,8 @@ import { buildDataQualityReport } from '../lib/dataQuality';
 import { hasVerifiedSources, isRelationVerified } from '../lib/provenance';
 import type { SourceLink, TimelineItem } from '../types';
 import { stories } from './stories';
-import { contentManifest, withContent } from './content';
+import { contentManifest, relationContentManifest, withContent, withRelationContent } from './content';
+import { referenceItems } from './items/reference';
 
 const sourceKinds = new Set<SourceLink['kind']>(['archive', 'academic', 'institution', 'encyclopedia', 'reference']);
 
@@ -67,7 +68,7 @@ function expectValidItem(item: TimelineItem) {
   if (item.endYear !== undefined) expect(item.endYear, item.id).toBeGreaterThanOrEqual(item.year);
   expect(item.title.trim().length).toBeGreaterThan(1);
   expect(item.summary.trim().length).toBeGreaterThan(1);
-  expect(item.detail.trim().length).toBeGreaterThan(1);
+  expect(item.detail?.trim().length, `${item.id}: detail`).toBeGreaterThan(1);
   if (item.verification === 'reference') {
     expect(item.sources?.length, `${item.id}: reference source`).toBeGreaterThan(0);
     expect(item.sources?.some((source) => source.kind === 'reference')).toBe(true);
@@ -123,6 +124,20 @@ describe('historical data integrity', () => {
     }
   });
 
+  it('lets a rewritten handbook record replace its reference entry under the same id', () => {
+    const referenceIds = new Set(referenceItems.map((item) => item.id));
+    const promoted = fullItems.filter((item) => referenceIds.has(item.id) && item.verification !== 'reference');
+    for (const item of promoted) {
+      // Выверенная карточка — уже не запись справочника: свои источники, без страницы книги.
+      expect(item.referencePage, item.id).toBeUndefined();
+      expectValidSources(item.sources);
+    }
+    // Каждая карточка с id справочника действительно заменяет его запись, а не висит отдельно.
+    for (const item of fullItems.filter((entry) => entry.id.startsWith('ref-'))) {
+      expect(referenceIds.has(item.id), `${item.id}: нет такой записи в reference.json`).toBe(true);
+    }
+  });
+
   it('keeps item fields and dates inside the domain contract', () => {
     fullItems.forEach(expectValidItem);
   });
@@ -133,17 +148,32 @@ describe('historical data integrity', () => {
       expect(Boolean(item.content?.article), item.id).toBe(Boolean(full.body));
       expect(Boolean(item.content?.verified), item.id).toBe(hasVerifiedSources(full.sources));
       expect(item.content?.viewpoints ?? 0, item.id).toBe(full.viewpoints?.length ?? 0);
-      // Шкала не должна тянуть тексты: они грузятся вместе с модальным окном.
-      expect(item.body ?? item.sources ?? item.viewpoints, item.id).toBeUndefined();
+      // Шкала — витрина: полные тексты грузятся вместе с модальным окном.
+      expect(item.body ?? item.sources ?? item.viewpoints ?? item.detail ?? item.parallel, item.id).toBeUndefined();
     });
   });
 
-  it('does not leave dangling relation endpoints', () => {
+  it('keeps exactly one content file for every relation, and no text on the threads', () => {
+    const fileIds = relationContentManifest.map((entry) => entry.id);
+    expect(new Set(fileIds).size).toBe(fileIds.length);
+    expect(new Set(fileIds)).toEqual(new Set(relations.map((relation) => relation.id)));
+    for (const entry of relationContentManifest) {
+      expect(entry.declaredId, `${entry.path}: missing front-matter id`).toBe(entry.filenameId);
+    }
     for (const relation of relations) {
+      // Нитям нужны концы и подпись; объяснение и источники — в файле связи.
+      expect(relation.detail ?? relation.sources, relation.id).toBeUndefined();
+      const full = withRelationContent(relation);
+      expect(Boolean(relation.content?.verified), relation.id).toBe(hasVerifiedSources(full.sources));
+    }
+  });
+
+  it('does not leave dangling relation endpoints', () => {
+    for (const relation of relations.map(withRelationContent)) {
       expect(baseIds.has(relation.from), `${relation.id}: missing from`).toBe(true);
       expect(baseIds.has(relation.to), `${relation.id}: missing to`).toBe(true);
       expect(relation.label.trim().length).toBeGreaterThan(3);
-      expect(relation.detail.trim().length).toBeGreaterThan(20);
+      expect(relation.detail?.trim().length, relation.id).toBeGreaterThan(20);
       expect(relation.from, relation.id).not.toBe(relation.to);
       expectSourceShape(relation.sources);
     }
@@ -152,7 +182,9 @@ describe('historical data integrity', () => {
   it('never marks a relation verified without the required evidence', () => {
     for (const relation of relations.filter((item) => item.verification === 'verified')) {
       expect(isRelationVerified(relation), relation.id).toBe(true);
-      expectValidSources(relation.sources);
+      const full = withRelationContent(relation);
+      expect(isRelationVerified(full), relation.id).toBe(true);
+      expectValidSources(full.sources);
     }
   });
 

@@ -3,8 +3,13 @@ import { hasVerifiedSources } from './sourceRule';
 
 export { hasVerifiedSources };
 
+/**
+ * Проверена ли связь. Источники связей базы лежат в файлах содержания и
+ * грузятся вместе с окном связи; до тех пор ответ даёт сводка (relation.content).
+ */
 export function isRelationVerified(relation: Relation): boolean {
-  return relation.verification === 'verified' && hasVerifiedSources(relation.sources);
+  if (relation.verification !== 'verified') return false;
+  return relation.sources ? hasVerifiedSources(relation.sources) : Boolean(relation.content?.verified);
 }
 
 /**

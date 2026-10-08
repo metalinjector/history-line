@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { parseCustomImport } from './lib/customObjects';
 import { parseTimelineUrl } from './lib/urlState';
+import { migrateMergedNotes, migrateMergedRelations, referenceMerges } from './data/referenceMerges';
+import { timelineItems } from './data/timelineItems';
 import sourceRule from './lib/sourceRule.ts?raw';
 
 /**
@@ -69,6 +71,22 @@ describe('контракты каркаса', () => {
     });
   });
 
+  it('id слитой записи справочника продолжает работать', () => {
+    // Запись справочника, повторявшая карточку, снята со шкалы, но её id уже
+    // мог попасть в ссылки, заметки и связи читателей — он ведёт на карточку.
+    const onScale = new Set(timelineItems.map((item) => item.id));
+    for (const [merged, card] of Object.entries(referenceMerges)) {
+      expect(onScale.has(merged), merged).toBe(false);
+      expect(onScale.has(card), `${merged} → ${card}`).toBe(true);
+    }
+    const [merged, card] = Object.entries(referenceMerges)[0];
+    expect(parseTimelineUrl(`?focus=${merged}&item=${merged}`)).toMatchObject({ selectedId: card, openedId: card });
+    expect(migrateMergedNotes({ [merged]: 'старая', [card]: 'новая', other: 'x' })).toEqual({ [card]: 'новая\n\nстарая', other: 'x' });
+    expect(migrateMergedRelations([{ from: 'custom-1', to: merged }])).toEqual([{ from: 'custom-1', to: card }]);
+    const untouched = { other: 'x' };
+    expect(migrateMergedNotes(untouched)).toBe(untouched);
+  });
+
   it('файл своих объектов формата @1 принимается импортом', () => {
     // Файл в том виде, в каком его сохраняет «Экспорт» конструктора.
     const file = `{
@@ -125,14 +143,15 @@ describe('контракты каркаса', () => {
   });
 
   it('полная редакционная база не попадает в первый экран', () => {
-    // data/content.ts — статьи, источники и трактовки, сотни килобайт.
-    // Статически его импортирует только ленивое окно; остальные берут
-    // сводку item.content или грузят базу через import().
+    // data/content.ts — полные тексты: описания, параллели, статьи, источники,
+    // трактовки, объяснения связей. Статически его не импортирует никто:
+    // все берут его через data/loadContent.ts, когда читатель провалился внутрь.
+    // Даже ленивое окно: его код подгружается заранее, а тексты — нет.
     const importers = Object.entries(sources)
       .filter(([path, code]) => staticImports(path, code).includes('/src/data/content'))
       .map(([path]) => path);
 
-    expect(importers).toEqual(['./components/modal/ModalHost.tsx']);
+    expect(importers).toEqual([]);
   });
 
   it('правило верификации ни от чего не зависит', () => {

@@ -27,8 +27,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Путь сайта берётся из настроек Pages: со своим доменом — корень `/`,
+      # без него — `/history-line/`. Поэтому configure-pages идёт до сборки.
+      - id: pages
+        uses: actions/configure-pages@v5
       - run: npm run build
-      - uses: actions/configure-pages@v5
+        env:
+          SITE_BASE: ${{ steps.pages.outputs.base_path }}/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

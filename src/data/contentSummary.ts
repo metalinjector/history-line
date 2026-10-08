@@ -22,3 +22,14 @@ const modules = import.meta.glob<ContentSummary & { id: string }>('../../content
 export const contentSummaryById: Record<string, ContentSummary> = Object.fromEntries(
   Object.values(modules).map(({ id, ...summary }) => [id, summary]),
 );
+
+/** Сводка файлов связей (content/relations/<id>.md): проверены ли источники. */
+const relationModules = import.meta.glob<ContentSummary & { id: string }>('../../content/relations/*.md', {
+  eager: true,
+  query: '?summary',
+  import: 'summary',
+});
+
+export const relationSummaryById: Record<string, ContentSummary> = Object.fromEntries(
+  Object.values(relationModules).map(({ id, ...summary }) => [id, summary]),
+);

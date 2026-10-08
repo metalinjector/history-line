@@ -1,4 +1,5 @@
 import type { Relation } from '../types';
+import { relationSummaryById } from './contentSummary';
 
 /**
  * Связи между объектами разных стран.
@@ -9,34 +10,19 @@ import type { Relation } from '../types';
  * На хронологии связь рисуется провисающей нитью между узлами карточек,
  * при клике открывается объяснение.
  *
+ * Здесь — только то, что нужно нити: концы, вид и подпись. Объяснение и
+ * источники лежат в content/relations/<id>.md и грузятся вместе с окном связи.
  * Чтобы добавить связь, достаточно знать идентификаторы двух объектов.
  * Нить рисуется, только если обе карточки сейчас видны на шкале.
  */
-export const relations: Relation[] = [
+const relationCards: Relation[] = [
   {
     id: 'rel-gutenberg-luther',
     from: 'de-gutenberg-1455',
     to: 'de-luther-1517',
     kind: 'influence',
     label: 'Печать ускорила распространение Реформации',
-    detail: `
-Лютер был не первым критиком западной церкви. Учения Уиклифа и Гуса тоже создали
-устойчивые сообщества, но в 1517 году у полемики появился новый масштаб: типографии
-многих городов могли одновременно перепечатывать короткие тексты на понятном языке.
-
-С 1517 по 1520 год тридцать публикаций Лютера разошлись, по принятой в исследованиях
-оценке, более чем в 300 тысячах экземпляров. Памфлеты, ответы противников и гравюры
-превратили богословский спор в общеевропейскую публичную дискуссию.
-
-Печать не была единственной причиной Реформации. Имели значение давние церковные
-споры, поддержка курфюрста Саксонии и политика князей. Но именно печатная сеть резко
-сократила путь от авторского стола до читателя — с месяцев и лет до недель.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'academic', label: 'E. L. Eisenstein. The Printing Press as an Agent of Change. Cambridge University Press, 1979 — исследование о роли печати в Реформации' },
-      { kind: 'institution', label: 'Library of Congress: Dresden — Treasures from the Saxon State Library', url: 'https://www.loc.gov/loc/lcib/9604/saxon.html' },
-    ],
   },
   {
     id: 'rel-gutenberg-skaryna',
@@ -44,24 +30,7 @@ export const relations: Relation[] = [
     to: 'by-skaryna-1517',
     kind: 'influence',
     label: 'Европейская печать приходит в Прагу и Вильню',
-    detail: `
-К началу XVI века технология металлического набора распространилась из германских
-земель по Центральной Европе. Скорина использовал уже сложившуюся пражскую
-типографскую среду, а затем открыл печатню в Вильне.
-
-Важно точно назвать языки изданий. Библия Гутенберга была латинской; пражские книги
-Скорины — на церковнославянском языке белорусской редакции, с предисловиями и
-пояснениями, обращёнными к «людям посполитым»; перевод Лютера — на немецком.
-
-Общее здесь не «изобретение национального языка», а расширение круга читателей.
-Печатная книга постепенно выходила за пределы латинской учёной среды и приспосабливалась
-к языкам и книжным традициям разных регионов Европы.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'archive', label: 'Национальная библиотека Беларуси: коллекция «Скориниана» и описания пражских изданий', url: 'https://kp.nlb.by/ru/collections/skaryniiana' },
-      { kind: 'institution', label: 'Library of Congress: 500th Anniversary of Belarusian Book Printing', url: 'https://blogs.loc.gov/international-collections/2017/09/500th-anniversary-of-belarusian-book-printing/' },
-    ],
   },
   {
     id: 'rel-skaryna-fedorov',
@@ -69,23 +38,7 @@ export const relations: Relation[] = [
     to: 'ru-fedorov-1564',
     kind: 'comparison',
     label: 'Два центра ранней кириллической печати',
-    detail: `
-Московский «Апостол» вышел через 47 лет после пражской Псалтыри Скорины.
-Оба издания принадлежат истории кириллической книги, однако прямая передача технологии
-от Скорины к московской типографии документами не подтверждена. Поэтому здесь уместно
-**сопоставление**, а не причинная стрелка.
-
-Скорина печатал в Праге и Вильне при поддержке городских заказчиков. Иван Фёдоров и
-Пётр Мстиславец выпустили первую точно датированную московскую книгу в печатне,
-связанной с царской и церковной властью. Позже оба московских печатника работали в
-Заблудове, а Фёдоров — во Львове и Остроге: раннее кириллическое книгопечатание было
-не прямой эстафетой, а сетью мастерских, покровителей и переездов.
-`,
     verification: 'draft',
-    sources: [
-      { kind: 'archive', label: 'Российская государственная библиотека: «Апостол» — первая точно датированная печатная книга Москвы', url: 'https://www.rsl.ru/news/apostol-pervaya-pechatnaya-kniga' },
-      { kind: 'institution', label: 'Национальная библиотека Беларуси: коллекция «Скориниана»', url: 'https://kp.nlb.by/ru/collections/skaryniiana' },
-    ],
   },
   {
     id: 'rel-mongols-yuan',
@@ -93,24 +46,7 @@ export const relations: Relation[] = [
     to: 'cn-yuan-1271',
     kind: 'context',
     label: 'Два направления монгольской экспансии',
-    detail: `
-Поход Батыя на русские княжества и завоевание Китая Хубилаем разделены десятилетиями
-и относятся к разным этапам монгольской экспансии. Их нельзя представлять как два
-одновременно исполненных приказа одного курултая.
-
-Связь всё же существенна: и зависимость русских княжеств от Орды, и династия Юань
-выросли из распада державы Чингисхана на владения его потомков. К концу XIII века
-Золотая Орда и Юань уже проводили собственную политику, хотя правящие дома сохраняли
-общее происхождение и претензии на наследие империи.
-
-Так одна волна завоеваний создала разные режимы: на Руси — данническую зависимость
-при сохранении княжеств, в Китае — новую правящую династию и прямое имперское управление.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'institution', label: 'Metropolitan Museum of Art: The Legacy of Genghis Khan', url: 'https://www.metmuseum.org/essays/the-legacy-of-genghis-khan' },
-      { kind: 'institution', label: 'Smithsonian National Museum of Asian Art: Yuan dynasty', url: 'https://asia-archive.si.edu/learn/for-educators/teaching-china-with-the-smithsonian/explore-by-dynasty/yuan-dynasty/' },
-    ],
   },
   {
     id: 'rel-zhenghe-columbus',
@@ -118,24 +54,7 @@ export const relations: Relation[] = [
     to: 'es-1492',
     kind: 'comparison',
     label: 'Две модели океанской экспедиции',
-    detail: `
-Между плаваниями Чжэн Хэ и Колумба нет прямого влияния: их разделяют десятилетия,
-разные океаны и разные политические задачи. Связь нужна для сравнения, а не для
-сюжета о том, кто «раньше открыл мир».
-
-Флоты Мин поддерживали дипломатическую и данническую систему в уже известных портах
-Индийского океана. Экспедиция Колумба искала западный путь к Азии и опиралась на
-договор с Кастилией, заранее распределявший будущие титулы и доходы. Масштаб китайских
-эскадр был несравнимо больше, но постоянной заморской колониальной системы они не создали.
-
-Различный итог объясняется не одним уровнем техники. Важны цели двора, стоимость
-экспедиций, соперничество европейских монархий и правовые формы присвоения новых земель.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'academic', label: 'UNESCO: The maritime importance of Nanjing — экспедиции Чжэн Хэ', url: 'https://unesdoc.unesco.org/ark:/48223/pf0000394168' },
-      { kind: 'archive', label: 'Капитуляции в Санта-Фе 1492 года — договор Кастилии с Колумбом, Archivo General de Indias' },
-    ],
   },
   {
     id: 'rel-armada-england',
@@ -143,24 +62,7 @@ export const relations: Relation[] = [
     to: 'gb-armada-1588',
     kind: 'conflict',
     label: 'Одна кампания — две национальные памяти',
-    detail: `
-Армада 1588 года — один эпизод англо-испанской войны, показанный в двух колонках.
-Английский флот сорвал соединение Армады с армией герцога Пармского; при возвращении
-вокруг Шотландии и Ирландии тяжёлые потери довершили штормы, нехватка воды и болезни.
-
-Победа дала елизаветинской Англии сильный политический миф, но не передала ей морское
-господство за один сезон. Испания быстро восстановила флот, отправляла новые армады,
-а война завершилась Лондонским миром 1604 года без решающей победы одной стороны.
-
-Поэтому связь показывает прежде всего различие памяти: в английском рассказе 1588 год
-стал символом спасения острова, а в испанском — дорогостоящим провалом конкретного плана,
-но не мгновенным концом державы.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'archive', label: 'Документы кампании 1588 года в Archivo General de Simancas и State Papers, The National Archives' },
-      { kind: 'institution', label: 'Royal Museums Greenwich: Elizabeth I and the Spanish Armada', url: 'https://www.rmg.co.uk/stories/royal-history/elizabeth-i-spanish-armada' },
-    ],
   },
   {
     id: 'rel-revolution-napoleon-hre',
@@ -168,25 +70,7 @@ export const relations: Relation[] = [
     to: 'de-hre-end-1806',
     kind: 'influence',
     label: 'Наполеоновское давление ускоряет конец Старой империи',
-    detail: `
-Поражение Австрии и России при Аустерлице лишило старый имперский порядок военной
-опоры. В июле 1806 года шестнадцать германских князей вышли из Священной Римской
-империи и образовали Рейнский союз под протекторатом Наполеона. 6 августа Франц II,
-оказавшись под прямым давлением, отказался от императорского титула.
-
-Наполеон не единолично «отменил» империю: её устройство меняли и секуляризация,
-и укрупнение владений ещё до 1806 года. Но французские победы и Рейнский союз сделали
-продолжение прежней конструкции невозможным.
-
-Дальнейшее объединение Германии не было автоматическим следствием. Наполеоновская
-эпоха одновременно упростила политическую карту, подтолкнула реформы в Пруссии и дала
-новый язык немецкому национальному движению — одному из нескольких путей к 1871 году.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'archive', label: 'German History in Documents and Images: The Founding of the Confederation of the Rhine, 12 July 1806', url: 'https://germanhistorydocs.org/en/the-holy-roman-empire-1648-1815/the-founding-of-the-confederation-of-the-rhine-rheinbund-on-july-12-1806-1806' },
-      { kind: 'academic', label: 'German History, vol. 24: “1806: The End of the Old Reich”', url: 'https://doi.org/10.1191/0266355406gh383fa' },
-    ],
   },
   {
     id: 'rel-1812-1861',
@@ -194,25 +78,7 @@ export const relations: Relation[] = [
     to: 'ru-1861',
     kind: 'influence',
     label: 'От поколения 1812 года к спору о крепостном праве',
-    detail: `
-Заграничные походы 1813–1814 годов дали части офицеров опыт прямого сравнения
-Российской империи с европейскими обществами. Этот опыт заметен в биографиях и языке
-декабристов — «детей 1812 года», среди которых были и противники крепостного права.
-
-Но вести от войны 1812 года прямую линию к реформе 1861-го было бы слишком просто.
-Решение об освобождении крестьян созрело под давлением многих причин: хозяйственных
-ограничений крепостной системы, крестьянских волнений, споров в бюрократии и дворянстве,
-а также военной слабости, которую показала Крымская война.
-
-В речи московскому дворянству в 1856 году Александр II действительно призвал отменить
-крепостное право «сверху», не дожидаясь его отмены «снизу». Это уже финал долгого спора,
-а не поздний результат одного похода.
-`,
     verification: 'draft',
-    sources: [
-      { kind: 'academic', label: 'С. В. Мироненко: о заграничных походах, декабристах и причинах отмены крепостного права', url: 'https://historyrussia.org/polemika/intervyu-s-istorikami/sergej-vladimirovich-mironenko-ne-ekonomicheskie-prichiny-byli-glavnymi-v-otmene-krepostnogo-prava.html' },
-      { kind: 'archive', label: 'Следственные материалы по делу декабристов — публикации документов' },
-    ],
   },
   {
     id: 'rel-perry-meiji',
@@ -220,34 +86,7 @@ export const relations: Relation[] = [
     to: 'jp-meiji-1868',
     kind: 'influence',
     label: '«Чёрные корабли» углубили кризис сёгуната',
-    detail: `
-Перри прибыл не для войны, но опирался на очевидную военную угрозу. Канагавский договор
-1854 года открыл два порта для снабжения американских судов; гораздо более широкие
-торговые права и неравные условия закрепил договор Харриса 1858 года.
-
-Внешнее давление не создало оппозицию сёгунату с нуля. Оно раскололо элиты вокруг
-вопроса, кто вправе заключать договоры, усилило домены Сацума и Тёсю и сделало
-неспособность бакуфу контролировать внешнюю политику видимой всей стране.
-
-Дальше сработала внутренняя логика:
-
-\`\`\`mermaid
-flowchart LR
-  A["Приход Перри<br/>1853"] --> B["Открытие портов"]
-  B --> C["Кризис доверия<br/>к сёгунату"]
-  C --> D["Коалиция южных<br/>княжеств"]
-  D --> E["Реставрация Мэйдзи<br/>1868"]
-  E --> F["Ускоренная<br/>модернизация"]
-\`\`\`
-
-За пятнадцать лет внешний вызов превратился во внутреннюю борьбу за устройство власти.
-Реставрация Мэйдзи стала её исходом, а не заранее заданным ответом на появление эскадры.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'archive', label: 'U.S. Office of the Historian: The United States and the Opening to Japan, 1853', url: 'https://history.state.gov/milestones/1830-1860/opening-to-japan' },
-      { kind: 'institution', label: 'University of Tokyo: revision of the unequal treaties under the Meiji government', url: 'https://www.u-tokyo.ac.jp/en/whyutokyo/indpt_meiji_018.html' },
-    ],
   },
   {
     id: 'rel-opium-meiji',
@@ -255,25 +94,7 @@ flowchart LR
     to: 'jp-meiji-1868',
     kind: 'influence',
     label: 'Поражение Цин стало предупреждением для Японии',
-    detail: `
-Известия об Опиумной войне быстро дошли до Японии через китайские и голландские тексты.
-Для японских учёных и властей поражение Цин показало, что береговая оборона и прежняя
-система внешних отношений не защищают от индустриальных держав.
-
-Однако формула «Китай отказался меняться, Япония изменила всё» искажает обе истории.
-В Китае шло движение самоусиления: строились арсеналы, верфи и учебные учреждения.
-В Японии преобразования Мэйдзи тоже встретили сопротивление и сочетались с сохранением
-императорской легитимности и многими институтами эпохи Токугава.
-
-Связь состоит в передаче опыта: китайское поражение стало одним из аргументов японской
-дискуссии о защите страны. Разный итог определили также внутренний баланс сил,
-налоговые возможности и устройство двух государств.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'archive', label: 'National Diet Library: исследования японской морской политики после Опиумной войны', url: 'https://dl.ndl.go.jp/view/prepareDownload?contentNo=1&itemId=info:ndljp/pid/1283022' },
-      { kind: 'academic', label: 'Marius B. Jansen. The Making of Modern Japan. Harvard University Press, 2000' },
-    ],
   },
   {
     id: 'rel-1871-de-fr',
@@ -281,25 +102,7 @@ flowchart LR
     to: 'fr-third-republic-1871',
     kind: 'conflict',
     label: 'Одна война — две новые политические системы',
-    detail: `
-Франко-прусская война одновременно разрушила режим Наполеона III и завершила
-объединение Германии. Но даты здесь разные: Третью республику провозгласили в Париже
-4 сентября 1870 года, после поражения при Седане; Германскую империю — 18 января
-1871 года в Зеркальном зале Версаля.
-
-Весной 1871 года французский кризис продолжился Парижской коммуной и её кровавым
-подавлением. Во Франкфуртском мире Франция уступила Эльзас и часть Лотарингии;
-память о потере территорий надолго отравила отношения с новой империей.
-
-Это важная связь, но не готовое объяснение Первой мировой войны. Франко-германское
-противостояние влияло на дипломатию следующих десятилетий вместе с колониальным
-соперничеством, гонкой вооружений, кризисами на Балканах и системой союзов.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'archive', label: 'Élysée: падение Второй империи и провозглашение Республики 4 сентября 1870 года', url: 'https://www.elysee.fr/en/louis-napoleon-bonaparte' },
-      { kind: 'institution', label: 'German Bundestag: материалы о провозглашении Германской империи в 1871 году', url: 'https://www.bundestag.de/resource/blob/1136424/catalog_en.pdf' },
-    ],
   },
   {
     id: 'rel-1917-1918-bnr',
@@ -307,25 +110,7 @@ flowchart LR
     to: 'by-bnr-1918',
     kind: 'influence',
     label: 'Революция и оккупация открыли борьбу за государственность',
-    detail: `
-Белорусское национальное движение возникло до 1917 года, но падение монархии сняло
-имперские ограничения и открыло борьбу за форму власти. В декабре 1917 года собрался
-Всебелорусский съезд; после Брестского мира и в условиях германской оккупации Рада
-25 марта 1918 года провозгласила независимость БНР.
-
-Сходные процессы шли по всей бывшей империи, но их исходы различались. Финляндия,
-Польша и балтийские государства закрепили независимость; в Украине и Беларуси
-конкурировали национальные, советские и другие проекты, а границы менялись в ходе войн.
-
-БНР не создала устойчивого контроля над территорией. Её значение — в политической
-формулировке белорусской независимости; провозглашённая в 1919 году ССРБ представляла
-другую, советскую модель государственности. Сводить одну к прямому следствию другой нельзя.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'archive', label: 'Уставные грамоты Рады Белорусской Народной Республики, 1918 год' },
-      { kind: 'academic', label: 'Дорота Михалюк. Белорусская Народная Республика в 1918–1920 гг.: у истоков белорусской государственности, 2015' },
-    ],
   },
   {
     id: 'rel-1945-de-by',
@@ -333,25 +118,7 @@ flowchart LR
     to: 'by-un-1945',
     kind: 'context',
     label: 'Белорусская ССР в послевоенном устройстве мира',
-    detail: `
-Капитуляция Германии и участие Белорусской ССР в создании ООН принадлежат одному
-послевоенному порядку, но первая не была прямой причиной второго. В Ялте Сталин просил
-места для всех шестнадцати союзных республик; компромиссом стали отдельные приглашения
-для Украинской и Белорусской ССР наряду с СССР.
-
-Огромные потери республик служили публичным обоснованием этого решения, тогда как
-на переговорах речь шла и о дополнительных советских голосах. 26 июня 1945 года БССР
-подписала Устав ООН как государство-учредитель.
-
-Её международная самостоятельность оставалась ограниченной союзной внешней политикой.
-Тем не менее членство создало постоянное представительство и дипломатическую практику,
-которые независимая Беларусь унаследовала в 1991 году.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'archive', label: 'Организация Объединённых Наций: конференция в Сан-Франциско и приглашение Белорусской ССР', url: 'https://www.un.org/en/about-us/history-of-the-un/san-francisco-conference' },
-      { kind: 'academic', label: 'Serhii Plokhy. Yalta: The Price of Peace, 2010 — переговоры о местах советских республик в ООН' },
-    ],
   },
   {
     id: 'rel-wall-fall-ussr',
@@ -359,28 +126,7 @@ flowchart LR
     to: 'ru-1991',
     kind: 'context',
     label: '1989–1991: демонтаж европейского социалистического блока',
-    detail: `
-Падение Берлинской стены не вызвало распад СССР. Оба события входят в более широкий
-кризис: реформы Горбачёва, отказ от военного удержания союзников, массовые движения
-в Восточной Европе и рост суверенитетов внутри самого Союза.
-
-\`\`\`mermaid
-timeline
-  title От стены до распада
-  1989 : Открыты КПП в Берлине : Бархатная революция в Праге
-  1990 : Объединение Германии : Декларации о суверенитете республик
-  1991 : Августовский путч : Новые акты независимости : Прекращение существования СССР
-\`\`\`
-
-Между открытием переходов 9 ноября 1989 года и прекращением существования СССР прошло
-чуть больше двух лет. Близость дат показывает скорость распада прежнего порядка,
-но не превращает Берлин в единственную причину событий в Москве и республиках.
-`,
     verification: 'draft',
-    sources: [
-      { kind: 'archive', label: 'Беловежские соглашения 8 декабря 1991 года и документы «два плюс четыре» 1990 года' },
-      { kind: 'academic', label: 'Historical Archives of the European Union: исследования о цепочке событий 1989–1991 годов' },
-    ],
   },
   {
     id: 'rel-gagarin-wall',
@@ -388,23 +134,7 @@ timeline
     to: 'de-wall-1961',
     kind: 'comparison',
     label: 'Два образа холодной войны в одном году',
-    detail: `
-Апрель и август 1961 года дают не причинную цепочку, а выразительное сопоставление.
-
-- **12 апреля.** Полёт Гагарина показал возможности советской ракетной программы
-  и стал огромным пропагандным успехом СССР.
-- **13 августа.** Власти ГДР перекрыли границу вокруг Западного Берлина, чтобы
-  остановить массовый отъезд населения; бетонные укрепления появились позднее.
-
-Оба образа принадлежат холодной войне, но говорят о разных её измерениях: соревновании
-в науке и кризисе легитимности восточногерманского режима. Их соседство на шкале
-помогает увидеть противоречивость 1961 года, не утверждая, что одно событие вызвало другое.
-`,
     verification: 'draft',
-    sources: [
-      { kind: 'archive', label: 'Документы о полёте «Востока» 12 апреля 1961 года и решения СЕПГ от 13 августа 1961 года' },
-      { kind: 'institution', label: 'Berlin Wall Foundation: история закрытия границы 13 августа 1961 года', url: 'https://www.stiftung-berliner-mauer.de/en/topics/berlin-wall' },
-    ],
   },
   {
     id: 'rel-deng-1989',
@@ -412,25 +142,7 @@ timeline
     to: 'cn-tiananmen-1989',
     kind: 'context',
     label: 'Рыночные реформы и предел политического открытия',
-    detail: `
-Реформы после 1978 года расширили роль рынка, внешней торговли и личной инициативы,
-не отменяя монополию Коммунистической партии. Быстрые изменения принесли не только
-рост, но и инфляцию, коррупционные возможности и новые ожидания образованной молодёжи.
-
-После смерти Ху Яобана весной 1989 года студенческие собрания стали массовым движением.
-Его участники выступали против коррупции и инфляции, за свободу слова и политические
-реформы; требования разных групп не сводились к одной программе. В ночь на 4 июня
-армия подавила протесты с многочисленными жертвами.
-
-Репрессии подтвердили предел политической либерализации, но не завершили экономические
-преобразования: после паузы рыночный курс продолжился. Поэтому связь — это общий
-контекст реформ и кризиса, а не формула «рынок автоматически требует демократии».
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'archive', label: 'U.S. Office of the Historian: Tiananmen Square, 1989', url: 'https://history.state.gov/milestones/1989-1992/tiananmen-square' },
-      { kind: 'academic', label: 'World Bank: The Institutional Foundations of China’s Market Transition', url: 'https://documents1.worldbank.org/curated/en/579011468215974705/pdf/475820BOX0338853B.pdf' },
-    ],
   },
   {
     id: 'rel-chernobyl-fukushima',
@@ -438,28 +150,7 @@ timeline
     to: 'jp-fukushima-2011',
     kind: 'comparison',
     label: 'Две аварии, изменившие атомную энергетику',
-    detail: `
-Чернобыль и Фукусима — единственные аварии седьмого, высшего уровня по шкале INES.
-Причины, масштаб выбросов и последствия у них различались, но обе заставили
-пересматривать подходы к ядерной безопасности.
-
-| | Чернобыль, 1986 | Фукусима, 2011 |
-| --- | --- | --- |
-| Причина | ошибки при испытании, конструкция реактора | землетрясение и цунами |
-| Что отказало | активная зона | системы охлаждения после потери питания |
-| Реакция | международный пересмотр норм безопасности | стресс-тесты и пересмотр политики ряда стран |
-
-Германия решила отказаться от атомной энергетики ещё в 2002 году, затем продлила сроки,
-а после Фукусимы снова ускорила закрытие реакторов. Этот пример показывает реальную
-международную связь: авария в Японии изменила энергетическую политику в Европе, хотя
-реакции других стран были иными.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'archive', label: 'МАГАТЭ: The Fukushima Daiichi Accident, 2015', url: 'https://www.iaea.org/publications/10962/the-fukushima-daiichi-accident' },
-      { kind: 'academic', label: 'UNSCEAR: сравнение радиологических последствий аварий на Фукусиме и в Чернобыле', url: 'https://www.unscear.org/unscear/en/areas-of-work/fukushima-report-faq.html' },
-      { kind: 'institution', label: 'Правительство Германии: ускорение отказа от атомной энергетики после Фукусимы', url: 'https://www.bundesregierung.de/breg-en/service/archive/compensation-for-nuclear-phaseout-1881422' },
-    ],
   },
   {
     id: 'rel-hansa-polotsk',
@@ -467,25 +158,7 @@ timeline
     to: 'by-mindaugas-1253',
     kind: 'context',
     label: 'Балтийская торговля вокруг складывающегося ВКЛ',
-    detail: `
-Союз Любека и Гамбурга 1241 года — удобная веха ранней Ганзы, но не дата создания
-единой организации. В это же столетие Миндовг объединял земли будущего Великого
-Княжества Литовского. Прямой причинной связи между этими событиями нет.
-
-Общий контекст создаёт Балтика. Рига была ганзейским городом, Новгород — одним из
-четырёх главных зарубежных конторов, а Полоцк заключал договоры с Ригой и немецкими
-купцами и вывозил товары по Западной Двине. Называть Полоцк и Ригу «ганзейскими
-конторами» неверно: у них были разные места в торговой сети.
-
-Торговля давала региону доходы, договорную практику и постоянные контакты, но сама
-по себе не объясняет появление ВКЛ. Его формирование определяли также династическая
-политика, войны и отношения балтских и восточнославянских земель.
-`,
     verification: 'draft',
-    sources: [
-      { kind: 'archive', label: 'Ганзейские торговые договоры с Полоцком и Смоленском XIII–XIV веков — публикации текстов' },
-      { kind: 'institution', label: 'City League THE HANSA: четыре главных контора и сеть торговых отделений', url: 'https://www.hanse.org/en/the-medieval-hanseatic-league/die-kontore' },
-    ],
   },
   {
     id: 'rel-sputnik-apollo',
@@ -493,26 +166,7 @@ timeline
     to: 'ref-p105-vysadka-amerikanskih-astronavtov-na-poverh',
     kind: 'influence',
     label: '«Спутник-1» ускорил американскую лунную программу',
-    detail: `
-Запуск первого искусственного спутника не был технической причиной высадки на Луну:
-между этими событиями лежали создание NASA, пилотируемые программы Mercury и Gemini,
-решения Конгресса и огромная работа инженеров. Однако именно советский успех в октябре
-1957 года превратил космос в приоритет политического соревнования сверхдержав.
-
-В США «спутниковый шок» вызвал пересмотр организации космических исследований. В 1958
-году была создана NASA, а в 1961 году администрация Кеннеди поставила цель высадить
-человека на Луну до конца десятилетия. Программа Apollo стала ответом не на один запуск,
-а на последовательность советских достижений, включая полёт Юрия Гагарина.
-
-Поэтому связь показывает доказуемый политико-институциональный механизм: советские
-успехи усилили конкуренцию, ускорили мобилизацию американских ресурсов и помогли
-сформировать срок лунной программы. Они не предопределяли её технический результат.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'institution', label: 'NASA History: Dawn of the Space Age — Sputnik and the creation of NASA', url: 'https://www.nasa.gov/history/dawn-of-the-space-age/' },
-      { kind: 'archive', label: 'U.S. National Archives: Sputnik, Congress and the legislation that created NASA', url: 'https://www.archives.gov/legislative/features/early-space' },
-    ],
   },
   {
     id: 'rel-cuban-crisis-test-ban',
@@ -520,26 +174,7 @@ timeline
     to: 'ref-p123-dogovor-o-zapreschenii-yadernogo-oruzhiya-',
     kind: 'influence',
     label: 'Карибский кризис ускорил договор об ограничении испытаний',
-    detail: `
-Переговоры о запрете ядерных испытаний начались задолго до 1962 года и неоднократно
-заходили в тупик из-за вопросов контроля. Поэтому Московский договор нельзя считать
-внезапным продуктом Карибского кризиса.
-
-Но октябрьское противостояние показало руководителям СССР и США, насколько быстро
-военная эскалация может приблизить ядерную войну. После кризиса стороны восстановили
-переговоры; в 1963 году появились прямая линия связи Москва — Вашингтон и договор,
-запретивший испытания в атмосфере, космосе и под водой. Подземные испытания он не
-запрещал, так что это был ограниченный, но практический шаг по снижению риска.
-
-Связь проведена через изменение политической оценки опасности, а не через утверждение,
-будто кризис единолично создал договор. Существовавшая дипломатическая работа получила
-после октября 1962 года новый импульс и поддержку на высшем уровне.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'archive', label: 'U.S. Office of the Historian: The Cuban Missile Crisis and the first steps toward a test-ban agreement', url: 'https://history.state.gov/milestones/1961-1968/cuban-missile-crisis' },
-      { kind: 'institution', label: 'John F. Kennedy Presidential Library: Cuban Missile Crisis, hotline and Nuclear Test Ban Treaty', url: 'https://www.jfklibrary.org/learn/about-jfk/jfk-in-history/cuban-missile-crisis' },
-    ],
   },
   {
     id: 'rel-oil-shock-recession',
@@ -547,28 +182,2190 @@ timeline
     to: 'ref-p124-mirovoy-ekonomicheskiy-krizis',
     kind: 'influence',
     label: 'Нефтяной шок углубил мировую рецессию 1974–1975 годов',
-    detail: `
-Эмбарго арабских экспортёров и резкий рост цены нефти увеличили издержки транспорта,
-промышленности и отопления в странах-импортёрах. Ускорилась инфляция, сократился
-реальный спрос, а предприятия и домохозяйства столкнулись с дефицитом топлива. Это
-стало одним из ключевых механизмов международного распространения кризиса.
-
-Рецессию нельзя объяснить только нефтью. Ещё до эмбарго мировая экономика испытывала
-инфляционное давление, распадалась Бреттон-Вудская валютная система, а центральные
-банки ужесточали политику. Нефтяной шок наложился на эти проблемы и сделал спад глубже
-и синхроннее, одновременно усилив необычное сочетание безработицы и высокой инфляции.
-
-Таким образом, это причинная связь с несколькими условиями, а не формула «эмбарго
-автоматически вызвало весь кризис». На шкале она показывает конкретный канал влияния:
-цена энергии → производственные издержки и инфляция → падение выпуска и спроса.
-`,
     verification: 'verified',
-    sources: [
-      { kind: 'archive', label: 'U.S. Office of the Historian: Oil Embargo, 1973–1974 — global price increase and recession', url: 'https://history.state.gov/milestones/1969-1976/oil-embargo' },
-      { kind: 'institution', label: 'Federal Reserve History: Oil Shock of 1973–74 and the 1973–1975 recession', url: 'https://www.federalreservehistory.org/essays/oil-shock-of-1973-74' },
-    ],
+  },
+  {
+    id: 'rel-rus860-cyril-mission',
+    from: 'rus-constantinople-860',
+    to: 'ref-p030-nachalo-deyatelnosti-kirilla-i-mefodiya-v-',
+    kind: 'context',
+    label: 'Одна политика Фотия: оборона от руси и миссии к славянам',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-rus860-pvl-dating',
+    from: 'rus-constantinople-860',
+    to: 'ref-p036-sostavlenie-drevnerusskoy-letopisi-povest-',
+    kind: 'context',
+    label: 'Летопись относит поход к 866 году, греки — к 860-му',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-oleg-treaty-911',
+    from: 'ru-oleg-882',
+    to: 'rus-treaty-911',
+    kind: 'influence',
+    label: 'Контроль над днепровским путём привёл к договору с греками',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-treaty911-pvl',
+    from: 'rus-treaty-911',
+    to: 'ref-p036-sostavlenie-drevnerusskoy-letopisi-povest-',
+    kind: 'context',
+    label: 'Тексты договоров дошли только в составе летописи',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-vladimir-rogneda',
+    from: 'ref-p035-pravlenie-knyazya-vladimira-v-kieve',
+    to: 'by-rogneda-980',
+    kind: 'conflict',
+    label: 'Поход Владимира на Киев начался с захвата Полоцка',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-vladimir-sons-yaroslav',
+    from: 'ref-p035-pravlenie-knyazya-vladimira-v-kieve',
+    to: 'ru-yaroslav-1019',
+    kind: 'influence',
+    label: 'Сыновья-наместники Владимира начали войну за Киев',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-vladimir-baptism',
+    from: 'ref-p035-pravlenie-knyazya-vladimira-v-kieve',
+    to: 'ru-baptism-988',
+    kind: 'context',
+    label: 'Крещение — главное решение княжения Владимира',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-yaroslav-lyubech',
+    from: 'ru-yaroslav-1019',
+    to: 'ref-p036-lyubechskiy-sezd-knyazey',
+    kind: 'influence',
+    label: 'Наследство Ярослава привело к принципу «отчины»',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-lyubech-verdun',
+    from: 'ref-p036-lyubechskiy-sezd-knyazey',
+    to: 'fr-verdun-843',
+    kind: 'comparison',
+    label: 'Раздел державы между ветвями одной династии',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pvl-varangians',
+    from: 'ref-p036-sostavlenie-drevnerusskoy-letopisi-povest-',
+    to: 'ru-rurik-862',
+    kind: 'context',
+    label: 'Призвание варягов известно по рассказу летописи',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-cyril-ostromir',
+    from: 'ref-p030-nachalo-deyatelnosti-kirilla-i-mefodiya-v-',
+    to: 'rus-ostromir-1056',
+    kind: 'influence',
+    label: 'Славянская письменность сделала возможной книгу Остромира',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ostromir-diamond',
+    from: 'rus-ostromir-1056',
+    to: 'cn-diamond-sutra-868',
+    kind: 'comparison',
+    label: 'Древнейшие датированные книги: рукопись и оттиск',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ice-nevsky',
+    from: 'ref-p037-razgrom-aleksandrom-nevskim-rycarey-tevton',
+    to: 'ru-nevsky-1240',
+    kind: 'context',
+    label: 'Ледовое побоище — вторая победа Александра Невского',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-kiev1240-mongols',
+    from: 'rus-kiev-1240',
+    to: 'ru-mongols-1237',
+    kind: 'context',
+    label: 'Взятие Киева завершило поход Батыя по Руси',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-kiev1240-poland-hungary',
+    from: 'rus-kiev-1240',
+    to: 'ref-p037-vtorzhenie-mongolov-na-territorii-polshi-h',
+    kind: 'influence',
+    label: 'Из Киева армии Батыя двинулись на Польшу и Венгрию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-plague-peasants',
+    from: 'gb-plague-1348',
+    to: 'gb-peasants-revolt-1381',
+    kind: 'influence',
+    label: 'Чума изменила цену труда, налоги подняли деревню',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-gutenberg-caxton',
+    from: 'de-gutenberg-1455',
+    to: 'gb-caxton-1476',
+    kind: 'exchange',
+    label: 'Печатный станок пришёл в Англию через Фландрию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-augustine-bede',
+    from: 'gb-augustine-597',
+    to: 'gb-bede-731',
+    kind: 'influence',
+    label: 'Миссия в Кентербери — главный сюжет книги Беды',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-alfred-athelstan',
+    from: 'gb-alfred-871',
+    to: 'gb-athelstan-927',
+    kind: 'influence',
+    label: 'Внук Альфреда завершил объединение Англии',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-1066-domesday',
+    from: 'gb-1066',
+    to: 'gb-domesday-1086',
+    kind: 'influence',
+    label: 'Завоеватель описал доставшееся ему королевство',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-orleans-joan',
+    from: 'ref-p039-osada-orleana-anglichanami',
+    to: 'fr-joan-1429',
+    kind: 'conflict',
+    label: 'Осада Орлеана: английская и французская стороны',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-orleans-war-end',
+    from: 'ref-p039-osada-orleana-anglichanami',
+    to: 'fr-war-end-1453',
+    kind: 'influence',
+    label: 'Перелом, после которого англичане отступали',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-roses-bosworth',
+    from: 'ref-p040-voyna-aloy-i-beloy-rozy-v-anglii',
+    to: 'gb-bosworth-1485',
+    kind: 'context',
+    label: 'Тридцать лет усобицы закончились при Босворте',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-supremacy-becket',
+    from: 'gb-supremacy-1534',
+    to: 'gb-becket-1170',
+    kind: 'context',
+    label: 'Разрыв с Римом уничтожил гробницу Бекета',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-civilwar-execution',
+    from: 'gb-civil-war-1642',
+    to: 'ref-p048-kazn-angliyskogo-korolya-karla-i',
+    kind: 'influence',
+    label: 'Победившая армия привела короля на эшафот',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-execution-restoration',
+    from: 'ref-p048-kazn-angliyskogo-korolya-karla-i',
+    to: 'ref-p048-vosstanovlenie-v-anglii-monarhii-styuartov',
+    kind: 'context',
+    label: 'Одиннадцать лет без короля',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-glorious-billofrights',
+    from: 'gb-glorious-1688',
+    to: 'ref-p049-prinyatie-v-anglii-billya-o-pravah',
+    kind: 'influence',
+    label: 'Смена короля закончилась законом об условиях власти',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-plassey-seven-years',
+    from: 'ref-p059-nachalo-zavoevaniya-indii-angliey',
+    to: 'ref-p050-semiletnyaya-voyna',
+    kind: 'context',
+    label: 'Бенгалия — индийский фронт Семилетней войны',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-plassey-india-1947',
+    from: 'ref-p059-nachalo-zavoevaniya-indii-angliey',
+    to: 'gb-india-1947',
+    kind: 'context',
+    label: 'Начало и конец британского правления в Индии',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-american-war-declaration',
+    from: 'ref-p050-voyna-severoamerikanskih-koloniy-za-nezavi',
+    to: 'ref-p051-deklaraciya-nezavisimosti-ssha',
+    kind: 'conflict',
+    label: 'Одна война: потеря колоний и рождение США',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-suez-egypt',
+    from: 'ref-p064-otkrytie-sueckogo-kanala',
+    to: 'ref-p074-okkupaciya-egipta-velikobritaniey',
+    kind: 'influence',
+    label: 'Канал на пути в Индию сделал Египет целью Британии',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-egypt-entente',
+    from: 'ref-p074-okkupaciya-egipta-velikobritaniey',
+    to: 'ref-p066-britansko-francuzskoe-soglashenie',
+    kind: 'influence',
+    label: 'Египетский вопрос улажен в обмен на Марокко',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-entente-anglo-russian',
+    from: 'ref-p066-britansko-francuzskoe-soglashenie',
+    to: 'ref-p066-russko-britanskoe-soglashenie',
+    kind: 'influence',
+    label: 'Согласие с Францией дополнено договором с Россией',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-franco-russian-anglo-russian',
+    from: 'ref-p066-obrazovanie-franko-russkogo-soyuza',
+    to: 'ref-p066-russko-britanskoe-soglashenie',
+    kind: 'context',
+    label: 'Три соглашения сложили Антанту',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-gb-atlantic-un-declaration',
+    from: 'ref-p096-podpisanie-velikobritaniey-i-ssha-atlantic',
+    to: 'ref-p097-podpisanie-deklaracii-obedinennyh-naciy-so',
+    kind: 'influence',
+    label: 'Принципы хартии легли в основу союза Объединённых Наций',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-rurik-polotsk',
+    from: 'ru-rurik-862',
+    to: 'by-polotsk-862',
+    kind: 'context',
+    label: 'Полоцк впервые назван в рассказе о призвании Рюрика',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-sophia-minsk',
+    from: 'by-sophia-1044',
+    to: 'by-minsk-1067',
+    kind: 'context',
+    label: 'Война Всеслава с Ярославичами и первое упоминание Минска',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-krewo-grunwald',
+    from: 'by-krewo-1385',
+    to: 'by-grunwald-1410',
+    kind: 'influence',
+    label: 'Уния объединила силы ВКЛ и Польши против ордена',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-ivan3-orsha',
+    from: 'ref-p042-pravlenie-ivana-iii',
+    to: 'by-orsha-1514',
+    kind: 'context',
+    label: 'Войны Москвы и ВКЛ за руськие земли',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-statut-1529-1588',
+    from: 'by-statut-1529',
+    to: 'by-statut-1588',
+    kind: 'influence',
+    label: 'Три Статута — одна линия кодификации',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-lublin-statut',
+    from: 'by-lublin-1569',
+    to: 'by-statut-1588',
+    kind: 'context',
+    label: 'Отдельное право ВКЛ внутри Речи Посполитой',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-livonian-lublin',
+    from: 'ref-p053-livonskaya-voyna',
+    to: 'by-lublin-1569',
+    kind: 'influence',
+    label: 'Ливонская война подтолкнула ВКЛ к унии',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-reformation-budny',
+    from: 'de-luther-1517',
+    to: 'by-budny-1562',
+    kind: 'influence',
+    label: 'Реформация доходит до белорусских земель',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-skaryna-budny',
+    from: 'by-skaryna-1517',
+    to: 'by-budny-1562',
+    kind: 'comparison',
+    label: 'Две ранние печатные книги для «простых людей»',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-brest-uniate',
+    from: 'by-brest-union-1596',
+    to: 'by-uniate-1839',
+    kind: 'influence',
+    label: 'Полоцкий собор упразднил церковь, созданную унией',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-1830-uniate',
+    from: 'ref-p068-nacionalno-osvoboditelnoe-vosstanie-v-pols',
+    to: 'by-uniate-1839',
+    kind: 'influence',
+    label: 'Восстание 1830–1831 годов ускорило ликвидацию унии',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-war1654-occupation',
+    from: 'by-war-1654',
+    to: 'by-occupation-1941',
+    kind: 'comparison',
+    label: 'Две демографические катастрофы белорусских земель',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-northern-lesnaya',
+    from: 'ref-p055-severnaya-voyna',
+    to: 'by-lesnaya-1708',
+    kind: 'context',
+    label: 'Белорусские земли — театр Северной войны',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-1863-kalinouski',
+    from: 'ref-p069-nacionalno-osvoboditelnoe-vosstanie-v-pols',
+    to: 'by-kalinouski-1863',
+    kind: 'context',
+    label: 'Одно восстание — разные национальные памяти',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-bogushevich-nashaniva',
+    from: 'by-bogushevich-1891',
+    to: 'by-nasha-niva-1906',
+    kind: 'context',
+    label: 'Два этапа белорусского национального возрождения',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-nashaniva-kupala',
+    from: 'by-nasha-niva-1906',
+    to: 'by-kupala-1908',
+    kind: 'context',
+    label: 'Круг «Нашай Нівы» и первая книга Купалы',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-sovpolwar-riga',
+    from: 'ref-p089-sovetsko-polskaya-voyna',
+    to: 'by-riga-1921',
+    kind: 'influence',
+    label: 'Рижский мир завершил советско-польскую войну',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-bssr-bsu',
+    from: 'by-bssr-1919',
+    to: 'by-bsu-1921',
+    kind: 'influence',
+    label: 'Республика создаёт свою высшую школу',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-kurapaty-1991',
+    from: 'by-repressions-1937',
+    to: 'by-1991',
+    kind: 'influence',
+    label: 'Раскрытие Куропат подтолкнуло движение к независимости',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-chernobyl',
+    from: 'ru-chernobyl-1986',
+    to: 'by-chernobyl-1986',
+    kind: 'influence',
+    label: 'Авария на Украине — выпадения на Беларусь',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-belovezha',
+    from: 'by-1991',
+    to: 'ru-1991',
+    kind: 'context',
+    label: 'Беловежские соглашения подписаны на белорусской земле',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-by-1941-occupation',
+    from: 'ru-1941',
+    to: 'by-occupation-1941',
+    kind: 'influence',
+    label: 'Нападение Германии привело к оккупации Беларуси',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-1866-ngc',
+    from: 'ref-p063-voyna-prussii-i-italii-protiv-avstrii',
+    to: 'ref-p063-obrazovanie-severogermanskogo-soyuza',
+    kind: 'influence',
+    label: 'Победа над Австрией открыла путь Северогерманскому союзу',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-ngc-empire',
+    from: 'ref-p063-obrazovanie-severogermanskogo-soyuza',
+    to: 'de-empire-1871',
+    kind: 'influence',
+    label: 'Северогерманский союз стал каркасом империи',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-revolution-weimar',
+    from: 'ref-p077-noyabrskaya-burzhuazno-demokraticheskaya-r',
+    to: 'de-weimar-1919',
+    kind: 'influence',
+    label: 'Ноябрьская революция привела к Веймарской республике',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-armistice-brest',
+    from: 'ref-p077-podpisanie-peremiriya-mezhdu-germaniey-i-s',
+    to: 'ref-p088-zaklyuchenie-brestskogo-mirnogo-dogovora-m',
+    kind: 'context',
+    label: 'Компьенское перемирие аннулировало Брестский мир',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-armistice-versailles',
+    from: 'ref-p077-podpisanie-peremiriya-mezhdu-germaniey-i-s',
+    to: 'ref-p079-podpisanie-germaniey-versalskogo-mirnogo-d',
+    kind: 'influence',
+    label: 'Перемирие заранее определило условия Версаля',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-versailles-rhineland',
+    from: 'ref-p079-podpisanie-germaniey-versalskogo-mirnogo-d',
+    to: 'ref-p084-okkupaciya-germanskimi-voyskami-reynskoy-d',
+    kind: 'influence',
+    label: 'Версаль создал зону, которую Гитлер занял в 1936 году',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-locarno-league',
+    from: 'ref-p081-lokarnskaya-konferenciya',
+    to: 'ref-p082-vstuplenie-germanii-v-ligu-naciy',
+    kind: 'influence',
+    label: 'Локарно открыло Германии путь в Лигу Наций',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-rapallo-berlin-1926',
+    from: 'ref-p080-genuezskaya-konferenciya-podpisanie-rapall',
+    to: 'ref-p090-podpisanie-sovetsko-germanskogo-dogovora-o',
+    kind: 'influence',
+    label: 'Берлинский договор продолжил линию Рапалло',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-munich-prague',
+    from: 'ref-p085-myunhenskaya-konferenciya-germanii-italii-',
+    to: 'ref-p086-okkupaciya-chehoslovakii-germanskimi-voysk',
+    kind: 'influence',
+    label: 'Мюнхен оставил Чехословакию беззащитной',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-prague-poland-guarantee',
+    from: 'ref-p086-okkupaciya-chehoslovakii-germanskimi-voysk',
+    to: 'ref-p095-napadenie-germanii-na-polshu-nachalo-vtoro',
+    kind: 'influence',
+    label: 'После захвата Праги Британия дала гарантии Польше',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-polish-pact-1939',
+    from: 'ref-p083-zaklyuchenie-dogovora-o-nenapadenii-mezhdu',
+    to: 'ref-p095-napadenie-germanii-na-polshu-nachalo-vtoro',
+    kind: 'context',
+    label: 'Договор 1934 года разорван за четыре месяца до нападения',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-mrp-poland',
+    from: 'ref-p091-podpisanie-sovetsko-germanskogo-pakta-o-ne',
+    to: 'ref-p095-napadenie-germanii-na-polshu-nachalo-vtoro',
+    kind: 'influence',
+    label: 'Пакт избавил Германию от угрозы войны с СССР',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-mrp-soviet-campaign',
+    from: 'ref-p091-podpisanie-sovetsko-germanskogo-pakta-o-ne',
+    to: 'ref-p092-osvoboditelnyy-pohod-krasnoy-armii',
+    kind: 'influence',
+    label: 'Секретный протокол определил линию похода 1939 года',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-berlin-op-capitulation',
+    from: 'ref-p100-berlinskaya-nastupatelnaya-operaciya',
+    to: 'de-1945',
+    kind: 'influence',
+    label: 'Падение Берлина привело к капитуляции Германии',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-anschluss-munich',
+    from: 'ref-p085-anshlyus-prisoedinenie-avstrii-k-germanii',
+    to: 'ref-p085-myunhenskaya-konferenciya-germanii-italii-',
+    kind: 'context',
+    label: 'Аншлюс и Мюнхен — два шага 1938 года',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-ruhr-hyperinflation',
+    from: 'ref-p081-rurskiy-krizis',
+    to: 'de-hyperinflation-1923',
+    kind: 'influence',
+    label: 'Рурский кризис превратил инфляцию в гиперинфляцию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-nuremberg-kristallnacht',
+    from: 'de-nuremberg-laws-1935',
+    to: 'de-kristallnacht-1938',
+    kind: 'influence',
+    label: 'Нюрнбергские законы подготовили почву для погрома',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-blockade-two-states',
+    from: 'de-berlin-blockade-1948',
+    to: 'de-two-states-1949',
+    kind: 'influence',
+    label: 'Денежная реформа и блокада закрепили раскол страны',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-de-lechfeld-hre',
+    from: 'de-lechfeld-955',
+    to: 'de-hre-962',
+    kind: 'influence',
+    label: 'Победа над венграми укрепила путь Оттона к короне',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-odoacer-theodoric',
+    from: 'ref-p027-nizlozhenie-romula-avgustula-padenie-zapad',
+    to: 'it-theodoric-493',
+    kind: 'influence',
+    label: 'Константинополь послал Теодориха против Одоакра',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pavia-charlemagne-rome',
+    from: 'it-pavia-774',
+    to: 'fr-charlemagne-800',
+    kind: 'influence',
+    label: 'Завоевание Павии сделало франков хозяевами Италии и Рима',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ottomans-chrysoloras',
+    from: 'ref-p043-nachalo-zavoevaniya-turkami-osmanami-balka',
+    to: 'it-chrysoloras-1397',
+    kind: 'influence',
+    label: 'Османская угроза привела византийского посла в Италию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-italian-wars-habsburgs',
+    from: 'it-italian-wars-1494',
+    to: 'es-charles-v-1519',
+    kind: 'context',
+    label: 'Италия — главная арена борьбы Франции и Габсбургов',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-cognac-sack-rome',
+    from: 'it-italian-wars-1494',
+    to: 'it-sack-rome-1527',
+    kind: 'influence',
+    label: 'Союз папы с Францией привёл армию императора к Риму',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-luther-trent',
+    from: 'de-luther-1517',
+    to: 'it-trent-1545',
+    kind: 'influence',
+    label: 'Тридентский собор — ответ католической церкви на Реформацию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-galileo-telescope-trial',
+    from: 'it-galileo-1610',
+    to: 'it-galileo-1633',
+    kind: 'influence',
+    label: 'От телескопа к процессу: открытия Галилея и инквизиция',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-napoleon-kingdom-italy',
+    from: 'fr-napoleon-1799',
+    to: 'it-kingdom-1805',
+    kind: 'influence',
+    label: 'Наполеон превратил Итальянскую республику в королевство',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-young-italy-unification',
+    from: 'it-young-italy-1831',
+    to: 'ref-p062-obedinenie-italii',
+    kind: 'context',
+    label: 'Идея единой Италии: от Мадзини к королевству 1861 года',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-unification-rome-1870',
+    from: 'ref-p062-obedinenie-italii',
+    to: 'it-rome-1870',
+    kind: 'influence',
+    label: 'Взятие Рима завершило объединение 1861 года',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-rome-1870-lateran',
+    from: 'it-rome-1870',
+    to: 'it-lateran-1929',
+    kind: 'influence',
+    label: 'Латеранские соглашения закрыли «римский вопрос» 1870 года',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-caporetto-vittorio-veneto',
+    from: 'it-caporetto-1917',
+    to: 'it-vittorio-veneto-1918',
+    kind: 'context',
+    label: 'От разгрома к победе на итальянском фронте',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-villa-giusti-compiegne',
+    from: 'it-vittorio-veneto-1918',
+    to: 'ref-p077-podpisanie-peremiriya-mezhdu-germaniey-i-s',
+    kind: 'context',
+    label: 'Перемирие с Австро-Венгрией на неделю опередило германское',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fasci-march-rome',
+    from: 'ref-p078-sozdanie-soyuza-borby-v-italii',
+    to: 'ref-p080-prihod-k-vlasti-fashistov-v-italii',
+    kind: 'influence',
+    label: 'Из «Союзов борьбы» выросла партия, пришедшая к власти',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-march-rome-vs-1933',
+    from: 'ref-p080-prihod-k-vlasti-fashistov-v-italii',
+    to: 'de-1933',
+    kind: 'comparison',
+    label: 'Два назначения: Муссолини в 1922-м и Гитлер в 1933-м',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-adwa-ethiopia-1935',
+    from: 'ref-p074-italo-efiopskaya-voyna',
+    to: 'ref-p084-napadenie-italii-na-abissiniyu-efiopiyu-vt',
+    kind: 'context',
+    label: 'Вторая попытка Италии завоевать Эфиопию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ethiopia-league-exit',
+    from: 'ref-p084-napadenie-italii-na-abissiniyu-efiopiyu-vt',
+    to: 'ref-p085-vyhod-italii-iz-ligi-naciy',
+    kind: 'influence',
+    label: 'Санкции за Эфиопию привели к разрыву с Лигой Наций',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ethiopia-league-weakness',
+    from: 'ref-p084-napadenie-italii-na-abissiniyu-efiopiyu-vt',
+    to: 'ref-p078-sozdanie-ligi-naciy',
+    kind: 'context',
+    label: 'Абиссинский кризис показал слабость Лиги Наций',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fall-1943-armistice',
+    from: 'it-fall-mussolini-1943',
+    to: 'ref-p098-podpisanie-italiey-peremiriya-s-anglo-amer',
+    kind: 'influence',
+    label: 'Правительство Бадольо вывело Италию из войны',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-liberation-republic',
+    from: 'it-liberation-1945',
+    to: 'it-republic-1946',
+    kind: 'context',
+    label: 'От освобождения к республике',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-normandy-1066',
+    from: 'fr-normandy-911',
+    to: 'gb-1066',
+    kind: 'influence',
+    label: 'Герцогство на Сене даёт Англии новую династию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-bouvines-magna-carta',
+    from: 'fr-bouvines-1214',
+    to: 'gb-magna-carta-1215',
+    kind: 'influence',
+    label: 'Поражение союзников под Бувином ослабило короля Иоанна',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-bouvines-paris-1259',
+    from: 'fr-bouvines-1214',
+    to: 'fr-louis-ix-1248',
+    kind: 'influence',
+    label: 'Парижский мир 1259 года закрепил итог Бувина',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-albigensian-languedoc',
+    from: 'fr-albigensian-1209',
+    to: 'fr-louis-ix-1248',
+    kind: 'context',
+    label: 'Юг входит в королевство при Людовике IX',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-italian-wars-charles-v',
+    from: 'fr-italian-wars-1494',
+    to: 'es-charles-v-1519',
+    kind: 'conflict',
+    label: 'Валуа против Габсбургов за Италию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-nantes-revocation',
+    from: 'fr-nantes-1598',
+    to: 'fr-revocation-1685',
+    kind: 'context',
+    label: 'Конец опыта двух вер в одном королевстве',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-montesquieu-us-constitution',
+    from: 'fr-montesquieu-1748',
+    to: 'ref-p051-prinyatie-konstitucii-ssha',
+    kind: 'influence',
+    label: 'Разделение властей из «О духе законов» — в устройство США',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-alliance-yorktown',
+    from: 'fr-us-alliance-1778',
+    to: 'ref-p050-voyna-severoamerikanskih-koloniy-za-nezavi',
+    kind: 'influence',
+    label: 'Французский флот решает исход войны за независимость',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-alliance-debt-estates',
+    from: 'fr-us-alliance-1778',
+    to: 'fr-estates-general-1789',
+    kind: 'influence',
+    label: 'Долг американской войны приводит к созыву Генеральных штатов',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-estates-revolution',
+    from: 'fr-estates-general-1789',
+    to: 'fr-revolution-1789',
+    kind: 'influence',
+    label: 'Национальное собрание открывает революцию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-consulate-empire',
+    from: 'fr-napoleon-1799',
+    to: 'ref-p059-provozglashenie-napoleona-bonaparta-impera',
+    kind: 'influence',
+    label: 'Первый консул становится императором',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-empire-spain-1808',
+    from: 'ref-p060-pervaya-imperiya-vo-francii',
+    to: 'es-1808',
+    kind: 'influence',
+    label: 'Байоннские отречения поднимают Испанию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-berezina-ru-1812',
+    from: 'ref-p067-razgrom-francuzskoy-armii-na-reke-berezine',
+    to: 'ru-1812',
+    kind: 'conflict',
+    label: 'Березина — последний крупный бой похода 1812 года',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-1812-abdication',
+    from: 'ru-1812',
+    to: 'ref-p060-otrechenie-napoleona-ot-vlasti',
+    kind: 'influence',
+    label: 'Гибель Великой армии ведёт коалицию в Париж',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-1848-germany',
+    from: 'fr-1848',
+    to: 'de-1848',
+    kind: 'influence',
+    label: 'Февраль в Париже запускает мартовские революции',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-1848-coup',
+    from: 'fr-1848',
+    to: 'ref-p062-gosudarstvennyy-perevorot-lui-bonaparta',
+    kind: 'influence',
+    label: 'Республика всеобщего голосования избирает будущего диктатора',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-coup-empire',
+    from: 'ref-p062-gosudarstvennyy-perevorot-lui-bonaparta',
+    to: 'fr-second-empire-1852',
+    kind: 'influence',
+    label: 'Через год после переворота — империя',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-third-republic-1875',
+    from: 'fr-third-republic-1871',
+    to: 'ref-p064-prinyatie-konstitucii-sh-respubliki-vo-fra',
+    kind: 'influence',
+    label: 'Временный режим получает конституцию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-ferry-laicite',
+    from: 'fr-ferry-laws-1882',
+    to: 'fr-laicite-1905',
+    kind: 'context',
+    label: 'Два шага светской республики',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-1935-rhineland',
+    from: 'ref-p091-podpisanie-sovetsko-francuzskogo-dogovora-',
+    to: 'ref-p084-okkupaciya-germanskimi-voyskami-reynskoy-d',
+    kind: 'influence',
+    label: 'Ратификация пакта становится поводом для ремилитаризации',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-algeria-1830-1954',
+    from: 'ref-p072-nachalo-zavoevaniya-alzhira-franciey',
+    to: 'fr-algeria-war-1954',
+    kind: 'context',
+    label: '132 года французского Алжира',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-algeria-fifth-republic',
+    from: 'fr-algeria-war-1954',
+    to: 'fr-fifth-republic-1958',
+    kind: 'influence',
+    label: 'Алжирский кризис возвращает де Голля',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-fourth-fifth',
+    from: 'ref-p102-chetvertaya-respublika-vo-francii',
+    to: 'fr-fifth-republic-1958',
+    kind: 'influence',
+    label: 'Слабость парламентского режима рождает сильного президента',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-schuman-ecsc',
+    from: 'fr-schuman-1950',
+    to: 'ref-p103-sozdanie-evropeyskogo-obedineniya-uglya-i-',
+    kind: 'influence',
+    label: 'Предложение Шумана становится первым европейским сообществом',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-fr-women-vote-liberation',
+    from: 'fr-women-vote-1944',
+    to: 'fr-liberation-1944',
+    kind: 'context',
+    label: 'Права граждан для освобождённой Франции',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-kazan-pokrov',
+    from: 'ru-kazan-1552',
+    to: 'ref-p053-stroitelstvo-pokrovskogo-sobora-v-moskve',
+    kind: 'influence',
+    label: 'Покровский собор построен в память о взятии Казани',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-catherine-partitions',
+    from: 'ref-p056-pravlenie-rossiyskoy-imperatricy-ekateriny',
+    to: 'by-partitions-1795',
+    kind: 'influence',
+    label: 'Политика Екатерины II и разделы Речи Посполитой',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-catherine-crimea',
+    from: 'ref-p056-pravlenie-rossiyskoy-imperatricy-ekateriny',
+    to: 'ru-crimea-1783',
+    kind: 'influence',
+    label: 'Южная политика Екатерины II и манифест 1783 года',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-1812-decembrists',
+    from: 'ru-1812',
+    to: 'ref-p068-vosstanie-dekabristov-v-rossii',
+    kind: 'influence',
+    label: 'Поколение 1812 года и тайные общества',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-1861-great-reforms',
+    from: 'ru-1861',
+    to: 'ref-p069-burzhuaznye-reformy-v-rossii',
+    kind: 'influence',
+    label: 'Освобождение крестьян потребовало новых учреждений',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-feb-dual-power',
+    from: 'ref-p072-fevralskaya-revolyuciya-v-rossii',
+    to: 'ref-p086-dvoevlastie-v-rossii',
+    kind: 'influence',
+    label: 'Февраль породил две власти сразу',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-lenin-october',
+    from: 'ref-p086-pribytie-v-i-lenina-v-rossiyu-iz-emigracii',
+    to: 'ref-p086-oktyabrskaya-revolyuciya-v-rossii',
+    kind: 'influence',
+    label: '«Апрельские тезисы» — курс на взятие власти',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-october-constituent',
+    from: 'ref-p086-oktyabrskaya-revolyuciya-v-rossii',
+    to: 'ref-p087-rabota-uchreditelnogo-sobraniya-v-rossii',
+    kind: 'conflict',
+    label: 'Власть Советов против выборного собрания',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-peace-decree-brest',
+    from: 'ref-p087-itogi-raboty-ii-vserossiyskogo-sezda-sovet',
+    to: 'ref-p088-zaklyuchenie-brestskogo-mirnogo-dogovora-m',
+    kind: 'influence',
+    label: 'От Декрета о мире к сепаратному миру',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-brest-german-revolution',
+    from: 'ref-p077-noyabrskaya-burzhuazno-demokraticheskaya-r',
+    to: 'ref-p088-zaklyuchenie-brestskogo-mirnogo-dogovora-m',
+    kind: 'influence',
+    label: 'Поражение и революция в Германии отменили Брестский мир',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-civil-war-nep',
+    from: 'ref-p088-grazhdanskaya-voyna',
+    to: 'ref-p089-novaya-ekonomicheskaya-politika-nep-v-ross',
+    kind: 'influence',
+    label: 'Кризис «военного коммунизма» привёл к нэпу',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-1939-germany-poland',
+    from: 'ref-p095-napadenie-germanii-na-polshu-nachalo-vtoro',
+    to: 'ref-p092-osvoboditelnyy-pohod-krasnoy-armii',
+    kind: 'context',
+    label: 'Два вторжения в Польшу в сентябре 1939 года',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-riga-1939',
+    from: 'by-riga-1921',
+    to: 'ref-p092-osvoboditelnyy-pohod-krasnoy-armii',
+    kind: 'context',
+    label: 'Рижская граница и 17 сентября 1939 года',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-finland-league',
+    from: 'ref-p092-sovetsko-finlyandskaya-voyna',
+    to: 'ref-p090-chlenstvo-sssr-v-lige-naciy',
+    kind: 'influence',
+    label: 'Нападение на Финляндию — исключение из Лиги Наций',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-league-franco-soviet',
+    from: 'ref-p090-chlenstvo-sssr-v-lige-naciy',
+    to: 'ref-p091-podpisanie-sovetsko-francuzskogo-dogovora-',
+    kind: 'context',
+    label: 'Курс на коллективную безопасность',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-1941-blockade',
+    from: 'ru-1941',
+    to: 'ref-p096-blokada-leningrada',
+    kind: 'context',
+    label: 'Наступление 1941 года и блокада Ленинграда',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-stalin-death-xx',
+    from: 'ref-p108-smert-i-v-stalina',
+    to: 'ref-p108-hh-sezd-kpss',
+    kind: 'influence',
+    label: 'После смерти Сталина — осуждение культа личности',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-sputnik-gagarin',
+    from: 'ref-p108-zapusk-sssr-pervogo-iskusstvennogo-sputnik',
+    to: 'ru-gagarin-1961',
+    kind: 'context',
+    label: 'Два первых шага советской космической программы',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-gagarin-tereshkova',
+    from: 'ru-gagarin-1961',
+    to: 'ref-p108-pervyy-v-mire-polet-zhenschiny-v-kosmos',
+    kind: 'influence',
+    label: 'Программа «Восток»: от первого полёта к первой женщине',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-gorbachev-1991',
+    from: 'ref-p108-izbranie-m-s-gorbacheva-generalnym-sekreta',
+    to: 'ru-1991',
+    kind: 'influence',
+    label: 'Перестройка и распад Союза',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-sovereignty-1991',
+    from: 'ref-p109-provozglashenie-suvereniteta-rsfsr',
+    to: 'ru-1991',
+    kind: 'influence',
+    label: 'Верховенство законов РСФСР подорвало союзный центр',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-chechnya-wars',
+    from: 'ref-p110-vosstanovlenie-konstitucionnogo-poryadka-v',
+    to: 'ref-p110-kontrterroristicheskaya-operaciya-kto-voor',
+    kind: 'influence',
+    label: 'Нерешённый статус Чечни привёл ко второй войне',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-ru-collectivization-depression',
+    from: 'ref-p090-nachalo-industrializacii-i-kollektivizacii',
+    to: 'ref-p083-mirovoy-ekonomicheskiy-krizis',
+    kind: 'comparison',
+    label: 'Плановый рывок и Великая депрессия',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-711-covadonga',
+    from: 'es-711',
+    to: 'es-covadonga-722',
+    kind: 'influence',
+    label: 'Завоевание вызвало сопротивление на севере',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-union-1492',
+    from: 'ref-p040-obedinenie-kastilii-i-aragona-v-edinoe-kor',
+    to: 'es-1492',
+    kind: 'influence',
+    label: 'Общие государи довели Реконкисту до конца',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-1492-tordesillas',
+    from: 'es-1492',
+    to: 'es-tordesillas-1494',
+    kind: 'influence',
+    label: 'Плавание Колумба потребовало раздела океана',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-1492-conquista',
+    from: 'es-1492',
+    to: 'ref-p057-zavoevanie-ispaniey-i-portugaliey-centraln',
+    kind: 'influence',
+    label: 'От первых островов к завоеванию материка',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-conquista-aztecs',
+    from: 'ref-p057-zavoevanie-ispaniey-i-portugaliey-centraln',
+    to: 'ref-p045-rascvet-gosudarstv-inkov-i-actekov-v-ameri',
+    kind: 'conflict',
+    label: 'Конкиста разрушает державы ацтеков и инков',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-conquista-newlaws',
+    from: 'ref-p057-zavoevanie-ispaniey-i-portugaliey-centraln',
+    to: 'es-new-laws-1542',
+    kind: 'influence',
+    label: 'Злоупотребления колонистов вызвали Новые законы',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-charles-philip',
+    from: 'es-charles-v-1519',
+    to: 'es-philip-ii-1556',
+    kind: 'influence',
+    label: 'Отречение Карла V разделило наследство',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-tordesillas-magellan',
+    from: 'es-tordesillas-1494',
+    to: 'es-magellan-1522',
+    kind: 'context',
+    label: 'Раздел мира и спор о Молукках',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-cadiz-riego',
+    from: 'es-cadiz-1812',
+    to: 'es-riego-1820',
+    kind: 'influence',
+    label: 'Риего восстановил Кадисскую конституцию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-holyalliance-riego',
+    from: 'ref-p061-sozdanie-svyaschennogo-soyuza',
+    to: 'es-riego-1820',
+    kind: 'influence',
+    label: 'Священный союз подавил испанскую революцию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-riego-ayacucho',
+    from: 'es-riego-1820',
+    to: 'es-ayacucho-1824',
+    kind: 'influence',
+    label: 'Армия не поплыла в Америку',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-1868-francoprussian',
+    from: 'es-revolution-1868',
+    to: 'ref-p064-franko-prusskaya-voyna',
+    kind: 'influence',
+    label: 'Вакантный испанский трон стал поводом к войне',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-1868-republic',
+    from: 'es-revolution-1868',
+    to: 'es-first-republic-1873',
+    kind: 'influence',
+    label: 'Демократическое шестилетие привело к республике',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-primo-republic',
+    from: 'es-primo-de-rivera-1923',
+    to: 'es-republic-1931',
+    kind: 'influence',
+    label: 'Монархия пала вслед за диктатурой',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-popularfront-civilwar',
+    from: 'ref-p084-pobeda-narodnogo-fronta-na-vyborah-v-korte',
+    to: 'es-civil-war-1936',
+    kind: 'context',
+    label: 'Выборы 1936 года и мятеж армии',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-nato-madridpacts',
+    from: 'ref-p121-sozdanie-organizacii-severoatlanticheskogo',
+    to: 'es-madrid-pacts-1953',
+    kind: 'context',
+    label: 'Испания в западном блоке без НАТО',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-pacts-stabilization',
+    from: 'es-madrid-pacts-1953',
+    to: 'es-stabilization-1959',
+    kind: 'context',
+    label: 'Выход из изоляции и открытие экономики',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-transition-constitution',
+    from: 'es-transition-1975',
+    to: 'es-constitution-1978',
+    kind: 'influence',
+    label: 'Переход к демократии завершился конституцией',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-constitution-coup',
+    from: 'es-constitution-1978',
+    to: 'es-coup-1981',
+    kind: 'context',
+    label: 'Попытка переворота против нового порядка',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-eec-spain',
+    from: 'ref-p104-dogovor-ob-uchrezhdenii-evropeyskogo-ekono',
+    to: 'es-eec-1986',
+    kind: 'context',
+    label: 'Испания входит в сообщество, созданное в 1957 году',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-es-1492-moriscos',
+    from: 'es-1492',
+    to: 'es-moriscos-1609',
+    kind: 'context',
+    label: 'Политика религиозного единства',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-thirtyyears-crisis1640',
+    from: 'de-thirty-years-1618',
+    to: 'es-crisis-1640',
+    kind: 'context',
+    label: 'Война с Францией истощила монархию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-rome-expulsion-republic',
+    from: 'ref-p022-izgnanie-poslednego-carya-iz-rima',
+    to: 'ref-p022-ustanovlenie-respubliki',
+    kind: 'influence',
+    label: 'Изгнание царя заменило его двумя выборными консулами',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-rome-patricians-tribunes',
+    from: 'ref-p022-ustanovlenie-respubliki',
+    to: 'ref-p022-ustanovlenie-dolzhnosti-narodnyh-tribunov-',
+    kind: 'influence',
+    label: 'Власть патрициев вызвала уход плебеев и появление трибунов',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-rome-tribunes-licinian',
+    from: 'ref-p022-ustanovlenie-dolzhnosti-narodnyh-tribunov-',
+    to: 'ref-p023-uravnenie-plebeev-v-pravah-s-patriciyami',
+    kind: 'influence',
+    label: 'Трибунат помог плебеям добиться консульства',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-rome-twelve-tables-licinian',
+    from: 'ref-p022-prinyatie-zakonov-xii-tablic',
+    to: 'ref-p023-uravnenie-plebeev-v-pravah-s-patriciyami',
+    kind: 'context',
+    label: 'Два этапа борьбы патрициев и плебеев',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-rome-italy-pyrrhus',
+    from: 'ref-p022-ekspansiya-rima-na-apenninskom-poluostrove',
+    to: 'ref-p023-razgrom-rimlyanami-grecheskogo-voyska-vo-g',
+    kind: 'influence',
+    label: 'Продвижение Рима на юг заставило Тарент позвать Пирра',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-rome-italy-first-punic',
+    from: 'ref-p022-ekspansiya-rima-na-apenninskom-poluostrove',
+    to: 'ref-p024-pervaya-punicheskaya-voyna',
+    kind: 'context',
+    label: 'Покорив Италию, Рим в том же году вышел на Сицилию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-rome-treaty-201-third-punic',
+    from: 'ref-p024-vtoraya-punicheskaya-voyna',
+    to: 'ref-p024-tretya-punicheskaya-voyna-gibel-karfagena',
+    kind: 'influence',
+    label: 'Мир 201 года связал Карфаген и дал Риму повод к войне',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-rome-marius-armies',
+    from: 'ref-p025-nachalo-voennoy-reformy-gaya-mariya',
+    to: 'ref-p026-grazhdanskaya-voyna-v-rime',
+    kind: 'context',
+    label: 'Армия неимущих и гражданские войны конца республики',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-rome-tiberius-gaius',
+    from: 'ref-p025-reforma-tiberiya-grakha',
+    to: 'ref-p025-reformy-gaya-grakha',
+    kind: 'influence',
+    label: 'Гай Гракх продолжил дело брата',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-rome-civil-war-murder',
+    from: 'ref-p026-grazhdanskaya-voyna-v-rime',
+    to: 'ref-p026-ubiystvo-yuliya-cezarya',
+    kind: 'context',
+    label: 'Пожизненная диктатура и заговор сенаторов',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-byz-1204-1261',
+    from: 'ref-p034-zahvat-krestonoscami-konstantinopolya',
+    to: 'ref-p034-vosstanovlenie-vizantiyskoy-imperii',
+    kind: 'influence',
+    label: 'Никейская империя, возникшая после 1204 года, вернула столицу',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-baptism-gniezno',
+    from: 'pl-mieszko-966',
+    to: 'pl-gniezno-1000',
+    kind: 'influence',
+    label: 'Крещение 966 года привело к польской архиепископии',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-gniezno-coronation',
+    from: 'pl-gniezno-1000',
+    to: 'pl-boleslaw-1025',
+    kind: 'influence',
+    label: 'Гнезненский съезд открыл Болеславу путь к короне',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-rus-baptism',
+    from: 'pl-mieszko-966',
+    to: 'ru-baptism-988',
+    kind: 'comparison',
+    label: 'Два крещения: латинское в Польше и греческое на Руси',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-hre-gniezno',
+    from: 'de-hre-962',
+    to: 'pl-gniezno-1000',
+    kind: 'context',
+    label: 'Империя Оттонов и визит Оттона III в Гнезно',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-mongols-legnica',
+    from: 'ru-mongols-1237',
+    to: 'pl-legnica-1241',
+    kind: 'context',
+    label: 'Легница — западный фланг того же монгольского похода',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-1138-lyubech',
+    from: 'pl-testament-1138',
+    to: 'ref-p036-lyubechskiy-sezd-knyazey',
+    kind: 'comparison',
+    label: 'Уделы Пястов и «отчины» Рюриковичей',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-casimir-academy',
+    from: 'ref-p041-usilenie-polshi-pri-kazimire-sh-velikom',
+    to: 'pl-krakow-academy-1364',
+    kind: 'influence',
+    label: 'Казимир Великий основывает университет в Кракове',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-casimir-krewo',
+    from: 'ref-p041-usilenie-polshi-pri-kazimire-sh-velikom',
+    to: 'by-krewo-1385',
+    kind: 'influence',
+    label: 'Конец Пястов открыл путь к унии с Литвой',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-academy-copernicus',
+    from: 'pl-krakow-academy-1364',
+    to: 'pl-copernicus-1543',
+    kind: 'influence',
+    label: 'Коперник учился астрономии в Краковской академии',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-copernicus-galileo',
+    from: 'pl-copernicus-1543',
+    to: 'it-galileo-1610',
+    kind: 'influence',
+    label: 'Галилей нашёл в телескоп доводы в пользу Коперника',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-luther-homage',
+    from: 'de-luther-1517',
+    to: 'pl-prussian-homage-1525',
+    kind: 'influence',
+    label: 'По совету Лютера орденская Пруссия стала герцогством',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-grunwald-homage',
+    from: 'by-grunwald-1410',
+    to: 'pl-prussian-homage-1525',
+    kind: 'context',
+    label: 'Финал вековой борьбы Польши и Литвы с Тевтонским орденом',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-lublin-confederation',
+    from: 'by-lublin-1569',
+    to: 'pl-warsaw-confederation-1573',
+    kind: 'context',
+    label: 'Новая Речь Посполитая и её первое бескоролевье',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-bartholomew-confederation',
+    from: 'fr-bartholomew-1572',
+    to: 'pl-warsaw-confederation-1573',
+    kind: 'comparison',
+    label: 'Варфоломеевская ночь и польский акт о веротерпимости',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-deluge-war1654',
+    from: 'by-war-1654',
+    to: 'pl-deluge-1655',
+    kind: 'context',
+    label: 'Война на два фронта: Россия и Швеция',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-1791-usa',
+    from: 'ref-p051-prinyatie-konstitucii-ssha',
+    to: 'pl-constitution-1791',
+    kind: 'comparison',
+    label: 'Две первые писаные конституции нового времени',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-1791-partitions',
+    from: 'pl-constitution-1791',
+    to: 'by-partitions-1795',
+    kind: 'influence',
+    label: 'Реформа стала поводом для второго и третьего разделов',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-napoleon-duchy',
+    from: 'fr-napoleon-1799',
+    to: 'pl-duchy-warsaw-1807',
+    kind: 'influence',
+    label: 'Тильзит: Наполеон создаёт Варшавское герцогство',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-duchy-1812',
+    from: 'pl-duchy-warsaw-1807',
+    to: 'ru-1812',
+    kind: 'context',
+    label: 'Армия Варшавского герцогства в походе на Россию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-july-november',
+    from: 'ref-p061-iyulskaya-revolyuciya-vo-francii',
+    to: 'ref-p068-nacionalno-osvoboditelnoe-vosstanie-v-pols',
+    kind: 'influence',
+    label: 'Июльская революция ускорила польское восстание',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-ww1-independence',
+    from: 'ref-p067-pervaya-mirovaya-voyna',
+    to: 'pl-independence-1918',
+    kind: 'influence',
+    label: 'Поражение всех трёх держав-раздельщиц вернуло Польшу',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-1920-riga',
+    from: 'pl-warsaw-1920',
+    to: 'by-riga-1921',
+    kind: 'influence',
+    label: 'Победа под Варшавой привела к Рижскому миру',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-1920-war',
+    from: 'ref-p089-sovetsko-polskaya-voyna',
+    to: 'pl-warsaw-1920',
+    kind: 'context',
+    label: 'Варшавская битва — перелом советско-польской войны',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-1939-katyn',
+    from: 'ref-p092-osvoboditelnyy-pohod-krasnoy-armii',
+    to: 'pl-katyn-1940',
+    kind: 'influence',
+    label: 'Пленные сентября 1939 года стали жертвами Катыни',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-wannsee-ghetto',
+    from: 'de-wannsee-1942',
+    to: 'pl-ghetto-uprising-1943',
+    kind: 'context',
+    label: '«Окончательное решение» и восстание в гетто',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-bagration-1944',
+    from: 'by-bagration-1944',
+    to: 'pl-warsaw-uprising-1944',
+    kind: 'influence',
+    label: 'Подход Красной армии к Висле стал сигналом к восстанию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-pact-borders',
+    from: 'ref-p091-podpisanie-sovetsko-germanskogo-pakta-o-ne',
+    to: 'pl-borders-1945',
+    kind: 'influence',
+    label: 'Граница 1945 года закрепила советские приобретения 1939-го',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-potsdam-borders',
+    from: 'ref-p101-potsdamskaya-konferenciya',
+    to: 'pl-borders-1945',
+    kind: 'influence',
+    label: 'Потсдам передал Польше земли до Одера и Нейсе',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-yalta-1947',
+    from: 'ref-p099-yaltinskaya-krymskaya-konferenciya',
+    to: 'pl-elections-1947',
+    kind: 'context',
+    label: 'Обещание Ялты и сфальсифицированные выборы',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-1956-hungary',
+    from: 'pl-october-1956',
+    to: 'ref-p104-vengerskoe-vosstanie-1956-g',
+    kind: 'influence',
+    label: 'Польский октябрь стал толчком к восстанию в Венгрии',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-jp2-solidarity',
+    from: 'pl-john-paul-1978',
+    to: 'pl-solidarity-1980',
+    kind: 'influence',
+    label: 'Визит папы 1979 года подготовил движение «Солидарности»',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-solidarity-martial',
+    from: 'pl-solidarity-1980',
+    to: 'pl-martial-law-1981',
+    kind: 'conflict',
+    label: 'Военное положение было направлено против «Солидарности»',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-solidarity-roundtable',
+    from: 'pl-solidarity-1980',
+    to: 'pl-round-table-1989',
+    kind: 'influence',
+    label: 'Без «Солидарности» не было бы круглого стола',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-1989-revolutions',
+    from: 'pl-round-table-1989',
+    to: 'ref-p105-antikommunisticheskie-revolyucii-v-central',
+    kind: 'influence',
+    label: 'Польский пример открыл осень 1989 года',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-nato-1949',
+    from: 'ref-p121-sozdanie-organizacii-severoatlanticheskogo',
+    to: 'pl-nato-1999',
+    kind: 'context',
+    label: 'Бывшие члены Варшавского договора вступают в НАТО',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-pl-maastricht-eu',
+    from: 'ref-p106-podpisanie-maastrihtskogo-dogovora-i-sozda',
+    to: 'pl-eu-2004',
+    kind: 'context',
+    label: 'Польша входит в Европейский союз, созданный в Маастрихте',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-utrecht-succession',
+    from: 'es-succession-1701',
+    to: 'world-utrecht-1713',
+    kind: 'influence',
+    label: 'Утрехтские договоры завершили войну за испанское наследство',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-seven-years-us-war',
+    from: 'ref-p050-semiletnyaya-voyna',
+    to: 'ref-p050-voyna-severoamerikanskih-koloniy-za-nezavi',
+    kind: 'influence',
+    label: 'Долги Семилетней войны привели к новым налогам в колониях',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-seven-years-fr-us',
+    from: 'ref-p050-semiletnyaya-voyna',
+    to: 'fr-us-alliance-1778',
+    kind: 'influence',
+    label: 'Франция искала реванша за поражение 1763 года',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-vienna-holy-alliance',
+    from: 'ref-p060-venskiy-kongress-evropeyskih-monarhov',
+    to: 'ref-p061-sozdanie-svyaschennogo-soyuza',
+    kind: 'influence',
+    label: 'Священный союз должен был охранять венский порядок',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-holy-alliance-1848',
+    from: 'ref-p061-sozdanie-svyaschennogo-soyuza',
+    to: 'ref-p061-revolyucii-v-evrope',
+    kind: 'context',
+    label: 'Революции 1848 года ударили по порядку 1815 года',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-fr1848-europe',
+    from: 'fr-1848',
+    to: 'ref-p061-revolyucii-v-evrope',
+    kind: 'influence',
+    label: 'Февральская революция в Париже запустила волну 1848 года',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-1848-de',
+    from: 'ref-p061-revolyucii-v-evrope',
+    to: 'de-1848',
+    kind: 'context',
+    label: 'Германская революция — часть общеевропейской волны',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-triple-alliance-ww1',
+    from: 'ref-p065-sozdanie-troystvennogo-soyuza',
+    to: 'ref-p067-pervaya-mirovaya-voyna',
+    kind: 'influence',
+    label: 'Блоковая система превратила локальный конфликт в общую войну',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-ww1-paris',
+    from: 'ref-p067-pervaya-mirovaya-voyna',
+    to: 'ref-p078-parizhskaya-mirnaya-konferenciya',
+    kind: 'influence',
+    label: 'Победители собрались в Париже, чтобы закрепить итоги войны',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-paris-league',
+    from: 'ref-p078-parizhskaya-mirnaya-konferenciya',
+    to: 'ref-p078-sozdanie-ligi-naciy',
+    kind: 'influence',
+    label: 'Конференция приняла Устав Лиги Наций',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-paris-versailles',
+    from: 'ref-p078-parizhskaya-mirnaya-konferenciya',
+    to: 'ref-p079-podpisanie-germaniey-versalskogo-mirnogo-d',
+    kind: 'influence',
+    label: 'Версальский договор — главный итог конференции',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-paris-may-fourth',
+    from: 'ref-p078-parizhskaya-mirnaya-konferenciya',
+    to: 'cn-may-fourth-1919',
+    kind: 'influence',
+    label: 'Решение по Шаньдуну вызвало протесты 4 мая',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-hague-league',
+    from: 'world-hague-1899',
+    to: 'ref-p078-sozdanie-ligi-naciy',
+    kind: 'influence',
+    label: 'Гаагские конференции стали образцом для Лиги Наций',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-depression-1933',
+    from: 'ref-p083-mirovoy-ekonomicheskiy-krizis',
+    to: 'de-1933',
+    kind: 'influence',
+    label: 'Депрессия подорвала Веймарскую республику',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-depression-bretton-woods',
+    from: 'ref-p083-mirovoy-ekonomicheskiy-krizis',
+    to: 'world-bretton-woods-1944',
+    kind: 'influence',
+    label: 'Уроки 1930-х годов легли в основу Бреттон-Вудса',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-bretton-woods-gatt',
+    from: 'world-bretton-woods-1944',
+    to: 'world-gatt-1947',
+    kind: 'influence',
+    label: 'ГАТТ дополнило бреттон-вудские институты в торговле',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-gatt-china',
+    from: 'world-gatt-1947',
+    to: 'cn-wto-2001',
+    kind: 'influence',
+    label: 'Китай вошёл в торговую систему, выросшую из ГАТТ',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-decl1942-un',
+    from: 'ref-p097-podpisanie-deklaracii-obedinennyh-naciy-so',
+    to: 'ref-p100-sozdanie-organizacii-obedinennyh-naciy-oon',
+    kind: 'influence',
+    label: 'Коалиция 1942 года дала имя и состав ООН',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-yalta-un',
+    from: 'ref-p099-yaltinskaya-krymskaya-konferenciya',
+    to: 'ref-p100-sozdanie-organizacii-obedinennyh-naciy-oon',
+    kind: 'influence',
+    label: 'В Ялте решили созвать конференцию в Сан-Франциско',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-tehran-paris',
+    from: 'ref-p099-tegeranskaya-konferenciya',
+    to: 'fr-liberation-1944',
+    kind: 'influence',
+    label: 'В Тегеране союзники назначили высадку во Франции',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-potsdam-two-states',
+    from: 'ref-p101-potsdamskaya-konferenciya',
+    to: 'de-two-states-1949',
+    kind: 'influence',
+    label: 'Оккупационные зоны стали основой раздела Германии',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-potsdam-nuremberg',
+    from: 'ref-p101-potsdamskaya-konferenciya',
+    to: 'ref-p102-mezhdunarodnyy-sudebnyy-process-nad-glavny',
+    kind: 'influence',
+    label: 'Победители обязались судить военных преступников',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-un-udhr',
+    from: 'ref-p100-sozdanie-organizacii-obedinennyh-naciy-oon',
+    to: 'world-udhr-1948',
+    kind: 'influence',
+    label: 'Декларацию подготовила и приняла ООН',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-un-bssr',
+    from: 'ref-p100-sozdanie-organizacii-obedinennyh-naciy-oon',
+    to: 'by-un-1945',
+    kind: 'context',
+    label: 'БССР стала одной из основательниц ООН',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-udhr-helsinki',
+    from: 'world-udhr-1948',
+    to: 'ref-p124-podpisanie-zaklyuchitelnogo-akta-soveschan',
+    kind: 'influence',
+    label: 'Хельсинкский акт ссылается на Всеобщую декларацию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-blockade-nato',
+    from: 'de-berlin-blockade-1948',
+    to: 'ref-p121-sozdanie-organizacii-severoatlanticheskogo',
+    kind: 'influence',
+    label: 'Берлинский кризис ускорил создание НАТО',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-nato-warsaw',
+    from: 'ref-p121-sozdanie-organizacii-severoatlanticheskogo',
+    to: 'ref-p103-sozdanie-organizacii-varshavskogo-dogovora',
+    kind: 'influence',
+    label: 'Вступление ФРГ в НАТО стало поводом для Варшавского договора',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-ecsc-eec',
+    from: 'ref-p103-sozdanie-evropeyskogo-obedineniya-uglya-i-',
+    to: 'ref-p104-dogovor-ob-uchrezhdenii-evropeyskogo-ekono',
+    kind: 'influence',
+    label: 'Опыт ЕОУС расширили на всю экономику',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-eec-maastricht',
+    from: 'ref-p104-dogovor-ob-uchrezhdenii-evropeyskogo-ekono',
+    to: 'ref-p106-podpisanie-maastrihtskogo-dogovora-i-sozda',
+    kind: 'influence',
+    label: 'Маастрихт надстроил Европейский союз над ЕЭС',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-maastricht-euro',
+    from: 'ref-p106-podpisanie-maastrihtskogo-dogovora-i-sozda',
+    to: 'de-euro-2002',
+    kind: 'influence',
+    label: 'Маастрихтский договор установил путь к евро',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-1989-wall',
+    from: 'ref-p105-antikommunisticheskie-revolyucii-v-central',
+    to: 'de-wall-fall-1989',
+    kind: 'context',
+    label: 'Падение стены — часть волны 1989 года',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-1989-warsaw-pact',
+    from: 'ref-p105-antikommunisticheskie-revolyucii-v-central',
+    to: 'ref-p103-sozdanie-organizacii-varshavskogo-dogovora',
+    kind: 'influence',
+    label: 'После 1989 года Варшавский договор распался',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-kyoto-paris',
+    from: 'ref-p125-podpisanie-kiotskogo-protokola',
+    to: 'world-paris-climate-2015',
+    kind: 'influence',
+    label: 'Парижское соглашение заменило киотскую модель',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-clermont-crusade',
+    from: 'fr-clermont-1095',
+    to: 'ref-p033-pervyy-krestovyy-pohod',
+    kind: 'influence',
+    label: 'Призыв Урбана II поднял Первый крестовый поход',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-crusades-1204',
+    from: 'ref-p033-krestovye-pohody-na-vostok',
+    to: 'ref-p034-zahvat-krestonoscami-konstantinopolya',
+    kind: 'context',
+    label: 'Четвёртый поход обратился против Константинополя',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-world-schism-1204',
+    from: 'ref-p032-raskol-hristianskoy-cerkvi',
+    to: 'ref-p034-zahvat-krestonoscami-konstantinopolya',
+    kind: 'context',
+    label: 'Разграбление 1204 года закрепило раскол',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-declaration-french-alliance',
+    from: 'ref-p051-deklaraciya-nezavisimosti-ssha',
+    to: 'fr-us-alliance-1778',
+    kind: 'influence',
+    label: 'Объявленная независимость открывает путь к союзу с Францией',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-constitution-bill-of-rights',
+    from: 'ref-p051-prinyatie-konstitucii-ssha',
+    to: 'us-bill-of-rights-1791',
+    kind: 'influence',
+    label: 'Спор о ратификации заставил дописать гарантии прав',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-napoleon-louisiana',
+    from: 'fr-napoleon-1799',
+    to: 'us-louisiana-1803',
+    kind: 'exchange',
+    label: 'Наполеон продаёт Луизиану Соединённым Штатам',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-monroe-latin-independence',
+    from: 'us-monroe-1823',
+    to: 'es-ayacucho-1824',
+    kind: 'context',
+    label: 'США ограждают новые республики от возвращения Европы',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-mexican-war-gold-rush',
+    from: 'us-mexican-war-1846',
+    to: 'us-gold-rush-1848',
+    kind: 'context',
+    label: 'Золото найдено за девять дней до передачи Калифорнии США',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-mexican-war-civil-war',
+    from: 'us-mexican-war-1846',
+    to: 'ref-p062-grazhdanskaya-voyna-v-ssha',
+    kind: 'influence',
+    label: 'Завоёванные земли обострили спор о рабстве',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-emancipation-13th',
+    from: 'ref-p062-proklamaciya-ob-osvobozhdenii-negrov-rabov',
+    to: 'us-13th-amendment-1865',
+    kind: 'influence',
+    label: 'Ограниченная прокламация потребовала поправки к конституции',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-13th-gb-slavery',
+    from: 'gb-slavery-1833',
+    to: 'us-13th-amendment-1865',
+    kind: 'comparison',
+    label: 'Отмена рабства: закон парламента и война',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-civil-war-ru-1861',
+    from: 'ref-p062-grazhdanskaya-voyna-v-ssha',
+    to: 'ru-1861',
+    kind: 'comparison',
+    label: '1861 год: конец несвободного труда в России и США',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-brown-montgomery',
+    from: 'us-brown-1954',
+    to: 'us-montgomery-1955',
+    kind: 'influence',
+    label: 'Принцип «раздельное — значит неравное» перенесли на автобусы',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-montgomery-march',
+    from: 'us-montgomery-1955',
+    to: 'us-march-washington-1963',
+    kind: 'influence',
+    label: 'Бойкот сделал Кинга лидером движения',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-march-civil-rights-act',
+    from: 'us-march-washington-1963',
+    to: 'us-civil-rights-act-1964',
+    kind: 'influence',
+    label: 'Марш усилил давление ради федерального закона',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-crash-roosevelt',
+    from: 'us-crash-1929',
+    to: 'ref-p083-izbranie-ji-ruzvelta-prezidentom-ssha',
+    kind: 'influence',
+    label: 'Депрессия привела к поражению Гувера',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-roosevelt-new-deal',
+    from: 'ref-p083-izbranie-ji-ruzvelta-prezidentom-ssha',
+    to: 'us-new-deal-1933',
+    kind: 'influence',
+    label: 'Обещание «нового курса» превращается в законы «ста дней»',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-crash-world-crisis',
+    from: 'us-crash-1929',
+    to: 'ref-p083-mirovoy-ekonomicheskiy-krizis',
+    kind: 'influence',
+    label: 'Обвал на Уолл-стрит открывает мировой кризис',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-manhattan-hiroshima',
+    from: 'us-manhattan-1942',
+    to: 'jp-1945',
+    kind: 'influence',
+    label: 'Бомбы, созданные Манхэттенским проектом, сброшены на Японию',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-truman-marshall',
+    from: 'ref-p102-provozglashenie-doktriny-trumena',
+    to: 'ref-p103-prinyatie-plana-marshalla',
+    kind: 'context',
+    label: 'Две части одной политики «сдерживания»',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-normandy-paris',
+    from: 'ref-p099-vysadka-anglo-amerikanskih-voysk-v-evrope-',
+    to: 'fr-liberation-1944',
+    kind: 'influence',
+    label: 'Высадка открыла союзникам путь к Парижу',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-ww1-washington-conference',
+    from: 'us-ww1-1917',
+    to: 'ref-p081-vashingtonskaya-konferenciya',
+    kind: 'context',
+    label: 'США после войны берутся устраивать порядок на Тихом океане',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-911-iraq',
+    from: 'ref-p106-terroristicheskie-akty-11-sentyabrya-2001-',
+    to: 'ref-p120-voennaya-operaciya-ssha-i-ih-soyuznikov-v-',
+    kind: 'context',
+    label: '«Война с терроризмом» и вторжение в Ирак',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-19th-fr-women-vote',
+    from: 'us-19th-amendment-1920',
+    to: 'fr-women-vote-1944',
+    kind: 'comparison',
+    label: 'Женское избирательное право: 1920 и 1944',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-jamestown-quebec',
+    from: 'us-jamestown-1607',
+    to: 'fr-quebec-1608',
+    kind: 'comparison',
+    label: 'Англия и Франция закрепляются в Северной Америке',
+    verification: 'verified',
+  },
+  {
+    id: 'rel-us-declaration-french-declaration',
+    from: 'ref-p051-deklaraciya-nezavisimosti-ssha',
+    to: 'ref-p052-deklaraciya-prav-cheloveka-i-grazhdanina',
+    kind: 'comparison',
+    label: 'Две декларации прав конца XVIII века',
+    verification: 'verified',
   },
 ];
+
+/** Связи с отметкой о проверке из сводки их файлов — без самих текстов. */
+export const relations: Relation[] = relationCards.map((relation) =>
+  relationSummaryById[relation.id] ? { ...relation, content: relationSummaryById[relation.id] } : relation,
+);
 
 /** Быстрый доступ к связям по идентификатору объекта. */
 export const relationsByItem = relations.reduce<Record<string, Relation[]>>((map, relation) => {

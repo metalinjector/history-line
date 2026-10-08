@@ -49,9 +49,11 @@ export function itemToMarkdown(item: TimelineItem, country: Country, era?: Era):
 
   lines.push(`> ${item.summary}`);
   lines.push('');
-  lines.push('## Что произошло');
-  lines.push('');
-  lines.push(item.detail);
+  if (item.detail) {
+    lines.push('## Что произошло');
+    lines.push('');
+    lines.push(item.detail);
+  }
 
   if (item.parallel) {
     lines.push('');

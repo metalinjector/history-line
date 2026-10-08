@@ -90,7 +90,7 @@ export function RelationModal({ relation, from, to, onOpenItem, resolveItem, onO
           </aside>
         ) : null}
         <MarkdownView onOpenItem={onOpenLink}>
-          {resolveWikiLinks(relation.detail.trim(), resolveItem)}
+          {resolveWikiLinks((relation.detail ?? '').trim(), resolveItem)}
         </MarkdownView>
 
         {relation.sources?.length ? (

@@ -23,6 +23,8 @@ import { eraForYear, eras } from '../data/eras';
 import { intervalPeriods, periodContains, periodRange } from '../data/periods';
 import { ANCIENT_LINES, builtinCountrySets, MAX_USER_SETS, normalizeSet } from '../data/countrySets';
 import { timelineItems } from '../data/timelineItems';
+import { loadContent } from '../data/loadContent';
+import { migrateMergedNotes, migrateMergedRelations } from '../data/referenceMerges';
 import { layerById, layers as allLayers, MAX_ACTIVE_LAYERS } from '../data/layers';
 import { applyLayers, materializeLayerItems, type LayerPlacements } from './layers';
 import { OWN_COLUMN, type LayerPlacement } from '../types';
@@ -96,6 +98,12 @@ export function useTimelineState() {
   const [userCountrySets, setUserCountrySets] = usePersistentState<CountrySet[]>('country-sets', []);
   /** Личные заметки читателя. Хранятся отдельно от базы фактов и не смешиваются с ней. */
   const [notes, setNotes] = usePersistentState<Record<string, string>>('notes', {});
+  // Записи справочника, слитые с карточками (data/referenceMerges.ts): заметки
+  // и связи читателя переезжают на карточку и сохраняются уже под её id.
+  useEffect(() => {
+    setNotes(migrateMergedNotes);
+    setAddedRelations(migrateMergedRelations);
+  }, [setAddedRelations, setNotes]);
   /** Включённые слои и их размещение — по умолчанию слоёв нет. */
   const [activeLayerIds, setActiveLayerIds] = usePersistentState<string[]>(
     'layers',
@@ -215,7 +223,25 @@ export function useTimelineState() {
     [layer, shownCountryIds, query, tags, keyOnly, period, showBce],
   );
 
-  const filteredItems = useMemo(() => filterItems(allItems, filter), [allItems, filter]);
+  /**
+   * Полные тексты для поиска. На шкале у объектов только витрина — заголовок
+   * и одна фраза; описания и параллели грузятся отдельным чанком с первым
+   * запросом, и поиск уточняется, как только они пришли.
+   */
+  const [searchText, setSearchText] = useState<Record<string, string>>();
+  const wantsFullText = query.trim() !== '';
+  useEffect(() => {
+    if (!wantsFullText || searchText) return;
+    let cancelled = false;
+    void loadContent().then((module) => {
+      if (!cancelled) setSearchText(module.searchTextById);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [searchText, wantsFullText]);
+
+  const filteredItems = useMemo(() => filterItems(allItems, filter, searchText), [allItems, filter, searchText]);
 
   const groups = useMemo(
     () => buildGroups(filteredItems, columns, granularity),
@@ -238,7 +264,7 @@ export function useTimelineState() {
    * нажав на чип: Италия вместе с Древним Римом, если Рима нет своей колонкой.
    */
   const countryCounts = useMemo(() => {
-    const matching = filterItems(allItems, { ...filter, countries: allCountryIds });
+    const matching = filterItems(allItems, { ...filter, countries: allCountryIds }, searchText);
     const own: Record<string, number> = {};
     for (const id of allCountryIds) own[id] = 0;
     for (const item of matching) own[item.country] = (own[item.country] ?? 0) + 1;
@@ -251,7 +277,7 @@ export function useTimelineState() {
       }
     }
     return counts;
-  }, [activeCountryIds, allItems, filter]);
+  }, [activeCountryIds, allItems, filter, searchText]);
 
   /**
    * Сколько объектов до нашей эры дали бы выбранные линии, если бы шкала
@@ -260,9 +286,9 @@ export function useTimelineState() {
    */
   const bceCount = useMemo(
     () =>
-      filterItems(allItems, { ...filter, showBce: true, period: undefined }).filter((item) => item.year < 0)
+      filterItems(allItems, { ...filter, showBce: true, period: undefined }, searchText).filter((item) => item.year < 0)
         .length,
-    [allItems, filter],
+    [allItems, filter, searchText],
   );
 
   /** Последний год базы: по нему строится сетка интервалов в фильтре периода. */
@@ -277,7 +303,7 @@ export function useTimelineState() {
    * а читателю важно видеть, что в раннем Средневековье пусто, ещё до выбора.
    */
   const periodCounts = useMemo(() => {
-    const matching = filterItems(allItems, { ...filter, period: undefined });
+    const matching = filterItems(allItems, { ...filter, period: undefined }, searchText);
     const counts = {
       eras: Object.fromEntries(eras.map((era) => [era.id, 0])) as Record<string, number>,
       intervals: Object.fromEntries(intervalPeriods(maxYear).map((interval) => [interval.from, 0])) as Record<
@@ -298,7 +324,7 @@ export function useTimelineState() {
     }
 
     return counts;
-  }, [allItems, filter, maxYear]);
+  }, [allItems, filter, maxYear, searchText]);
 
   const selectedItem = useMemo(
     () => filteredItems.find((item) => item.id === selectedId),

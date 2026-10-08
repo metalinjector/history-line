@@ -94,7 +94,7 @@ function draftOf(item: TimelineItem): Draft {
     endYear: item.endYear ?? '',
     kind: item.kind,
     summary: item.summary,
-    detail: item.detail === item.summary ? '' : item.detail,
+    detail: !item.detail || item.detail === item.summary ? '' : item.detail,
     life: item.life ?? '',
     tags: item.tags.join(', '),
     milestone: (item.importance ?? 2) >= 3,
@@ -190,7 +190,7 @@ export function PeopleBuilder({
           .filter((relation) => relation.from === item.id && itemsById.has(relation.to))
           .map((relation) => [
             relation.to,
-            { to: relation.to, kind: relation.kind, label: relation.label, detail: relation.detail, sources: relation.sources },
+            { to: relation.to, kind: relation.kind, label: relation.label, detail: relation.detail ?? '', sources: relation.sources },
           ]),
       ),
     );
