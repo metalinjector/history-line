@@ -1,6 +1,13 @@
 ---
 id: ref-p082-ustanovlenie-diktatury-yu-pilsudskogo-v-po
 sources:
-  - label: "В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. 82."
-    kind: reference
+  - kind: academic
+    label: "Studia Iuridica Lublinensia (UMCS, Люблин): статья о майском перевороте 1926 года и правовом нигилизме режима"
+    url: "https://reshistorica.journals.umcs.pl/sil/article/download/11496/pdf"
+  - kind: encyclopedia
+    label: "Wikipedia: May Coup (Poland)"
+    url: "https://en.wikipedia.org/wiki/May_Coup_(Poland)"
+  - kind: encyclopedia
+    label: "Wikipedia: April Constitution of Poland"
+    url: "https://en.wikipedia.org/wiki/April_Constitution_of_Poland"
 ---

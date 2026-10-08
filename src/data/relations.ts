@@ -3630,6 +3630,618 @@ X съезд РКП(б) в марте 1921 года заменил развёр�
       { kind: 'encyclopedia', label: 'Wikipedia: Sack of Constantinople', url: 'https://en.wikipedia.org/wiki/Sack_of_Constantinople' },
     ],
   },
+  {
+    id: 'rel-pl-baptism-gniezno',
+    from: 'pl-mieszko-966',
+    to: 'pl-gniezno-1000',
+    kind: 'influence',
+    label: 'Крещение 966 года привело к польской архиепископии',
+    detail: `
+Мешко I принял крещение по латинскому обряду, и его земли вошли в церковную организацию Рима. Через поколение, на Гнезненском съезде 1000 года, это вылилось в собственную церковную провинцию: Гнезно стало архиепископией, ей подчинили епископства в Кракове, Вроцлаве и Колобжеге.
+
+Резолюции Сейма и Сената к 1050-летию крещения прямо связывают два события: решение Мешко включило Польшу в западноевропейскую цивилизацию, а съезд 1000 года эту связь подтвердил.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'PAP: Сейм принимает резолюцию к 1050-летию крещения Польши', url: 'https://www.pap.pl/en/news/news,503739,sejm-passes-resolution-marking-1050th-baptism-anniversary.html' },
+      { kind: 'academic', label: 'Roman Michałowski. The Gniezno Summit. Leiden: Brill, 2016' },
+    ],
+  },
+  {
+    id: 'rel-pl-gniezno-coronation',
+    from: 'pl-gniezno-1000',
+    to: 'pl-boleslaw-1025',
+    kind: 'influence',
+    label: 'Гнезненский съезд открыл Болеславу путь к короне',
+    detail: `
+В 1000 году Оттон III возложил на Болеслава Храброго свою диадему, а польская церковь получила самостоятельную архиепископию — без неё коронация была бы невозможна. Но для королевского титула требовалось согласие папы, а преемник Оттона Генрих II этому противился.
+
+Коронация состоялась только в 1025 году, после смерти Генриха. Насколько съезд 1000 года уже предполагал корону, историки спорят.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'History Today: Coronation of Bolesław the Brave', url: 'https://www.historytoday.com/archive/months-past/coronation-boleslaw-brave' },
+      { kind: 'institution', label: 'Zintegrowana Platforma Edukacyjna (zpe.gov.pl): Gniezno Congress', url: 'https://zpe.gov.pl/a/DVWitjbBS' },
+    ],
+  },
+  {
+    id: 'rel-pl-rus-baptism',
+    from: 'pl-mieszko-966',
+    to: 'ru-baptism-988',
+    kind: 'comparison',
+    label: 'Два крещения: латинское в Польше и греческое на Руси',
+    detail: `
+С разницей в 22 года два соседних славянских государства приняли христианство из разных центров: Польша — из Рима, Русь — из Константинополя. Выбор определил язык церкви, письменность и круг политических союзников на столетия вперёд.
+
+Прямого влияния одного крещения на другое источники не показывают; сопоставление показывает, как по славянскому миру прошла граница между латинским и греческим христианством.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'PAP: Сейм принимает резолюцию к 1050-летию крещения Польши', url: 'https://www.pap.pl/en/news/news,503739,sejm-passes-resolution-marking-1050th-baptism-anniversary.html' },
+      { kind: 'institution', label: 'Science in Poland (PAP): проф. А. Выжва о месте крещения Польши', url: 'https://scienceinpoland.pl/en/node/91998' },
+    ],
+  },
+  {
+    id: 'rel-pl-hre-gniezno',
+    from: 'de-hre-962',
+    to: 'pl-gniezno-1000',
+    kind: 'context',
+    label: 'Империя Оттонов и визит Оттона III в Гнезно',
+    detail: `
+Гнезненский съезд был частью замысла Оттона III, внука основателя Священной Римской империи: рядом с Германией, Галлией и Италией он видел в «обновлённой» империи и «Склавинию» — молодые христианские государства западных славян.
+
+Оттон умер через два года после съезда, и его преемники этот замысел не продолжили.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Zintegrowana Platforma Edukacyjna (zpe.gov.pl): Gniezno Congress', url: 'https://zpe.gov.pl/a/DVWitjbBS' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Congress of Gniezno', url: 'https://en.wikipedia.org/wiki/Congress_of_Gniezno' },
+    ],
+  },
+  {
+    id: 'rel-pl-mongols-legnica',
+    from: 'ru-mongols-1237',
+    to: 'pl-legnica-1241',
+    kind: 'context',
+    label: 'Легница — западный фланг того же монгольского похода',
+    detail: `
+После разорения русских земель в 1237–1240 годах монгольское войско двинулось дальше на запад. Отряд Байдара и Кадана был послан в Польшу как отвлекающий удар, пока главные силы шли на Венгрию.
+
+После победы под Легницей 9 апреля 1241 года этот отряд ушёл на соединение с основным войском.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Peter Jackson. The Mongols and the West, 1221–1410. Harlow: Pearson Longman, 2005' },
+      { kind: 'encyclopedia', label: 'Britannica: Battle of Legnica', url: 'https://www.britannica.com/print/article/335131' },
+    ],
+  },
+  {
+    id: 'rel-pl-1138-lyubech',
+    from: 'pl-testament-1138',
+    to: 'ref-p036-lyubechskiy-sezd-knyazey',
+    kind: 'comparison',
+    label: 'Уделы Пястов и «отчины» Рюриковичей',
+    detail: `
+В Польше после 1138 года и на Руси после Любечского съезда 1097 года династия поделила страну между ветвями рода, а старший князь сохранял лишь номинальное первенство. В обоих случаях уделы дробились с каждым поколением, а общая внешняя политика распалась.
+
+Прямой связи между решениями нет — это сходная модель родового владения землёй у двух соседних династий.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Zintegrowana Platforma Edukacyjna (zpe.gov.pl): Пясты между Империей и государствами Центральной и Восточной Европы', url: 'https://zpe.gov.pl/a/Dfa7zrdfZ' },
+      { kind: 'institution', label: 'polishhistory.pl: A testament that divided Poland for two centuries', url: 'https://polishhistory.pl/?p=2886' },
+    ],
+  },
+  {
+    id: 'rel-pl-casimir-academy',
+    from: 'ref-p041-usilenie-polshi-pri-kazimire-sh-velikom',
+    to: 'pl-krakow-academy-1364',
+    kind: 'influence',
+    label: 'Казимир Великий основывает университет в Кракове',
+    detail: `
+Краковская академия — часть программы Казимира по укреплению королевства: юристы были нужны для единого права и управления, и король обещал содержать факультет права, а также медицины и свободных искусств.
+
+Грамота подписана 12 мая 1364 года с разрешения папы Урбана V. После смерти основателя школа угасла и была возрождена Ягайлой в 1400 году.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Jagiellonian University Medical College: история Ягеллонского университета', url: 'https://cj.cm.uj.edu.pl/en/university/jagiellonian-university/' },
+      { kind: 'institution', label: 'Study in Poland (study.gov.pl): The oldest Polish university celebrates its 656th birthday', url: 'https://study.gov.pl/node/2355' },
+    ],
+  },
+  {
+    id: 'rel-pl-casimir-krewo',
+    from: 'ref-p041-usilenie-polshi-pri-kazimire-sh-velikom',
+    to: 'by-krewo-1385',
+    kind: 'influence',
+    label: 'Конец Пястов открыл путь к унии с Литвой',
+    detail: `
+У Казимира Великого не было сыновей, и в 1370 году престол перешёл к его племяннику Людовику Венгерскому. Наследницей Людовика в Польше стала его дочь Ядвига, и польские вельможи нашли ей мужа — литовского князя Ягайлу.
+
+Кревская уния 1385 года стала прямым следствием династического кризиса после пресечения польской линии Пястов.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Paul W. Knoll. The Rise of the Polish Monarchy: Piast Poland in East Central Europe, 1320–1370. Chicago, 1972' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Casimir III the Great', url: 'https://en.wikipedia.org/wiki/Casimir_III_the_Great' },
+    ],
+  },
+  {
+    id: 'rel-pl-academy-copernicus',
+    from: 'pl-krakow-academy-1364',
+    to: 'pl-copernicus-1543',
+    kind: 'influence',
+    label: 'Коперник учился астрономии в Краковской академии',
+    detail: `
+В 1491–1495 годах Коперник учился в Кракове, где в конце XV века была одна из сильнейших в Европе школ математики и астрономии. Затем он продолжил образование в Италии.
+
+Краковская подготовка дала ему математический аппарат, на котором через полвека построена система «О вращениях небесных сфер».
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'MacTutor History of Mathematics, University of St Andrews: Copernicus', url: 'https://mathshistory.st-andrews.ac.uk/BEA/copernicus_bea.pdf' },
+      { kind: 'institution', label: 'Museo Galileo (Флоренция): Nicolaus Copernicus', url: 'https://catalogue.museogalileo.it/biography/NicolausCopernicus.html' },
+    ],
+  },
+  {
+    id: 'rel-pl-copernicus-galileo',
+    from: 'pl-copernicus-1543',
+    to: 'it-galileo-1610',
+    kind: 'influence',
+    label: 'Галилей нашёл в телескоп доводы в пользу Коперника',
+    detail: `
+Книга Коперника 1543 года поставила в центр мира Солнце, но долго воспринималась как удобная математическая модель — так её представило и предисловие Осиандера.
+
+В 1610 году Галилей увидел в телескоп спутники Юпитера и фазы Венеры и стал открыто защищать систему Коперника как физическую истину. Именно это привело к его осуждению в 1633 году.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Museo Galileo (Флоренция): Nicolaus Copernicus', url: 'https://catalogue.museogalileo.it/biography/NicolausCopernicus.html' },
+      { kind: 'academic', label: 'MacTutor History of Mathematics, University of St Andrews: Copernicus', url: 'https://mathshistory.st-andrews.ac.uk/BEA/copernicus_bea.pdf' },
+    ],
+  },
+  {
+    id: 'rel-pl-luther-homage',
+    from: 'de-luther-1517',
+    to: 'pl-prussian-homage-1525',
+    kind: 'influence',
+    label: 'По совету Лютера орденская Пруссия стала герцогством',
+    detail: `
+Великий магистр Тевтонского ордена Альбрехт Гогенцоллерн встречался с Лютером, и тот посоветовал ему распустить монашеский орден и превратить его владения в светское государство.
+
+В 1525 году Альбрехт принял лютеранство, а по Краковскому договору стал наследственным герцогом Пруссии и вассалом польского короля. Пруссия стала первой страной, где лютеранство объявили государственной религией.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Muzeum Zamkowe w Malborku: выставка к 500-летию Прусской присяги', url: 'https://zamek.malbork.pl/en/exhibition/homage-500-anniversary-exhibition/' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Duchy of Prussia', url: 'https://en.wikipedia.org/wiki/Duchy_of_Prussia' },
+    ],
+  },
+  {
+    id: 'rel-pl-grunwald-homage',
+    from: 'by-grunwald-1410',
+    to: 'pl-prussian-homage-1525',
+    kind: 'context',
+    label: 'Финал вековой борьбы Польши и Литвы с Тевтонским орденом',
+    detail: `
+Грюнвальдская битва 1410 года подорвала мощь ордена, Тринадцатилетняя война 1454–1466 годов сделала его вассалом польской короны. Прусская присяга 1525 года завершила этот путь: орденское государство перестало существовать.
+
+Для польской памяти сцена присяги стала символом триумфа над орденом; позже её написал Ян Матейко.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Muzeum Zamkowe w Malborku: выставка к 500-летию Прусской присяги', url: 'https://zamek.malbork.pl/en/exhibition/homage-500-anniversary-exhibition/' },
+      { kind: 'academic', label: 'Hołd pruski w pamięci Krakowa: Materiały z sesji naukowej. Kraków: Akademicka, 2025', url: 'https://books.akademicka.pl/publishing/en/catalog/book/870' },
+    ],
+  },
+  {
+    id: 'rel-pl-lublin-confederation',
+    from: 'by-lublin-1569',
+    to: 'pl-warsaw-confederation-1573',
+    kind: 'context',
+    label: 'Новая Речь Посполитая и её первое бескоролевье',
+    detail: `
+Люблинская уния 1569 года объединила Польшу и Литву в государство, где жили католики, протестанты, православные, иудеи и мусульмане. Через три года умер последний Ягеллон, и общей шляхте впервые предстояло выбрать короля.
+
+Варшавская конфедерация 1573 года должна была удержать многоконфессиональное государство от религиозного раскола в момент бескоролевья.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'МИД Польши: заявление к годовщине Варшавской конфедерации', url: 'https://www.gov.pl/web/southafrica/mfa-statement-on-anniversary-of-signing-warsaw-confederation' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Warsaw Confederation', url: 'https://en.wikipedia.org/wiki/Warsaw_Confederation' },
+    ],
+  },
+  {
+    id: 'rel-pl-bartholomew-confederation',
+    from: 'fr-bartholomew-1572',
+    to: 'pl-warsaw-confederation-1573',
+    kind: 'comparison',
+    label: 'Варфоломеевская ночь и польский акт о веротерпимости',
+    detail: `
+В августе 1572 года в Париже убивали гугенотов, а в январе 1573 года польская шляхта договорилась не преследовать друг друга за веру. Обе страны в этот момент были связаны лично: первым избранным королём Речи Посполитой в 1573 году стал Генрих Валуа, брат Карла IX.
+
+Сопоставление показывает два ответа на одну проблему эпохи Реформации — насилие и правовой компромисс.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'МИД Польши: заявление к годовщине Варшавской конфедерации', url: 'https://www.gov.pl/web/southafrica/mfa-statement-on-anniversary-of-signing-warsaw-confederation' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Warsaw Confederation', url: 'https://en.wikipedia.org/wiki/Warsaw_Confederation' },
+    ],
+  },
+  {
+    id: 'rel-pl-deluge-war1654',
+    from: 'by-war-1654',
+    to: 'pl-deluge-1655',
+    kind: 'context',
+    label: 'Война на два фронта: Россия и Швеция',
+    detail: `
+Шведский король Карл X Густав вторгся в Речь Посполитую летом 1655 года, когда её войска уже воевали с казаками и Россией. Именно это объясняет, почему страна за несколько месяцев потеряла Варшаву и Краков, а многие шляхтичи присягнули шведам.
+
+Совокупные потери середины XVII века, по распространённым оценкам, лишили Речь Посполитую около трети населения.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Zintegrowana Platforma Edukacyjna (zpe.gov.pl): Swedish Deluge', url: 'https://www.zpe.gov.pl/a/swedish-deluge/D15ddrAs0' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Deluge (history)', url: 'https://en.wikipedia.org/wiki/Deluge_(history)' },
+    ],
+  },
+  {
+    id: 'rel-pl-1791-usa',
+    from: 'ref-p051-prinyatie-konstitucii-ssha',
+    to: 'pl-constitution-1791',
+    kind: 'comparison',
+    label: 'Две первые писаные конституции нового времени',
+    detail: `
+Конституцию 3 мая называют первой писаной конституцией нового времени в Европе и второй в мире после американской 1787 года. Обе вводили разделение властей и писаные правила устройства государства.
+
+Различия существенны: польский документ сохранял монархию, сословное устройство и крепостное право, лишь взяв крестьян «под опеку закона».
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Archiwum Główne Akt Dawnych: Konstytucja 3 maja (англоязычная публикация)', url: 'https://agad.gov.pl/konstytucja/Konstytucja_3_maja_EN.epub' },
+      { kind: 'institution', label: 'Instytut Pamięci Narodowej: «The constitution of Polish freedom»', url: 'https://ipn.gov.pl/en/news/9533,ARTICLE-by-Karol-Nawrocki-PhD-quotThe-constitution-of-Polish-freedomquot.pdf' },
+    ],
+  },
+  {
+    id: 'rel-pl-1791-partitions',
+    from: 'pl-constitution-1791',
+    to: 'by-partitions-1795',
+    kind: 'influence',
+    label: 'Реформа стала поводом для второго и третьего разделов',
+    detail: `
+Противники конституции из числа магнатов создали Тарговицкую конфедерацию и обратились за помощью к Екатерине II. Русские войска вошли в страну в 1792 году, и в 1793 году Россия и Пруссия провели второй раздел.
+
+Восстание Костюшко 1794 года в защиту остатков государства было подавлено, и в 1795 году третий раздел ликвидировал Речь Посполитую.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Instytut Pamięci Narodowej: «The constitution of Polish freedom»', url: 'https://ipn.gov.pl/en/news/9533,ARTICLE-by-Karol-Nawrocki-PhD-quotThe-constitution-of-Polish-freedomquot.pdf' },
+      { kind: 'academic', label: 'Jerzy Lukowski. The Partitions of Poland: 1772, 1793, 1795. London: Longman, 1999' },
+    ],
+  },
+  {
+    id: 'rel-pl-napoleon-duchy',
+    from: 'fr-napoleon-1799',
+    to: 'pl-duchy-warsaw-1807',
+    kind: 'influence',
+    label: 'Тильзит: Наполеон создаёт Варшавское герцогство',
+    detail: `
+Разгромив Пруссию при участии польских легионов, Наполеон по Тильзитским договорам 7 и 9 июля 1807 года создал из прусской части польских земель Варшавское герцогство.
+
+22 июля 1807 года он даровал ему конституцию по французскому образцу, а с 1 мая 1808 года здесь действовал Кодекс Наполеона.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'Britannica: Duchy of Warsaw', url: 'https://www.britannica.com/place/Duchy-of-Warsaw' },
+      { kind: 'institution', label: 'polishhistory.pl: Constitution of the Duchy of Warsaw', url: 'https://polishhistory.pl/constitution-of-the-duchy-of-warsaw/' },
+    ],
+  },
+  {
+    id: 'rel-pl-duchy-1812',
+    from: 'pl-duchy-warsaw-1807',
+    to: 'ru-1812',
+    kind: 'context',
+    label: 'Армия Варшавского герцогства в походе на Россию',
+    detail: `
+Варшавское герцогство было союзником Франции, и его войска вошли в Великую армию 1812 года. Для поляков поход был надеждой на восстановление государства.
+
+После разгрома Наполеона Венский конгресс разделил герцогство, большая его часть стала Царством Польским под властью российского императора.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'Britannica: Duchy of Warsaw', url: 'https://www.britannica.com/place/Duchy-of-Warsaw' },
+      { kind: 'institution', label: 'Zintegrowana Platforma Edukacyjna (zpe.gov.pl): Варшавское герцогство', url: 'https://zpe.gov.pl/a/DLsXJ8KOV' },
+    ],
+  },
+  {
+    id: 'rel-pl-july-november',
+    from: 'ref-p061-iyulskaya-revolyuciya-vo-francii',
+    to: 'ref-p068-nacionalno-osvoboditelnoe-vosstanie-v-pols',
+    kind: 'influence',
+    label: 'Июльская революция ускорила польское восстание',
+    detail: `
+После революций 1830 года во Франции и Бельгии Николай I готовил интервенцию, в которой должна была участвовать и армия Царства Польского. Это стало непосредственным поводом для выступления заговорщиков из варшавской офицерской школы 29 ноября 1830 года.
+
+Восстание связало русскую армию на год, и интервенция на Западе не состоялась.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Polskie Radio: Poland marks anniversary of 1830 uprising against Russia', url: 'https://polskieradio.pl/395/7789/Artykul/3290632,poland-marks-anniversary-of-1830-uprising-against-russia' },
+      { kind: 'encyclopedia', label: 'Wikipedia: November Uprising', url: 'https://en.wikipedia.org/wiki/November_Uprising' },
+    ],
+  },
+  {
+    id: 'rel-pl-ww1-independence',
+    from: 'ref-p067-pervaya-mirovaya-voyna',
+    to: 'pl-independence-1918',
+    kind: 'influence',
+    label: 'Поражение всех трёх держав-раздельщиц вернуло Польшу',
+    detail: `
+Первая мировая война поставила Россию по одну сторону фронта, а Германию и Австро-Венгрию — по другую. К ноябрю 1918 года проиграли все три державы, делившие Польшу с XVIII века.
+
+11 ноября 1918 года, в день Компьенского перемирия, Регентский совет передал командование войсками Пилсудскому; этот день стал Днём независимости.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Instytut Pamięci Narodowej: On 11 November Poland celebrated the National Independence Day', url: 'https://ipn.gov.pl/en/news/9969,On-11-November-Poland-celebrated-the-National-Independence-Day.html' },
+      { kind: 'institution', label: 'Culture.pl: Why Does Poland Celebrate Independence Day on 11th November?', url: 'https://culture.pl/en/article/why-does-poland-celebrate-independence-day-on-11th-november' },
+    ],
+  },
+  {
+    id: 'rel-pl-1920-riga',
+    from: 'pl-warsaw-1920',
+    to: 'by-riga-1921',
+    kind: 'influence',
+    label: 'Победа под Варшавой привела к Рижскому миру',
+    detail: `
+Контрнаступление 16 августа 1920 года отбросило Красную армию от Варшавы за Неман. Обе стороны были истощены, и осенью начались переговоры.
+
+Рижский мир 1921 года провёл границу, по которой западная часть белорусских и украинских земель вошла в Польшу.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Instytut Pamięci Narodowej, «Walka o Granice»: Battle of Warsaw, 1920', url: 'https://walkaogranice.ipn.gov.pl/en/battle-of-warsaw.html' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Battle of Warsaw (1920)', url: 'https://en.wikipedia.org/wiki/Battle_of_Warsaw_(1920)' },
+    ],
+  },
+  {
+    id: 'rel-pl-1920-war',
+    from: 'ref-p089-sovetsko-polskaya-voyna',
+    to: 'pl-warsaw-1920',
+    kind: 'context',
+    label: 'Варшавская битва — перелом советско-польской войны',
+    detail: `
+Летом 1920 года войска Тухачевского дошли до Варшавы, и большевики, как и многие иностранные наблюдатели, считали Польшу побеждённой. Битва 13–25 августа изменила ход войны.
+
+В Польше её называют «чудом на Висле»; после неё инициатива перешла к польской армии.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Instytut Pamięci Narodowej, «Walka o Granice»: Battle of Warsaw, 1920', url: 'https://walkaogranice.ipn.gov.pl/en/battle-of-warsaw.html' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Battle of Warsaw (1920)', url: 'https://en.wikipedia.org/wiki/Battle_of_Warsaw_(1920)' },
+    ],
+  },
+  {
+    id: 'rel-pl-1939-katyn',
+    from: 'ref-p092-osvoboditelnyy-pohod-krasnoy-armii',
+    to: 'pl-katyn-1940',
+    kind: 'influence',
+    label: 'Пленные сентября 1939 года стали жертвами Катыни',
+    detail: `
+После вступления Красной армии в восточные области Польши 17 сентября 1939 года десятки тысяч польских военных и полицейских оказались в лагерях НКВД — в Козельске, Старобельске и Осташкове.
+
+5 марта 1940 года Политбюро по записке Берии постановило расстрелять узников этих лагерей и тюрем западных областей Украины и Беларуси.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Instytut Pamięci Narodowej: The Katyn Massacre timeline', url: 'https://eng.ipn.gov.pl/en/news/8009,The-Katyn-Massacre-timeline.html' },
+      { kind: 'institution', label: 'Centralne Muzeum Jeńców Wojennych: 5 March 1940 – The beginning of Katyn Massacre', url: 'https://www.cmjw.pl/en/news/5-march-1940-the-beginning-of-katyn-massacre,517.html' },
+    ],
+  },
+  {
+    id: 'rel-pl-wannsee-ghetto',
+    from: 'de-wannsee-1942',
+    to: 'pl-ghetto-uprising-1943',
+    kind: 'context',
+    label: '«Окончательное решение» и восстание в гетто',
+    detail: `
+Ванзейская конференция в январе 1942 года согласовала организацию уничтожения евреев Европы. Летом того же года из Варшавского гетто в лагерь смерти Треблинка вывезли большинство жителей.
+
+Оставшиеся создали боевые организации; восстание 19 апреля 1943 года началось, когда войска Штропа пришли ликвидировать гетто окончательно.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'POLIN — Музей истории польских евреев: хронология восстания в Варшавском гетто', url: 'https://www.polin.pl/system/files/attachments/Timeline%20of%20the%20events%20of%20the%20Warsaw%20Ghetto%20Uprising.pdf' },
+      { kind: 'academic', label: 'Israel Gutman. Resistance: The Warsaw Ghetto Uprising. Boston: Houghton Mifflin, 1994' },
+    ],
+  },
+  {
+    id: 'rel-pl-bagration-1944',
+    from: 'by-bagration-1944',
+    to: 'pl-warsaw-uprising-1944',
+    kind: 'influence',
+    label: 'Подход Красной армии к Висле стал сигналом к восстанию',
+    detail: `
+Операция «Багратион» летом 1944 года вывела советские войска из Беларуси к Висле. Командование Армии Крайовой решило освободить Варшаву собственными силами до их прихода, чтобы встретить их как хозяева города.
+
+Восстание началось 1 августа; почему Красная армия не помогла восставшим, остаётся предметом спора историков.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Instytut Pamięci Narodowej: 74th anniversary of the outbreak of the Warsaw Uprising', url: 'https://eng.ipn.gov.pl/en/news/1267,74th-anniversary-of-the-outbreak-of-the-Warsaw-Uprising-The-Institute-of-Nationa.html' },
+      { kind: 'academic', label: 'Norman Davies. Rising ’44: The Battle for Warsaw. London: Macmillan, 2003' },
+    ],
+  },
+  {
+    id: 'rel-pl-pact-borders',
+    from: 'ref-p091-podpisanie-sovetsko-germanskogo-pakta-o-ne',
+    to: 'pl-borders-1945',
+    kind: 'influence',
+    label: 'Граница 1945 года закрепила советские приобретения 1939-го',
+    detail: `
+В Тегеране, Ялте и Потсдаме Сталин добивался, чтобы за СССР остались восточные земли довоенной Польши, занятые по пакту 1939 года; граница прошла близко к «линии Керзона».
+
+Взамен Польша получила германские земли до Одера и Нейсе, и страна сместилась на запад.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Muzeum Historii Polski: выставка «Shifting Poland» (Google Arts & Culture)', url: 'https://artsandculture.google.com/story/shifting-poland-polish-history-museum/hwXRR1PfIhIA8A?hl=en' },
+      { kind: 'archive', label: 'Foreign Relations of the United States, 1947, vol. II, doc. 68', url: 'https://history.state.gov/historicaldocuments/frus1947v02/d68' },
+    ],
+  },
+  {
+    id: 'rel-pl-potsdam-borders',
+    from: 'ref-p101-potsdamskaya-konferenciya',
+    to: 'pl-borders-1945',
+    kind: 'influence',
+    label: 'Потсдам передал Польше земли до Одера и Нейсе',
+    detail: `
+Потсдамская конференция передала под польское управление германские земли восточнее Одера и Западной Нейсе и санкционировала переселение немцев.
+
+По данным американских дипломатов, к концу 1946 года из Польши выселили 1,5 миллиона немцев, а на новых землях поселились 3,5 миллиона поляков, большей частью из-за линии Керзона.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Foreign Relations of the United States, 1947, vol. II, doc. 68', url: 'https://history.state.gov/historicaldocuments/frus1947v02/d68' },
+      { kind: 'institution', label: 'Muzeum Historii Polski: выставка «Shifting Poland» (Google Arts & Culture)', url: 'https://artsandculture.google.com/story/shifting-poland-polish-history-museum/hwXRR1PfIhIA8A?hl=en' },
+    ],
+  },
+  {
+    id: 'rel-pl-yalta-1947',
+    from: 'ref-p099-yaltinskaya-krymskaya-konferenciya',
+    to: 'pl-elections-1947',
+    kind: 'context',
+    label: 'Обещание Ялты и сфальсифицированные выборы',
+    detail: `
+Ялтинская конференция обязала временное польское правительство провести «свободные и беспрепятственные выборы как можно скорее».
+
+Коммунисты оттягивали голосование, подделали референдум 1946 года и итоги выборов 19 января 1947 года, сохранив внешнюю форму ялтинских обязательств.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Instytut Pamięci Narodowej: Rigged elections — 19 January 1947', url: 'https://eng.ipn.gov.pl/en/digital-resources/articles/7193,Rigged-elections-19-January-1947.html' },
+      { kind: 'encyclopedia', label: 'Wikipedia: 1947 Polish parliamentary election', url: 'https://en.wikipedia.org/wiki/1947_Polish_parliamentary_election' },
+    ],
+  },
+  {
+    id: 'rel-pl-1956-hungary',
+    from: 'pl-october-1956',
+    to: 'ref-p104-vengerskoe-vosstanie-1956-g',
+    kind: 'influence',
+    label: 'Польский октябрь стал толчком к восстанию в Венгрии',
+    detail: `
+Приход Гомулки к власти вопреки давлению Хрущёва показал, что Москва может уступить. 23 октября 1956 года будапештские студенты вышли на демонстрацию в поддержку Польши, и она переросла в восстание.
+
+Исход оказался разным: Польша получила ограниченную самостоятельность, Венгрию советские войска подавили в ноябре.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Charles Gati. Failed Illusions: Moscow, Washington, Budapest, and the 1956 Hungarian Revolt. Stanford University Press, 2006' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Polish October', url: 'https://en.wikipedia.org/wiki/Polish_October' },
+    ],
+  },
+  {
+    id: 'rel-pl-jp2-solidarity',
+    from: 'pl-john-paul-1978',
+    to: 'pl-solidarity-1980',
+    kind: 'influence',
+    label: 'Визит папы 1979 года подготовил движение «Солидарности»',
+    detail: `
+Во время первой поездки Иоанна Павла II на родину в июне 1979 года на мессах собирались сотни тысяч людей — впервые в ПНР огромные массы встречались вне контроля партии.
+
+Проповедь на площади Победы в Варшаве называют символическим началом перемен, которые привели к рождению «Солидарности» в 1980 году; портрет папы висел на воротах бастующей верфи.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Instytut Pamięci Narodowej: 40th anniversary of the first pilgrimage of Pope John Paul II to Poland', url: 'https://eng.ipn.gov.pl/en/news/1918,40th-anniversary-of-the-first-pilgrimage-of-Pope-John-Paul-II-to-Poland.html' },
+      { kind: 'institution', label: 'Konferencja Episkopatu Polski: Papal pilgrimages to Poland', url: 'https://episkopat.pl/doc/172768.papal-pilgrimages-to-poland' },
+    ],
+  },
+  {
+    id: 'rel-pl-solidarity-martial',
+    from: 'pl-solidarity-1980',
+    to: 'pl-martial-law-1981',
+    kind: 'conflict',
+    label: 'Военное положение было направлено против «Солидарности»',
+    detail: `
+К осени 1981 года «Солидарность» объединила около 10 миллионов человек. В ночь на 13 декабря 1981 года власть ввела военное положение и интернировала около 10 тысяч активистов, в том числе Леха Валенсу.
+
+Деятельность профсоюза была запрещена, но подпольные структуры сохранились до 1989 года.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Instytut Pamięci Narodowej: Martial Law in Poland 1981–1983', url: 'https://eng.ipn.gov.pl/en/brief-history-of-poland/collected-content/9083,COLLECTED-CONTENT-Martial-Law-in-Poland-19811983.html' },
+      { kind: 'institution', label: 'Polskie Radio: Poland marks 39th anniversary of imposition of martial law', url: 'https://polskieradio.pl/395/7784/artykul/2639386,poland-marks-39th-anniversary-of-imposition-of-martial-law' },
+    ],
+  },
+  {
+    id: 'rel-pl-solidarity-roundtable',
+    from: 'pl-solidarity-1980',
+    to: 'pl-round-table-1989',
+    kind: 'influence',
+    label: 'Без «Солидарности» не было бы круглого стола',
+    detail: `
+В 1988 году новые забастовки и экономический кризис заставили власти искать соглашения с запрещённым профсоюзом. Партнёром на переговорах с февраля по апрель 1989 года стала именно «Солидарность» во главе с Валенсой.
+
+Соглашение вернуло профсоюзу легальный статус и открыло частично свободные выборы, на которых его кандидаты получили почти все доступные места.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Poland: A Country Study. Library of Congress, Federal Research Division: The 1989 Elections', url: 'https://countrystudies.us/poland/21.htm' },
+      { kind: 'institution', label: 'Radio Free Europe / Radio Liberty: Poland remains divided over legacy of 1989 Solidarity revolution', url: 'https://www.rferl.org/a/Poland_Remains_Divided_Over_Legacy_Of_1989_Solidarity_Revolution/1746056.html' },
+    ],
+  },
+  {
+    id: 'rel-pl-1989-revolutions',
+    from: 'pl-round-table-1989',
+    to: 'ref-p105-antikommunisticheskie-revolyucii-v-central',
+    kind: 'influence',
+    label: 'Польский пример открыл осень 1989 года',
+    detail: `
+Выборы 4 июня 1989 года и правительство Мазовецкого показали, что смена власти в советском блоке возможна без советского вмешательства.
+
+Венгерская оппозиция провела свой круглый стол летом 1989 года, затем последовали падение Берлинской стены и «бархатная революция» в Чехословакии.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Poland: A Country Study. Library of Congress, Federal Research Division: The 1989 Elections', url: 'https://countrystudies.us/poland/21.htm' },
+      { kind: 'institution', label: 'Radio Free Europe / Radio Liberty: Poland remains divided over legacy of 1989 Solidarity revolution', url: 'https://www.rferl.org/a/Poland_Remains_Divided_Over_Legacy_Of_1989_Solidarity_Revolution/1746056.html' },
+    ],
+  },
+  {
+    id: 'rel-pl-nato-1949',
+    from: 'ref-p121-sozdanie-organizacii-severoatlanticheskogo',
+    to: 'pl-nato-1999',
+    kind: 'context',
+    label: 'Бывшие члены Варшавского договора вступают в НАТО',
+    detail: `
+Польша, Чехия и Венгрия стали членами НАТО 12 марта 1999 года. Церемонию провели в Библиотеке Трумэна в Индепенденсе — в городе президента, при котором альянс был создан в 1949 году.
+
+Это было первое расширение НАТО на восток после окончания холодной войны.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Radio Free Europe / Radio Liberty: Independence, Missouri, 12 March 1999', url: 'https://www.rferl.org/a/1090798.html' },
+      { kind: 'institution', label: 'NATO Review: «Dzień, w którym zmieniłam barwy» (2014)', url: 'https://www.nato.int/docu/review/pl/articles/2014/03/25/dzien-w-ktorym-zmienilam-barwy/index.html' },
+    ],
+  },
+  {
+    id: 'rel-pl-maastricht-eu',
+    from: 'ref-p106-podpisanie-maastrihtskogo-dogovora-i-sozda',
+    to: 'pl-eu-2004',
+    kind: 'context',
+    label: 'Польша входит в Европейский союз, созданный в Маастрихте',
+    detail: `
+Маастрихтский договор 1992 года превратил Европейские сообщества в Европейский союз. 1 мая 2004 года к нему присоединились десять стран, в том числе Польша — крупнейшее расширение в истории союза.
+
+Вступлению предшествовал референдум 7–8 июня 2003 года, на котором «за» проголосовали 77,45 % участников.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'МИД Польши: Fifteen years of Poland’s membership in the EU', url: 'https://www.gov.pl/web/diplomacy/fifteen-years-of-polands-membership-in-the-eu' },
+      { kind: 'academic', label: 'Sussex European Institute, EPERN Referendum Briefing No. 5 (Польша, 2003)', url: 'https://www.sussex.ac.uk/sei/documents/epern-ref-no-5.pdf' },
+    ],
+  },
 ];
 
 /** Быстрый доступ к связям по идентификатору объекта. */
