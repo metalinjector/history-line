@@ -644,15 +644,21 @@ def source_label(page: int) -> str:
     return f"В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. {page}."
 
 
-def markdown_for(item: dict[str, object], page: int, section: str) -> str:
-    # Reference articles are assembled at runtime from the structured fields.
-    # Keeping only provenance here avoids duplicating hundreds of paragraphs in
-    # both the TypeScript dataset and the eager Markdown manifest.
+def yaml_block(key: str, text: str) -> str:
+    lines = "\n".join(f"  {line}" if line else "" for line in text.split("\n"))
+    return f"{key}: |-\n{lines}\n"
+
+
+def markdown_for(item: dict[str, object], detail: str, page: int, section: str) -> str:
+    # The timeline card (reference.json) is a showcase: title, date, one
+    # sentence. The full description lives here and is loaded with the modal,
+    # like the descriptions of authored items (docs/CORE.md, section 3).
     identifier = str(item["id"])
     return (
         "---\n"
         f"id: {identifier}\n"
-        "sources:\n"
+        + yaml_block("detail", detail)
+        + "sources:\n"
         f"  - label: \"{source_label(page)}\"\n"
         "    kind: reference\n"
         "---\n"
@@ -668,6 +674,7 @@ def main() -> None:
     existing = existing_items()
     promoted = authored_ids()
     generated: list[dict[str, object]] = []
+    details: dict[str, str] = {}
     duplicates: list[tuple[dict[str, object], str]] = []
     unparsed: list[dict[str, object]] = []
     ids: set[str] = set()
@@ -710,7 +717,6 @@ def main() -> None:
             "kind": "person" if title.lower().startswith("годы жизни") else "event",
             "title": title,
             "summary": first_sentence(detail, title),
-            "detail": detail or f"В справочнике событие отмечено как «{title}».",
             "tags": tags_for(event, title, country),
             "importance": importance_for(title),
             "approximate": parsed.approximate or "в." in date_label or "тысячелет" in date_label,
@@ -723,11 +729,14 @@ def main() -> None:
             item["month"] = parsed.month
         if parsed.day:
             item["day"] = parsed.day
+        details[identifier] = detail or f"В справочнике событие отмечено как «{title}»."
         generated.append(item)
 
     OUTPUT_CONTENT.mkdir(parents=True, exist_ok=True)
     for old in OUTPUT_CONTENT.glob("*.md"):
-        old.unlink()
+        # Files of rewritten records belong to the editors now: keep them.
+        if old.stem not in promoted:
+            old.unlink()
     for item in generated:
         source_event = next(
             event
@@ -739,7 +748,7 @@ def main() -> None:
             )
         )
         (OUTPUT_CONTENT / f"{item['id']}.md").write_text(
-            markdown_for(item, int(item["referencePage"]), str(source_event["section"])),
+            markdown_for(item, details[str(item["id"])], int(item["referencePage"]), str(source_event["section"])),
             encoding="utf-8",
         )
 

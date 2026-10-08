@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { use, useMemo } from 'react';
 import type { TimelineState } from '../../lib/useTimelineState';
-import { withContent } from '../../data/content';
+import { loadContent } from '../../data/loadContent';
 import { ItemModal } from './ItemModal';
 import { DayModal } from './DayModal';
 import { RelationModal } from './RelationModal';
@@ -13,9 +13,10 @@ type Props = {
 /**
  * Единая точка входа для всех модальных окон.
  *
- * Собрана в один ленивый чанк вместе с разбором Markdown, KaTeX, загрузчиком
- * Mermaid и редакционной базой (статьи, источники, трактовки — data/content.ts):
- * пока читатель не открыл ни одной статьи, ничего этого не грузится.
+ * Собрана в один ленивый чанк вместе с разбором Markdown, KaTeX и загрузчиком
+ * Mermaid. Полные тексты базы (data/content.ts) — отдельный, самый тяжёлый
+ * чанк: окно ждёт его через `use`, пока снаружи стоит Suspense, — и только
+ * когда открыт объект или связь.
  * Одновременно открыто не больше одного окна.
  */
 export default function ModalHost({ state }: Props) {
@@ -40,13 +41,17 @@ export default function ModalHost({ state }: Props) {
     toggleTag,
   } = state;
 
-  // На шкале у объекта только сводка редакционной базы; окну нужен полный текст.
-  const item = useMemo(() => (openedItem ? withContent(openedItem) : undefined), [openedItem]);
+  // На шкале у объекта только витрина; окну нужен полный текст.
+  const content = openedItem || openedRelation ? use(loadContent()) : undefined;
+  const item = useMemo(
+    () => (openedItem && content ? content.withContent(openedItem) : undefined),
+    [openedItem, content],
+  );
 
-  if (openedRelation && openedRelationEnds) {
+  if (openedRelation && openedRelationEnds && content) {
     return (
       <RelationModal
-        relation={openedRelation}
+        relation={content.withRelationContent(openedRelation)}
         from={openedRelationEnds.from}
         to={openedRelationEnds.to}
         onOpenItem={(item) => openItem(item, { scroll: true })}

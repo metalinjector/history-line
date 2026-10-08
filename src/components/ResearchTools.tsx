@@ -6,16 +6,14 @@ import {
   type ResearchSession,
 } from '../lib/researchExport';
 import { periodLabel } from '../data/periods';
+import { loadContent } from '../data/loadContent';
 import './ResearchTools.css';
 
 type Props = { state: TimelineState };
 
-/**
- * Источники объектов лежат в редакционной базе, которая грузится отдельно
- * от шкалы (data/content.ts). Экспорт подгружает её сам; наведение на кнопки
- * начинает загрузку заранее.
- */
-const loadContent = () => import('../data/content');
+// Описания и источники объектов лежат в полных текстах базы, которые грузятся
+// отдельно от шкалы (data/loadContent.ts). Экспорт подгружает их сам;
+// наведение на кнопки начинает загрузку заранее.
 
 function downloadFile(content: string, type: string, filename: string) {
   const url = URL.createObjectURL(new Blob([content], { type }));

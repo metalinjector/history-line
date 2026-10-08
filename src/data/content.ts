@@ -1,4 +1,4 @@
-import type { SourceLink, TimelineItem, Viewpoint } from '../types';
+import type { Relation, SourceLink, TimelineItem, Viewpoint } from '../types';
 
 /**
  * ⚠ КАРКАС — docs/CORE.md, раздел 3. Статически этот модуль импортирует
@@ -6,14 +6,17 @@ import type { SourceLink, TimelineItem, Viewpoint } from '../types';
  * Лишний статический импорт вернёт сотни килобайт в первый экран;
  * src/contracts.test.ts это ловит.
  *
- * Редакционное наполнение базы: статьи, источники и трактовки.
+ * Полные тексты базы: развёрнутые описания и параллели, статьи, источники,
+ * трактовки и объяснения связей. На шкале — витрина: заголовок, дата, одна
+ * фраза (src/data/items/). Всё, что читают, «провалившись» в объект, — здесь.
  *
  * Всё это лежит не в коде, а в обычных Markdown-файлах — по одному на объект:
  * `content/items/<страна>/<id>.md` для основной базы и
  * `content/layers/<слой>/<id>.md` для объектов слоёв. В шапке файла
- * (front-matter) записаны источники и, если нужно, расхождения в трактовках;
- * ниже — статья для модального окна. Статья необязательна: файл только
- * с источниками совершенно нормален.
+ * (front-matter) записаны развёрнутое описание (`detail`), параллель
+ * (`parallel`), источники и, если нужно, расхождения в трактовках; ниже —
+ * статья для модального окна. Статья необязательна. Связи лежат так же:
+ * `content/relations/<id>.md` — источники в шапке, объяснение ниже.
  *
  * Такой формат выбран ради тех, кто наполняет базу: добавить факт — значит
  * создать один текстовый файл, а не править TypeScript. Правила наполнения —
@@ -23,7 +26,7 @@ import type { SourceLink, TimelineItem, Viewpoint } from '../types';
  * и экспорт (динамическим import). Шкале хватает сводки — data/contentSummary.ts.
  */
 type ContentModule = {
-  meta: { id?: string; sources?: SourceLink[]; viewpoints?: Viewpoint[] };
+  meta: { id?: string; detail?: string; parallel?: string; sources?: SourceLink[]; viewpoints?: Viewpoint[] };
   body: string;
 };
 
@@ -47,6 +50,27 @@ export const contentManifest = collected.map(({ path, filenameId, declaredId, id
   declaredId,
   id,
 }));
+
+const textField = (field: 'detail' | 'parallel') =>
+  Object.fromEntries(
+    collected.filter((entry) => entry.meta[field]?.trim()).map((entry) => [entry.id, entry.meta[field]!.trim()]),
+  ) as Record<string, string>;
+
+/** Развёрнутые описания — 2–4 предложения, которые раньше жили в карточке. */
+export const detailByItem = textField('detail');
+
+/** Параллели: что в это же время происходило в других странах. */
+export const parallelByItem = textField('parallel');
+
+/**
+ * Полный текст для поиска по шкале: описание и параллель. Поиск подгружает
+ * его по первому запросу, до тех пор ищет по витрине — заголовку и фразе.
+ */
+export const searchTextById: Record<string, string> = Object.fromEntries(
+  collected
+    .filter((entry) => entry.meta.detail || entry.meta.parallel)
+    .map((entry) => [entry.id, [entry.meta.detail ?? '', entry.meta.parallel ?? ''].join(' ')]),
+);
 
 /** Развёрнутые статьи в Markdown. Ключ — идентификатор объекта хронологии. */
 export const articles: Record<string, string> = Object.fromEntries(
@@ -82,14 +106,51 @@ export const viewpointsByItem: Record<string, Viewpoint[]> = Object.fromEntries(
  * Объекты пользователя и всё, чего нет в базе, возвращаются как есть.
  */
 export function withContent(item: TimelineItem): TimelineItem {
+  const detail = detailByItem[item.id];
+  const parallel = parallelByItem[item.id];
   const body = articles[item.id];
   const sources = sourcesByItem[item.id];
   const viewpoints = viewpointsByItem[item.id];
-  if (!body && !sources && !viewpoints) return item;
+  if (!detail && !parallel && !body && !sources && !viewpoints) return item;
   return {
     ...item,
+    ...(detail ? { detail } : {}),
+    ...(parallel ? { parallel } : {}),
     ...(body ? { body } : {}),
     ...(sources ? { sources } : {}),
     ...(viewpoints ? { viewpoints } : {}),
+  };
+}
+
+// Связи: content/relations/<id>.md — своя папка без подпапок, поэтому шаблон
+// объектов выше (content/*/*/*.md) их не захватывает.
+const relationModules = import.meta.glob<ContentModule>('../../content/relations/*.md', { eager: true });
+
+const relationEntries = Object.entries(relationModules).map(([path, module]) => {
+  const filenameId = path.split('/').pop()!.replace(/\.md$/, '');
+  return { path, filenameId, declaredId: module.meta.id, id: module.meta.id ?? filenameId, ...module };
+});
+
+/** Метаданные файлов связей для тестов целостности. */
+export const relationContentManifest = relationEntries.map(({ path, filenameId, declaredId, id }) => ({
+  path,
+  filenameId,
+  declaredId,
+  id,
+}));
+
+const relationContentById = new Map(relationEntries.map((entry) => [entry.id, entry]));
+
+/**
+ * Связь вместе с объяснением и источниками из её файла. Связи читателя
+ * хранят всё в себе и возвращаются как есть.
+ */
+export function withRelationContent(relation: Relation): Relation {
+  const entry = relationContentById.get(relation.id);
+  if (!entry || relation.detail !== undefined) return relation;
+  return {
+    ...relation,
+    detail: entry.body,
+    ...(entry.meta.sources?.length ? { sources: entry.meta.sources } : {}),
   };
 }

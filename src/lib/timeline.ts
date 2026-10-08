@@ -41,12 +41,16 @@ function normalize(value: string): string {
   return value.toLowerCase().replaceAll('ё', 'е');
 }
 
-/** Совпадает ли объект с поисковым запросом. Запрос разбивается на слова, нужны все. */
-export function matchesQuery(item: TimelineItem, query: string): boolean {
+/**
+ * Совпадает ли объект с поисковым запросом. Запрос разбивается на слова, нужны все.
+ * `fullText` — полный текст объекта базы (описание и параллель), если он уже
+ * загружен: у карточек на шкале есть только витрина.
+ */
+export function matchesQuery(item: TimelineItem, query: string, fullText = ''): boolean {
   const words = normalize(query).split(/\s+/).filter(Boolean);
   if (words.length === 0) return true;
   const haystack = normalize(
-    [item.title, item.summary, item.detail, item.life ?? '', item.tags.join(' '), String(item.year)].join(' '),
+    [item.title, item.summary, item.detail ?? '', fullText, item.life ?? '', item.tags.join(' '), String(item.year)].join(' '),
   );
   return words.every((word) => haystack.includes(word));
 }
@@ -55,7 +59,11 @@ export function matchesQuery(item: TimelineItem, query: string): boolean {
  * Фильтрация объектов. Порядок проверок — от самой дешёвой к самой дорогой,
  * чтобы поиск по тексту выполнялся для минимального числа объектов.
  */
-export function filterItems(items: TimelineItem[], filter: FilterState): TimelineItem[] {
+export function filterItems(
+  items: TimelineItem[],
+  filter: FilterState,
+  fullTextById: Record<string, string> = {},
+): TimelineItem[] {
   const countrySet = new Set(filter.countries);
   const tagSet = new Set(filter.tags);
   const period = filter.period;
@@ -69,7 +77,7 @@ export function filterItems(items: TimelineItem[], filter: FilterState): Timelin
     if (filter.keyOnly && (item.importance ?? 2) < 3) return false;
     if (period && !periodContains(period, item.year, item.endYear)) return false;
     if (tagSet.size > 0 && !item.tags.some((tag) => tagSet.has(tag))) return false;
-    if (filter.query && !matchesQuery(item, filter.query)) return false;
+    if (filter.query && !matchesQuery(item, filter.query, fullTextById[item.id])) return false;
     return true;
   });
 }

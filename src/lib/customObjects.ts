@@ -55,7 +55,7 @@ export function relationIsComplete(relation: Pick<Relation, 'label' | 'detail' |
   const sources = relation.sources ?? [];
   return (
     relation.label.trim().length > 3 &&
-    relation.detail.trim().length >= 20 &&
+    (relation.detail ?? '').trim().length >= 20 &&
     hasVerifiedSources(sources) &&
     sources.every((source) => isWebUrl(source.url))
   );

@@ -116,13 +116,21 @@ export type TimelineItem = {
   title: string;
   /** Одно предложение: что произошло. */
   summary: string;
-  /** 2–4 предложения: что произошло, почему важно, как связано с соседями. */
-  detail: string;
+  /**
+   * 2–4 предложения: что произошло, почему важно, как связано с соседями.
+   * Полный текст, а не витрина: у объектов базы он лежит в файле содержания
+   * (content/) и появляется вместе с окном статьи — data/content.ts → withContent.
+   * У объектов читателя хранится прямо в объекте.
+   */
+  detail?: string;
   /** Годы жизни — только для персоналий. */
   life?: string;
   tags: string[];
   importance?: Importance;
-  /** Короткая реплика о синхронности: что в это же время происходило рядом. */
+  /**
+   * Короткая реплика о синхронности: что в это же время происходило рядом.
+   * Как и `detail`, у объектов базы приходит из файла содержания.
+   */
   parallel?: string;
   /**
    * Что есть у объекта в редакционной базе (Markdown-файл в content/) — без самих текстов.
@@ -357,8 +365,12 @@ export type Relation = {
   to: string;
   /** Короткая подпись связи для подсказки и заголовка окна. */
   label: string;
-  /** Подробное объяснение связи в Markdown. */
-  detail: string;
+  /**
+   * Подробное объяснение связи в Markdown. У связей базы лежит в
+   * content/relations/<id>.md и приходит вместе с окном связи
+   * (data/content.ts → withRelationContent); у связей читателя — в самой связи.
+   */
+  detail?: string;
   /** Характер связи — определяет направленность, подписи ролей, цвет и штрих нити. */
   kind: 'influence' | 'conflict' | 'exchange' | 'comparison' | 'context';
   /**
@@ -372,10 +384,12 @@ export type Relation = {
    * редакционными черновиками и рисуются пунктиром.
    */
   verification?: 'verified' | 'draft';
+  /** Сводка файла содержания связи: проверены ли источники — без самих текстов. */
+  content?: ContentSummary;
 };
 
 /** Проверенная связь, которую пользователь заполняет в конструкторе. */
-export type RelationDraftInput = Pick<Relation, 'to' | 'kind' | 'label' | 'detail' | 'sources'>;
+export type RelationDraftInput = Pick<Relation, 'to' | 'kind' | 'label' | 'sources'> & { detail: string };
 
 /** Один осмысленный шаг кураторского маршрута по шкале. */
 export type StoryStep = {

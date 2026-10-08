@@ -143,14 +143,15 @@ describe('контракты каркаса', () => {
   });
 
   it('полная редакционная база не попадает в первый экран', () => {
-    // data/content.ts — статьи, источники и трактовки, сотни килобайт.
-    // Статически его импортирует только ленивое окно; остальные берут
-    // сводку item.content или грузят базу через import().
+    // data/content.ts — полные тексты: описания, параллели, статьи, источники,
+    // трактовки, объяснения связей. Статически его не импортирует никто:
+    // все берут его через data/loadContent.ts, когда читатель провалился внутрь.
+    // Даже ленивое окно: его код подгружается заранее, а тексты — нет.
     const importers = Object.entries(sources)
       .filter(([path, code]) => staticImports(path, code).includes('/src/data/content'))
       .map(([path]) => path);
 
-    expect(importers).toEqual(['./components/modal/ModalHost.tsx']);
+    expect(importers).toEqual([]);
   });
 
   it('правило верификации ни от чего не зависит', () => {

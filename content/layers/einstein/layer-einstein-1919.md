@@ -1,5 +1,7 @@
 ---
 id: layer-einstein-1919
+detail: |-
+  Ноябрьское объявление результатов сделало Эйнштейна мировой знаменитостью за один день. Показательно, что британские астрономы поехали проверять теорию недавнего противника через полгода после войны.
 sources:
   - kind: archive
     label: "F. W. Dyson, A. S. Eddington, C. Davidson. A Determination of the Deflection of Light by the Sun’s Gravitational Field // Philosophical Transactions of the Royal Society A, 1920"
