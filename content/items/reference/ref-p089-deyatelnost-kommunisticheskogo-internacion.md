@@ -1,6 +1,10 @@
 ---
 id: ref-p089-deyatelnost-kommunisticheskogo-internacion
 sources:
-  - label: "В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. 89."
-    kind: reference
+  - kind: encyclopedia
+    label: "Большая российская энциклопедия: Коммунистический интернационал"
+    url: "https://old.bigenc.ru/world_history/text/2086024"
+  - kind: archive
+    label: "Президентская библиотека им. Б. Н. Ельцина: Коммунистический интернационал (журнал)"
+    url: "https://www.prlib.ru/item/906335"
 ---

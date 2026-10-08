@@ -1,6 +1,10 @@
 ---
 id: ref-p043-zavershenie-stroitelstva-uspenskogo-sobora
 sources:
-  - label: "В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. 43."
-    kind: reference
+  - kind: institution
+    label: "Музеи Московского Кремля: история Успенского собора"
+    url: "https://kreml.ru/ru/museums/uspenskii-sobor/istoriia-2"
+  - kind: encyclopedia
+    label: "Большая российская энциклопедия: Фиораванти Аристотель"
+    url: "https://bigenc.ru/c/fioravanti-aristotel-721382"
 ---

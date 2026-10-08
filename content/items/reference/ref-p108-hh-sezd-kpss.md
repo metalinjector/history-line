@@ -1,6 +1,13 @@
 ---
 id: ref-p108-hh-sezd-kpss
 sources:
-  - label: "В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. 108."
-    kind: reference
+  - kind: institution
+    label: "Президентская библиотека им. Б. Н. Ельцина: Открылся XX съезд КПСС"
+    url: "https://www.prlib.ru/history/619027"
+  - kind: archive
+    label: "Документы XX века (doc.histrf.ru): Постановление ЦК КПСС о преодолении культа личности и его последствий"
+    url: "https://doc.histrf.ru/20/postanovlenie-tsk-kpss-o-preodolenii-kulta-lichnosti-i-ego-posledstviy/"
+  - kind: encyclopedia
+    label: "Энциклопедия РИО: Двадцатый съезд КПСС"
+    url: "https://w.histrf.ru/articles/dvadcatyy-sezd-kpss-2"
 ---

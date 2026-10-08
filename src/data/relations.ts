@@ -2705,6 +2705,367 @@ timeline
       { kind: 'institution', label: 'Assemblée nationale: Les 33 femmes élues députées pour la première fois en 1945', url: 'https://www2.assemblee-nationale.fr/decouvrir-l-assemblee/histoire/le-suffrage-universel/la-conquete-de-la-citoyennete-politique-des-femmes/les-33-femmes-elues-deputees-pour-la-premiere-fois-en-1945' },
     ],
   },
+  {
+    id: 'rel-ru-kazan-pokrov',
+    from: 'ru-kazan-1552',
+    to: 'ref-p053-stroitelstvo-pokrovskogo-sobora-v-moskve',
+    kind: 'influence',
+    label: 'Покровский собор построен в память о взятии Казани',
+    detail: `
+Собор на Красной площади возвели в 1555–1561 годах по велению Ивана IV именно как памятник победе над Казанским ханством.
+
+Его программа прямо повторяет ход осады: приделы посвящены святым и праздникам, на дни которых пришлись решающие бои, а центральная церковь — празднику Покрова, когда начался штурм города.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Государственный исторический музей: история Покровского собора', url: 'https://shm.ru/kollektsii-i-muzeynyy-kompleks/museum_history/pokrovskiy-sobor/history/' },
+      { kind: 'institution', label: 'Государственный исторический музей: Храм Василия Блаженного (Покровский собор)', url: 'https://shm.ru/museum/hvb/' },
+    ],
+  },
+  {
+    id: 'rel-ru-catherine-partitions',
+    from: 'ref-p056-pravlenie-rossiyskoy-imperatricy-ekateriny',
+    to: 'by-partitions-1795',
+    kind: 'influence',
+    label: 'Политика Екатерины II и разделы Речи Посполитой',
+    detail: `
+В 1772 году Екатерина II приняла предложение Пруссии о разделе Речи Посполитой, в 1792 году Россия вновь ввела туда войска и согласилась на второй раздел, а в 1795 году третий раздел покончил с польско-литовской государственностью.
+
+В результате белорусские земли целиком вошли в состав Российской империи.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: 1762–1796', url: 'https://old.bigenc.ru/text/3249594' },
+      { kind: 'institution', label: 'Российское историческое общество (histrf.ru): Внешняя политика Российской империи второй половины XVIII столетия', url: 'https://histrf.ru/lectorium/lektion/vnieshniaia-politika-rossiiskoi-impierii-vtoroi-poloviny-xviii-stolietiia' },
+    ],
+  },
+  {
+    id: 'rel-ru-catherine-crimea',
+    from: 'ref-p056-pravlenie-rossiyskoy-imperatricy-ekateriny',
+    to: 'ru-crimea-1783',
+    kind: 'influence',
+    label: 'Южная политика Екатерины II и манифест 1783 года',
+    detail: `
+Присоединение Крыма стало итогом наступательной южной политики Екатерины II: манифест о включении полуострова в состав империи подписала сама императрица 8 (19) апреля 1783 года, а управление новой Таврической областью поручила Г. А. Потёмкину.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: День принятия Крыма, Тамани и Кубани в состав Российской империи (1783)', url: 'https://www.prlib.ru/history/619179' },
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: 1762–1796', url: 'https://old.bigenc.ru/text/3249594' },
+    ],
+  },
+  {
+    id: 'rel-ru-1812-decembrists',
+    from: 'ru-1812',
+    to: 'ref-p068-vosstanie-dekabristov-v-rossii',
+    kind: 'influence',
+    label: 'Поколение 1812 года и тайные общества',
+    detail: `
+Многие будущие декабристы были офицерами, прошедшими войну 1812 года и заграничные походы. Опыт войны и знакомство с европейскими порядками стали одним из источников их требований конституции и отмены крепостного права.
+
+Это не единственная причина движения, но связь поколения 1812 года с декабристами признаётся историками.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'С. В. Мироненко: о заграничных походах, декабристах и причинах отмены крепостного права', url: 'https://historyrussia.org/polemika/intervyu-s-istorikami/sergej-vladimirovich-mironenko-ne-ekonomicheskie-prichiny-byli-glavnymi-v-otmene-krepostnogo-prava.html' },
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: Восстание на Сенатской площади 1825', url: 'https://bigenc.ru/c/vosstanie-na-senatskoi-ploshchadi-1825-410cd5' },
+    ],
+  },
+  {
+    id: 'rel-ru-1861-great-reforms',
+    from: 'ru-1861',
+    to: 'ref-p069-burzhuaznye-reformy-v-rossii',
+    kind: 'influence',
+    label: 'Освобождение крестьян потребовало новых учреждений',
+    detail: `
+После отмены крепостного права помещик перестал быть властью и судьёй для миллионов крестьян. Местное управление и суд пришлось строить заново: в 1864 году появились земства и новые судебные уставы, а затем последовали городская и военная реформы.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: К 200-летию Александра II: о Великих реформах', url: 'https://www.prlib.ru/news/1154603' },
+      { kind: 'institution', label: 'Российское историческое общество (histrf.ru): Земская реформа, Судебная реформа 1864 (Лента времени)', url: 'https://histrf.ru/lenta-vremeni/event/view/ziemskaia-rieforma-sudiebnaia-rieforma' },
+    ],
+  },
+  {
+    id: 'rel-ru-feb-dual-power',
+    from: 'ref-p072-fevralskaya-revolyuciya-v-rossii',
+    to: 'ref-p086-dvoevlastie-v-rossii',
+    kind: 'influence',
+    label: 'Февраль породил две власти сразу',
+    detail: `
+В ходе Февральской революции одновременно возникли Временный комитет Государственной думы, из которого выросло Временное правительство, и Петроградский совет рабочих и солдатских депутатов.
+
+Сосуществование этих органов и стало двоевластием, продлившимся до июльского кризиса.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: В ходе Февральской революции образованы новые органы власти', url: 'https://www.prlib.ru/history/619088' },
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: Начался июльский политический кризис. Завершение периода «двоевластия»', url: 'https://www.prlib.ru/history/619390' },
+    ],
+  },
+  {
+    id: 'rel-ru-lenin-october',
+    from: 'ref-p086-pribytie-v-i-lenina-v-rossiyu-iz-emigracii',
+    to: 'ref-p086-oktyabrskaya-revolyuciya-v-rossii',
+    kind: 'influence',
+    label: '«Апрельские тезисы» — курс на взятие власти',
+    detail: `
+Вернувшись в апреле 1917 года, Ленин отверг поддержку Временного правительства и выдвинул лозунг перехода власти к Советам. Этот курс партия большевиков осуществила в октябре, а сам Ленин стал одним из главных организаторов восстания.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: Приезд В. И. Ленина в Петроград 3 апреля 1917 года', url: 'https://www.prlib.ru/item/959139' },
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: Октябрьская революция 1917', url: 'https://bigenc.ru/c/oktiabr-skaia-revoliutsiia-1917-a64b45' },
+    ],
+  },
+  {
+    id: 'rel-ru-october-constituent',
+    from: 'ref-p086-oktyabrskaya-revolyuciya-v-rossii',
+    to: 'ref-p087-rabota-uchreditelnogo-sobraniya-v-rossii',
+    kind: 'conflict',
+    label: 'Власть Советов против выборного собрания',
+    detail: `
+Захватив власть в октябре, большевики и левые эсеры проиграли выборы в Учредительное собрание. Собрание отказалось признать декреты советской власти, и в январе 1918 года его распустили.
+
+Столкновение двух источников легитимности — съезда Советов и всенародно избранного собрания — решилось силой.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Документы XX века (doc.histrf.ru): Декрет о роспуске Учредительного собрания', url: 'https://doc.histrf.ru/20/dekret-o-rospuske-uchreditelnogo-sobraniya/' },
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: Открыто Всероссийское Учредительное собрание', url: 'https://www.prlib.ru/history/1836365' },
+    ],
+  },
+  {
+    id: 'rel-ru-peace-decree-brest',
+    from: 'ref-p087-itogi-raboty-ii-vserossiyskogo-sezda-sovet',
+    to: 'ref-p088-zaklyuchenie-brestskogo-mirnogo-dogovora-m',
+    kind: 'influence',
+    label: 'От Декрета о мире к сепаратному миру',
+    detail: `
+Декрет о мире предложил всем воюющим странам немедленное перемирие. Страны Антанты на него не откликнулись, и Советская Россия начала сепаратные переговоры с Германией и её союзниками, закончившиеся Брестским миром на тяжёлых условиях.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: Начало сепаратных переговоров Советской России с Германией о мире', url: 'https://www.prlib.ru/history/619779' },
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: Декрет о мире', url: 'https://bigenc.ru/c/dekret-o-mire-e6e46a' },
+    ],
+  },
+  {
+    id: 'rel-ru-brest-german-revolution',
+    from: 'ref-p077-noyabrskaya-burzhuazno-demokraticheskaya-r',
+    to: 'ref-p088-zaklyuchenie-brestskogo-mirnogo-dogovora-m',
+    kind: 'influence',
+    label: 'Поражение и революция в Германии отменили Брестский мир',
+    detail: `
+Отказ Германии от условий Брестского мира был одним из пунктов Компьенского перемирия 11 ноября 1918 года. На фоне Ноябрьской революции в Германии ВЦИК 13 ноября в одностороннем порядке аннулировал договор.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: Аннулирование Брест-Литовского мирного договора', url: 'https://www.prlib.ru/section/710630' },
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: Брестский мир 1918', url: 'http://dev.bigenc.ru/domestic_history/text/1883363' },
+    ],
+  },
+  {
+    id: 'rel-ru-civil-war-nep',
+    from: 'ref-p088-grazhdanskaya-voyna',
+    to: 'ref-p089-novaya-ekonomicheskaya-politika-nep-v-ross',
+    kind: 'influence',
+    label: 'Кризис «военного коммунизма» привёл к нэпу',
+    detail: `
+Политика «военного коммунизма» времён Гражданской войны с продразвёрсткой вызвала к 1921 году крестьянские восстания и Кронштадтское восстание.
+
+X съезд РКП(б) в марте 1921 года заменил развёрстку продналогом, и Ленин объяснял этот поворот необходимостью соглашения с крестьянством.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: Кронштадтское восстание 1921', url: 'https://old.bigenc.ru/military_science/text/2114430' },
+      { kind: 'institution', label: 'Российское историческое общество (histrf.ru): НЭП (Лента времени)', url: 'https://histrf.ru/lenta-vremeni/event/view/nep' },
+    ],
+  },
+  {
+    id: 'rel-ru-1939-germany-poland',
+    from: 'ref-p095-napadenie-germanii-na-polshu-nachalo-vtoro',
+    to: 'ref-p092-osvoboditelnyy-pohod-krasnoy-armii',
+    kind: 'context',
+    label: 'Два вторжения в Польшу в сентябре 1939 года',
+    detail: `
+Красная армия перешла польскую границу 17 сентября, когда польская армия уже вела тяжёлые бои с германскими войсками, напавшими 1 сентября. Оба вторжения — часть одного сентября 1939 года, но их оценки в историографии разных стран различаются.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Архивы Беларуси: хронология Второй мировой войны', url: 'https://archives.gov.by/home/tematicheskie-razrabotki-arhivnyh-dokumentov-i-bazy-dannyh/istoricheskie-sobytiya/velikaya-otechestvennaya-vojna-belarus/istoriya-vojny-obzor-sobytij/hronologiya-vtoroj-mirovoj-vojny' },
+      { kind: 'academic', label: 'J. T. Gross. Revolution from Abroad. Princeton University Press', url: 'https://press.princeton.edu/node/58787' },
+    ],
+  },
+  {
+    id: 'rel-ru-riga-1939',
+    from: 'by-riga-1921',
+    to: 'ref-p092-osvoboditelnyy-pohod-krasnoy-armii',
+    kind: 'context',
+    label: 'Рижская граница и 17 сентября 1939 года',
+    detail: `
+Граница, проведённая Рижским миром 1921 года, на восемнадцать лет разделила белорусские земли между Польшей и БССР. В сентябре 1939 года Красная армия перешла её, и Западная Белоруссия была включена в БССР.
+
+В современной Беларуси 17 сентября отмечается как День народного единства.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Архивы Беларуси: Кинолекторий ко Дню народного единства', url: 'https://archives.gov.by/blog/news/1087508' },
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: Подписан Рижский мирный договор', url: 'https://www.prlib.ru/history/619101' },
+    ],
+  },
+  {
+    id: 'rel-ru-finland-league',
+    from: 'ref-p092-sovetsko-finlyandskaya-voyna',
+    to: 'ref-p090-chlenstvo-sssr-v-lige-naciy',
+    kind: 'influence',
+    label: 'Нападение на Финляндию — исключение из Лиги Наций',
+    detail: `
+После начала войны с Финляндией правительства Великобритании и Франции добились решения Совета Лиги Наций от 14 декабря 1939 года об исключении СССР. Так закончилось пятилетнее членство страны в организации.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: Вступление СССР в Лигу Наций', url: 'https://www.prlib.ru/history/619549' },
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: Лига Наций', url: 'https://bigenc.ru/c/liga-natsii-8c7fe5' },
+    ],
+  },
+  {
+    id: 'rel-ru-league-franco-soviet',
+    from: 'ref-p090-chlenstvo-sssr-v-lige-naciy',
+    to: 'ref-p091-podpisanie-sovetsko-francuzskogo-dogovora-',
+    kind: 'context',
+    label: 'Курс на коллективную безопасность',
+    detail: `
+Вступление в Лигу Наций в 1934 году и договор о взаимной помощи с Францией в 1935 году — две части одного курса советской дипломатии середины 1930-х годов на сближение с Францией и создание системы коллективной безопасности против Германии.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Документы XX века (doc.histrf.ru): Советско-французский договор о взаимной помощи', url: 'https://doc.histrf.ru/20/sovetsko-frantsuzskiy-dogovor-o-vzaimnoy-pomoshchi/' },
+      { kind: 'institution', label: 'Российское историческое общество (histrf.ru): СССР вступил в Лигу Наций (исторический календарь)', url: 'https://histrf.ru/teacher/historical-calendar/sssr-vstupil-v-ligu-naciy' },
+    ],
+  },
+  {
+    id: 'rel-ru-1941-blockade',
+    from: 'ru-1941',
+    to: 'ref-p096-blokada-leningrada',
+    kind: 'context',
+    label: 'Наступление 1941 года и блокада Ленинграда',
+    detail: `
+Уже через два с половиной месяца после начала войны германские войска вышли к Ладожскому озеру, и 8 сентября 1941 года Ленинград оказался отрезан по суше. Блокада продлилась 872 дня.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: Началась блокада Ленинграда', url: 'https://www.prlib.ru/history/619525' },
+      { kind: 'institution', label: 'Российское историческое общество (histrf.ru): Начало блокады Ленинграда (Лента времени)', url: 'https://histrf.ru/lenta-vremeni/event/view/nachalo-blokady-lieninghrada' },
+    ],
+  },
+  {
+    id: 'rel-ru-stalin-death-xx',
+    from: 'ref-p108-smert-i-v-stalina',
+    to: 'ref-p108-hh-sezd-kpss',
+    kind: 'influence',
+    label: 'После смерти Сталина — осуждение культа личности',
+    detail: `
+Смерть Сталина открыла борьбу за власть, в которой первым секретарём ЦК в сентябре 1953 года стал Н. С. Хрущёв. Через три года именно он на XX съезде выступил с докладом о культе личности, начав десталинизацию.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Российское историческое общество (histrf.ru): Умер И. В. Сталин (Лента времени)', url: 'https://histrf.ru/lenta-vremeni/event/view/umier-i-v-stalin' },
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: Открылся XX съезд КПСС', url: 'https://www.prlib.ru/history/619027' },
+    ],
+  },
+  {
+    id: 'rel-ru-sputnik-gagarin',
+    from: 'ref-p108-zapusk-sssr-pervogo-iskusstvennogo-sputnik',
+    to: 'ru-gagarin-1961',
+    kind: 'context',
+    label: 'Два первых шага советской космической программы',
+    detail: `
+Запуск «Спутника-1» ракетой Р-7, созданного в ОКБ-1 С. П. Королёва, в 1957 году открыл космическую эру. Через три с половиной года, в 1961-м, программа достигла следующего рубежа — полёта человека.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Роскосмос: 4 октября 1957 года — начало космической эры', url: 'https://www.roscosmos.ru/21755/' },
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: В СССР произведён запуск первого в мире искусственного спутника Земли', url: 'https://www.prlib.ru/history/619601' },
+    ],
+  },
+  {
+    id: 'rel-ru-gagarin-tereshkova',
+    from: 'ru-gagarin-1961',
+    to: 'ref-p108-pervyy-v-mire-polet-zhenschiny-v-kosmos',
+    kind: 'influence',
+    label: 'Программа «Восток»: от первого полёта к первой женщине',
+    detail: `
+Полёт Терешковой на «Востоке-6» в 1963 году завершил серию кораблей «Восток», которую открыл Гагарин. Как и предыдущие, он был групповым: одновременно летал «Восток-5» Валерия Быковского.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: Первая в мире женщина-космонавт Валентина Терешкова совершила полёт в космос', url: 'https://www.prlib.ru/history/619316' },
+      { kind: 'institution', label: 'Музей космонавтики: «Чайка», долетевшая до звёзд', url: 'https://kosmo-museum.ru/events/chayka-doletevshaya-do-zvyozd-vystavka-k-55-letiyu-polyota-v-v-tereshkovoy' },
+    ],
+  },
+  {
+    id: 'rel-ru-gorbachev-1991',
+    from: 'ref-p108-izbranie-m-s-gorbacheva-generalnym-sekreta',
+    to: 'ru-1991',
+    kind: 'influence',
+    label: 'Перестройка и распад Союза',
+    detail: `
+Политика перестройки, начатая Горбачёвым после 1985 года, начала процесс демократизации советской системы, который через шесть лет закончился распадом Союза.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Российское историческое общество (histrf.ru): М. С. Горбачёв — Генеральный секретарь ЦК КПСС. Объявлена перестройка (Лента времени)', url: 'https://histrf.ru/lenta-vremeni/event/view/m-s-gorbachiev-ghienieral-nyi-siekrietar-tsk-kpss-obiavliena-pieriestroika' },
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: Россия. История. СССР. Перестройка (1985–1991)', url: 'https://bigenc.ru/c/rossiia-istoriia-sssr-perestroika-1985-1991-0cba44' },
+    ],
+  },
+  {
+    id: 'rel-ru-sovereignty-1991',
+    from: 'ref-p109-provozglashenie-suvereniteta-rsfsr',
+    to: 'ru-1991',
+    kind: 'influence',
+    label: 'Верховенство законов РСФСР подорвало союзный центр',
+    detail: `
+Декларация 12 июня 1990 года провозгласила верховенство Конституции и законов РСФСР на её территории. Крупнейшая республика Союза перестала безусловно подчиняться союзным органам, что стало одним из шагов к распаду СССР в 1991 году.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: День принятия Декларации о государственном суверенитете России', url: 'https://www.prlib.ru/history/619308' },
+      { kind: 'archive', label: 'Ельцин Центр: шесть вариантов декларации о суверенитете РСФСР', url: 'https://yeltsin.ru/archive/paperwork/102157/' },
+    ],
+  },
+  {
+    id: 'rel-ru-chechnya-wars',
+    from: 'ref-p110-vosstanovlenie-konstitucionnogo-poryadka-v',
+    to: 'ref-p110-kontrterroristicheskaya-operaciya-kto-voor',
+    kind: 'influence',
+    label: 'Нерешённый статус Чечни привёл ко второй войне',
+    detail: `
+Хасавюртовские соглашения 1996 года прекратили войну, но отложили решение о статусе Чечни, и республика фактически оказалась вне контроля федеральной власти. В 1999 году из Чечни отряды Басаева и Хаттаба вторглись в Дагестан, что и стало поводом для новой операции.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Российское историческое общество (histrf.ru): Хасавюртовские соглашения. «Глупость или измена?»', url: 'https://histrf.ru/biblioteka/b/khasaviurtovskiie-soghlashieniia-glupost-ili-izmiena' },
+      { kind: 'institution', label: 'Российское историческое общество (histrf.ru): Вторая чеченская война', url: 'https://histrf.ru/biblioteka/b/vtoraia-chiechienskaia-voina' },
+    ],
+  },
+  {
+    id: 'rel-ru-collectivization-depression',
+    from: 'ref-p090-nachalo-industrializacii-i-kollektivizacii',
+    to: 'ref-p083-mirovoy-ekonomicheskiy-krizis',
+    kind: 'comparison',
+    label: 'Плановый рывок и Великая депрессия',
+    detail: `
+Форсированная индустриализация и коллективизация в СССР пришлись на те же годы, что и мировой экономический кризис 1929–1933 годов.
+
+Сравнение двух систем в этот момент — классический сюжет экономической истории: одни исследователи считают советскую плановую экономику одной из самых успешных развивающихся экономик XX века, другие по моделям роста показывают тяжёлые потери благосостояния в 1930-е годы.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'R. C. Allen. Farm to Factory: A Reinterpretation of the Soviet Industrial Revolution. Princeton University Press, 2003', url: 'https://press.princeton.edu/books/paperback/9780691144313/farm-to-factory' },
+      { kind: 'academic', label: 'A. Cheremukhin, M. Golosov, S. Guriev, A. Tsyvinski. Was Stalin Necessary for Russia’s Economic Development? NBER Working Paper 19425, 2013', url: 'https://www.nber.org/papers/w19425' },
+    ],
+  },
 ];
 
 /** Быстрый доступ к связям по идентификатору объекта. */

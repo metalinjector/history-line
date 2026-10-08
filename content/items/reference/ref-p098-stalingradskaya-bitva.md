@@ -1,6 +1,10 @@
 ---
 id: ref-p098-stalingradskaya-bitva
 sources:
-  - label: "В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. 98."
-    kind: reference
+  - kind: institution
+    label: "Президентская библиотека им. Б. Н. Ельцина: Началась Сталинградская битва"
+    url: "https://www.prlib.ru/history/619395"
+  - kind: encyclopedia
+    label: "Большая российская энциклопедия: Сталинградская битва 1942–43"
+    url: "https://old.bigenc.ru/military_science/text/4162555"
 ---

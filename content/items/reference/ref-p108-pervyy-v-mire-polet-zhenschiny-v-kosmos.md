@@ -1,6 +1,13 @@
 ---
 id: ref-p108-pervyy-v-mire-polet-zhenschiny-v-kosmos
 sources:
-  - label: "В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. 108."
-    kind: reference
+  - kind: institution
+    label: "Президентская библиотека им. Б. Н. Ельцина: Первая в мире женщина-космонавт Валентина Терешкова совершила полёт в космос"
+    url: "https://www.prlib.ru/history/619316"
+  - kind: institution
+    label: "Музей космонавтики: «Чайка», долетевшая до звёзд"
+    url: "https://kosmo-museum.ru/events/chayka-doletevshaya-do-zvyozd-vystavka-k-55-letiyu-polyota-v-v-tereshkovoy"
+  - kind: institution
+    label: "NASA: Sally Ride and Valentina Tereshkova"
+    url: "https://www.nasa.gov/history/sally-ride-and-valentina-tereshkova-changing-the-course-of-human-space-exploration/"
 ---

@@ -1,6 +1,13 @@
 ---
 id: ref-p057-vosstanie-pod-predvoditelstvom-emelyana-pu
 sources:
-  - label: "В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. 57."
-    kind: reference
+  - kind: encyclopedia
+    label: "Большая российская энциклопедия: Пугачёва восстание 1773–75"
+    url: "https://old.bigenc.ru/domestic_history/text/3172674"
+  - kind: institution
+    label: "Российское историческое общество (histrf.ru): Пугачёвское восстание 1773–1775 (Лента времени)"
+    url: "https://histrf.ru/lenta-vremeni/event/view/pughachievskoie-vosstaniie"
+  - kind: archive
+    label: "Президентская библиотека им. Б. Н. Ельцина: Материалы для истории Пугачёвского бунта"
+    url: "https://www.prlib.ru/item/426865"
 ---

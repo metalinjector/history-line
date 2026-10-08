@@ -16,11 +16,14 @@ export const referenceMerges: Record<string, string> = {
   'ref-p034-vozniknovenie-angliyskogo-parlamenta': 'gb-parliament-1265',
   'ref-p035-pravlenie-v-kieve-knyazya-yaroslava-mudrog': 'ru-yaroslav-1019',
   'ref-p046-nachalo-reformacii-v-germanii': 'de-luther-1517',
+  'ref-p053-nachalo-knigopechataniya-v-rossii': 'ru-fedorov-1564',
   'ref-p064-provozglashenie-germanskoy-imperii': 'de-empire-1871',
+  'ref-p067-otechestvennaya-voyna-v-rossii': 'ru-1812',
   'ref-p083-naznachenie-a-gitlera-reyhskanclerom-germa': 'de-1933',
   'ref-p103-germanskaya-demokraticheskaya-respublika-g': 'de-two-states-1949',
   'ref-p103-obrazovanie-federativnoy-respubliki-german': 'de-two-states-1949',
   'ref-p105-mayskie-sobytiya-vo-francii': 'fr-1968',
+  'ref-p108-pervyy-v-istorii-polet-cheloveka-v-kosmos': 'ru-gagarin-1961',
   'ref-p111-predostavlenie-nezavisimosti-britanskoy-in': 'gb-india-1947',
 };
 
