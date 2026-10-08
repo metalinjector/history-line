@@ -7,5 +7,8 @@ sources:
     label: "Deutsche Biographie: Karl V., römisch-deutscher Kaiser"
   - kind: encyclopedia
     label: "Britannica: Peace of Augsburg"
+  - kind: encyclopedia
+    label: "Encyclopedia.com: Augsburg, Peace of"
+    url: "https://www.encyclopedia.com/history/modern-europe/german-history/peace-augsburg"
 ---
 

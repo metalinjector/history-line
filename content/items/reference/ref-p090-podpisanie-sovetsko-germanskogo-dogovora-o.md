@@ -1,6 +1,10 @@
 ---
 id: ref-p090-podpisanie-sovetsko-germanskogo-dogovora-o
 sources:
-  - label: "В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. 90."
-    kind: reference
+  - kind: archive
+    label: "Avalon Project, Yale Law School: Treaty of Berlin between Germany and the USSR, April 24, 1926"
+    url: "https://avalon.law.yale.edu/20th_century/berlin_001.asp"
+  - kind: encyclopedia
+    label: "Wikipedia: Treaty of Berlin (1926)"
+    url: "https://en.wikipedia.org/wiki/Treaty_of_Berlin_(1926)"
 ---
