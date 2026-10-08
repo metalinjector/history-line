@@ -1,6 +1,13 @@
 ---
 id: ref-p097-podpisanie-deklaracii-obedinennyh-naciy-so
 sources:
-  - label: "В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. 97."
-    kind: reference
+  - kind: archive
+    label: "Foreign Relations of the United States, 1942, vol. I: Declaration by United Nations, signed January 1, 1942"
+    url: "https://history.state.gov/historicaldocuments/frus1942v01/ch1"
+  - kind: institution
+    label: "Yearbook of the United Nations 1946–47: The United Nations Declaration"
+    url: "https://cdn.un.org/unyearbook/yun/pdf/1946-47/1946-47_36.pdf"
+  - kind: institution
+    label: "The National WWII Museum: The Declaration of the United Nations in the Aftermath of Pearl Harbor"
+    url: "https://www.nationalww2museum.org/war/articles/united-nations-declaration-1942"
 ---

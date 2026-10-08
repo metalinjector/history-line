@@ -4242,6 +4242,620 @@ X съезд РКП(б) в марте 1921 года заменил развёр�
       { kind: 'academic', label: 'Sussex European Institute, EPERN Referendum Briefing No. 5 (Польша, 2003)', url: 'https://www.sussex.ac.uk/sei/documents/epern-ref-no-5.pdf' },
     ],
   },
+  {
+    id: 'rel-world-utrecht-succession',
+    from: 'es-succession-1701',
+    to: 'world-utrecht-1713',
+    kind: 'influence',
+    label: 'Утрехтские договоры завершили войну за испанское наследство',
+    detail: `
+Война началась из-за спора о том, кто унаследует испанскую корону после бездетного Карла II, и угрозы объединения Испании и Франции под властью Бурбонов.
+
+Утрехтские договоры 1713 года решили этот спор компромиссом: Филипп V остался королём Испании, но отрёкся от прав на французский престол, а Испания лишилась европейских владений в Нидерландах и Италии и уступила Британии Гибралтар и Менорку. Механизм — мирное урегулирование, которым державы закончили войну и закрепили равновесие сил.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'Britannica: Treaties of Utrecht', url: 'https://www.britannica.com/print/article/859832' },
+      { kind: 'academic', label: 'R. de Bruin et al. (eds.). Performances of Peace: Utrecht 1713. Brill, 2015' },
+    ],
+  },
+  {
+    id: 'rel-world-seven-years-us-war',
+    from: 'ref-p050-semiletnyaya-voyna',
+    to: 'ref-p050-voyna-severoamerikanskih-koloniy-za-nezavi',
+    kind: 'influence',
+    label: 'Долги Семилетней войны привели к новым налогам в колониях',
+    detail: `
+Британия выиграла Семилетнюю войну, но накопила огромный долг. Чтобы его покрыть и содержать войска в Америке, Лондон стал вводить новые налоги и пошлины для колоний.
+
+Механизм — фискальный: споры о праве парламента облагать колонистов налогами без их представительства переросли в конфликт, закончившийся войной за независимость. Исчезновение французской угрозы на севере после 1763 года к тому же сделало колонии менее зависимыми от британской армии.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'F. Anderson. Crucible of War: The Seven Years\' War and the Fate of Empire in British North America. Knopf, 2000' },
+      { kind: 'encyclopedia', label: 'History.com: Seven Years\' War', url: 'https://www.history.com/topics/european-history/seven-years-war' },
+    ],
+  },
+  {
+    id: 'rel-world-seven-years-fr-us',
+    from: 'ref-p050-semiletnyaya-voyna',
+    to: 'fr-us-alliance-1778',
+    kind: 'influence',
+    label: 'Франция искала реванша за поражение 1763 года',
+    detail: `
+По Парижскому миру 1763 года Франция потеряла Канаду и большую часть колониальной империи в Северной Америке.
+
+Механизм — стремление к реваншу: французское правительство увидело в восстании американских колонистов способ ослабить Британию и в 1778 году заключило с США союз, вступив в войну на их стороне.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'F. Anderson. Crucible of War: The Seven Years\' War and the Fate of Empire in British North America. Knopf, 2000' },
+      { kind: 'encyclopedia', label: 'History.com: Seven Years\' War', url: 'https://www.history.com/topics/european-history/seven-years-war' },
+    ],
+  },
+  {
+    id: 'rel-world-vienna-holy-alliance',
+    from: 'ref-p060-venskiy-kongress-evropeyskih-monarhov',
+    to: 'ref-p061-sozdanie-svyaschennogo-soyuza',
+    kind: 'influence',
+    label: 'Священный союз должен был охранять венский порядок',
+    detail: `
+Венский конгресс перекроил границы Европы после наполеоновских войн. Через три с половиной месяца после подписания его Заключительного акта монархи России, Австрии и Пруссии подписали акт Священного союза.
+
+Механизм — охрана созданного порядка: союз и выросшая из него система конгрессов служили инструментом, которым консервативные монархии поддерживали венское устройство и подавляли революционные движения.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Заключительный акт Венского конгресса, 9 июня 1815 года («The World and Japan» Database)', url: 'https://worldjpn.net/documents/texts/pw/18150609.O1E.html' },
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: Подписан акт Священного союза', url: 'https://www.prlib.ru/en/node/619573' },
+      { kind: 'encyclopedia', label: 'Encyclopedia.com: Holy Alliance', url: 'https://www.encyclopedia.com/history/modern-europe/treaties-and-alliances/holy-alliance' },
+    ],
+  },
+  {
+    id: 'rel-world-holy-alliance-1848',
+    from: 'ref-p061-sozdanie-svyaschennogo-soyuza',
+    to: 'ref-p061-revolyucii-v-evrope',
+    kind: 'context',
+    label: 'Революции 1848 года ударили по порядку 1815 года',
+    detail: `
+Венская система и Священный союз держались на принципах легитимизма и солидарности монархов против революции.
+
+Революции 1848 года стали самым масштабным вызовом этому порядку: Меттерних, один из его архитекторов, ушёл в отставку. Связь остаётся контекстной, а не прямой причинной: Россия в 1849 году действовала в духе прежней монархической солидарности, помогая Австрии подавить восстание в Венгрии.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'Encyclopedia.com: Holy Alliance', url: 'https://www.encyclopedia.com/history/modern-europe/treaties-and-alliances/holy-alliance' },
+      { kind: 'academic', label: 'L. Hunt et al. The Making of the West: Revolt and Reaction in Central Europe', url: 'https://digfir-published.macmillanusa.com/hunt5e/hunt5e_ch21_25.html' },
+    ],
+  },
+  {
+    id: 'rel-world-fr1848-europe',
+    from: 'fr-1848',
+    to: 'ref-p061-revolyucii-v-evrope',
+    kind: 'influence',
+    label: 'Февральская революция в Париже запустила волну 1848 года',
+    detail: `
+Свержение Луи-Филиппа в феврале 1848 года и провозглашение республики в Париже стали сигналом для выступлений по всей Европе.
+
+Механизм — пример и быстрый обмен новостями: уже в марте восстания начались в Вене и Берлине, а затем в итальянских государствах и Венгрии. Восстания не координировались между собой, но распространялись по одной модели требований — конституции, гражданские свободы, национальное единство.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'L. Hunt et al. The Making of the West: Revolt and Reaction in Central Europe', url: 'https://digfir-published.macmillanusa.com/hunt5e/hunt5e_ch21_25.html' },
+      { kind: 'academic', label: 'J. Sperber. The European Revolutions, 1848–1851. Cambridge University Press, 2005' },
+    ],
+  },
+  {
+    id: 'rel-world-1848-de',
+    from: 'ref-p061-revolyucii-v-evrope',
+    to: 'de-1848',
+    kind: 'context',
+    label: 'Германская революция — часть общеевропейской волны',
+    detail: `
+Мартовские бои в Берлине и созыв Франкфуртского парламента — германская часть «весны народов».
+
+Общий контекст — неурожаи и экономический кризис 1845–1847 годов, требования конституций и национального объединения. Франкфуртский парламент стал первым избранным общегерманским собранием, но в 1849 году был разогнан, как и большинство революционных собраний в Европе.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Library of Congress, Country Studies — Germany: The Revolutions of 1848', url: 'https://countrystudies.us/germany/25.htm' },
+      { kind: 'academic', label: 'L. Hunt et al. The Making of the West: Revolt and Reaction in Central Europe', url: 'https://digfir-published.macmillanusa.com/hunt5e/hunt5e_ch21_25.html' },
+    ],
+  },
+  {
+    id: 'rel-world-triple-alliance-ww1',
+    from: 'ref-p065-sozdanie-troystvennogo-soyuza',
+    to: 'ref-p067-pervaya-mirovaya-voyna',
+    kind: 'influence',
+    label: 'Блоковая система превратила локальный конфликт в общую войну',
+    detail: `
+Тройственный союз 1882 года и ответное сближение Франции с Россией, а затем с Британией разделили Европу на два военно-политических блока.
+
+Механизм — союзные обязательства: когда в 1914 году Австро-Венгрия объявила войну Сербии, в конфликт одна за другой вступили великие державы. Сама Италия, однако, сочла войну Австро-Венгрии наступательной, объявила нейтралитет и в 1915 году перешла на сторону Антанты.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Università di Parma: The Triple Alliance', url: 'https://gspi.unipr.it/sites/st26/files/allegatiparagrafo/25-01-2016/triple_alliance.pdf' },
+      { kind: 'archive', label: 'German History in Documents and Images: Treaty of the Triple Alliance, 20 May 1882', url: 'https://germanhistorydocs.org/en/forging-an-empire-bismarckian-germany-1866-1890/ghdi:document-1860' },
+    ],
+  },
+  {
+    id: 'rel-world-ww1-paris',
+    from: 'ref-p067-pervaya-mirovaya-voyna',
+    to: 'ref-p078-parizhskaya-mirnaya-konferenciya',
+    kind: 'influence',
+    label: 'Победители собрались в Париже, чтобы закрепить итоги войны',
+    detail: `
+После Компьенского перемирия державы-победительницы собрались в Париже, чтобы продиктовать условия мира побеждённым.
+
+Механизм — мирное урегулирование: конференция подготовила пять договоров с Германией, Австрией, Болгарией, Венгрией и Османской империей, перекроила границы на месте распавшихся империй и учредила Лигу Наций.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'A. Sharp. The Paris Peace Conference and its Consequences // 1914-1918-online', url: 'https://encyclopedia.1914-1918-online.net/article/the_paris_peace_conference_and_its_consequences' },
+      { kind: 'academic', label: 'A. Prost. War Losses // 1914-1918-online', url: 'https://encyclopedia.1914-1918-online.net/article/war-losses/?format=pdf' },
+    ],
+  },
+  {
+    id: 'rel-world-paris-league',
+    from: 'ref-p078-parizhskaya-mirnaya-konferenciya',
+    to: 'ref-p078-sozdanie-ligi-naciy',
+    kind: 'influence',
+    label: 'Конференция приняла Устав Лиги Наций',
+    detail: `
+28 апреля 1919 года пленарное заседание Парижской конференции единогласно одобрило проект Устава Лиги Наций по предложению Вудро Вильсона.
+
+Механизм — прямое учреждение: Устав стал первой частью Версальского и других мирных договоров и вступил в силу вместе с Версальским договором 10 января 1920 года.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'UN Geneva: League of Nations chronology', url: 'https://www.ungeneva.org/sites/default/files/2022-01/sdn_chronology_0.pdf' },
+      { kind: 'academic', label: 'A. Sharp. The Paris Peace Conference and its Consequences // 1914-1918-online', url: 'https://encyclopedia.1914-1918-online.net/article/the_paris_peace_conference_and_its_consequences' },
+    ],
+  },
+  {
+    id: 'rel-world-paris-versailles',
+    from: 'ref-p078-parizhskaya-mirnaya-konferenciya',
+    to: 'ref-p079-podpisanie-germaniey-versalskogo-mirnogo-d',
+    kind: 'influence',
+    label: 'Версальский договор — главный итог конференции',
+    detail: `
+Условия мира с Германией выработали без её участия Совет четырёх и Совет министров иностранных дел Парижской конференции.
+
+Механизм — договор, подготовленный конференцией: Германия подписала его 28 июня 1919 года, это был первый и важнейший из пяти парижских договоров.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'A. Sharp. The Paris Peace Conference and its Consequences // 1914-1918-online', url: 'https://encyclopedia.1914-1918-online.net/article/the_paris_peace_conference_and_its_consequences' },
+      { kind: 'institution', label: 'UN Geneva: League of Nations chronology', url: 'https://www.ungeneva.org/sites/default/files/2022-01/sdn_chronology_0.pdf' },
+    ],
+  },
+  {
+    id: 'rel-world-paris-may-fourth',
+    from: 'ref-p078-parizhskaya-mirnaya-konferenciya',
+    to: 'cn-may-fourth-1919',
+    kind: 'influence',
+    label: 'Решение по Шаньдуну вызвало протесты 4 мая',
+    detail: `
+Китай вступил в войну на стороне Антанты и рассчитывал вернуть себе бывшие германские права в провинции Шаньдун. Парижская конференция передала их Японии.
+
+Механизм — дипломатическое решение как повод к протесту: 4 мая 1919 года студенты Пекина вышли на демонстрацию против решения конференции и прояпонских чиновников, что положило начало широкому национальному и культурному движению.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Chow Tse-tsung. The May Fourth Movement: Intellectual Revolution in Modern China. Harvard University Press, 1960' },
+      { kind: 'academic', label: 'A. Sharp. The Paris Peace Conference and its Consequences // 1914-1918-online', url: 'https://encyclopedia.1914-1918-online.net/article/the_paris_peace_conference_and_its_consequences' },
+    ],
+  },
+  {
+    id: 'rel-world-hague-league',
+    from: 'world-hague-1899',
+    to: 'ref-p078-sozdanie-ligi-naciy',
+    kind: 'influence',
+    label: 'Гаагские конференции стали образцом для Лиги Наций',
+    detail: `
+Гаагские конференции 1899 и 1907 годов впервые собрали почти все государства мира, чтобы договориться о мирном решении споров, и создали Постоянную палату третейского суда.
+
+Механизм — институциональный опыт: идеи арбитража и регулярных всемирных конференций, отработанные в Гааге, использовались при создании Лиги Наций, а затем ООН.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Just Peace The Hague: A history of the First Hague Peace Conference', url: 'https://justpeacethehague.org/en/story/op-weg-naar-vrede' },
+      { kind: 'institution', label: 'Just Peace The Hague: The Second Hague Peace Conference', url: 'https://justpeacethehague.org/en/story/groter-concreter-doeltreffender-de-tweede-haagse-vredesconferentie' },
+    ],
+  },
+  {
+    id: 'rel-world-depression-1933',
+    from: 'ref-p083-mirovoy-ekonomicheskiy-krizis',
+    to: 'de-1933',
+    kind: 'influence',
+    label: 'Депрессия подорвала Веймарскую республику',
+    detail: `
+Германия, зависевшая от иностранных, прежде всего американских, кредитов, пострадала от кризиса сильнее большинства стран: в 1932 году в ней числилось около 5,6 миллиона безработных.
+
+Механизм — экономическое и политическое: массовая безработица и политика жёсткой экономии подорвали доверие к партиям Веймарской коалиции, а голоса за национал-социалистов и коммунистов резко выросли. В январе 1933 года Гитлер стал рейхсканцлером.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'German History in Documents and Images: The Course of the Great Depression, 1929–34', url: 'https://germanhistorydocs.org/en/weimar-germany-1918-1933/the-course-of-the-great-depression-1929-34.pdf' },
+      { kind: 'institution', label: 'Federal Reserve History: Stock Market Crash of 1929', url: 'https://www.federalreservehistory.org/essays/stock-market-crash-of-1929' },
+    ],
+  },
+  {
+    id: 'rel-world-depression-bretton-woods',
+    from: 'ref-p083-mirovoy-ekonomicheskiy-krizis',
+    to: 'world-bretton-woods-1944',
+    kind: 'influence',
+    label: 'Уроки 1930-х годов легли в основу Бреттон-Вудса',
+    detail: `
+Во время Великой депрессии страны прибегали к конкурентным девальвациям и торговым барьерам, что углубило кризис и обрушило мировую торговлю.
+
+Механизм — извлечённый урок: создатели Бреттон-Вудской системы стремились не допустить повторения этого и предусмотрели фиксированные курсы валют и Международный валютный фонд для поддержки стран с трудностями платёжного баланса.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'International Monetary Fund: Cooperation and Reconstruction (1944–71)', url: 'https://www.imf.org/external/about/histcoop.htm' },
+      { kind: 'institution', label: 'Federal Reserve History: Creation of the Bretton Woods System', url: 'https://www.federalreservehistory.org/essays/bretton_woods_created' },
+    ],
+  },
+  {
+    id: 'rel-world-bretton-woods-gatt',
+    from: 'world-bretton-woods-1944',
+    to: 'world-gatt-1947',
+    kind: 'influence',
+    label: 'ГАТТ дополнило бреттон-вудские институты в торговле',
+    detail: `
+В Бреттон-Вудсе создали МВФ и Всемирный банк; третьей опорой послевоенного экономического порядка должна была стать Международная торговая организация.
+
+Механизм — замысел единого порядка: когда создать её не удалось, роль правил мировой торговли на полвека взяло на себя ГАТТ 1947 года, а в 1995 году его преемницей стала ВТО.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Office of the United States Trade Representative: History of the WTO, part one', url: 'https://ustr.gov/about-us/policy-offices/press-office/blog/2009/november/history-wto-part-one' },
+      { kind: 'institution', label: 'International Monetary Fund: Cooperation and Reconstruction (1944–71)', url: 'https://www.imf.org/external/about/histcoop.htm' },
+    ],
+  },
+  {
+    id: 'rel-world-gatt-china',
+    from: 'world-gatt-1947',
+    to: 'cn-wto-2001',
+    kind: 'influence',
+    label: 'Китай вошёл в торговую систему, выросшую из ГАТТ',
+    detail: `
+Всемирная торговая организация, созданная в 1995 году по итогам Уругвайского раунда, унаследовала правила ГАТТ 1947 года.
+
+Механизм — членство: вступив в ВТО в 2001 году, Китай принял её правила и получил режим наибольшего благоприятствования на рынках других участников, что ускорило рост его экспорта.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Office of the United States Trade Representative: History of the WTO, part one', url: 'https://ustr.gov/about-us/policy-offices/press-office/blog/2009/november/history-wto-part-one' },
+      { kind: 'institution', label: 'Union of International Associations: World Trade Organization', url: 'https://uia.org/s/or/en/1100040595' },
+    ],
+  },
+  {
+    id: 'rel-world-decl1942-un',
+    from: 'ref-p097-podpisanie-deklaracii-obedinennyh-naciy-so',
+    to: 'ref-p100-sozdanie-organizacii-obedinennyh-naciy-oon',
+    kind: 'influence',
+    label: 'Коалиция 1942 года дала имя и состав ООН',
+    detail: `
+Декларация Объединённых Наций 1 января 1942 года объединила государства, воевавшие против стран оси, под названием, которое предложил Рузвельт.
+
+Механизм — преемственность: на конференцию в Сан-Франциско в 1945 году приглашали государства, подписавшие декларацию или присоединившиеся к ней, а название коалиции перешло к новой организации.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Yearbook of the United Nations 1946–47', url: 'https://cdn.un.org/unyearbook/yun/pdf/1946-47/1946-47_36.pdf' },
+      { kind: 'institution', label: 'United Nations: History of the United Nations', url: 'https://www.un.org/en/node/129681' },
+    ],
+  },
+  {
+    id: 'rel-world-yalta-un',
+    from: 'ref-p099-yaltinskaya-krymskaya-konferenciya',
+    to: 'ref-p100-sozdanie-organizacii-obedinennyh-naciy-oon',
+    kind: 'influence',
+    label: 'В Ялте решили созвать конференцию в Сан-Франциско',
+    detail: `
+Создание всемирной организации безопасности обсуждалось ещё в Тегеране, а в Ялте «большая тройка» договорилась созвать в апреле 1945 года в Сан-Франциско конференцию Объединённых Наций.
+
+Механизм — дипломатическое решение: конференция открылась 25 апреля и 26 июня 1945 года приняла Устав ООН.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'FRUS: The Conferences at Malta and Yalta, 1945', url: 'https://history.state.gov/historicaldocuments/frus1945Malta/ch8subch14' },
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: Завершилась Ялтинская конференция', url: 'https://prlib.ru/en/node/619021' },
+      { kind: 'institution', label: 'United Nations: History of the United Nations', url: 'https://www.un.org/en/node/129681' },
+    ],
+  },
+  {
+    id: 'rel-world-tehran-paris',
+    from: 'ref-p099-tegeranskaya-konferenciya',
+    to: 'fr-liberation-1944',
+    kind: 'influence',
+    label: 'В Тегеране союзники назначили высадку во Франции',
+    detail: `
+В Тегеране западные союзники окончательно обязались провести операцию «Оверлорд» — высадку в Северной Франции — к маю 1944 года, а СССР — поддержать её наступлением на востоке.
+
+Механизм — согласованная военная стратегия: высадка в Нормандии в июне 1944 года открыла второй фронт и привела к освобождению Парижа в августе.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Office of the Historian: The Tehran Conference, 1943', url: 'https://history.state.gov/milestones/1937-1945/tehran-conf' },
+      { kind: 'encyclopedia', label: 'Britannica: Tehrān Conference', url: 'https://www.britannica.com/print/article/585632' },
+    ],
+  },
+  {
+    id: 'rel-world-potsdam-two-states',
+    from: 'ref-p101-potsdamskaya-konferenciya',
+    to: 'de-two-states-1949',
+    kind: 'influence',
+    label: 'Оккупационные зоны стали основой раздела Германии',
+    detail: `
+В Потсдаме союзники подтвердили разделение Германии и Берлина на оккупационные зоны и договорились управлять страной через Контрольный совет, а репарации получать каждой державе в основном из своей зоны.
+
+Механизм — оккупационный режим: когда сотрудничество бывших союзников распалось, западные зоны в 1949 году стали ФРГ, а советская — ГДР.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Протокол Берлинской (Потсдамской) конференции, 1 августа 1945 года' },
+      { kind: 'archive', label: 'FRUS: The Conference of Berlin (Potsdam), 1945, vol. II', url: 'https://history.state.gov/historicaldocuments/frus1945Berlinv02/ch23' },
+    ],
+  },
+  {
+    id: 'rel-world-potsdam-nuremberg',
+    from: 'ref-p101-potsdamskaya-konferenciya',
+    to: 'ref-p102-mezhdunarodnyy-sudebnyy-process-nad-glavny',
+    kind: 'influence',
+    label: 'Победители обязались судить военных преступников',
+    detail: `
+Протокол Потсдамской конференции подтвердил намерение союзников предать главных военных преступников скорому и справедливому суду.
+
+Механизм — межсоюзническое решение: в августе 1945 года четыре державы учредили Международный военный трибунал, который в ноябре начал процесс в Нюрнберге.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Протокол Берлинской (Потсдамской) конференции, 1 августа 1945 года' },
+      { kind: 'academic', label: 'Harvard Law School Nuremberg Trials Project: International Military Tribunal', url: 'https://nuremberg.law.harvard.edu/imt_intro' },
+    ],
+  },
+  {
+    id: 'rel-world-un-udhr',
+    from: 'ref-p100-sozdanie-organizacii-obedinennyh-naciy-oon',
+    to: 'world-udhr-1948',
+    kind: 'influence',
+    label: 'Декларацию подготовила и приняла ООН',
+    detail: `
+Устав ООН назвал уважение к правам человека одной из целей организации, но не перечислил сами права.
+
+Механизм — институциональный: созданная ООН Комиссия по правам человека под председательством Элеоноры Рузвельт подготовила текст декларации, и 10 декабря 1948 года Генеральная Ассамблея приняла её резолюцией 217 (III).
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'UN Dag Hammarskjöld Library: Drafting of the UDHR — General Assembly plenary', url: 'https://research.un.org/en/undhr/ga/plenary' },
+      { kind: 'academic', label: 'Columbia University: UDHR — Drafting History', url: 'https://ccnmtl.columbia.edu/projects/mmt/udhr/udhr_general/drafting_history_10.html' },
+    ],
+  },
+  {
+    id: 'rel-world-un-bssr',
+    from: 'ref-p100-sozdanie-organizacii-obedinennyh-naciy-oon',
+    to: 'by-un-1945',
+    kind: 'context',
+    label: 'БССР стала одной из основательниц ООН',
+    detail: `
+Белорусская и Украинская ССР получили отдельные места на конференции в Сан-Франциско и подписали Устав ООН вместе с СССР.
+
+Это часть общего компромисса великих держав о составе новой организации; для белорусской линии участие в основании ООН стало важным символом международного признания.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'United Nations: History of the United Nations', url: 'https://www.un.org/en/node/129681' },
+      { kind: 'institution', label: 'Yearbook of the United Nations 1946–47', url: 'https://cdn.un.org/unyearbook/yun/pdf/1946-47/1946-47_36.pdf' },
+    ],
+  },
+  {
+    id: 'rel-world-udhr-helsinki',
+    from: 'world-udhr-1948',
+    to: 'ref-p124-podpisanie-zaklyuchitelnogo-akta-soveschan',
+    kind: 'influence',
+    label: 'Хельсинкский акт ссылается на Всеобщую декларацию',
+    detail: `
+Седьмой принцип Заключительного акта СБСЕ обязывает государства уважать права человека и основные свободы и действовать в соответствии со Всеобщей декларацией прав человека.
+
+Механизм — правовая ссылка: так декларация 1948 года, сама не обязательная, вошла в политические обязательства государств обоих блоков, на которые затем опирались правозащитники в СССР и Восточной Европе.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'OSCE: Helsinki Final Act (1 August 1975)', url: 'https://www.osce.org/mc/58376' },
+      { kind: 'academic', label: 'CVCE: Final Act of the CSCE (Helsinki, 1 August 1975)', url: 'https://www.cvce.eu/en/obj/final_act_of_the_conference_on_security_and_cooperation_in_europe_helsinki_1_august_1975-en-26511c7f-1063-4ae9-83e5-16859194a144.html' },
+    ],
+  },
+  {
+    id: 'rel-world-blockade-nato',
+    from: 'de-berlin-blockade-1948',
+    to: 'ref-p121-sozdanie-organizacii-severoatlanticheskogo',
+    kind: 'influence',
+    label: 'Берлинский кризис ускорил создание НАТО',
+    detail: `
+Переговоры о Североатлантическом договоре шли в 1948 году, когда СССР блокировал западные секторы Берлина, а западные державы снабжали город по воздуху.
+
+Механизм — восприятие угрозы: кризис убедил западноевропейские правительства и США в необходимости постоянного военного союза, и договор был подписан 4 апреля 1949 года, ещё до снятия блокады.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Truman Library: Development of the North Atlantic Treaty Organization', url: 'https://www.trumanlibrary.gov/library/online-collections/development-of-north-atlantic-treaty-organization-nato' },
+      { kind: 'institution', label: 'NATO: Experts\' Corner — The founding treaty', url: 'https://www.nato.int/cps/en/natohq/135662.htm' },
+    ],
+  },
+  {
+    id: 'rel-world-nato-warsaw',
+    from: 'ref-p121-sozdanie-organizacii-severoatlanticheskogo',
+    to: 'ref-p103-sozdanie-organizacii-varshavskogo-dogovora',
+    kind: 'influence',
+    label: 'Вступление ФРГ в НАТО стало поводом для Варшавского договора',
+    detail: `
+В мае 1955 года вступили в силу Парижские соглашения, по которым ФРГ стала членом НАТО и получила право на собственную армию.
+
+Механизм — ответный шаг: через несколько дней СССР и его союзники подписали в Варшаве договор, преамбула которого прямо ссылается на ремилитаризацию Западной Германии и её включение в Североатлантический блок.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Договор о дружбе, сотрудничестве и взаимной помощи, Варшава, 14 мая 1955 года (преамбула)' },
+      { kind: 'encyclopedia', label: 'New World Encyclopedia: Warsaw Pact', url: 'https://www.newworldencyclopedia.org/entry/Warsaw_Pact' },
+    ],
+  },
+  {
+    id: 'rel-world-ecsc-eec',
+    from: 'ref-p103-sozdanie-evropeyskogo-obedineniya-uglya-i-',
+    to: 'ref-p104-dogovor-ob-uchrezhdenii-evropeyskogo-ekono',
+    kind: 'influence',
+    label: 'Опыт ЕОУС расширили на всю экономику',
+    detail: `
+Шесть стран — участниц ЕОУС в 1957 году решили распространить общий рынок с угля и стали на всю экономику и подписали Римские договоры.
+
+Механизм — институциональная преемственность: в 1967 году органы ЕОУС, ЕЭС и Евратома слились, а после истечения договора о ЕОУС в 2002 году его функции перешли к Европейскому сообществу.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'CVCE: The expiry of the ECSC Treaty in 2002', url: 'https://www.cvce.eu/en/education/unit-content/-/unit/d5906df5-4f83-4603-85f7-0cabc24b9fe1/99e554bf-8835-4512-abd5-2afdf3a87ee5/Resources' },
+      { kind: 'archive', label: 'Договор об учреждении Европейского сообщества (Рим, 25 марта 1957 года), консолидированная версия 1992 года (CVCE)', url: 'https://www.cvce.eu/en/obj/treaty_establishing_the_european_community_rome_25_march_1957_consolidated_version_1992-en-b4df145a-2d2c-479f-839b-287dc39c1c78.html' },
+    ],
+  },
+  {
+    id: 'rel-world-eec-maastricht',
+    from: 'ref-p104-dogovor-ob-uchrezhdenii-evropeyskogo-ekono',
+    to: 'ref-p106-podpisanie-maastrihtskogo-dogovora-i-sozda',
+    kind: 'influence',
+    label: 'Маастрихт надстроил Европейский союз над ЕЭС',
+    detail: `
+Маастрихтский договор не отменил Римский договор, а изменил его: ЕЭС было переименовано в Европейское сообщество и стало главной опорой нового Европейского союза.
+
+Механизм — правовое развитие: к экономическому сообществу добавились общая внешняя политика и политика безопасности и сотрудничество в юстиции и внутренних делах.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'CVCE: The Treaty on European Union (1992)', url: 'https://www.cvce.eu/en/unit-content/-/unit/b9fe3d6d-e79c-495e-856d-9729144d2cbd/2ffeeb3b-7aab-4d95-9145-8e0437183479' },
+      { kind: 'archive', label: 'Договор об учреждении Европейского сообщества (Рим, 25 марта 1957 года), консолидированная версия 1992 года (CVCE)', url: 'https://www.cvce.eu/en/obj/treaty_establishing_the_european_community_rome_25_march_1957_consolidated_version_1992-en-b4df145a-2d2c-479f-839b-287dc39c1c78.html' },
+    ],
+  },
+  {
+    id: 'rel-world-maastricht-euro',
+    from: 'ref-p106-podpisanie-maastrihtskogo-dogovora-i-sozda',
+    to: 'de-euro-2002',
+    kind: 'influence',
+    label: 'Маастрихтский договор установил путь к евро',
+    detail: `
+Договор о Европейском союзе предусмотрел создание экономического и валютного союза с единой валютой и общим центральным банком.
+
+Механизм — договорное обязательство и критерии сближения: в 1999 году евро ввели в безналичных расчётах, а в 2002 году в обращение вошли наличные банкноты и монеты, заменившие в том числе немецкую марку.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Договор о Европейском союзе, Маастрихт, 7 февраля 1992 года' },
+      { kind: 'academic', label: 'CVCE: The Treaty on European Union (1992)', url: 'https://www.cvce.eu/en/unit-content/-/unit/b9fe3d6d-e79c-495e-856d-9729144d2cbd/2ffeeb3b-7aab-4d95-9145-8e0437183479' },
+    ],
+  },
+  {
+    id: 'rel-world-1989-wall',
+    from: 'ref-p105-antikommunisticheskie-revolyucii-v-central',
+    to: 'de-wall-fall-1989',
+    kind: 'context',
+    label: 'Падение стены — часть волны 1989 года',
+    detail: `
+Открытие Берлинской стены 9 ноября 1989 года стало самым наглядным эпизодом революций в Восточной Европе.
+
+События были связаны между собой: открытие Венгрией границы с Австрией летом 1989 года позволило тысячам граждан ГДР уехать на Запад, что вместе с массовыми демонстрациями подорвало власть СЕПГ.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Roy Rosenzweig Center for History and New Media (GMU): Making the History of 1989', url: 'https://chnm.gmu.edu/1989/exhibits/intro/poland.html' },
+      { kind: 'academic', label: 'K. McDermott, M. Stibbe (eds.). The 1989 Revolutions in Central and Eastern Europe. Manchester University Press, 2013', url: 'https://www.manchesteruniversitypress.co.uk/9780719099984' },
+    ],
+  },
+  {
+    id: 'rel-world-1989-warsaw-pact',
+    from: 'ref-p105-antikommunisticheskie-revolyucii-v-central',
+    to: 'ref-p103-sozdanie-organizacii-varshavskogo-dogovora',
+    kind: 'influence',
+    label: 'После 1989 года Варшавский договор распался',
+    detail: `
+Новые правительства Польши, Чехословакии и Венгрии, пришедшие к власти в ходе революций 1989 года, не хотели оставаться в советском военном блоке.
+
+Механизм — смена режимов: ГДР вышла из договора при объединении Германии в 1990 году, а 1 июля 1991 года в Праге оставшиеся участники подписали протокол о прекращении его действия.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'European Network Remembrance and Solidarity: Dissolution of the Warsaw Pact, 1 July 1991', url: 'https://enrs.eu/article/dissolution-of-the-warsaw-pact-1-july-1991' },
+      { kind: 'academic', label: 'K. McDermott, M. Stibbe (eds.). The 1989 Revolutions in Central and Eastern Europe. Manchester University Press, 2013', url: 'https://www.manchesteruniversitypress.co.uk/9780719099984' },
+    ],
+  },
+  {
+    id: 'rel-world-kyoto-paris',
+    from: 'ref-p125-podpisanie-kiotskogo-protokola',
+    to: 'world-paris-climate-2015',
+    kind: 'influence',
+    label: 'Парижское соглашение заменило киотскую модель',
+    detail: `
+Киотский протокол обязывал сокращать выбросы только развитые страны, а США его так и не ратифицировали.
+
+Механизм — пересмотр подхода: Парижское соглашение, принятое в рамках той же Рамочной конвенции ООН, распространило обязательства на все страны, но позволило каждой самой определять свой вклад.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'UN Economic Commission for Africa: S. Osafo. State of global climate governance and implications for Africa', url: 'https://archive.uneca.org/sites/default/files/uploaded-documents/CCDA/CCDA8/state_of_global_climate_governance_and_implications_for_africa_-_seth_osafo.pdf' },
+      { kind: 'academic', label: 'ASIL Insights: Paris Agreement on Climate Change Mitigation Enters into Force', url: 'https://www.asil.org/print/5029' },
+    ],
+  },
+  {
+    id: 'rel-world-clermont-crusade',
+    from: 'fr-clermont-1095',
+    to: 'ref-p033-pervyy-krestovyy-pohod',
+    kind: 'influence',
+    label: 'Призыв Урбана II поднял Первый крестовый поход',
+    detail: `
+27 ноября 1095 года в Клермоне папа Урбан II призвал помочь Византии против турок-сельджуков и освободить Иерусалим.
+
+Механизм — религиозный призыв и обещание отпущения грехов: в 1096 году на Восток двинулись ополчения и рыцарские армии, которые в 1099 году взяли Иерусалим.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Oregon State University OER: The First Crusade, 1096–1099', url: 'https://open.oregonstate.education/middleearlymodernages/chapter/first-crusade/' },
+      { kind: 'academic', label: 'University of Michigan, Crusades timeline: First Crusade', url: 'https://public.websites.umich.edu/~marcons/Crusades/timeline/summaries/First_Crusade.htm' },
+    ],
+  },
+  {
+    id: 'rel-world-crusades-1204',
+    from: 'ref-p033-krestovye-pohody-na-vostok',
+    to: 'ref-p034-zahvat-krestonoscami-konstantinopolya',
+    kind: 'context',
+    label: 'Четвёртый поход обратился против Константинополя',
+    detail: `
+Четвёртый крестовый поход, начатый ради войны за Святую землю, в 1204 году закончился взятием и разграблением христианского Константинополя.
+
+Эпизод — часть истории крестовых походов, показавшей, как идея священной войны смешивалась с интересами венецианских купцов и западных сеньоров.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Oregon State University OER: The First Crusade, 1096–1099', url: 'https://open.oregonstate.education/middleearlymodernages/chapter/first-crusade/' },
+      { kind: 'academic', label: 'University of Michigan, Crusades timeline: First Crusade', url: 'https://public.websites.umich.edu/~marcons/Crusades/timeline/summaries/First_Crusade.htm' },
+    ],
+  },
+  {
+    id: 'rel-world-schism-1204',
+    from: 'ref-p032-raskol-hristianskoy-cerkvi',
+    to: 'ref-p034-zahvat-krestonoscami-konstantinopolya',
+    kind: 'context',
+    label: 'Разграбление 1204 года закрепило раскол',
+    detail: `
+Взаимные отлучения 1054 года касались конкретных лиц, и после них ещё долго шли переговоры о единстве церквей.
+
+Разграбление Константинополя крестоносцами в 1204 году и установление там латинской власти сделали разрыв между православными и католиками глубоким и долговременным.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Orthodox Church in America. Church History: The Great Schism', url: 'https://oca.org/orthodoxy/the-orthodox-faith/church-history/eleventh-century/the-great-schism' },
+      { kind: 'institution', label: 'Dicastery for Promoting Christian Unity: The long road from the excommunication to the restoration of communion', url: 'https://www.christianunity.va/content/unitacristiani/en/cardinal-koch/2026/Conferenze/the-long-road-from-the-excommunication-to-the-restoration-of-com.html' },
+    ],
+  },
 ];
 
 /** Быстрый доступ к связям по идентификатору объекта. */

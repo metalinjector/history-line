@@ -1,6 +1,9 @@
 ---
 id: ref-p120-arabskaya-vesna
 sources:
-  - label: "В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. 120."
-    kind: reference
+  - kind: academic
+    label: "M. Lynch. The Arab Uprising: The Unfinished Revolutions of the New Middle East. New York: PublicAffairs, 2012"
+  - kind: encyclopedia
+    label: "EBSCO Research Starters: Arab Spring"
+    url: "https://ebsco.com/research-starters/politics-and-government/arab-spring"
 ---
