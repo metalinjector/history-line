@@ -20,6 +20,7 @@ export const referenceMerges: Record<string, string> = {
   'ref-p083-naznachenie-a-gitlera-reyhskanclerom-germa': 'de-1933',
   'ref-p103-germanskaya-demokraticheskaya-respublika-g': 'de-two-states-1949',
   'ref-p103-obrazovanie-federativnoy-respubliki-german': 'de-two-states-1949',
+  'ref-p105-mayskie-sobytiya-vo-francii': 'fr-1968',
   'ref-p111-predostavlenie-nezavisimosti-britanskoy-in': 'gb-india-1947',
 };
 

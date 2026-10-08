@@ -2278,6 +2278,433 @@ timeline
       { kind: 'archive', label: 'Archivio di Stato di Asti: каталог выставки «2 giugno 1946» (PDF)', url: 'https://archiviodistatoasti.cultura.gov.it/fileadmin/risorse/ASAT_DOWNLOADS/Pubblicazioni/Catalogo_2_giugno_1946.pdf' },
     ],
   },
+  {
+    id: 'rel-fr-normandy-1066',
+    from: 'fr-normandy-911',
+    to: 'gb-1066',
+    kind: 'influence',
+    label: 'Герцогство на Сене даёт Англии новую династию',
+    detail: `
+По договору, который традиционно датируют 911 годом, король Карл Простоватый уступил вождю викингов Роллону земли между рекой Эпт и морем. Взамен Роллон принёс присягу, крестился и взялся защищать устье Сены от других викингов. Из этого пожалования выросло Нормандское герцогство.
+
+Механизм связи — династический: в 1066 году герцог Нормандии Вильгельм, правитель этого герцогства, заявил права на английский престол и победил при Гастингсе. Договор 911 года не предопределял завоевания, но создал на французском побережье сильное княжество, которое и смогло его совершить.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Дудон Сен-Кантенский. «О нравах и деяниях первых герцогов Нормандии» (начало XI в.)' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Treaty of Saint-Clair-sur-Epte', url: 'https://en.wikipedia.org/wiki/Treaty_of_Saint-Clair-sur-Epte' },
+    ],
+  },
+  {
+    id: 'rel-fr-bouvines-magna-carta',
+    from: 'fr-bouvines-1214',
+    to: 'gb-magna-carta-1215',
+    kind: 'influence',
+    label: 'Поражение союзников под Бувином ослабило короля Иоанна',
+    detail: `
+Иоанн Безземельный построил кампанию 1214 года как удар с двух сторон: сам он наступал с юго-запада, а его союзник император Оттон IV с фламандскими графами — с севера. 27 июля 1214 года Филипп II Август разгромил северную армию при Бувине, и план рухнул.
+
+Иоанн вернулся в Англию без победы и без денег, потраченных на войну, — и столкнулся с восстанием баронов. Ослабленный король был вынужден вести с ними переговоры, итогом которых стала Великая хартия вольностей 1215 года.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'UK Parliament, Living Heritage: Magna Carta', url: 'https://webtest.parliament.uk/about/living-heritage/evolutionofparliament/originsofparliament/birthofparliament/overview/magnacarta/magnacartahow' },
+      { kind: 'encyclopedia', label: 'Britannica: Battle of Bouvines', url: 'https://www.britannica.com/print/article/76000' },
+    ],
+  },
+  {
+    id: 'rel-fr-bouvines-paris-1259',
+    from: 'fr-bouvines-1214',
+    to: 'fr-louis-ix-1248',
+    kind: 'influence',
+    label: 'Парижский мир 1259 года закрепил итог Бувина',
+    detail: `
+Победа при Бувине оставила за Капетингами земли, отнятые Филиппом II Августом у английских Плантагенетов на континенте, и сделала французскую монархию первой силой Запада.
+
+Юридически этот итог подвёл внук Филиппа — Людовик IX. По Парижскому миру 1259 года английский король Генрих III отказался от Нормандии, Анжу, Турени и Мэна и признал себя вассалом французского короля за Гиень. Спор о континентальных владениях был отложен, но не снят: через восемь десятилетий он вспыхнет Столетней войной.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Columbia University, Medieval Architecture: glossary — Louis IX', url: 'https://projects.mcah.columbia.edu/medieval-architecture/htm/ms/ma_ms_gloss_louisIX.htm' },
+      { kind: 'encyclopedia', label: 'Britannica: Battle of Bouvines', url: 'https://www.britannica.com/print/article/76000' },
+    ],
+  },
+  {
+    id: 'rel-fr-albigensian-languedoc',
+    from: 'fr-albigensian-1209',
+    to: 'fr-louis-ix-1248',
+    kind: 'context',
+    label: 'Юг входит в королевство при Людовике IX',
+    detail: `
+Альбигойский крестовый поход начался в 1209 году по призыву папы Иннокентия III против катаров Лангедока и их покровителей. Завершил его Парижский договор 1229 года — от имени юного Людовика IX, за которого правила регентша Бланка Кастильская.
+
+Граф Тулузский Раймунд VII принёс покаяние и выдал дочь за брата короля, Альфонса де Пуатье; после их смерти в 1271 году графство отошло к короне. Так при Людовике IX и его наследнике юг с собственным языком и культурой вошёл в состав Французского королевства.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Archives départementales de l’Aude: «Au temps de la Croisade. Société et pouvoirs en Languedoc au XIIIe siècle»', url: 'https://archivesdepartementales.aude.fr/sites/default/files/media/downloads/Exposition%20Au%20temps%20de%20la%20Croisade.%20Soci%C3%A9t%C3%A9%20et%20pouvoirs%20en%20Languedoc%20au%20XIIIe%20si%C3%A8cle..pdf' },
+      { kind: 'encyclopedia', label: 'Encyclopædia Universalis: Albigeois (croisade contre les)', url: 'https://www.universalis.fr/encyclopedie/croisade-contre-les-albigeois/' },
+    ],
+  },
+  {
+    id: 'rel-fr-italian-wars-charles-v',
+    from: 'fr-italian-wars-1494',
+    to: 'es-charles-v-1519',
+    kind: 'conflict',
+    label: 'Валуа против Габсбургов за Италию',
+    detail: `
+Начавшись в 1494 году как поход Карла VIII за Неаполь, Итальянские войны превратились в многолетнее противоборство Франции и Габсбургов. Когда Карл V объединил испанские владения с императорской короной, Италия стала главной ареной этой борьбы.
+
+Её кульминация — битва при Павии 24 февраля 1525 года: испанская армия разбила французов, а Франциск I попал в плен. Мир в Като-Камбрези 1559 года завершил войны, и Франция отказалась от итальянских владений, кроме Турина, Салуццо и Пиньероля.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Université de Liège, Reflexions: Italian Wars', url: 'https://www.reflexions.uliege.be/cms/c_370032/en/italian-wars' },
+      { kind: 'encyclopedia', label: 'Encyclopedia.com: Italian Wars (1494–1559)', url: 'https://www.encyclopedia.com/history/modern-europe/wars-and-battles/italian-wars' },
+    ],
+  },
+  {
+    id: 'rel-fr-nantes-revocation',
+    from: 'fr-nantes-1598',
+    to: 'fr-revocation-1685',
+    kind: 'context',
+    label: 'Конец опыта двух вер в одном королевстве',
+    detail: `
+Нантский эдикт 1598 года дал гугенотам права и закончил религиозные войны: подданные разной веры могли жить в одном государстве. Эдикт Фонтенбло 18 октября 1685 года отменил этот порядок.
+
+Отмене предшествовали драгонады — постой солдат в протестантских семьях, принуждавший к обращению. Новый эдикт закрыл протестантские храмы и школы и предписал крестить детей по католическому обряду. Сотни тысяч гугенотов эмигрировали в Нидерланды, Англию, Пруссию и американские колонии, а протестантские соседи Франции стали к ней ещё враждебнее.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Эдикт Фонтенбло, 18 октября 1685 года' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Edict of Fontainebleau', url: 'https://en.wikipedia.org/wiki/Edict_of_Fontainebleau' },
+    ],
+  },
+  {
+    id: 'rel-fr-montesquieu-us-constitution',
+    from: 'fr-montesquieu-1748',
+    to: 'ref-p051-prinyatie-konstitucii-ssha',
+    kind: 'influence',
+    label: 'Разделение властей из «О духе законов» — в устройство США',
+    detail: `
+В трактате «О духе законов» (Женева, 1748) Монтескьё доказывал: если законодательная, исполнительная и судебная власти разделены и независимы друг от друга, правителю труднее злоупотреблять властью над человеком.
+
+Идея разошлась по всему Просвещению и повлияла на политическую мысль тринадцати колоний, ставших Соединёнными Штатами. Конституция 1787 года строит федеральную власть как три отдельные ветви — воплощение схемы, которую связывают с именем Монтескьё.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Liberty Fund, Online Library of Liberty: Montesquieu and the Separation of Powers', url: 'https://oll.libertyfund.org/pages/montesquieu-and-the-separation-of-powers' },
+      { kind: 'encyclopedia', label: 'World History Encyclopedia: Montesquieu', url: 'https://www.worldhistory.org/trans/fr/1-22386/montesquieu/' },
+    ],
+  },
+  {
+    id: 'rel-fr-alliance-yorktown',
+    from: 'fr-us-alliance-1778',
+    to: 'ref-p050-voyna-severoamerikanskih-koloniy-za-nezavi',
+    kind: 'influence',
+    label: 'Французский флот решает исход войны за независимость',
+    detail: `
+Договор о союзе, подписанный в Париже 6 февраля 1778 года, превратил Францию из тайного помощника повстанцев в воюющую сторону. Стороны обещали не заключать с Британией сепаратного мира.
+
+Решающим стал 1781 год: флот адмирала де Грасса пришёл из Вест-Индии, получил контроль над побережьем Виргинии и не дал британцам выручить армию Корнуоллиса в Йорктауне, осаждённую американцами и французами. 19 октября Корнуоллис капитулировал, а Парижский мир 1783 года признал независимость США.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'U.S. National Archives, The Unwritten Record: Victory at Yorktown', url: 'https://unwritten-record.blogs.archives.gov/2020/10/14/victory-at-yorktown/' },
+      { kind: 'institution', label: 'BnF, France–Amériques: The French-American Treaty of Alliance, 1778', url: 'https://heritage.bnf.fr/france-ameriques/en/french-american-treaty-alliance-1778' },
+      { kind: 'encyclopedia', label: 'Britannica: Siege of Yorktown', url: 'https://www.Britannica.Com/event/Siege-of-Yorktown' },
+    ],
+  },
+  {
+    id: 'rel-fr-alliance-debt-estates',
+    from: 'fr-us-alliance-1778',
+    to: 'fr-estates-general-1789',
+    kind: 'influence',
+    label: 'Долг американской войны приводит к созыву Генеральных штатов',
+    detail: `
+Участие в войне за независимость США стоило Франции, по распространённой оценке, около 1,3 млрд ливров и почти удвоило государственный долг. Финансовый кризис копился и раньше, но война сделала его острым.
+
+В августе 1788 года казна была объявлена пустой. Новый генеральный контролёр финансов Неккер пообещал созвать Генеральные штаты в 1789 году — это обещание вернуло доверие кредиторов. 5 мая 1789 года штаты открылись в Версале, и через шесть недель третье сословие объявило себя Национальным собранием.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'World History Encyclopedia: Estates-General of 1789', url: 'https://www.worldhistory.org/Estates-General_of_1789' },
+      { kind: 'institution', label: 'Assemblée nationale: Le Serment du Jeu de paume', url: 'https://www2.assemblee-nationale.fr/14/evenements/2016/33emes-journees-europeennes-du-patrimoine/les-actes-fondateurs-de-la-democratie/le-serment-du-jeu-de-paume' },
+    ],
+  },
+  {
+    id: 'rel-fr-estates-revolution',
+    from: 'fr-estates-general-1789',
+    to: 'fr-revolution-1789',
+    kind: 'influence',
+    label: 'Национальное собрание открывает революцию',
+    detail: `
+Генеральные штаты открылись 5 мая 1789 года, чтобы найти выход из финансового и политического кризиса. 17 июня третье сословие и часть духовенства провозгласили себя Национальным собранием, а 20 июня поклялись не расходиться, пока не дадут королевству конституцию.
+
+С этого момента источником власти объявила себя нация. Взятие Бастилии 14 июля и отмена сословных привилегий в следующие недели продолжили то, что начали депутаты в Версале.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Assemblée nationale: Le Serment du Jeu de paume', url: 'https://www2.assemblee-nationale.fr/14/evenements/2016/33emes-journees-europeennes-du-patrimoine/les-actes-fondateurs-de-la-democratie/le-serment-du-jeu-de-paume' },
+      { kind: 'encyclopedia', label: 'Larousse: Révolution française', url: 'https://www.larousse.fr/encyclopedie/divers/R%C3%A9volution_fran%C3%A7aise/184321' },
+    ],
+  },
+  {
+    id: 'rel-fr-consulate-empire',
+    from: 'fr-napoleon-1799',
+    to: 'ref-p059-provozglashenie-napoleona-bonaparta-impera',
+    kind: 'influence',
+    label: 'Первый консул становится императором',
+    detail: `
+После переворота 1799 года Бонапарт правил как первый консул. Сенатус-консульт 18 мая 1804 года передал управление республикой «императору французов» и сделал власть наследственной, формально не упразднив республику.
+
+2 декабря 1804 года в соборе Парижской Богоматери в присутствии папы Пия VII прошло посвящение Наполеона на царство. Церемония подчёркивала преемственность с монархиями прошлого, прежде всего с Карлом Великим, хотя новая власть держалась на армии.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Fondation Napoléon: La proclamation de l’Empire par le Sénat conservateur', url: 'https://www.napoleon.org/fr/salle_lecture/articles/files/proclamationempiresenat_lentz_mai04.asp' },
+      { kind: 'institution', label: 'Fondation Napoléon: Le sacre de Napoléon Ier, le 2 décembre 1804', url: 'https://www.napoleon.org/histoire-des-2-empires/dossiers-thematiques/le-sacre-de-napoleon-ier-le-2-decembre-1804-a-notre-dame/' },
+    ],
+  },
+  {
+    id: 'rel-fr-empire-spain-1808',
+    from: 'ref-p060-pervaya-imperiya-vo-francii',
+    to: 'es-1808',
+    kind: 'influence',
+    label: 'Байоннские отречения поднимают Испанию',
+    detail: `
+По договору в Фонтенбло 1807 года французские войска прошли через Испанию, чтобы ударить по Португалии, британскому союзнику. С весны 1808 года французская армия стояла в Мадриде.
+
+В мае 1808 года в Байонне Наполеон вынудил отречься Карла IV и Фердинанда VII и передал корону своему брату Жозефу. Ещё 2 мая попытка вывезти во Францию последних членов королевской семьи подняла Мадрид; восстание подавили, но призывы к борьбе разошлись по всей стране и переросли в войну за независимость, которая на годы связала силы империи.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Investigaciones Históricas (Universidad de Valladolid): статья о событиях 1808 года', url: 'https://revistas.uva.es/index.php/invehisto/article/view/3876' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Abdications of Bayonne', url: 'https://en.wikipedia.org/wiki/Abdications_of_Bayonne' },
+    ],
+  },
+  {
+    id: 'rel-fr-berezina-ru-1812',
+    from: 'ref-p067-razgrom-francuzskoy-armii-na-reke-berezine',
+    to: 'ru-1812',
+    kind: 'conflict',
+    label: 'Березина — последний крупный бой похода 1812 года',
+    detail: `
+В конце ноября 1812 года армии Чичагова и Витгенштейна сходились к переправам через Березину, чтобы отрезать отступающую армию Наполеона. Понтонёры Эбле навели мосты у Студёнки, и 26–29 ноября (14–17 ноября по старому стилю) ядро армии переправилось, отбиваясь на обоих берегах.
+
+Для российской истории это последнее крупное сражение Отечественной войны 1812 года, для французской — символ катастрофы: Наполеон избежал плена, но Великая армия как боевая сила перестала существовать.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека им. Б. Н. Ельцина: годовщина сражения на Березине', url: 'https://prlib.ru/en/node/619764' },
+      { kind: 'encyclopedia', label: 'Академик (по материалам Википедии): Сражение на Березине', url: 'https://dic.academic.ru/dic.nsf/ruwiki/225259' },
+    ],
+  },
+  {
+    id: 'rel-fr-1812-abdication',
+    from: 'ru-1812',
+    to: 'ref-p060-otrechenie-napoleona-ot-vlasti',
+    kind: 'influence',
+    label: 'Гибель Великой армии ведёт коалицию в Париж',
+    detail: `
+Поход в Россию 1812 года уничтожил главную армию Наполеона. В 1813–1814 годах против него воевала коалиция европейских держав, и весной 1814 года её войска вошли в Париж.
+
+3 апреля Сенат объявил императора низложенным, а 6 апреля Наполеон подписал безоговорочное отречение в Фонтенбло; в тот же день Сенат призвал на престол брата Людовика XVI. По договору 11 апреля Наполеон получил остров Эльба.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Fondation Napoléon: Les adieux de Fontainebleau', url: 'https://www.napoleon.org/histoire-des-2-empires/tableaux/les-adieux-de-fontainebleau/' },
+      { kind: 'institution', label: 'University of Southampton (FutureLearn): The Abdication of Napoleon', url: 'https://www.futurelearn.com/courses/wellington-and-waterloo/0/steps/24834' },
+    ],
+  },
+  {
+    id: 'rel-fr-1848-germany',
+    from: 'fr-1848',
+    to: 'de-1848',
+    kind: 'influence',
+    label: 'Февраль в Париже запускает мартовские революции',
+    detail: `
+24 февраля 1848 года Луи-Филипп отрёкся, и в Париже провозгласили республику с всеобщим мужским избирательным правом. Известие быстро разошлось по Европе.
+
+13 марта восстание в Вене заставило уйти канцлера Меттерниха, 18 марта на баррикады вышел Берлин. Современник событий Фридрих Энгельс прямо называл германскую мартовскую революцию непосредственным следствием февральской революции в Париже.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Ф. Энгельс. «Революция и контрреволюция в Германии» (1851–1852), гл. V', url: 'https://www.marxists.org/archive/marx/works/1852/germany/ch05.htm' },
+      { kind: 'institution', label: 'Assemblée nationale: 1848 — la deuxième République met en place le suffrage universel masculin', url: 'https://www2.assemblee-nationale.fr/decouvrir-l-assemblee/histoire/le-suffrage-universel/la-republique-et-le-suffrage-universel/1848-la-deuxieme-republique-met-en-place-le-suffrage-universel-masculin' },
+    ],
+  },
+  {
+    id: 'rel-fr-1848-coup',
+    from: 'fr-1848',
+    to: 'ref-p062-gosudarstvennyy-perevorot-lui-bonaparta',
+    kind: 'influence',
+    label: 'Республика всеобщего голосования избирает будущего диктатора',
+    detail: `
+Декрет 5 марта 1848 года увеличил число избирателей примерно с 240 тысяч до 9 миллионов.
+
+Избранный президентом Луи-Наполеон 2 декабря 1851 года распустил Законодательное собрание. Всеобщее голосование не было отменено, но стало инструментом плебисцитов, которыми режим подтверждал свою власть.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Assemblée nationale: 1848 — la deuxième République met en place le suffrage universel masculin', url: 'https://www2.assemblee-nationale.fr/decouvrir-l-assemblee/histoire/le-suffrage-universel/la-republique-et-le-suffrage-universel/1848-la-deuxieme-republique-met-en-place-le-suffrage-universel-masculin' },
+      { kind: 'encyclopedia', label: 'Encyclopædia Universalis: IIe République', url: 'https://www.universalis.fr/encyclopedie/iie-republique-deuxieme-republique/' },
+    ],
+  },
+  {
+    id: 'rel-fr-coup-empire',
+    from: 'ref-p062-gosudarstvennyy-perevorot-lui-bonaparta',
+    to: 'fr-second-empire-1852',
+    kind: 'influence',
+    label: 'Через год после переворота — империя',
+    detail: `
+Переворот 2 декабря 1851 года дал президенту Луи-Наполеону всю полноту власти. Ровно через год, 2 декабря 1852 года, он был провозглашён императором Наполеоном III.
+
+Восстановление империи одобрил плебисцит 21–22 ноября 1852 года: за наследственную империю высказались более 7,8 миллиона избирателей. В первые годы режима власть была сосредоточена у императора, а выборы и печать находились под контролем.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Assemblée nationale: 1852–1870 — le second Empire, ou le dévoiement du suffrage universel', url: 'https://www2.assemblee-nationale.fr/decouvrir-l-assemblee/histoire/le-suffrage-universel/la-republique-et-le-suffrage-universel/1852-1870-le-second-empire-ou-le-devoiement-du-suffrage-universel' },
+      { kind: 'encyclopedia', label: 'Larousse: Napoléon III', url: 'https://www.larousse.fr/encyclopedie/personnage/Napol%C3%A9on_III/134750' },
+    ],
+  },
+  {
+    id: 'rel-fr-third-republic-1875',
+    from: 'fr-third-republic-1871',
+    to: 'ref-p064-prinyatie-konstitucii-sh-respubliki-vo-fra',
+    kind: 'influence',
+    label: 'Временный режим получает конституцию',
+    detail: `
+Республику провозгласили 4 сентября 1870 года без конституции, а избранное в 1871 году собрание почти пять лет оставляло вопрос о форме правления открытым.
+
+30 января 1875 года поправка Валлона, принятая перевесом в один голос, упомянула «президента республики». За ней последовали три конституционных закона 1875 года об устройстве сената, организации государственных властей и отношениях между ними — и временный режим стал республикой по закону.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Présidence de la République: Les lois constitutionnelles de 1875', url: 'https://www.elysee.fr/la-presidence/les-lois-constitutionnelles-de-1875' },
+      { kind: 'encyclopedia', label: 'Encyclopædia Universalis: Wallon (amendement)', url: 'https://www.universalis.fr/encyclopedie/amendement-wallon/' },
+    ],
+  },
+  {
+    id: 'rel-fr-ferry-laicite',
+    from: 'fr-ferry-laws-1882',
+    to: 'fr-laicite-1905',
+    kind: 'context',
+    label: 'Два шага светской республики',
+    detail: `
+Законы Жюля Ферри 1881–1882 годов сделали начальную школу бесплатной, обязательной и светской: «нравственное и религиозное воспитание» стало «нравственным и гражданским», а церковь потеряла право надзора за обучением.
+
+Закон 9 декабря 1905 года распространил тот же принцип на государство в целом: республика гарантирует свободу совести, но не признаёт, не оплачивает и не субсидирует ни один культ. Оба шага — части одного процесса, в котором Третья республика отделяла общественные институты от церкви.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Sénat: Les lois scolaires de Jules Ferry', url: 'https://irtshdf.fr/wp-content/uploads/2019/12/Les-lois-scolaires-de-Jules-Ferry-Senat.pdf' },
+      { kind: 'institution', label: 'Eduscol: Enseignement moral et civique, 2de — laïcité', url: 'https://eduscol.education.fr/document/64676/download' },
+    ],
+  },
+  {
+    id: 'rel-fr-1935-rhineland',
+    from: 'ref-p091-podpisanie-sovetsko-francuzskogo-dogovora-',
+    to: 'ref-p084-okkupaciya-germanskimi-voyskami-reynskoy-d',
+    kind: 'influence',
+    label: 'Ратификация пакта становится поводом для ремилитаризации',
+    detail: `
+Франко-советский договор о взаимопомощи был подписан 2 мая 1935 года. Уже 29 мая германское правительство заявило гарантам Локарнских соглашений, что пакт противоречит их духу, поскольку направлен против Германии.
+
+Французский парламент ратифицировал договор в феврале 1936 года, а в марте 1936 года Гитлер ввёл войска в демилитаризованную Рейнскую область, сославшись на этот довод. Договор не был причиной решения, но стал поводом, которым Берлин его оправдывал.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Zeitschrift für ausländisches öffentliches Recht und Völkerrecht, Bd. 5, 1935', url: 'https://www.zaoerv.de/05_1935/5_1935_1_b_599_615.pdf' },
+      { kind: 'archive', label: 'Parliament of Australia, Senate Hansard, 12 March 1936', url: 'https://historichansard.net/senate/1936/19360312_senate_14_149/' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Franco-Soviet Treaty of Mutual Assistance', url: 'https://en.wikipedia.org/wiki/Franco-Soviet_Treaty_of_Mutual_Assistance' },
+    ],
+  },
+  {
+    id: 'rel-fr-algeria-1830-1954',
+    from: 'ref-p072-nachalo-zavoevaniya-alzhira-franciey',
+    to: 'fr-algeria-war-1954',
+    kind: 'context',
+    label: '132 года французского Алжира',
+    detail: `
+Взятие Алжира 5 июля 1830 года положило начало французскому присутствию, которое продлилось до 1962 года. Покорение страны заняло десятилетия, а Алжир со временем стал считаться частью территории самой Франции.
+
+Восстание Фронта национального освобождения 1 ноября 1954 года было направлено против власти, которая со времён 1830 года считала Алжир своей землёй. Война закончилась Эвианскими соглашениями 18 марта 1962 года и независимостью Алжира.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Musée de l’Armée: выставка «Algérie 1830–1962»', url: 'https://www.musee-armee.fr/ExpositionAlgerie/pdf/pdf-presentation-de-l-exposition.pdf' },
+      { kind: 'encyclopedia', label: 'Encyclopædia Universalis: Guerre d’Algérie (repères chronologiques)', url: 'https://www.universalis.fr/encyclopedie/algerie-reperes-chronologiques/' },
+    ],
+  },
+  {
+    id: 'rel-fr-algeria-fifth-republic',
+    from: 'fr-algeria-war-1954',
+    to: 'fr-fifth-republic-1958',
+    kind: 'influence',
+    label: 'Алжирский кризис возвращает де Голля',
+    detail: `
+13 мая 1958 года в городе Алжире поселенцы при поддержке армии захватили правительственные здания, и мятеж перерос в угрозу военного переворота. Президент Рене Коти призвал де Голля сформировать правительство.
+
+Новая конституция 4 октября 1958 года была написана в ответ на слабость парламентского режима, неспособного справиться с кризисами деколонизации. Война, которую не смогла закончить Четвёртая республика, завершилась уже при Пятой — Эвианскими соглашениями 1962 года.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Sénat: Constitution du 4 octobre 1958', url: 'https://www.senat.fr/reglement/pouvoirs_publics4.html' },
+      { kind: 'encyclopedia', label: 'Wikipedia: May 1958 crisis in France', url: 'https://en.wikipedia.org/wiki/May_1958_crisis_in_France' },
+    ],
+  },
+  {
+    id: 'rel-fr-fourth-fifth',
+    from: 'ref-p102-chetvertaya-respublika-vo-francii',
+    to: 'fr-fifth-republic-1958',
+    kind: 'influence',
+    label: 'Слабость парламентского режима рождает сильного президента',
+    detail: `
+Конституция 1946 года сосредоточила власть в парламенте и оставила президенту в основном представительские функции.
+
+Конституция 4 октября 1958 года заменила её, сохранив преамбулу 1946 года о правах. Её авторы — де Голль и Мишель Дебре — строили новую систему как ответ на «режим собрания» Четвёртой республики, резко усилив исполнительную власть.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Présidence de la République: La Constitution du 27 octobre 1946', url: 'https://www.elysee.fr/la-presidence/la-constitution-du-27-octobre-1946' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Constitution of France', url: 'https://en.wikipedia.org/wiki/Constitution_of_France' },
+    ],
+  },
+  {
+    id: 'rel-fr-schuman-ecsc',
+    from: 'fr-schuman-1950',
+    to: 'ref-p103-sozdanie-evropeyskogo-obedineniya-uglya-i-',
+    kind: 'influence',
+    label: 'Предложение Шумана становится первым европейским сообществом',
+    detail: `
+9 мая 1950 года Робер Шуман предложил поставить добычу угля и выплавку стали Франции и ФРГ под общий орган, открытый для других стран. Солидарность в производстве, по его словам, должна была сделать войну между ними «не только немыслимой, но и материально невозможной».
+
+18 апреля 1951 года Франция, ФРГ, Италия, Бельгия, Нидерланды и Люксембург подписали Парижский договор о Европейском объединении угля и стали — первом наднациональном сообществе, из которого выросла дальнейшая европейская интеграция.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Fondation Robert Schuman: Déclaration du 9 mai 1950', url: 'https://old.robert-schuman.eu//fr/doc/divers/Declaration_du_9_mai_1950.pdf' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Schuman Declaration', url: 'https://en.wikipedia.org/wiki/Schuman_Declaration' },
+    ],
+  },
+  {
+    id: 'rel-fr-women-vote-liberation',
+    from: 'fr-women-vote-1944',
+    to: 'fr-liberation-1944',
+    kind: 'context',
+    label: 'Права граждан для освобождённой Франции',
+    detail: `
+Ордонанс 21 апреля 1944 года, подписанный де Голлем ещё до высадки союзников, определял, как будет устроена власть после освобождения. Его статья 17 сделала женщин избирательницами наравне с мужчинами.
+
+После освобождения Парижа и всей страны ордонанс вступил в действие: француженки впервые проголосовали на муниципальных выборах 29 апреля 1945 года, а 21 октября 1945 года в Учредительное собрание прошли 33 женщины.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Archives nationales: ордонанс от 21 апреля 1944 года (выставка цикла Les Essentiels)', url: 'https://www.culture.gouv.fr/Presse/Communiques-de-presse/L-ordonnance-de-1944-instituant-le-droit-de-vote-des-femmes-exposee-aux-Archives-nationales-dans-le-cadre-du-cycle-Les-Essentiels' },
+      { kind: 'institution', label: 'Assemblée nationale: Les 33 femmes élues députées pour la première fois en 1945', url: 'https://www2.assemblee-nationale.fr/decouvrir-l-assemblee/histoire/le-suffrage-universel/la-conquete-de-la-citoyennete-politique-des-femmes/les-33-femmes-elues-deputees-pour-la-premiere-fois-en-1945' },
+    ],
+  },
 ];
 
 /** Быстрый доступ к связям по идентификатору объекта. */
