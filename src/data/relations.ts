@@ -568,6 +568,1376 @@ timeline
       { kind: 'institution', label: 'Federal Reserve History: Oil Shock of 1973–74 and the 1973–1975 recession', url: 'https://www.federalreservehistory.org/essays/oil-shock-of-1973-74' },
     ],
   },
+  {
+    id: 'rel-rus860-cyril-mission',
+    from: 'rus-constantinople-860',
+    to: 'ref-p030-nachalo-deyatelnosti-kirilla-i-mefodiya-v-',
+    kind: 'context',
+    label: 'Одна политика Фотия: оборона от руси и миссии к славянам',
+    detail: `
+Нападение руси в 860 году пришлось на патриаршество Фотия — того самого, при котором Константинополь начал активную миссионерскую политику на севере. Фотий описал осаду в двух проповедях как очевидец, а в окружном послании 867 года сообщил, что русь, недавно нападавшая на империю, приняла епископа.
+
+В те же годы Константин (Кирилл) и Мефодий отправились с миссией в Моравию. Прямой причинной связи между этими событиями нет: это два проявления одной политики — Византия отвечала на угрозы и вызовы с севера не только войной, но и христианизацией соседей.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Фотий, патриарх Константинопольский. Беседы на нашествие россов', url: 'https://azbyka.ru/otechnik/Fotij_Konstantinopolskij/beseda_vtoraya_na_nashestvie_rossov/' },
+      { kind: 'academic', label: 'Studia Ceranea: The Attack of the Rus\' on Constantinople in the Light of the Chronicon Bruxellense', url: 'https://czasopisma.uni.lodz.pl/sceranea/article/view/10261' },
+      { kind: 'academic', label: 'A. A. Vasiliev. The Russian Attack on Constantinople in 860. Cambridge (Mass.), 1946', url: 'https://www.ellopos.net/elpenor/vasilief/first-russian-attack-constantinople.asp' },
+    ],
+  },
+  {
+    id: 'rel-rus860-pvl-dating',
+    from: 'rus-constantinople-860',
+    to: 'ref-p036-sostavlenie-drevnerusskoy-letopisi-povest-',
+    kind: 'context',
+    label: 'Летопись относит поход к 866 году, греки — к 860-му',
+    detail: `
+«Повесть временных лет» помещает поход Аскольда и Дира на Царьград под 866 годом. Анонимная «Брюссельская хроника», опубликованная Ф. Кюмоном в 1894 году, называет точную дату — 18 июня 860 года — и число кораблей, около двухсот.
+
+До этой публикации большинство историков вслед за летописью датировали поход 865–866 годами. Расхождение стало хрестоматийным примером того, что ранняя летописная хронология во многом выстроена составителем задним числом и требует сверки с иностранными источниками.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Studia Ceranea: The Attack of the Rus\' on Constantinople in the Light of the Chronicon Bruxellense', url: 'https://czasopisma.uni.lodz.pl/sceranea/article/view/10261' },
+      { kind: 'academic', label: 'A. A. Vasiliev. The Russian Attack on Constantinople in 860. Cambridge (Mass.), 1946', url: 'https://www.ellopos.net/elpenor/vasilief/first-russian-attack-constantinople.asp' },
+      { kind: 'academic', label: 'Словарь книжников и книжности Древней Руси (ИРЛИ РАН): Повесть временных лет', url: 'http://lib.pushkinskijdom.ru/Default.aspx?tabid=4521' },
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: Крещение Руси', url: 'https://bigenc.ru/c/kreshchenie-rusi-65c793' },
+    ],
+  },
+  {
+    id: 'rel-oleg-treaty-911',
+    from: 'ru-oleg-882',
+    to: 'rus-treaty-911',
+    kind: 'influence',
+    label: 'Контроль над днепровским путём привёл к договору с греками',
+    detail: `
+Объединив под своей властью Новгород и Киев, Олег стал хозяином всего пути от Балтики к Чёрному морю. Главным рынком на конце этого пути был Константинополь, и князю требовались гарантии для купцов, которые ходили туда с товаром.
+
+Договор 911 года, заключённый после похода на Византию, как раз регулирует эти вопросы: помощь купцам в пути, торговлю русов в империи, выкуп пленных, ответственность за преступления между русами и греками. Так военный успех был закреплён в правовом документе.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека: Заключён русско-византийский договор — один из первых дипломатических актов Древней Руси', url: 'https://www.prlib.ru/history/619503' },
+      { kind: 'archive', label: '«Повесть временных лет». Подготовка текста, перевод и комментарии О. В. Творогова — Библиотека литературы Древней Руси, т. 1, ИРЛИ РАН', url: 'http://lib2.pushkinskijdom.ru/tabid-4869' },
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: Россия. История. Древнерусское государство', url: 'https://bigenc.ru/c/rossiia-istoriia-drevnerusskoe-gosudarstvo-f41276' },
+    ],
+  },
+  {
+    id: 'rel-treaty911-pvl',
+    from: 'rus-treaty-911',
+    to: 'ref-p036-sostavlenie-drevnerusskoy-letopisi-povest-',
+    kind: 'context',
+    label: 'Тексты договоров дошли только в составе летописи',
+    detail: `
+Греческие подлинники договоров Руси с Византией не сохранились. Их древнерусские переводы составитель «Повести временных лет» включил в свой свод в начале XII века.
+
+Благодаря этому летопись содержит не только пересказы, но и документы X века. Для историков это одна из опор, по которым проверяют остальную раннюю хронологию «Повести»: сам поход 907 года известен только по летописи, а договор 911 года сохранил точную дату.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Словарь книжников и книжности Древней Руси (ИРЛИ РАН): Повесть временных лет', url: 'http://lib.pushkinskijdom.ru/Default.aspx?tabid=4521' },
+      { kind: 'institution', label: 'Президентская библиотека: Заключён русско-византийский договор — один из первых дипломатических актов Древней Руси', url: 'https://www.prlib.ru/history/619503' },
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: Россия. История. Древнерусское государство', url: 'https://bigenc.ru/c/rossiia-istoriia-drevnerusskoe-gosudarstvo-f41276' },
+    ],
+  },
+  {
+    id: 'rel-vladimir-rogneda',
+    from: 'ref-p035-pravlenie-knyazya-vladimira-v-kieve',
+    to: 'by-rogneda-980',
+    kind: 'conflict',
+    label: 'Поход Владимира на Киев начался с захвата Полоцка',
+    detail: `
+Направляясь из Новгорода на юг против брата Ярополка, Владимир, по летописи, взял Полоцк, убил князя Рогволода и взял в жёны его дочь Рогнеду, ранее отказавшую ему.
+
+Эпизод показывает, что борьба за Киев затрагивала все крупные центры на речных путях. Позже сын Рогнеды Изяслав получил Полоцк, и там сложилась собственная княжеская линия, которая вела самостоятельную политику по отношению к Киеву.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: '«Повесть временных лет». Подготовка текста, перевод и комментарии О. В. Творогова — Библиотека литературы Древней Руси, т. 1, ИРЛИ РАН', url: 'http://lib2.pushkinskijdom.ru/tabid-4869' },
+      { kind: 'institution', label: 'Российское историческое общество (histrf.ru): Владимир Святой', url: 'https://histrf.ru/lyuboznatelnim/dictionary/b/vladimir-sviatoi' },
+      { kind: 'institution', label: 'Российское историческое общество (histrf.ru): Рогнеда', url: 'https://w.histrf.ru/articles/rogneda' },
+    ],
+  },
+  {
+    id: 'rel-vladimir-sons-yaroslav',
+    from: 'ref-p035-pravlenie-knyazya-vladimira-v-kieve',
+    to: 'ru-yaroslav-1019',
+    kind: 'influence',
+    label: 'Сыновья-наместники Владимира начали войну за Киев',
+    detail: `
+Владимир управлял землями через сыновей: каждый из них сидел в крупном городе с собственной дружиной. Пока отец был жив, система работала; после его смерти в 1015 году у каждого из наследников оказались и войско, и база для борьбы за киевский стол.
+
+В междоусобице погибли Борис, Глеб и Святослав; Святополк, захвативший Киев, в итоге был разбит новгородским князем Ярославом. Утвердившись в Киеве, Ярослав унаследовал и саму проблему раздела власти внутри разросшейся династии.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Российское историческое общество (histrf.ru): Владимир Святой', url: 'https://histrf.ru/lyuboznatelnim/dictionary/b/vladimir-sviatoi' },
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: Святополк Владимирович', url: 'https://bigenc.ru/c/sviatopolk-vladimirovich-02f15c' },
+      { kind: 'archive', label: '«Повесть временных лет». Подготовка текста, перевод и комментарии О. В. Творогова — Библиотека литературы Древней Руси, т. 1, ИРЛИ РАН', url: 'http://lib2.pushkinskijdom.ru/tabid-4869' },
+    ],
+  },
+  {
+    id: 'rel-vladimir-baptism',
+    from: 'ref-p035-pravlenie-knyazya-vladimira-v-kieve',
+    to: 'ru-baptism-988',
+    kind: 'context',
+    label: 'Крещение — главное решение княжения Владимира',
+    detail: `
+Принятие христианства из Византии произошло в середине княжения Владимира и стало его центральным решением: вместе с ним Русь получила церковную организацию, книжность на церковнославянском языке и каменное строительство.
+
+Карточка княжения показывает рамку — как была устроена власть Владимира, а карточка крещения — само религиозное событие и его долгие последствия для культурной границы Европы.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: Крещение Руси', url: 'https://bigenc.ru/c/kreshchenie-rusi-65c793' },
+      { kind: 'institution', label: 'Президентская библиотека раскрывает роль великого князя Владимира в истории российского государства', url: 'https://www.prlib.ru/news/658802' },
+      { kind: 'archive', label: '«Повесть временных лет». Подготовка текста, перевод и комментарии О. В. Творогова — Библиотека литературы Древней Руси, т. 1, ИРЛИ РАН', url: 'http://lib2.pushkinskijdom.ru/tabid-4869' },
+    ],
+  },
+  {
+    id: 'rel-yaroslav-lyubech',
+    from: 'ru-yaroslav-1019',
+    to: 'ref-p036-lyubechskiy-sezd-knyazey',
+    kind: 'influence',
+    label: 'Наследство Ярослава привело к принципу «отчины»',
+    detail: `
+После смерти Ярослава Мудрого в 1054 году его земли поделили сыновья, а затем — внуки. Порядок, при котором Русь оставалась общим владением всего рода, рождал споры о том, кому какой город положен, и к концу XI века князья воевали друг с другом и приводили на Русь половцев.
+
+Любечский съезд 1097 года ответил на это принципом «каждый да держит отчину свою»: за потомками каждой ветви рода закреплялась земля их отца. Так наследство Ярослава превратилось из общего достояния в набор наследственных владений.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека: Состоялся Любечский съезд русских князей', url: 'https://www.prlib.ru/history/619643' },
+      { kind: 'archive', label: '«Повесть временных лет». Подготовка текста, перевод и комментарии О. В. Творогова — Библиотека литературы Древней Руси, т. 1, ИРЛИ РАН', url: 'http://lib2.pushkinskijdom.ru/tabid-4869' },
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: Россия. История. Древнерусское государство', url: 'https://bigenc.ru/c/rossiia-istoriia-drevnerusskoe-gosudarstvo-f41276' },
+    ],
+  },
+  {
+    id: 'rel-lyubech-verdun',
+    from: 'ref-p036-lyubechskiy-sezd-knyazey',
+    to: 'fr-verdun-843',
+    kind: 'comparison',
+    label: 'Раздел державы между ветвями одной династии',
+    detail: `
+И Верденский договор 843 года, и Любечский съезд 1097 года — соглашения между членами одной правящей семьи, которые, чтобы прекратить усобицу, разделили общее наследство на закреплённые доли.
+
+Разница в масштабе и последствиях: внуки Карла Великого разделили империю на три королевства, из которых выросли Франция и Германия, а потомки Ярослава закрепили за собой наследственные княжества внутри одной Руси. Прямой связи между событиями нет — это сравнение сходных решений.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека: Состоялся Любечский съезд русских князей', url: 'https://www.prlib.ru/history/619643' },
+      { kind: 'archive', label: 'Нитхард, «История в четырёх книгах» — современник Верденского раздела; издание Monumenta Germaniae Historica' },
+    ],
+  },
+  {
+    id: 'rel-pvl-varangians',
+    from: 'ref-p036-sostavlenie-drevnerusskoy-letopisi-povest-',
+    to: 'ru-rurik-862',
+    kind: 'context',
+    label: 'Призвание варягов известно по рассказу летописи',
+    detail: `
+Рассказ о призвании Рюрика с братьями — так называемое «Сказание о призвании варягов» — читается в «Повести временных лет» под 862 годом. Других современных событию письменных свидетельств о нём нет.
+
+Поэтому и дата, и подробности призвания — летописная версия начала XII века, а спор о её достоверности и смысле (норманнская и антинорманнская интерпретации) во многом сводится к спору о том, как читать этот текст.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'Большая российская энциклопедия: «Сказание о призвании варягов»', url: 'https://bigenc.ru/c/skazanie-o-prizvanii-variagov-edabcf' },
+      { kind: 'academic', label: 'Словарь книжников и книжности Древней Руси (ИРЛИ РАН): Повесть временных лет', url: 'http://lib.pushkinskijdom.ru/Default.aspx?tabid=4521' },
+      { kind: 'archive', label: '«Повесть временных лет». Подготовка текста, перевод и комментарии О. В. Творогова — Библиотека литературы Древней Руси, т. 1, ИРЛИ РАН', url: 'http://lib2.pushkinskijdom.ru/tabid-4869' },
+    ],
+  },
+  {
+    id: 'rel-cyril-ostromir',
+    from: 'ref-p030-nachalo-deyatelnosti-kirilla-i-mefodiya-v-',
+    to: 'rus-ostromir-1056',
+    kind: 'influence',
+    label: 'Славянская письменность сделала возможной книгу Остромира',
+    detail: `
+Миссия Кирилла и Мефодия создала славянскую азбуку и первые переводы богослужебных книг на церковнославянский язык. Ученики братьев продолжили эту работу, и после крещения Руси книги на церковнославянском языке пришли и туда.
+
+Остромирово Евангелие 1056–1057 годов написано кириллицей на церковнославянском языке и продолжает эту традицию переводов. Оно показывает, как спустя два века после моравской миссии славянская книжность укоренилась в Новгороде.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Институт славяноведения РАН: публикация об Остромировом Евангелии (2020)', url: 'https://inslav.ru/sites/default/files/2020_kaligangl_ostromirovo.pdf' },
+      { kind: 'institution', label: 'Президентская библиотека: Ostromir Gospels\' creation began', url: 'https://www.prlib.ru/en/node/619650' },
+    ],
+  },
+  {
+    id: 'rel-ostromir-diamond',
+    from: 'rus-ostromir-1056',
+    to: 'cn-diamond-sutra-868',
+    kind: 'comparison',
+    label: 'Древнейшие датированные книги: рукопись и оттиск',
+    detail: `
+И «Алмазная сутра» 868 года, и Остромирово Евангелие 1056–1057 годов датированы самими создателями — записью в конце книги. Обе — священные тексты, изготовленные по заказу частного лица как благочестивый дар.
+
+Но технологии разные: китайская книга отпечатана с деревянных досок, а русская переписана от руки на пергамене. Сравнение показывает, что Китай пришёл к тиражированию книг почти за два века до того, как на Руси появилась первая точно датированная рукопись.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека: Ostromir Gospels\' creation began', url: 'https://www.prlib.ru/en/node/619650' },
+      { kind: 'archive', label: 'Экземпляр «Алмазной сутры» 868 года с датированной колофонной записью — The British Library, коллекция Дуньхуана' },
+    ],
+  },
+  {
+    id: 'rel-ice-nevsky',
+    from: 'ref-p037-razgrom-aleksandrom-nevskim-rycarey-tevton',
+    to: 'ru-nevsky-1240',
+    kind: 'context',
+    label: 'Ледовое побоище — вторая победа Александра Невского',
+    detail: `
+Новгородским войском на Чудском озере командовал князь Александр Ярославич, за два года до этого разбивший шведов на Неве. Именно эти две битвы легли в основу его посмертной славы и «Жития Александра Невского».
+
+Карточка князя рассказывает о его политике в целом — обороне на западе и мире с Ордой, а карточка битвы — о самом сражении и о том, что о нём на самом деле сообщают источники.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Президентская библиотека: Состоялась битва на Чудском озере («Ледовое побоище»)', url: 'https://www.prlib.ru/history/619144' },
+      { kind: 'institution', label: 'Президентская библиотека: Александр Ярославич Невский (1221–1263)', url: 'https://www.prlib.ru/Great_Russia/military_XIII/Aleksandr_Nevskiy' },
+      { kind: 'archive', label: 'Новгородская первая летопись старшего и младшего изводов, ПСРЛ, т. 3' },
+    ],
+  },
+  {
+    id: 'rel-kiev1240-mongols',
+    from: 'rus-kiev-1240',
+    to: 'ru-mongols-1237',
+    kind: 'context',
+    label: 'Взятие Киева завершило поход Батыя по Руси',
+    detail: `
+Монгольское нашествие на русские земли шло в два этапа: в 1237–1238 годах были разорены северо-восточные княжества — Рязанское и Владимиро-Суздальское, затем походы повернули на юг Руси, и в конце 1240 года пал Киев.
+
+Падение Киева описано в двух древнейших летописях: кратко — в Лаврентьевской, подробно — в Ипатьевской. На карточке нашествия — весь поход и его долгие последствия, на карточке Киева — судьба старой столицы Руси.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Ипатьевская летопись (Галицко-Волынская летопись), ПСРЛ, т. 2' },
+      { kind: 'archive', label: 'Лаврентьевская летопись, ПСРЛ, т. 1' },
+      { kind: 'academic', label: 'Томский государственный университет (journals.tsu.ru): статья о летописных рассказах о взятии Киева в 1240 году', url: 'https://journals.tsu.ru/uploads/import/1397/files/1(43)_057.pdf' },
+      { kind: 'academic', label: 'ИРЛИ РАН, «Русская литература», 2023, № 2: Падение Иерусалима и Повесть о взятии Киева в 1240 году — литература и история', url: 'https://pushkinskijdom.ru/zhurnal-russkaya-literatura/russkaya-literatura-2023-2/padenie-ierusalima-i-povest-o-vzyatii-kieva-v-1240-godu-literatura-i-istoriya/' },
+    ],
+  },
+  {
+    id: 'rel-kiev1240-poland-hungary',
+    from: 'rus-kiev-1240',
+    to: 'ref-p037-vtorzhenie-mongolov-na-territorii-polshi-h',
+    kind: 'influence',
+    label: 'Из Киева армии Батыя двинулись на Польшу и Венгрию',
+    detail: `
+Киев был последним крупным русским городом на пути похода Батыя. Взяв его, монгольское войско двинулось к западным границам Руси, а весной 1241 года одна часть армии разбила польских и силезских рыцарей при Легнице, другая — венгров на реке Шайо.
+
+Так взятие Киева открыло монголам дорогу в Центральную Европу: поход 1237–1240 годов по Руси и вторжение 1241 года — последовательные этапы одной западной кампании.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Ипатьевская летопись (Галицко-Волынская летопись), ПСРЛ, т. 2' },
+      { kind: 'academic', label: 'Томский государственный университет (journals.tsu.ru): статья о летописных рассказах о взятии Киева в 1240 году', url: 'https://journals.tsu.ru/uploads/import/1397/files/1(43)_057.pdf' },
+      { kind: 'encyclopedia', label: 'Britannica: Golden Horde', url: 'https://www.britannica.com/place/Golden-Horde' },
+    ],
+  },
+  {
+    id: 'rel-gb-plague-peasants',
+    from: 'gb-plague-1348',
+    to: 'gb-peasants-revolt-1381',
+    kind: 'influence',
+    label: 'Чума изменила цену труда, налоги подняли деревню',
+    detail: `
+Чёрная смерть резко сократила число работников. Труд подорожал, а землевладельцы и корона
+пытались законами удержать заработки и повинности на прежнем уровне — экономика, общество
+и право второй половины XIV века менялись под давлением этой нехватки рук.
+
+Поводом к восстанию 1381 года стал третий за четыре года подушный налог, но готовность
+крестьян Эссекса и Кента выступить объясняется тридцатью годами напряжения после эпидемии.
+Само восстание подавили, однако крепостная зависимость в следующее столетие постепенно
+исчезла — процесс, начавшийся с демографической катастрофы.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'After the Black Death: Economy, Society, and the Law in Fourteenth-Century England. Oxford University Press', url: 'https://academic.oup.com/book/39733/chapter/339774982' },
+      { kind: 'institution', label: 'London Museum: How the Peasants’ Revolt rocked medieval London', url: 'https://www.londonmuseum.org.uk/collections/london-stories/how-peasants-revolt-rocked-medieval-london/' },
+    ],
+  },
+  {
+    id: 'rel-gb-gutenberg-caxton',
+    from: 'de-gutenberg-1455',
+    to: 'gb-caxton-1476',
+    kind: 'exchange',
+    label: 'Печатный станок пришёл в Англию через Фландрию',
+    detail: `
+Кэкстон был английским купцом во Фландрии. Печатное дело он освоил на континенте, где
+типографии распространялись с 1450-х годов, и сначала печатал в Брюгге: там около
+1473–1474 годов вышла первая книга на английском языке, его собственный перевод
+«Собрания повествований о Трое».
+
+Около 1476 года он перевёз станок в Вестминстер. Технология из Майнца попала в Англию не
+напрямую, а через торговые города Нидерландов — так же, как туда шли сукно и книги.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Merton College, Oxford: Caxton’s first edition of Canterbury Tales', url: 'https://www.merton.ox.ac.uk/library-and-archives/exhibitions/caxtons-first-edition-of-canterbury-tales' },
+      { kind: 'institution', label: 'University of Oregon Libraries, Special Collections: First Book Printed in English by William Caxton', url: 'https://blogs.uoregon.edu/scua/?p=11058' },
+    ],
+  },
+  {
+    id: 'rel-gb-augustine-bede',
+    from: 'gb-augustine-597',
+    to: 'gb-bede-731',
+    kind: 'influence',
+    label: 'Миссия в Кентербери — главный сюжет книги Беды',
+    detail: `
+«Церковная история народа англов» построена вокруг обращения англосаксов в христианство,
+начатого миссией Августина. Беда собрал письма папы, монастырские предания и рассказы о том,
+как одно королевство за другим принимало крещение.
+
+Без миссии не было бы и самого автора: монастыри, латинская грамотность и библиотеки, в которых
+работал Беда, появились в Англии вместе с римской церковью. Поэтому о VI–VII веках мы знаем
+в основном её глазами.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'J. P. McKay et al. Understanding Western Society: Individuals in Society — The Venerable Bede', url: 'https://digfir-published.macmillanusa.com/mckayunderstanding2e/mckayunderstanding2e_ch08_21.html' },
+      { kind: 'institution', label: 'The Historical Association: Bede’s Ecclesiastical History of the English People', url: 'https://www.history.org.uk/primary/categories/7/resource/601/bedes-ecclesiastical-history-of-the-english-peopl' },
+    ],
+  },
+  {
+    id: 'rel-gb-alfred-athelstan',
+    from: 'gb-alfred-871',
+    to: 'gb-athelstan-927',
+    kind: 'influence',
+    label: 'Внук Альфреда завершил объединение Англии',
+    detail: `
+Альфред удержал Уэссекс против датчан и сделал его ядром будущего королевства. Его сын
+Эдуард Старший и внук Этельстан продолжили расширение на север и восток.
+
+В 927 году Этельстан занял викингский Йорк и впервые соединил под одной властью все
+английские земли; у Эймонт-Бриджа его верховенство признали соседние правители. Историки
+поэтому считают его первым королём Англии, а основу его власти — созданную Альфредом
+военную и политическую опору Уэссекса.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'University of Cambridge: England’s first king', url: 'https://www.cam.ac.uk/stories/englands-first-king' },
+      { kind: 'encyclopedia', label: 'World History Encyclopedia: Æthelstan', url: 'https://www.worldhistory.org/Athelstan/' },
+    ],
+  },
+  {
+    id: 'rel-gb-1066-domesday',
+    from: 'gb-1066',
+    to: 'gb-domesday-1086',
+    kind: 'influence',
+    label: 'Завоеватель описал доставшееся ему королевство',
+    detail: `
+Через двадцать лет после Гастингса Вильгельм на рождественском совете в Глостере
+(1085) приказал выяснить, кто и чем владеет в Англии и какие доходы это приносит.
+
+Перепись была нужна новой власти: земли англосаксонской знати перешли нормандцам, и опись
+фиксировала их права и налоговые обязательства. Результат — «Книга Страшного суда»,
+которую и сегодня хранит Национальный архив.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'The National Archives: Domesday Book (E 31) — описание фонда', url: 'https://discovery.nationalarchives.gov.uk/details/r/C6530' },
+      { kind: 'academic', label: 'Medievalists.net: Decoding Domesday', url: 'https://www.medievalists.net/2011/02/decoding-domesday/' },
+    ],
+  },
+  {
+    id: 'rel-gb-orleans-joan',
+    from: 'ref-p039-osada-orleana-anglichanami',
+    to: 'fr-joan-1429',
+    kind: 'conflict',
+    label: 'Осада Орлеана: английская и французская стороны',
+    detail: `
+Один эпизод Столетней войны в двух колонках. Англичане осаждали Орлеан с октября 1428
+года; 29 апреля 1429 года в город вошла Жанна д’Арк с подкреплением, а 8 мая осаду сняли.
+
+Для английской стороны это провал кампании за Луару, для французской — начало пути
+Жанны, который через два месяца привёл Карла VII к коронации в Реймсе.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'Britannica: Siege of Orléans', url: 'https://www.britannica.com/print/article/432831' },
+      { kind: 'academic', label: 'J. P. McKay et al. Understanding Western Society: Joan of Arc and France’s Victory', url: 'https://digfir-published.macmillanusa.com/mckayunderstanding2e/mckayunderstanding2e_ch11_15.html' },
+    ],
+  },
+  {
+    id: 'rel-gb-orleans-war-end',
+    from: 'ref-p039-osada-orleana-anglichanami',
+    to: 'fr-war-end-1453',
+    kind: 'influence',
+    label: 'Перелом, после которого англичане отступали',
+    detail: `
+Снятие осады Орлеана историки называют военным переломом Столетней войны: до 1429 года
+англичане наступали к югу от Луары, после — постепенно теряли завоёванное.
+
+Победа дала французскому двору и коронацию в Реймсе, и веру в успех. Через четверть века,
+к 1453 году, Англия потеряла почти все владения на континенте.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'Britannica: Siege of Orléans', url: 'https://www.britannica.com/print/article/432831' },
+      { kind: 'academic', label: 'J. P. McKay et al. Understanding Western Society: Joan of Arc and France’s Victory', url: 'https://digfir-published.macmillanusa.com/mckayunderstanding2e/mckayunderstanding2e_ch11_15.html' },
+    ],
+  },
+  {
+    id: 'rel-gb-roses-bosworth',
+    from: 'ref-p040-voyna-aloy-i-beloy-rozy-v-anglii',
+    to: 'gb-bosworth-1485',
+    kind: 'context',
+    label: 'Тридцать лет усобицы закончились при Босворте',
+    detail: `
+Битва при Сент-Олбансе 22 мая 1455 года — по сути военный переворот, после которого
+Ричард Йоркский на время взял правительство Генриха VI под контроль. С неё принято начинать
+войну Ланкастеров и Йорков.
+
+Борьба знатных домов шла с перерывами три десятилетия и завершилась победой Генриха Тюдора
+над Ричардом III в 1485 году. Карточки показывают начало и конец одного процесса.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'The National Archives: The Wars of the Roses', url: 'https://beta.nationalarchives.gov.uk/explore-the-collection/explore-by-time-period/medieval/the-wars-of-the-roses' },
+      { kind: 'academic', label: 'History Today: The Battle of St Albans, 1455', url: 'https://www.historytoday.com/archive/feature/battle-st-albans-1455' },
+    ],
+  },
+  {
+    id: 'rel-gb-supremacy-becket',
+    from: 'gb-supremacy-1534',
+    to: 'gb-becket-1170',
+    kind: 'context',
+    label: 'Разрыв с Римом уничтожил гробницу Бекета',
+    detail: `
+Бекет погиб в 1170 году, защищая права церкви от короля, и Кентербери на три с половиной
+века стал одним из главных центров паломничества Европы; золотую гробницу освятили в 1220
+году.
+
+Когда Генрих VIII объявил себя главой английской церкви, культ святого, пострадавшего
+за папскую церковь против короля, оказался политически неудобен. В 1538 году гробницу
+разрушили — один из символических актов английской Реформации.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Canterbury Cathedral: Our story', url: 'https://www.canterbury-cathedral.org/our-story/' },
+      { kind: 'institution', label: 'Canterbury Cathedral Learning: Medieval pilgrimage', url: 'https://learning.canterbury-cathedral.org/pilgrimage/medieval-pilgrimage/' },
+    ],
+  },
+  {
+    id: 'rel-gb-civilwar-execution',
+    from: 'gb-civil-war-1642',
+    to: 'ref-p048-kazn-angliyskogo-korolya-karla-i',
+    kind: 'influence',
+    label: 'Победившая армия привела короля на эшафот',
+    detail: `
+Казнь стала возможна только после военной победы парламента. В декабре 1648 года
+солдаты полковника Прайда не пустили в Палату общин депутатов, готовых договариваться с
+Карлом; оставшееся «охвостье» объявило себя верховной властью и учредило суд.
+
+27 января 1649 года суд признал короля виновным, 30 января (9 февраля по григорианскому
+календарю) его обезглавили перед Банкетным домом в Уайтхолле.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'British Civil Wars Project: The Rump Parliament (The Purged Parliament)', url: 'https://bcw-project.org.uk/church-and-state/the-commonwealth/rump-parliament' },
+      { kind: 'institution', label: 'Government Art Collection: The Execution of King Charles I outside the Banqueting House, Whitehall, 30 January 1649', url: 'https://artcollection.culture.gov.uk/?p=5709' },
+    ],
+  },
+  {
+    id: 'rel-gb-execution-restoration',
+    from: 'ref-p048-kazn-angliyskogo-korolya-karla-i',
+    to: 'ref-p048-vosstanovlenie-v-anglii-monarhii-styuartov',
+    kind: 'context',
+    label: 'Одиннадцать лет без короля',
+    detail: `
+После казни Карла I монархию и Палату лордов упразднили, и Англия стала республикой.
+Восстановили её в 1660 году юридически так, будто перерыва не было: парламент объявил,
+что Карл II законно царствует с момента смерти отца, 30 января 1649 года.
+
+29 мая 1660 года Карл II въехал в Лондон. Две карточки — начало и конец английской
+республики.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'The National Archives (blog): Charles II’s Restoration, May 1660', url: 'https://blog.nationalarchives.gov.uk/charles-ii-restoration-may1660/' },
+      { kind: 'academic', label: 'The History of Parliament: The Return of Charles II, 29 May 1660', url: 'https://historyofparliament.com/2020/05/29/return-of-charles-ii/' },
+    ],
+  },
+  {
+    id: 'rel-gb-glorious-billofrights',
+    from: 'gb-glorious-1688',
+    to: 'ref-p049-prinyatie-v-anglii-billya-o-pravah',
+    kind: 'influence',
+    label: 'Смена короля закончилась законом об условиях власти',
+    detail: `
+Вильгельм III и Мария II получили корону вместе с Декларацией прав, а в декабре 1689
+года её положения стали законом. Без бегства Якова II и приглашения новых монархов такой
+закон не мог бы появиться: корона впервые переходила на заранее объявленных условиях.
+
+Билль запретил монарху без согласия парламента приостанавливать законы, вводить налоги
+и держать армию в мирное время, а католиков отстранил от престола.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Bill of Rights [1688] — текст закона, legislation.gov.uk', url: 'https://www.legislation.gov.uk/aep/WillandMarSess2/1/2/introduction/enacted?lang=en' },
+      { kind: 'institution', label: 'The Royal Household: William III and Mary II', url: 'https://www.royal.uk/william-and-mary' },
+    ],
+  },
+  {
+    id: 'rel-gb-plassey-seven-years',
+    from: 'ref-p059-nachalo-zavoevaniya-indii-angliey',
+    to: 'ref-p050-semiletnyaya-voyna',
+    kind: 'context',
+    label: 'Бенгалия — индийский фронт Семилетней войны',
+    detail: `
+Битва при Плесси пришлась на начало Семилетней войны, и на стороне наваба Бенгалии
+были французы. Соперничество британской и французской Ост-Индских компаний было частью
+мировой войны двух держав.
+
+Парижский мир 1763 года закрепил британский перевес в Индии. Компания, получившая в 1765
+году право собирать налоги Бенгалии, превратилась из торговой в территориальную власть.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'National Army Museum: Battle of Plassey', url: 'https://www.nam.ac.uk/explore/battle-plassey' },
+      { kind: 'academic', label: 'History Today: The Battle of Plassey', url: 'https://www.historytoday.com/archive/months-past/battle-plassey' },
+    ],
+  },
+  {
+    id: 'rel-gb-plassey-india-1947',
+    from: 'ref-p059-nachalo-zavoevaniya-indii-angliey',
+    to: 'gb-india-1947',
+    kind: 'context',
+    label: 'Начало и конец британского правления в Индии',
+    detail: `
+Плесси часто называют началом британского господства в Индии: после 1757 года
+Ост-Индская компания стала крупнейшей военной и экономической силой в регионе.
+
+Независимость 1947 года закрыла эту историю, длившуюся почти двести лет. Карточки показывают
+две крайние точки одного процесса, а не прямую причинную связь.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'National Army Museum: Battle of Plassey', url: 'https://www.nam.ac.uk/explore/battle-plassey' },
+      { kind: 'encyclopedia', label: 'World History Encyclopedia: Battle of Plassey', url: 'https://www.worldhistory.org/article/2107/battle-of-plassey/' },
+    ],
+  },
+  {
+    id: 'rel-gb-american-war-declaration',
+    from: 'ref-p050-voyna-severoamerikanskih-koloniy-za-nezavi',
+    to: 'ref-p051-deklaraciya-nezavisimosti-ssha',
+    kind: 'conflict',
+    label: 'Одна война: потеря колоний и рождение США',
+    detail: `
+Для Британии война 1775–1783 годов — потеря тринадцати колоний, для американцев —
+война за независимость, провозглашённую в 1776 году. Спор начался с налогов, которые
+колонисты не признавали без представительства в парламенте.
+
+Парижский мир 3 сентября 1783 года признал Соединённые Штаты свободными и независимыми.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'National Army Museum: Why did Britain lose the American War of Independence?', url: 'https://www.nam.ac.uk/whats-on/why-did-britain-lose-american-war-independence' },
+      { kind: 'archive', label: 'U.S. National Archives, Milestone Documents: Treaty of Paris (1783)', url: 'https://www.archives.gov/milestone-documents/treaty-of-Paris' },
+    ],
+  },
+  {
+    id: 'rel-gb-suez-egypt',
+    from: 'ref-p064-otkrytie-sueckogo-kanala',
+    to: 'ref-p074-okkupaciya-egipta-velikobritaniey',
+    kind: 'influence',
+    label: 'Канал на пути в Индию сделал Египет целью Британии',
+    detail: `
+После открытия Суэцкого канала в 1869 году путь из Британии в Индию шёл через Египет.
+Когда движение Ахмеда Ораби поставило под вопрос власть хедива и европейский контроль над
+финансами страны, Лондон увидел угрозу прежде всего каналу.
+
+Британская армия 13 сентября 1882 года разбила
+египтян при Тель-эль-Кебире. Британские войска оставались в зоне канала до 1956 года.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Osprey Publishing: Tel El-Kebir 1882 — военно-историческая монография', url: 'https://www.ospreypublishing.com/uk/tel-elkebir-1882-9781846036088' },
+      { kind: 'encyclopedia', label: 'Encyclopedia.com: ‘Urabi Rebellion', url: 'https://www.encyclopedia.com/history/encyclopedias-almanacs-transcripts-and-maps/urabi-rebellion' },
+    ],
+  },
+  {
+    id: 'rel-gb-egypt-entente',
+    from: 'ref-p074-okkupaciya-egipta-velikobritaniey',
+    to: 'ref-p066-britansko-francuzskoe-soglashenie',
+    kind: 'influence',
+    label: 'Египетский вопрос улажен в обмен на Марокко',
+    detail: `
+Британская оккупация Египта двадцать лет оставалась одним из главных споров Лондона и
+Парижа. Соглашение 8 апреля 1904 года закрыло его обменом: Франция признала положение
+Британии в Египте, Британия — свободу рук Франции в Марокко.
+
+Декларация о Египте и Марокко считается главной частью «Сердечного согласия»: без
+урегулирования египетского вопроса сближения двух держав не случилось бы.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'The National Archives (blog): Entente Cordiale', url: 'https://blog.nationalarchives.gov.uk/entente-cordiale' },
+      { kind: 'institution', label: 'Memorial University of Newfoundland, Heritage NL: The “Entente Cordiale”, 1904', url: 'https://www.heritage.nf.ca/articles/politics/entente-cordiale-1904.php' },
+    ],
+  },
+  {
+    id: 'rel-gb-entente-anglo-russian',
+    from: 'ref-p066-britansko-francuzskoe-soglashenie',
+    to: 'ref-p066-russko-britanskoe-soglashenie',
+    kind: 'influence',
+    label: 'Согласие с Францией дополнено договором с Россией',
+    detail: `
+Британские политики стремились к договорённости с Россией, которая дополнила бы
+англо-французское согласие 1904 года. Соглашение 1907 года о Персии, Афганистане и Тибете
+изменило не только отношения двух империй в Азии, но и европейскую политику Британии.
+
+Вместе с франко-русским союзом оба соглашения сложили Тройственную Антанту.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'FCDO Historians (GOV.UK): Anglo-Russian Entente 1907', url: 'https://history.blog.gov.uk/2017/08/31/anglo-russian-entente-1907/' },
+      { kind: 'encyclopedia', label: 'Encyclopaedia Iranica: Anglo-Russian Convention of 1907' },
+    ],
+  },
+  {
+    id: 'rel-gb-franco-russian-anglo-russian',
+    from: 'ref-p066-obrazovanie-franko-russkogo-soyuza',
+    to: 'ref-p066-russko-britanskoe-soglashenie',
+    kind: 'context',
+    label: 'Три соглашения сложили Антанту',
+    detail: `
+Франко-русский союз 1891–1893 годов, англо-французское согласие 1904 года и
+англо-русское соглашение 1907 года — три стороны одного треугольника. Каждая пара держав
+договаривалась отдельно, и только вместе соглашения образовали Тройственную Антанту.
+
+Для России сближение с Британией стало возможным после войны с Японией и революции 1905
+года, изменивших расстановку сил в Азии и Европе.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'FCDO Historians (GOV.UK): Anglo-Russian Entente 1907', url: 'https://history.blog.gov.uk/2017/08/31/anglo-russian-entente-1907/' },
+      { kind: 'encyclopedia', label: 'Encyclopaedia Iranica: Anglo-Russian Convention of 1907' },
+    ],
+  },
+  {
+    id: 'rel-gb-atlantic-un-declaration',
+    from: 'ref-p096-podpisanie-velikobritaniey-i-ssha-atlantic',
+    to: 'ref-p097-podpisanie-deklaracii-obedinennyh-naciy-so',
+    kind: 'influence',
+    label: 'Принципы хартии легли в основу союза Объединённых Наций',
+    detail: `
+Атлантическая хартия 14 августа 1941 года была заявлением двух лидеров, а не договором.
+24 сентября 1941 года на межсоюзнической встрече в Лондоне к её принципам присоединились
+правительства союзников, в том числе СССР.
+
+1 января 1942 года государства, принявшие принципы хартии, подписали Декларацию Объединённых
+Наций — основу будущей ООН.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Avalon Project, Yale Law School: Inter-Allied Council Statement on the Principles of the Atlantic Charter, 24 September 1941', url: 'https://avalon.law.yale.edu/wwii/interall.asp' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Atlantic Charter', url: 'https://en.wikipedia.org/wiki/Atlantic_Charter' },
+    ],
+  },
+  {
+    id: 'rel-by-rurik-polotsk',
+    from: 'ru-rurik-862',
+    to: 'by-polotsk-862',
+    kind: 'context',
+    label: 'Полоцк впервые назван в рассказе о призвании Рюрика',
+    detail: `
+Полоцк попадает в письменную историю в той же летописной статье под 862 годом, что и рассказ о призвании Рюрика в Новгород: летописец перечисляет города, которые Рюрик раздал своим людям, и среди них — Полоцк.
+
+Это не означает, что город основан в 862 году: археологи считают его старше. Связь показывает другое — с первых упоминаний Полоцк описан как один из центров той же сети городов на торговых путях, что и Новгород, но со своей землёй и позже со своей династией.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: '«Повесть временных лет», ПСРЛ, т. 1' },
+      { kind: 'academic', label: 'Псковский государственный университет: публикация о первом упоминании Полоцка в «Повести временных лет»', url: 'https://pskgu.ru/projects/pgu/storage/PSKOV/ps14/Ps_14_01.pdf' },
+    ],
+  },
+  {
+    id: 'rel-by-sophia-minsk',
+    from: 'by-sophia-1044',
+    to: 'by-minsk-1067',
+    kind: 'context',
+    label: 'Война Всеслава с Ярославичами и первое упоминание Минска',
+    detail: `
+Софийский собор строили при полоцком князе Всеславе Брячиславиче, который княжил с 1044 года и вёл войны с сыновьями Ярослава Мудрого. Одна из этих войн и привела в летопись Минск.
+
+Под 1067 годом летопись сообщает, что Ярославичи разорили Менеск, а 3 марта на Немиге сошлись с войском Всеслава. Собственная София и собственная война с Киевом — две стороны одной политики: Полоцк претендовал на равенство с главными центрами Руси.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: '«Повесть временных лет», ПСРЛ, т. 1' },
+      { kind: 'institution', label: 'Белорусский государственный архив-музей литературы и искусства: «К 955-летию Минска»', url: 'https://bgam.by/wp-content/uploads/2022/09/k-955-letiyu-Minska.-Istoriya-Minska-ot-pervogo-upominaniya-do-nashih-dnej..pdf' },
+    ],
+  },
+  {
+    id: 'rel-by-krewo-grunwald',
+    from: 'by-krewo-1385',
+    to: 'by-grunwald-1410',
+    kind: 'influence',
+    label: 'Уния объединила силы ВКЛ и Польши против ордена',
+    detail: `
+Кревская уния сделала великого князя Ягайло польским королём и связала ВКЛ и Польшу общей династией. У обоих государств был общий противник — Тевтонский орден.
+
+Механизм влияния прямой: через четверть века войска двух государств выступили вместе, и по хронике Яна Длугоша под Грюнвальдом сражались и польские, и литовско-руськие хоругви, в том числе из Полоцка, Витебска и Гродно.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Ян Длугош, «Анналы» — публикации текста' },
+      { kind: 'academic', label: 'Robert I. Frost. The Oxford History of Poland-Lithuania, Vol. I, 2015' },
+    ],
+  },
+  {
+    id: 'rel-by-ivan3-orsha',
+    from: 'ref-p042-pravlenie-ivana-iii',
+    to: 'by-orsha-1514',
+    kind: 'context',
+    label: 'Войны Москвы и ВКЛ за руськие земли',
+    detail: `
+С 1490-х годов Московское государство вело с Великим Княжеством Литовским войны за земли бывшей Руси. За двадцать лет, с 1494 по 1514 год, Княжество потеряло около трети территории, а в 1514 году Москва взяла Смоленск — восточную крепость ВКЛ.
+
+Битва под Оршей стала ответом на это наступление: войско ВКЛ и Польши остановило продвижение вглубь белорусских земель, хотя Смоленск вернуть не удалось. Численность сторон в источниках обеих сторон пристрастна и остаётся предметом споров историков.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'А. Казаков. Гістарыяграфія Аршанскай бітвы 1514 г.: дасягненні і праблемы // Беларускі гістарычны агляд, т. 22, 2015', url: 'https://www.lituanistika.lt/content/94506' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Battle of Orsha', url: 'https://en.wikipedia.org/wiki/Battle_of_Orsha' },
+    ],
+  },
+  {
+    id: 'rel-by-statut-1529-1588',
+    from: 'by-statut-1529',
+    to: 'by-statut-1588',
+    kind: 'influence',
+    label: 'Три Статута — одна линия кодификации',
+    detail: `
+Статут 1529 года впервые свёл в одну книгу нормы разных отраслей права ВКЛ. Второй Статут 1566 года (14 разделов, 367 артикулов) переработал и расширил его, а Третий Статут 1588 года завершил эту работу и вышел в печатном издании.
+
+Влияние здесь — преемственность текста и правовых решений: каждый следующий Статут строился на предыдущем. Благодаря этому право ВКЛ сохранило собственную систему и после Люблинской унии.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Национальный правовой интернет-портал Республики Беларусь: Статут 1529 года', url: 'https://pravo.by/pravovaya-informatsiya/pomniki-gistoryi-prava-belarusi/kanstytutsyynae-prava-belarusi/statuty-vyalikaga-knyastva-lito-skaga/statut-1529-goda/' },
+      { kind: 'institution', label: 'Национальный правовой интернет-портал Республики Беларусь: Статут 1566 года', url: 'https://pravo.by/pravovaya-informatsiya/pomniki-gistoryi-prava-belarusi/kanstytutsyynae-prava-belarusi/statuty-vyalikaga-knyastva-lito-skaga/statut-1566-goda/' },
+    ],
+  },
+  {
+    id: 'rel-by-lublin-statut',
+    from: 'by-lublin-1569',
+    to: 'by-statut-1588',
+    kind: 'context',
+    label: 'Отдельное право ВКЛ внутри Речи Посполитой',
+    detail: `
+По Люблинской унии ВКЛ и Польша получили общего короля и сейм, но Княжество сохранило войско, казну и собственное право. Третий Статут, принятый через девятнадцать лет после унии, закрепил эту правовую самостоятельность.
+
+Белорусская и литовская историография подчёркивает, что Статут 1588 года действовал до 1840 года — дольше, чем просуществовало само общее государство.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Robert I. Frost. The Oxford History of Poland-Lithuania, Vol. I, 2015' },
+      { kind: 'institution', label: 'Национальный правовой интернет-портал Республики Беларусь: памятники истории права Беларуси', url: 'https://pravo.by/pravovaya-informatsiya/pomniki-gistoryi-prava-belarusi/' },
+    ],
+  },
+  {
+    id: 'rel-by-livonian-lublin',
+    from: 'ref-p053-livonskaya-voyna',
+    to: 'by-lublin-1569',
+    kind: 'influence',
+    label: 'Ливонская война подтолкнула ВКЛ к унии',
+    detail: `
+ВКЛ вело с Московским государством тяжёлую Ливонскую войну, и ему требовалась военная помощь Польской Короны. Это ослабляло позицию литовско-руськой знати на переговорах о более тесном союзе.
+
+Во время Люблинского сейма 1569 года Подляшье, Волынь, Киевщина и Брацлавщина были включены в состав Короны, после чего литовские послы согласились на условия унии. Белорусская и литовская историография описывает унию как компромисс под военным давлением.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Robert I. Frost. The Oxford History of Poland-Lithuania, Vol. I, 2015' },
+      { kind: 'encyclopedia', label: 'ЭСБЕ: Люблинская уния', url: 'https://booksite.ru/fulltext/1/001/007/062/62352.htm' },
+    ],
+  },
+  {
+    id: 'rel-by-reformation-budny',
+    from: 'de-luther-1517',
+    to: 'by-budny-1562',
+    kind: 'influence',
+    label: 'Реформация доходит до белорусских земель',
+    detail: `
+Реформация, начатая в германских землях, к середине XVI века нашла покровителей среди магнатов ВКЛ. Несвижская типография была основана под покровительством Николая Радзивилла Чёрного, и её первой книгой стал протестантский «Катехизис» Симона Будного.
+
+Механизм влияния — сам жанр и задача книги: катехизис в вопросах и ответах, объясняющий веру «простым людям» на понятном им языке, был характерным инструментом протестантского просвещения. Литература протестантов ВКЛ опиралась на тексты и связи, пришедшие из центров Реформации.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'А. А. Плетнёва. Катехизис как учебная книга (Институт русского языка РАН, 2024)', url: 'https://ruslang.ru/sites/default/files/doc/pletneva/Pletneva-2024-Katekhizis_kak_uchebnaya_kniga.pdf' },
+      { kind: 'academic', label: 'Notes on the Role of the Basel Manuscripts in Sixteenth-Century Protestant Literature of the Grand Duchy of Lithuania // Odrodzenie i Reformacja w Polsce, 2016', url: 'https://apcz.umk.pl/OR/article/view/OiRwP.2016.SI.02' },
+    ],
+  },
+  {
+    id: 'rel-by-skaryna-budny',
+    from: 'by-skaryna-1517',
+    to: 'by-budny-1562',
+    kind: 'comparison',
+    label: 'Две ранние печатные книги для «простых людей»',
+    detail: `
+Скорина печатал в Праге и Вильне библейские книги с предисловиями, обращёнными к широкому читателю. Через сорок пять лет в Несвиже вышел «Катехизис» Будного — первая книга, напечатанная на территории современной Беларуси.
+
+Прямая преемственность между ними документами не подтверждена, поэтому здесь уместно сопоставление. Обе книги объединяет задача — объяснить религиозный текст читателю на понятном ему языке; различаются конфессиональный контекст и место печати.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Национальная библиотека Беларуси: коллекция «Скориниана»', url: 'https://kp.nlb.by/ru/collections/skaryniiana' },
+      { kind: 'academic', label: 'А. А. Плетнёва. Катехизис как учебная книга (Институт русского языка РАН, 2024)', url: 'https://ruslang.ru/sites/default/files/doc/pletneva/Pletneva-2024-Katekhizis_kak_uchebnaya_kniga.pdf' },
+    ],
+  },
+  {
+    id: 'rel-by-brest-uniate',
+    from: 'by-brest-union-1596',
+    to: 'by-uniate-1839',
+    kind: 'influence',
+    label: 'Полоцкий собор упразднил церковь, созданную унией',
+    detail: `
+Брестская уния 1596 года создала греко-католическую церковь, к которой к концу XVIII века принадлежало большинство сельского населения белорусских земель. После разделов Речи Посполитой эти земли оказались в Российской империи.
+
+Полоцкий собор 1839 года объявил о воссоединении униатов с православной церковью и тем самым отменил результат Брестской унии на территории империи. Подготовкой руководил епископ Иосиф Семашко: ещё до собора приходы переводили на московские служебники, в храмах ставили иконостасы и убирали органы.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Репозиторий Могилёвского государственного университета имени А. А. Кулешова: статьи о ликвидации унии', url: 'https://libr.msu.by/bitstream/123456789/3183/1/2064m.pdf' },
+      { kind: 'encyclopedia', label: 'Циклопедия: Иосиф Семашко (1799—1868)', url: 'https://cyclowiki.org/wiki/%D0%98%D0%BE%D1%81%D0%B8%D1%84_%D0%A1%D0%B5%D0%BC%D0%B0%D1%88%D0%BA%D0%BE_(1799%E2%80%941868)' },
+    ],
+  },
+  {
+    id: 'rel-by-1830-uniate',
+    from: 'ref-p068-nacionalno-osvoboditelnoe-vosstanie-v-pols',
+    to: 'by-uniate-1839',
+    kind: 'influence',
+    label: 'Восстание 1830–1831 годов ускорило ликвидацию унии',
+    detail: `
+Проект объединения униатов с православными Иосиф Семашко предлагал Николаю I ещё в 1820-е годы. Решающим толчком, по оценке исследователей, стало участие униатов в восстании 1830–1831 годов.
+
+После подавления восстания политика в бывших землях Речи Посполитой стала жёстче: в 1839 году Полоцкий собор упразднил унию, а в 1840 году был отменён Статут ВКЛ.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Репозиторий Могилёвского государственного университета имени А. А. Кулешова: статьи о ликвидации унии', url: 'https://libr.msu.by/bitstream/123456789/3183/1/2064m.pdf' },
+      { kind: 'encyclopedia', label: 'Циклопедия: Иосиф Семашко (1799—1868)', url: 'https://cyclowiki.org/wiki/%D0%98%D0%BE%D1%81%D0%B8%D1%84_%D0%A1%D0%B5%D0%BC%D0%B0%D1%88%D0%BA%D0%BE_(1799%E2%80%941868)' },
+    ],
+  },
+  {
+    id: 'rel-by-war1654-occupation',
+    from: 'by-war-1654',
+    to: 'by-occupation-1941',
+    kind: 'comparison',
+    label: 'Две демографические катастрофы белорусских земель',
+    detail: `
+Белорусские историки сравнивают войну 1654–1667 годов с оккупацией 1941–1944 годов по масштабу потерь. По их оценкам, в XVII веке население белорусских земель сократилось больше чем наполовину, а во Второй мировой войне погиб примерно каждый четвёртый житель республики.
+
+Сравнение требует осторожности: цифры XVII века реконструированы и включают жертв эпидемий и бегства, а не только погибших в боях. Но оно показывает, почему обе войны занимают центральное место в белорусской исторической памяти.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Г. Сагановіч. Невядомая вайна: 1654–1667. Мінск, 1995' },
+      { kind: 'institution', label: 'Национальный образовательный портал: учебник «История Беларуси», 7 класс, § 13', url: 'https://eior.by/upload/books/7-klass/istoriya_belarusi/istoria_belarus_7class_13.pdf' },
+    ],
+  },
+  {
+    id: 'rel-by-northern-lesnaya',
+    from: 'ref-p055-severnaya-voyna',
+    to: 'by-lesnaya-1708',
+    kind: 'context',
+    label: 'Белорусские земли — театр Северной войны',
+    detail: `
+В начале XVIII века на белорусских землях воевали русские и шведские войска. Бой у деревни Лесная 28 сентября (9 октября) 1708 года — эпизод большой Северной войны: русские войска перехватили корпус Левенгаупта, который вёл к Карлу XII обоз с припасами.
+
+Пётр I назвал Лесную «матерью Полтавской баталии»: без подкрепления и обоза шведская армия подошла к решающему сражению ослабленной.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Культура.РФ (портал Министерства культуры РФ): Битва при Лесной', url: 'https://www.culture.ru/objects/2425/bitva-pri-lesnoi' },
+      { kind: 'encyclopedia', label: 'Знание. Россия: Битва при Лесной', url: 'https://znanierussia.ru/articles/%D0%91%D0%B8%D1%82%D0%B2%D0%B0_%D0%BF%D1%80%D0%B8_%D0%9B%D0%B5%D1%81%D0%BD%D0%BE%D0%B9' },
+    ],
+  },
+  {
+    id: 'rel-by-1863-kalinouski',
+    from: 'ref-p069-nacionalno-osvoboditelnoe-vosstanie-v-pols',
+    to: 'by-kalinouski-1863',
+    kind: 'context',
+    label: 'Одно восстание — разные национальные памяти',
+    detail: `
+Восстание 1863–1864 годов охватило польские и литовско-белорусские земли Российской империи. Калиновский был одним из его руководителей на белорусских землях и обращался к крестьянам через «Мужыцкую праўду» на их родном языке.
+
+Поэтому одно и то же восстание по-разному стоит в польской и белорусской исторической памяти: в польской — как Январское восстание, в белорусской национальной традиции — как начало современного национального движения.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: '«Мужыцкая праўда» и «Письма из-под виселицы» — публикации текстов' },
+      { kind: 'institution', label: 'Национальный исторический архив Беларуси: следственные дела участников восстания 1863–1864 годов' },
+    ],
+  },
+  {
+    id: 'rel-by-bogushevich-nashaniva',
+    from: 'by-bogushevich-1891',
+    to: 'by-nasha-niva-1906',
+    kind: 'context',
+    label: 'Два этапа белорусского национального возрождения',
+    detail: `
+Предисловие Богушевича к «Дудке беларускай» (1891) с призывом беречь родной язык стало одним из первых программных текстов белорусского национального движения. Книгу пришлось печатать в Кракове, за пределами Российской империи.
+
+После революции 1905 года запрет на белорусскую печать был снят, и в 1906 году появилась «Наша Ніва», вокруг которой сложилась новая литература. Между двумя событиями — пятнадцать лет, за которые программа языкового достоинства из одиночного манифеста стала основой целого литературного поколения.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Dzieje.pl (Музей истории Польши): календарь дат, 1891', url: 'https://dzieje.pl/kalendarz-dat/1891' },
+      { kind: 'institution', label: 'Национальная библиотека Беларуси: собрание белорусской периодики начала XX века', url: 'https://www.nlb.by/' },
+    ],
+  },
+  {
+    id: 'rel-by-nashaniva-kupala',
+    from: 'by-nasha-niva-1906',
+    to: 'by-kupala-1908',
+    kind: 'context',
+    label: 'Круг «Нашай Нівы» и первая книга Купалы',
+    detail: `
+«Наша Ніва» собрала авторов, создавших современный белорусский литературный язык, — среди них Янка Купала, Якуб Колас и Максим Богданович.
+
+Первый сборник Купалы «Жалейка» вышел в Петербурге в 1908 году и был конфискован властями как антиправительственное издание. Газета и книга принадлежат одному процессу: язык, недавно освобождённый от запрета печати, быстро превращался в язык литературы.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Национальная библиотека Беларуси: выставка «The bard of the Belarusian soul»', url: 'https://nlb.by/en/news/Book-exhibitions/the-bard-of-the-belarusian-soul_162806/' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Yanka Kupala', url: 'https://en.wikipedia.org/wiki/Yanka_Kupala' },
+    ],
+  },
+  {
+    id: 'rel-by-sovpolwar-riga',
+    from: 'ref-p089-sovetsko-polskaya-voyna',
+    to: 'by-riga-1921',
+    kind: 'influence',
+    label: 'Рижский мир завершил советско-польскую войну',
+    detail: `
+Рижский договор 18 марта 1921 года подвёл итог советско-польской войне. Граница прошла через белорусские земли: западная часть отошла Польше, восточная осталась в БССР.
+
+Механизм прямой — линия фронта и переговорный баланс сил определили границу. Двадцать лет одни и те же люди жили в двух государствах с разной политикой, пока в 1939 году граница не изменилась снова.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Рижский мирный договор 18 марта 1921 года — публикация текста' },
+      { kind: 'encyclopedia', label: 'Беларуская энцыклапедыя: Рыжскі мірны дагавор 1921' },
+    ],
+  },
+  {
+    id: 'rel-by-bssr-bsu',
+    from: 'by-bssr-1919',
+    to: 'by-bsu-1921',
+    kind: 'influence',
+    label: 'Республика создаёт свою высшую школу',
+    detail: `
+Создание БССР дало белорусским землям собственные государственные институты, и одним из первых стал университет. Белорусский государственный университет открылся в Минске 30 октября 1921 года; занятия начались на рабочем, медицинском и общественных наук факультетах.
+
+Университет стал опорой политики белорусизации 1920-х годов: он готовил учителей, врачей и учёных для республики. Первым ректором был историк Владимир Пичета.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Белорусский государственный университет: история университета', url: 'https://bsu.by/Cache/pdf/709603.pdf' },
+      { kind: 'archive', label: 'Национальный архив Республики Беларусь: фонды органов власти БССР' },
+    ],
+  },
+  {
+    id: 'rel-by-kurapaty-1991',
+    from: 'by-repressions-1937',
+    to: 'by-1991',
+    kind: 'influence',
+    label: 'Раскрытие Куропат подтолкнуло движение к независимости',
+    detail: `
+В урочище Куропаты под Минском в 1937–1941 годах хоронили людей, расстрелянных НКВД. В 1988 году раскопки и публикации о Куропатах сделали эту историю публичной.
+
+По оценке исследователей (Д. Марплз и др.), открытие Куропат придало импульс движению за демократию и независимость Беларуси; вопрос об исторической памяти стал политическим накануне провозглашения суверенитета в 1990 году.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'David R. Marples. Kuropaty: The Investigation of a Stalinist Historical Controversy // Slavic Review, 53, no. 2 (1994)' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Kurapaty', url: 'https://en.wikipedia.org/wiki/Kurapaty' },
+    ],
+  },
+  {
+    id: 'rel-by-chernobyl',
+    from: 'ru-chernobyl-1986',
+    to: 'by-chernobyl-1986',
+    kind: 'influence',
+    label: 'Авария на Украине — выпадения на Беларусь',
+    detail: `
+Авария произошла на Чернобыльской АЭС на территории Украинской ССР, недалеко от белорусской границы, но основная часть радиоактивных выпадений пришлась на Беларусь.
+
+Механизм — перенос выбросов: из-за загрязнения в Беларуси были отселены сотни населённых пунктов и выведены из оборота большие площади земель, а ликвидация последствий десятилетиями оставалась крупной статьёй бюджета.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Доклад INSAG-7 Международного агентства по атомной энергии; отчёты Чернобыльского форума ООН' },
+      { kind: 'encyclopedia', label: 'Britannica: Chernobyl disaster' },
+    ],
+  },
+  {
+    id: 'rel-by-belovezha',
+    from: 'by-1991',
+    to: 'ru-1991',
+    kind: 'context',
+    label: 'Беловежские соглашения подписаны на белорусской земле',
+    detail: `
+8 декабря 1991 года в Беловежской пуще, на территории Беларуси, руководители Беларуси, России и Украины подписали соглашение о прекращении существования СССР и создании СНГ.
+
+Для Беларуси это завершило путь, начатый Декларацией о государственном суверенитете 1990 года и приданием ей в августе 1991 года статуса конституционного закона. Независимость Беларуси и распад Союза — две стороны одного процесса.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Беловежские соглашения 8 декабря 1991 года и Алма-Атинская декларация — публикации текстов' },
+      { kind: 'archive', label: 'Декларация о государственном суверенитете БССР 1990 года и Закон о придании ей статуса конституционного закона 1991 года — публикации текстов' },
+    ],
+  },
+  {
+    id: 'rel-by-1941-occupation',
+    from: 'ru-1941',
+    to: 'by-occupation-1941',
+    kind: 'influence',
+    label: 'Нападение Германии привело к оккупации Беларуси',
+    detail: `
+Белорусская ССР лежала на пути главного удара германских войск, и летом 1941 года вся республика была оккупирована. Оккупация продолжалась до лета 1944 года.
+
+Её последствия — гибель примерно каждого четвёртого жителя, уничтожение сотен деревень вместе с жителями, включая Хатынь, и почти всего еврейского населения — сделали Беларусь одной из самых пострадавших территорий войны.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Документы немецкой оккупационной администрации и партизанских формирований — Национальный архив Республики Беларусь' },
+      { kind: 'institution', label: 'Белорусский государственный музей истории Великой Отечественной войны; мемориальный комплекс «Хатынь»' },
+    ],
+  },
+  {
+    id: 'rel-de-1866-ngc',
+    from: 'ref-p063-voyna-prussii-i-italii-protiv-avstrii',
+    to: 'ref-p063-obrazovanie-severogermanskogo-soyuza',
+    kind: 'influence',
+    label: 'Победа над Австрией открыла путь Северогерманскому союзу',
+    detail: `
+Пражский мир 23 августа 1866 года завершил войну Пруссии и Италии против Австрии и упразднил Германский союз: Габсбурги были окончательно исключены из немецких дел.
+
+За пять дней до мира Пруссия и пятнадцать северогерманских государств подписали договор о Северогерманском союзе и передали свои войска под командование прусского короля. Весной 1867 года рейхстаг принял конституцию союза, подготовленную Бисмарком.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'German History in Documents and Images (GHI Washington): речь Бисмарка в рейхстаге Северогерманского союза, 11 марта 1867 года', url: 'https://germanhistorydocs.org/en/forging-an-empire-bismarckian-germany-1866-1890/bismarck-s-speech-in-the-north-german-reichstag-in-defense-of-his-draft-constitution-march-11-1867' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Peace of Prague (1866)', url: 'https://en.wikipedia.org/wiki/Peace_of_Prague_(1866)' },
+    ],
+  },
+  {
+    id: 'rel-de-ngc-empire',
+    from: 'ref-p063-obrazovanie-severogermanskogo-soyuza',
+    to: 'de-empire-1871',
+    kind: 'influence',
+    label: 'Северогерманский союз стал каркасом империи',
+    detail: `
+Северогерманский союз объединил земли к северу от Майна под президентством прусского короля и с канцлером Бисмарком. Его устройство — Союзный совет, где Пруссия имела 17 голосов из 43 и могла блокировать изменения конституции, и рейхстаг, избранный всеобщим голосованием мужчин, — было готовой рамкой для общегерманского государства.
+
+После войны с Францией к союзу присоединились южногерманские государства, и в январе 1871 года он превратился в Германскую империю с прусским королём во главе.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'German History in Documents and Images (GHI Washington): речь Бисмарка о проекте конституции, 11 марта 1867 года', url: 'https://germanhistorydocs.org/en/forging-an-empire-bismarckian-germany-1866-1890/bismarck-s-speech-in-the-north-german-reichstag-in-defense-of-his-draft-constitution-march-11-1867' },
+      { kind: 'encyclopedia', label: 'Wikipedia: North German Confederation', url: 'https://en.wikipedia.org/wiki/North_German_Confederation' },
+    ],
+  },
+  {
+    id: 'rel-de-revolution-weimar',
+    from: 'ref-p077-noyabrskaya-burzhuazno-demokraticheskaya-r',
+    to: 'de-weimar-1919',
+    kind: 'influence',
+    label: 'Ноябрьская революция привела к Веймарской республике',
+    detail: `
+Восстание моряков в Киле 3 ноября 1918 года за несколько дней охватило страну. 9 ноября было объявлено об отречении Вильгельма II, и социал-демократ Филипп Шейдеман провозгласил с балкона Рейхстага Германскую республику.
+
+Спор о том, будет ли новая власть парламентской или советской, решился зимой и весной 1919 года: выступления в Берлине, Бремене и Мюнхене подавили войска и добровольческие отряды, а избранное Национальное собрание приняло в Веймаре конституцию республики.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Deutscher Bundestag: 9. November (текстовый архив)', url: 'https://www.bundestag.de/dokumente/textarchiv/2024/kw45-9-november-865194' },
+      { kind: 'academic', label: 'University of Leeds, проект German Revolution 1918–1919: Timeline of revolution', url: 'https://germanrevolution1918.leeds.ac.uk/wp-content/uploads/sites/5/2017/11/Timeline-of-revolution.pdf' },
+    ],
+  },
+  {
+    id: 'rel-de-armistice-brest',
+    from: 'ref-p077-podpisanie-peremiriya-mezhdu-germaniey-i-s',
+    to: 'ref-p088-zaklyuchenie-brestskogo-mirnogo-dogovora-m',
+    kind: 'context',
+    label: 'Компьенское перемирие аннулировало Брестский мир',
+    detail: `
+Условия перемирия 11 ноября 1918 года требовали от Германии отказаться от Бухарестского и Брест-Литовского мирных договоров. Тем самым победа на Западе перечеркнула то, что Германия получила на Востоке весной 1918 года.
+
+Связь показывает, как тесно переплелись два фронта: поражение Германии во Франции изменило судьбу территорий бывшей Российской империи — от Прибалтики до Украины и Беларуси.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'German History in Documents and Images (GHI Washington): Conditions of the Armistice with Germany, November 11, 1918', url: 'https://germanhistorydocs.org/en/weimar-germany-1918-1933/conditions-of-the-armistice-with-germany-november-11-1918.pdf' },
+      { kind: 'institution', label: 'The National Archives (UK), блог: Milestones to Peace — the Armistice of Compiègne', url: 'https://blog.nationalarchives.gov.uk/milestones-to-peace-armistice-compiegne' },
+    ],
+  },
+  {
+    id: 'rel-de-armistice-versailles',
+    from: 'ref-p077-podpisanie-peremiriya-mezhdu-germaniey-i-s',
+    to: 'ref-p079-podpisanie-germaniey-versalskogo-mirnogo-d',
+    kind: 'influence',
+    label: 'Перемирие заранее определило условия Версаля',
+    detail: `
+Перемирие уже лишило Германию возможности продолжать войну: она сдала тысячи орудий и пулемётов, большую часть флота, оставила левый берег Рейна, где встали союзные гарнизоны с плацдармами у Майнца, Кобленца и Кёльна.
+
+В Версале победители закрепили это положение: Рейнская область подлежала оккупации и демилитаризации, армия ограничивалась 100 тысячами человек. Возобновить войну, чтобы добиться лучших условий, Германия уже не могла.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'German History in Documents and Images (GHI Washington): Conditions of the Armistice with Germany, November 11, 1918', url: 'https://germanhistorydocs.org/en/weimar-germany-1918-1933/conditions-of-the-armistice-with-germany-november-11-1918.pdf' },
+      { kind: 'archive', label: 'Avalon Project, Yale Law School: Treaty of Versailles, Part V', url: 'https://avalon.law.yale.edu/Imt/partv.asp' },
+    ],
+  },
+  {
+    id: 'rel-de-versailles-rhineland',
+    from: 'ref-p079-podpisanie-germaniey-versalskogo-mirnogo-d',
+    to: 'ref-p084-okkupaciya-germanskimi-voyskami-reynskoy-d',
+    kind: 'influence',
+    label: 'Версаль создал зону, которую Гитлер занял в 1936 году',
+    detail: `
+Версальский договор объявил Рейнскую область демилитаризованной зоной, а Локарнские договоры 1925 года подтвердили этот режим. Зона оставляла промышленный запад Германии открытым и служила главной гарантией безопасности Франции.
+
+7 марта 1936 года около 20 тысяч германских солдат вошли в зону, нарушив оба договора. Франция и Британия не ответили силой, и это изменило баланс сил в Западной Европе.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'German History in Documents and Images (GHI Washington): Remilitarization of the Rhineland, 1936', url: 'https://germanhistorydocs.org/en/nazi-germany-1933-1945/remilitarization-of-the-rhineland-1936.pdf' },
+      { kind: 'institution', label: 'Peace Palace Library: Treaty of Versailles Centennial — Territorial Changes', url: 'https://peacepalacelibrary.nl/blog/2019/treaty-versailles-centennial-territorial-changes' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Remilitarisation of the Rhineland', url: 'https://en.wikipedia.org/wiki/Remilitarisation_of_the_Rhineland' },
+    ],
+  },
+  {
+    id: 'rel-de-locarno-league',
+    from: 'ref-p081-lokarnskaya-konferenciya',
+    to: 'ref-p082-vstuplenie-germanii-v-ligu-naciy',
+    kind: 'influence',
+    label: 'Локарно открыло Германии путь в Лигу Наций',
+    detail: `
+Локарнские договоры 1925 года вернули Германию в систему европейской безопасности и сняли главное препятствие для её вступления в Лигу Наций.
+
+В сентябре 1926 года Германию приняли в Лигу и дали постоянное место в Совете Лиги. Для министра иностранных дел Густава Стреземана это стало крупным внешнеполитическим успехом.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Bergische Universität Wuppertal: Germany\'s admission to the League of Nations', url: 'https://www.uni-wuppertal.de/en/third-mission/science-communication/jahr100wissen-/-100-years-ago/2026/voelkerbund/' },
+      { kind: 'archive', label: 'German History in Documents and Images (GHI Washington): Stresemann addresses the General Assembly of the League of Nations, September 10, 1926', url: 'https://germanhistorydocs.org/en/weimar-germany-1918-1933/foreign-minister-gustav-stresemann-addresses-the-general-assembly-of-the-league-of-nations-in-geneva-detail-september-10-1926' },
+    ],
+  },
+  {
+    id: 'rel-de-rapallo-berlin-1926',
+    from: 'ref-p080-genuezskaya-konferenciya-podpisanie-rapall',
+    to: 'ref-p090-podpisanie-sovetsko-germanskogo-dogovora-o',
+    kind: 'influence',
+    label: 'Берлинский договор продолжил линию Рапалло',
+    detail: `
+Первая статья Берлинского договора 24 апреля 1926 года прямо говорила, что отношения Германии и СССР по-прежнему основаны на Рапалльском договоре 1922 года.
+
+Поводом стали Локарнские соглашения Германии с западными державами: Москва опасалась, что Германия войдёт в антисоветский блок, и договор о взаимном нейтралитете на пять лет снимал это опасение.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Avalon Project, Yale Law School: Treaty of Berlin between Germany and the USSR, April 24, 1926', url: 'https://avalon.law.yale.edu/20th_century/berlin_001.asp' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Treaty of Berlin (1926)', url: 'https://en.wikipedia.org/wiki/Treaty_of_Berlin_(1926)' },
+    ],
+  },
+  {
+    id: 'rel-de-munich-prague',
+    from: 'ref-p085-myunhenskaya-konferenciya-germanii-italii-',
+    to: 'ref-p086-okkupaciya-chehoslovakii-germanskimi-voysk',
+    kind: 'influence',
+    label: 'Мюнхен оставил Чехословакию беззащитной',
+    detail: `
+По Мюнхенскому соглашению Чехословакия без своего участия уступила Германии Судетскую область вместе с пограничными районами. Британия и Франция обещали гарантировать её новые границы.
+
+Через полгода, 15 марта 1939 года, вермахт без боя занял чешские земли, а Гитлер угрозой бомбардировки Праги вынудил президента Эмиля Гаху согласиться на ввод войск. Гарантия не сработала, и именно этот захват заставил Британию отказаться от политики уступок.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Avalon Project, Yale Law School: Munich Pact, September 29, 1938', url: 'https://avalon.law.yale.edu/imt/munich1.asp' },
+      { kind: 'institution', label: 'Radio Prague International: March 15, 1939 — The day Czechoslovakia ceased to exist', url: 'https://english.radio.cz/node/8136069' },
+    ],
+  },
+  {
+    id: 'rel-de-prague-poland-guarantee',
+    from: 'ref-p086-okkupaciya-chehoslovakii-germanskimi-voysk',
+    to: 'ref-p095-napadenie-germanii-na-polshu-nachalo-vtoro',
+    kind: 'influence',
+    label: 'После захвата Праги Британия дала гарантии Польше',
+    detail: `
+Занятие чешских земель 15 марта 1939 года заставило британское правительство отказаться от политики умиротворения. 31 марта Невилл Чемберлен объявил в палате общин, что Британия окажет Польше всю возможную поддержку, если её независимости будет угрожать опасность; Франция присоединилась к обязательству.
+
+Именно эта гарантия превратила нападение Германии на Польшу 1 сентября в общеевропейскую войну: 3 сентября Великобритания и Франция объявили Германии войну.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'History of Government (GOV.UK): What\'s the context? 31 March 1939 — the British guarantee to Poland', url: 'https://history.blog.gov.uk/2019/03/28/whats-the-context-31-march-1939-the-british-guarantee-to-poland/' },
+      { kind: 'academic', label: 'Durham University e-Theses: British policy in Europe from the Munich agreement to the Polish guarantee, September 29, 1938 to March 31, 1939', url: 'https://etheses.durham.ac.uk/id/eprint/9799/' },
+    ],
+  },
+  {
+    id: 'rel-de-polish-pact-1939',
+    from: 'ref-p083-zaklyuchenie-dogovora-o-nenapadenii-mezhdu',
+    to: 'ref-p095-napadenie-germanii-na-polshu-nachalo-vtoro',
+    kind: 'context',
+    label: 'Договор 1934 года разорван за четыре месяца до нападения',
+    detail: `
+Германо-польская декларация 1934 года обязывала стороны десять лет не применять силу. 28 апреля 1939 года Гитлер объявил её утратившей силу, сославшись на британские гарантии Польше, хотя по её условиям денонсировать соглашение так рано было нельзя.
+
+Отказ от договора стал одним из шагов к войне: 1 сентября 1939 года Германия напала на Польшу.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Avalon Project, Yale Law School: The British War Blue Book — Summary', url: 'https://avalon.law.yale.edu/wwii/summary.asp' },
+      { kind: 'institution', label: 'Zachor Foundation: Germany cancels non-aggression pact with Poland and 1935 Naval agreement with Britain', url: 'https://www.zachorfoundation.org/?p=714' },
+    ],
+  },
+  {
+    id: 'rel-de-mrp-poland',
+    from: 'ref-p091-podpisanie-sovetsko-germanskogo-pakta-o-ne',
+    to: 'ref-p095-napadenie-germanii-na-polshu-nachalo-vtoro',
+    kind: 'influence',
+    label: 'Пакт избавил Германию от угрозы войны с СССР',
+    detail: `
+Договор о ненападении 23 августа 1939 года гарантировал Германии, что СССР не выступит против неё, а секретный протокол заранее разграничил сферы интересов в Польше по рекам Нарев, Висла и Сан.
+
+Через девять дней Германия напала на Польшу, а 17 сентября с востока вошла Красная армия. Как оценивать пакт — как вынужденный шаг СССР или как сговор о разделе Восточной Европы, — остаётся предметом спора; позиции изложены в карточке пакта.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Instytut Pamięci Narodowej: Soviet aggression on Poland from 17 September 1939', url: 'https://eng.ipn.gov.pl/en/news/4592,Soviet-aggression-on-Poland-from-17-September-1939.html' },
+      { kind: 'institution', label: 'Jewish Virtual Library: The Molotov-Ribbentrop Pact', url: 'https://www.jewishvirtuallibrary.org/jsource/ww2/molotovpact.html' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Molotov–Ribbentrop Pact', url: 'https://en.wikipedia.org/wiki/Molotov%E2%80%93Ribbentrop_Pact' },
+    ],
+  },
+  {
+    id: 'rel-de-mrp-soviet-campaign',
+    from: 'ref-p091-podpisanie-sovetsko-germanskogo-pakta-o-ne',
+    to: 'ref-p092-osvoboditelnyy-pohod-krasnoy-armii',
+    kind: 'influence',
+    label: 'Секретный протокол определил линию похода 1939 года',
+    detail: `
+Секретный дополнительный протокол к пакту отнёс восточные земли Польши к советской «сфере интересов». 17 сентября 1939 года Красная армия перешла польскую границу на всём протяжении от Латвии до Румынии.
+
+В советской и российской традиции этот поход называют освободительным — он объединил белорусские и украинские земли; в Польше его называют советской агрессией. Сама связь между протоколом и линией раздела не оспаривается: СССР официально признал протокол в 1989 году.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Постановление Съезда народных депутатов СССР от 24 декабря 1989 года о политической и правовой оценке договора 1939 года', url: 'https://histdoc.net/history/1989-12-24%20Resolution%20of%20the%20Congress%20of%20People%27s%20Deputies.html' },
+      { kind: 'institution', label: 'Instytut Pamięci Narodowej: Soviet aggression on Poland from 17 September 1939', url: 'https://eng.ipn.gov.pl/en/news/4592,Soviet-aggression-on-Poland-from-17-September-1939.html' },
+      { kind: 'archive', label: 'CIA Reading Room: Soviet Rule in Eastern Poland, 1939–1941', url: 'https://cia.gov/readingroom/node/1953540' },
+    ],
+  },
+  {
+    id: 'rel-de-berlin-op-capitulation',
+    from: 'ref-p100-berlinskaya-nastupatelnaya-operaciya',
+    to: 'de-1945',
+    kind: 'influence',
+    label: 'Падение Берлина привело к капитуляции Германии',
+    detail: `
+30 апреля 1945 года, во время боёв за Рейхстаг, Гитлер покончил с собой, а 2 мая генерал Гельмут Вейдлинг подписал приказ о капитуляции берлинского гарнизона.
+
+Столица пала, глава режима был мёртв, и через шесть дней, 8 мая, была подписана безоговорочная капитуляция вооружённых сил Германии.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Liberation Route Europe: Surrender of Berlin', url: 'https://nrw.liberationroute.com/pois/251/surrender-of-berlin' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Death of Adolf Hitler', url: 'https://en.wikipedia.org/wiki/Death_of_Adolf_Hitler' },
+    ],
+  },
+  {
+    id: 'rel-de-anschluss-munich',
+    from: 'ref-p085-anshlyus-prisoedinenie-avstrii-k-germanii',
+    to: 'ref-p085-myunhenskaya-konferenciya-germanii-italii-',
+    kind: 'context',
+    label: 'Аншлюс и Мюнхен — два шага 1938 года',
+    detail: `
+В марте 1938 года Германия присоединила Австрию, не встретив военного противодействия держав. В сентябре того же года Британия и Франция сами согласились на передачу Германии Судетской области Чехословакии.
+
+Оба события — части одного процесса пересмотра границ, созданных после Первой мировой войны, который великие державы в 1938 году не остановили.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Deutsches Historisches Museum, блог: Austria\'s «Anschluss» with Germany in 1938', url: 'https://www.dhm.de/blog/?p=1702' },
+      { kind: 'archive', label: 'Avalon Project, Yale Law School: Munich Pact, September 29, 1938', url: 'https://avalon.law.yale.edu/imt/munich1.asp' },
+    ],
+  },
+  {
+    id: 'rel-de-ruhr-hyperinflation',
+    from: 'ref-p081-rurskiy-krizis',
+    to: 'de-hyperinflation-1923',
+    kind: 'influence',
+    label: 'Рурский кризис превратил инфляцию в гиперинфляцию',
+    detail: `
+В январе 1923 года Франция и Бельгия заняли Рурскую область из-за недопоставок по репарациям. Правительство объявило «пассивное сопротивление» и взяло на себя зарплаты бастующих рабочих, чиновников и железнодорожников оккупированного района.
+
+Эти расходы и потеря производства Рура покрывались печатным станком: по оценке исторической службы бундестага, именно тогда «галопирующее» обесценивание марки перешло в гиперинфляцию. Выход нашли только после отказа от сопротивления в сентябре и денежной реформы 15 ноября 1923 года.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Deutscher Bundestag: Hyperinflation in Deutschland 1923', url: 'https://www.bundestag.de/parlament/geschichte/100-jahre-weimar/hyperinflation-970722' },
+      { kind: 'institution', label: 'Deutsches Historisches Museum, LeMO: Inflation 1923', url: 'https://www.dhm.de/lemo/kapitel/weimarer-republik/innenpolitik/inflation' },
+    ],
+  },
+  {
+    id: 'rel-de-nuremberg-kristallnacht',
+    from: 'de-nuremberg-laws-1935',
+    to: 'de-kristallnacht-1938',
+    kind: 'influence',
+    label: 'Нюрнбергские законы подготовили почву для погрома',
+    detail: `
+Нюрнбергские законы 1935 года лишили евреев политических прав, запретили смешанные браки и дали определение, кого режим считает евреем. По оценке Федерального центра политического образования, они стали правовой основой дальнейших преследований: евреев вытесняли из профессий и торговли.
+
+Ноябрьский погром 1938 года обрушился на людей, которые уже были юридически отделены от остального населения: тысячи еврейских магазинов и более 1400 синагог громили, а полиция по приказу не вмешивалась.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Bundeszentrale für politische Bildung: Vor 85 Jahren — Nürnberger Gesetze erlassen', url: 'https://www.bpb.de/kurz-knapp/hintergrund-aktuell/501380/vor-85-jahren-nuernberger-gesetze-erlassen/' },
+      { kind: 'institution', label: 'Yad Vashem: The November Pogrom («Kristallnacht»)', url: 'https://www.yadvashem.org/november-pogrom' },
+    ],
+  },
+  {
+    id: 'rel-de-blockade-two-states',
+    from: 'de-berlin-blockade-1948',
+    to: 'de-two-states-1949',
+    kind: 'influence',
+    label: 'Денежная реформа и блокада закрепили раскол страны',
+    detail: `
+Денежная реформа 20 июня 1948 года ввела в западных зонах немецкую марку, а советская администрация ответила собственной реформой и блокадой Западного Берлина. С этого момента в стране существовали две валюты и две экономические системы.
+
+Блокада, длившаяся до мая 1949 года, по оценке Федерального центра политического образования, закрепила раздел не только валют: в том же году на западе образовалась ФРГ, а в советской зоне — ГДР.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Bundeszentrale für politische Bildung: Währungsreform, Blockade, Luftbrücke', url: 'https://www.bpb.de/themen/deutsche-teilung/ddr-kompakt/521068/waehrungsreform-blockade-luftbruecke/' },
+      { kind: 'institution', label: 'Office of the Historian, U.S. Department of State: The Berlin Airlift, 1948–1949', url: 'https://history.state.gov/milestones/1945-1952/berlin-airlift' },
+    ],
+  },
+  {
+    id: 'rel-de-lechfeld-hre',
+    from: 'de-lechfeld-955',
+    to: 'de-hre-962',
+    kind: 'influence',
+    label: 'Победа над венграми укрепила путь Оттона к короне',
+    detail: `
+Разгром венгров на Лехфельде в 955 году прекратил их набеги на Западную Европу.
+
+Победа укрепила его авторитет среди князей и позволила дальше сосредоточить власть; через семь лет, в 962 году, Оттон был коронован в Риме императором.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'History Today: The Battle of Lechfeld', url: 'https://www.historytoday.com/archive/months-past/battle-lechfeld' },
+      { kind: 'encyclopedia', label: 'EBSCO Research Starters: Otto I Defeats the Magyars', url: 'https://ebsco.com/research-starters/military-history-and-science/otto-i-defeats-magyars' },
+    ],
+  },
 ];
 
 /** Быстрый доступ к связям по идентификатору объекта. */
