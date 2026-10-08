@@ -12,11 +12,17 @@
  * не возвращать слитые записи при перегенерации.
  */
 export const referenceMerges: Record<string, string> = {
+  'ref-p029-arabskoe-zavoevanie-pireneyskogo-poluostro': 'es-711',
   'ref-p030-obrazovanie-drevnerusskogo-gosudarstva': 'ru-oleg-882',
+  'ref-p034-razgrom-arabov-obedinennym-voyskom-korolev': 'es-navas-1212',
   'ref-p034-vozniknovenie-angliyskogo-parlamenta': 'gb-parliament-1265',
   'ref-p035-pravlenie-v-kieve-knyazya-yaroslava-mudrog': 'ru-yaroslav-1019',
+  'ref-p040-otkrytie-kolumbom-ameriki': 'es-1492',
+  'ref-p040-zavershenie-rekonkisty': 'es-1492',
   'ref-p046-nachalo-reformacii-v-germanii': 'de-luther-1517',
+  'ref-p046-pravlenie-karla-v': 'es-charles-v-1519',
   'ref-p053-nachalo-knigopechataniya-v-rossii': 'ru-fedorov-1564',
+  'ref-p058-pervoe-krugosvetnoe-puteshestvie-fernana-m': 'es-magellan-1522',
   'ref-p064-provozglashenie-germanskoy-imperii': 'de-empire-1871',
   'ref-p067-otechestvennaya-voyna-v-rossii': 'ru-1812',
   'ref-p083-naznachenie-a-gitlera-reyhskanclerom-germa': 'de-1933',

@@ -3066,6 +3066,380 @@ X съезд РКП(б) в марте 1921 года заменил развёр�
       { kind: 'academic', label: 'A. Cheremukhin, M. Golosov, S. Guriev, A. Tsyvinski. Was Stalin Necessary for Russia’s Economic Development? NBER Working Paper 19425, 2013', url: 'https://www.nber.org/papers/w19425' },
     ],
   },
+  {
+    id: 'rel-es-711-covadonga',
+    from: 'es-711',
+    to: 'es-covadonga-722',
+    kind: 'influence',
+    label: 'Завоевание вызвало сопротивление на севере',
+    detail: `
+Арабское завоевание 711 года не дошло до горных районов севера полуострова. Там, в Астурии, восстание Пелайо, начавшееся около 718 года, закончилось победой при Ковадонге и созданием небольшого христианского владения с центром в Кангас-де-Онисе.
+
+Механизм — прямой ответ на завоевание: владение Пелайо стало первым очагом сопротивления христиан севера мусульманской власти на полуострове. Из него выросло королевство Астурия, а позднейшая традиция стала считать Ковадонгу началом Реконкисты.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Gobierno del Principado de Asturias, Turismo Asturias: история Ковадонги', url: 'https://www.turismoasturias.es/es/covadonga/historica' },
+      { kind: 'encyclopedia', label: 'Batalla de Covadonga', url: 'https://es.hispanopedia.com/wiki/Batalla_de_Covadonga' },
+    ],
+  },
+  {
+    id: 'rel-es-union-1492',
+    from: 'ref-p040-obedinenie-kastilii-i-aragona-v-edinoe-kor',
+    to: 'es-1492',
+    kind: 'influence',
+    label: 'Общие государи довели Реконкисту до конца',
+    detail: `
+После 1479 года Кастилия и Арагон, сохраняя свои законы и учреждения, получили общих государей и общую внешнюю политику. Это позволило Изабелле и Фердинанду направить силы обеих корон на войну с Гранадским эмиратом.
+
+Те же монархи в 1492 году приняли капитуляцию Гранады, подписали эдикт об изгнании евреев и заключили договор с Колумбом. Уния — не причина каждого из этих событий, но условие, при котором один двор мог принимать такие решения за весь полуостров, кроме Португалии и Наварры.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Universidad de Zaragoza: «Fernando II, rey de la Monarquía Hispánica»', url: 'https://uez.unizar.es/sites/uez/files/users/pjulian/TrabajosTaller/PowerPoints/fernando_ii_rey_de_la_monarquia_hispanica.pdf' },
+      { kind: 'encyclopedia', label: 'Biografías y Vidas: Fernando II el Católico', url: 'https://www.biografiasyvidas.com/biografia/f/fernando_ii.htm' },
+    ],
+  },
+  {
+    id: 'rel-es-1492-tordesillas',
+    from: 'es-1492',
+    to: 'es-tordesillas-1494',
+    kind: 'influence',
+    label: 'Плавание Колумба потребовало раздела океана',
+    detail: `
+Первое плавание Колумба открыло Кастилии путь через Атлантику и сразу поставило вопрос о соперничестве с Португалией, которая уже прокладывала путь вокруг Африки.
+
+Ответом стал Тордесильясский договор 7 июня 1494 года: черта в 370 лигах к западу от островов Зелёного Мыса делила зоны плавания и будущие земли между двумя коронами. Связь причинная и прямая: без экспедиции 1492 года предмета для такого раздела не было бы.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'UNESCO, «Память мира»: номинация «Treaty of Tordesillas»', url: 'https://media.unesco.org/sites/default/files/webform/mow001/spain_portugal_treaty_tordesillas.pdf' },
+      { kind: 'archive', label: 'Тордесильясский договор, португальский экземпляр — Archivo General de Indias, Севилья' },
+    ],
+  },
+  {
+    id: 'rel-es-1492-conquista',
+    from: 'es-1492',
+    to: 'ref-p057-zavoevanie-ispaniey-i-portugaliey-centraln',
+    kind: 'influence',
+    label: 'От первых островов к завоеванию материка',
+    detail: `
+Плавания Колумба открыли Кастилии путь через Атлантику, и через четверть века испанцы двинулись вглубь материка. В 1519 году Кортес высадился в Мексике, а в 1532 году Писарро захватил правителя инков.
+
+Завоевание Мексики и Перу превратило заморские владения в огромную империю.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Instituto Nacional de los Pueblos Indígenas (México): «Caída de la gran Tenochtitlan»', url: 'https://www.gob.mx/cms/uploads/attachment/file/661375/Libro-Caida-de-la-gran-Tenochtitlan-INPI.pdf' },
+      { kind: 'encyclopedia', label: 'Encyclopedia.com: From the Conquest Through Independence', url: 'https://www.encyclopedia.com/humanities/encyclopedias-almanacs-transcripts-and-maps/conquest-through-independence-1' },
+    ],
+  },
+  {
+    id: 'rel-es-conquista-aztecs',
+    from: 'ref-p057-zavoevanie-ispaniey-i-portugaliey-centraln',
+    to: 'ref-p045-rascvet-gosudarstv-inkov-i-actekov-v-ameri',
+    kind: 'conflict',
+    label: 'Конкиста разрушает державы ацтеков и инков',
+    detail: `
+Две колонки показывают одну историю с разных сторон: расцвет державы ацтеков и инков и её крушение под ударами испанских отрядов.
+
+Теночтитлан пал 13 августа 1521 года после осады, в которой на стороне Кортеса воевали индейские противники власти Мешико; эпидемия оспы унесла правителя Куитлауака. В ноябре 1532 года в Кахамарке был захвачен правитель инков Атауальпа. Обе державы перестали существовать.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Instituto Nacional de los Pueblos Indígenas (México): «Caída de la gran Tenochtitlan»', url: 'https://www.gob.mx/cms/uploads/attachment/file/661375/Libro-Caida-de-la-gran-Tenochtitlan-INPI.pdf' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Battle of Cajamarca', url: 'https://en.wikipedia.org/wiki/Battle_of_Cajamarca' },
+    ],
+  },
+  {
+    id: 'rel-es-conquista-newlaws',
+    from: 'ref-p057-zavoevanie-ispaniey-i-portugaliey-centraln',
+    to: 'es-new-laws-1542',
+    kind: 'influence',
+    label: 'Злоупотребления колонистов вызвали Новые законы',
+    detail: `
+После завоевания индейцы попадали под власть колонистов-энкомендеро. Обличения доминиканцев, прежде всего Бартоломе де Лас Касаса, убедили двор, что система ведёт к гибели коренного населения.
+
+20 ноября 1542 года Карл V издал Новые законы: обращение в рабство запрещалось, новые энкомьенды не выдавались, а старые не должны были переходить по наследству. Восстание колонистов в Перу во главе с Гонсало Писарро заставило корону в 1545 году отменить статью о наследовании.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'Wikipedia: New Laws', url: 'https://Www.wikipedia.org/wiki/New_Laws' },
+      { kind: 'academic', label: 'Pontificia Universidad Católica del Perú: «Charcas en la rebelión de los encomenderos»', url: 'https://repositorio.pucp.edu.pe/index/bitstream/handle/123456789/133569/10.%20Charcas%20en%20la%20rebeli%C3%B3n%20de%20los%20encomenderos%201544%20154.pdf?sequence=1' },
+    ],
+  },
+  {
+    id: 'rel-es-charles-philip',
+    from: 'es-charles-v-1519',
+    to: 'es-philip-ii-1556',
+    kind: 'influence',
+    label: 'Отречение Карла V разделило наследство',
+    detail: `
+В 1555–1556 годах Карл V отрёкся: Нидерланды, Сицилия, Кастилия и Арагон перешли к его сыну Филиппу, а императорская корона — к брату Фердинанду.
+
+Так из единой державы выделилась испанская монархия Филиппа II с центром в Мадриде, куда он окончательно перенёс двор в 1561 году. Раздел определил, что дальше испанские и австрийские Габсбурги будут двумя разными ветвями.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Museo Galileo: Philip II of Spain', url: 'https://catalogue.museogalileo.it/biography/PhilipISpain.html' },
+      { kind: 'encyclopedia', label: 'Biografías y Vidas: Felipe II', url: 'https://www.biografiasyvidas.com/biografia/f/felipe_ii.htm' },
+    ],
+  },
+  {
+    id: 'rel-es-tordesillas-magellan',
+    from: 'es-tordesillas-1494',
+    to: 'es-magellan-1522',
+    kind: 'context',
+    label: 'Раздел мира и спор о Молукках',
+    detail: `
+Тордесильясская черта делила Атлантику, но оставляла неясным, где проходит граница на другой стороне земного шара. Экспедиция Магеллана искала западный путь к Молуккским островам пряностей, на которые претендовали обе короны.
+
+После возвращения «Виктории» в 1522 году спор решали дипломатически: Сарагосский договор 1529 года разграничил зоны влияния в Азии, и Молукки остались за Португалией, заплатившей компенсацию.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Instituto Geográfico Nacional: «La primera vuelta al mundo»', url: 'https://www.ign.es/web/resources/expo/madrid2019/VueltaMundo_web.pdf' },
+      { kind: 'encyclopedia', label: 'Guampedia: Treaty of Zaragoza', url: 'https://www.guampedia.com/treaty-of-zaragoza/' },
+    ],
+  },
+  {
+    id: 'rel-es-cadiz-riego',
+    from: 'es-cadiz-1812',
+    to: 'es-riego-1820',
+    kind: 'influence',
+    label: 'Риего восстановил Кадисскую конституцию',
+    detail: `
+1 января 1820 года Рафаэль дель Риего провозгласил у Кабесас-де-Сан-Хуан конституцию 1812 года. Восстание распространилось по Андалусии и другим провинциям, и Фердинанд VII был вынужден отказаться от абсолютизма.
+
+Связь прямая: программой восставших была именно Кадисская конституция, и «либеральное трёхлетие» 1820–1823 годов стало вторым периодом её действия.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Universidad Carlos III de Madrid, OCW: «Trienio Constitucional»', url: 'https://ocw.uc3m.es/pluginfile.php/7467/mod_page/content/24/T1_Trienio-Constitucional.pdf' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Rafael del Riego', url: 'https://en.wikipedia.org/wiki/Rafael_del_Riego' },
+    ],
+  },
+  {
+    id: 'rel-holyalliance-riego',
+    from: 'ref-p061-sozdanie-svyaschennogo-soyuza',
+    to: 'es-riego-1820',
+    kind: 'influence',
+    label: 'Священный союз подавил испанскую революцию',
+    detail: `
+Державы Священного союза считали себя вправе подавлять революции в других странах. На Веронском конгрессе 1822 года Фердинанд VII получил поддержку, которую искал.
+
+7 апреля 1823 года французская армия герцога Ангулемского — «сто тысяч сыновей Святого Людовика» — вошла в Испанию и восстановила абсолютную монархию. Механизм влияния — решение союза держав и военная интервенция.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Universidad Isabel I, Daniel Aquillué: двухсотлетие вторжения «ста тысяч сыновей Святого Людовика»', url: 'https://www.ui1.es/blog-ui1/efemeride-historica-bicentenario-de-la-invasion-de-espana-por-los-cien-mil-hijos-de-san' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Rafael del Riego', url: 'https://en.wikipedia.org/wiki/Rafael_del_Riego' },
+    ],
+  },
+  {
+    id: 'rel-es-riego-ayacucho',
+    from: 'es-riego-1820',
+    to: 'es-ayacucho-1824',
+    kind: 'influence',
+    label: 'Армия не поплыла в Америку',
+    detail: `
+Восстание 1820 года подняли войска, собранные для отправки в Америку на войну с движением за независимость: солдаты не хотели туда плыть.
+
+Экспедиция так и не отправилась, а метрополия на три года погрузилась в борьбу либералов и абсолютистов. Через четыре года битва при Аякучо завершила войны за независимость в Южной Америке.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Universidad Carlos III de Madrid, OCW: «Trienio Constitucional»', url: 'https://ocw.uc3m.es/pluginfile.php/7467/mod_page/content/24/T1_Trienio-Constitucional.pdf' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Rafael del Riego', url: 'https://en.wikipedia.org/wiki/Rafael_del_Riego' },
+    ],
+  },
+  {
+    id: 'rel-es-1868-francoprussian',
+    from: 'es-revolution-1868',
+    to: 'ref-p064-franko-prusskaya-voyna',
+    kind: 'influence',
+    label: 'Вакантный испанский трон стал поводом к войне',
+    detail: `
+Свержение Изабеллы II в 1868 году оставило Испанию без короля, и новое правительство предложило корону принцу Леопольду Гогенцоллерн-Зигмарингену. Франция Наполеона III протестовала против кандидата, связанного с прусским королевским домом.
+
+Леопольд отказался 11 июля 1870 года, но французский посол потребовал от Вильгельма I гарантий на будущее. Отказ короля и отредактированная Бисмарком Эмсская депеша привели к тому, что 19 июля Франция объявила войну. Испанский кризис стал поводом, а не глубинной причиной войны.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'German History in Documents and Images: Эмсская депеша, 13 июля 1870 года', url: 'https://germanhistorydocs.org/en/forging-an-empire-bismarckian-germany-1866-1890/original-and-edited-versions-of-the-ems-dispatch-july-13-1870.pdf' },
+      { kind: 'institution', label: 'Fondation Napoléon: The Ems Dispatch', url: 'https://www.napoleon.org/en/history-of-the-two-empires/articles/the-ems-dispatch-the-telegram-that-started-the-franco-prussian-war/' },
+    ],
+  },
+  {
+    id: 'rel-es-1868-republic',
+    from: 'es-revolution-1868',
+    to: 'es-first-republic-1873',
+    kind: 'influence',
+    label: 'Демократическое шестилетие привело к республике',
+    detail: `
+Революция 1868 года открыла «демократическое шестилетие»: сначала парламентскую монархию с избранным в ноябре 1870 года Амадеем Савойским, затем республику.
+
+Когда Амадей в феврале 1873 года отрёкся, большинство кортесов, сложившееся после революции, — радикалы, республиканцы и демократы — 11 февраля провозгласило республику.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Real Academia Matritense de Heráldica y Genealogía: об избрании Амадея Савойского', url: 'https://ramhg.es/joomla310/images/stories/pdf/casas-reales-y-soberanas-articulos/eleccionreyamadeo.pdf' },
+      { kind: 'encyclopedia', label: 'Wikipedia: First Spanish Republic', url: 'https://en.wikipedia.org/wiki/First_Spanish_Republic' },
+    ],
+  },
+  {
+    id: 'rel-es-primo-republic',
+    from: 'es-primo-de-rivera-1923',
+    to: 'es-republic-1931',
+    kind: 'influence',
+    label: 'Монархия пала вслед за диктатурой',
+    detail: `
+Альфонсо XIII поддержал переворот 1923 года и связал судьбу монархии с диктатурой. Когда в январе 1930 года Примо де Ривера ушёл в отставку, корона лишилась опоры.
+
+На муниципальных выборах 12 апреля 1931 года республиканцы победили в крупных городах, король покинул страну, и 14 апреля была провозглашена республика.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Congreso de los Diputados: «La dictadura de Primo de Rivera»', url: 'https://www.congreso.es/cem/primoriv' },
+      { kind: 'institution', label: 'European Network Remembrance and Solidarity: Proclamation of the Second Spanish Republic', url: 'https://enrs.eu/news/proclamation-of-the-second-spanish-republic' },
+    ],
+  },
+  {
+    id: 'rel-es-popularfront-civilwar',
+    from: 'ref-p084-pobeda-narodnogo-fronta-na-vyborah-v-korte',
+    to: 'es-civil-war-1936',
+    kind: 'context',
+    label: 'Выборы 1936 года и мятеж армии',
+    detail: `
+Выборы 16 февраля 1936 года разделили страну почти поровну: около 4,7 миллиона голосов получил Народный фронт, около 4,4 миллиона — правые коалиции. Победа левых дала им большинство мест в кортесах.
+
+Через пять месяцев часть армии подняла мятеж. Выборы не были единственной причиной войны, но обострили противостояние двух лагерей, сложившееся в годы республики.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Universidad Carlos III de Madrid, OCW: «Elecciones de febrero de 1936: victoria del Frente Popular»', url: 'https://ocw.uc3m.es/pluginfile.php/7976/mod_page/content/29/T4-1.4.1_Elecciones-febrero-1936-victoria-Frente-Popular.pdf' },
+      { kind: 'institution', label: 'IES Pedro Salinas: «La II República… Las elecciones de 1936 y el Frente Popular»', url: 'https://www.iespedrosalinas.org/marzo2020/wp-content/uploads/2021/01/TEMA-15.-ALUMNOS-LA-II-REPUBLICA.-EL-GOBIERNO-RADICAL-CEDISTA.-LA-REVOLUCION-DE-1934.-LAS-ELECCIONES-DE-1936-Y-EL-FRENTE-POPULAR.pdf' },
+    ],
+  },
+  {
+    id: 'rel-nato-madridpacts',
+    from: 'ref-p121-sozdanie-organizacii-severoatlanticheskogo',
+    to: 'es-madrid-pacts-1953',
+    kind: 'context',
+    label: 'Испания в западном блоке без НАТО',
+    detail: `
+Создание НАТО в 1949 году оформило западный блок, куда франкистскую Испанию не приняли. В условиях холодной войны США предпочли двусторонний путь: соглашения 1953 года дали американским силам авиабазы Торрехон, Сарагоса и Морон и военно-морскую базу Рота в обмен на военную и экономическую помощь.
+
+Вместе с конкордатом с Ватиканом соглашения встроили Испанию в западный блок, хотя членом НАТО она стала только в 1982 году.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Ayuntamiento de Zaragoza: пресс-досье «Zaragoza americana»', url: 'https://www.zaragoza.es/cont/paginas/noticias/dossierprensa-zaragozaamericana.pdf' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Pact of Madrid', url: 'https://en.wikipedia.org/wiki/Pact_of_Madrid' },
+    ],
+  },
+  {
+    id: 'rel-es-pacts-stabilization',
+    from: 'es-madrid-pacts-1953',
+    to: 'es-stabilization-1959',
+    kind: 'context',
+    label: 'Выход из изоляции и открытие экономики',
+    detail: `
+Соглашения с США 1953 года и приём в ООН в 1955 году вывели Испанию из послевоенной изоляции. К концу десятилетия правительство договорилось с МВФ, Всемирным банком и Организацией европейского экономического сотрудничества о программе стабилизации.
+
+Декрет-закон 21 июля 1959 года открыл страну для внешней торговли и иностранных инвестиций. Обе меры — шаги одного процесса включения Испании в западную систему, хотя прямой причинной связи между ними источники не устанавливают.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Universidad de Jaén, CREA: «El Plan de Estabilización de 1959»', url: 'https://crea.ujaen.es/items/0e5bd127-e6ba-4241-a0c5-436b983e4fd0' },
+      { kind: 'institution', label: 'Ayuntamiento de Zaragoza: пресс-досье «Zaragoza americana»', url: 'https://www.zaragoza.es/cont/paginas/noticias/dossierprensa-zaragozaamericana.pdf' },
+    ],
+  },
+  {
+    id: 'rel-es-transition-constitution',
+    from: 'es-transition-1975',
+    to: 'es-constitution-1978',
+    kind: 'influence',
+    label: 'Переход к демократии завершился конституцией',
+    detail: `
+После смерти Франко партии были легализованы, а в 1977 году прошли свободные выборы. Избранные кортесы подготовили новую конституцию.
+
+6 декабря 1978 года её одобрили на референдуме 87,9 % проголосовавших, 27 декабря король утвердил её на совместном заседании палат, и 29 декабря она вступила в силу.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Congreso de los Diputados: «Constitución de 1978»', url: 'https://www.congreso.es/cem/const1978' },
+      { kind: 'institution', label: 'Biblioteca Virtual Miguel de Cervantes: Constitución Española de 6 de diciembre de 1978', url: 'https://www.cervantesvirtual.com/obra/constitucion-espanola-de-6-de-diciembre-1978/' },
+    ],
+  },
+  {
+    id: 'rel-es-constitution-coup',
+    from: 'es-constitution-1978',
+    to: 'es-coup-1981',
+    kind: 'context',
+    label: 'Попытка переворота против нового порядка',
+    detail: `
+Через два года после принятия конституции группа военных попыталась её опрокинуть: 23 февраля 1981 года гвардейцы Техеро захватили Конгресс, а в Валенсии генерал Миланс дель Бош вывел войска.
+
+Король в телевизионном обращении осудил мятеж и поддержал конституционный порядок, а 27 февраля демонстрации по всей стране прошли под лозунгом «За свободу, демократию и конституцию».
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Ministerio de Política Territorial y Memoria Democrática: манифестации 27 февраля 1981 года', url: 'https://mptmd.gob.es/en/portal/memoria-democratica/notas-informativas/notas/2025/02/2025-02-27' },
+      { kind: 'encyclopedia', label: 'Wikipedia: 1981 Spanish coup attempt', url: 'https://en.wikipedia.org/wiki/1981_Spanish_coup_attempt' },
+    ],
+  },
+  {
+    id: 'rel-eec-spain',
+    from: 'ref-p104-dogovor-ob-uchrezhdenii-evropeyskogo-ekono',
+    to: 'es-eec-1986',
+    kind: 'context',
+    label: 'Испания входит в сообщество, созданное в 1957 году',
+    detail: `
+Европейское экономическое сообщество, учреждённое в 1957 году, при Франко оставалось для Испании закрытым. Заявку о вступлении демократическое правительство подало 26 июля 1977 года, переговоры официально начались в 1979 году.
+
+Договор о присоединении подписали в Мадриде 12 июня 1985 года, и с 1 января 1986 года Испания стала полноправным членом сообщества.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Real Instituto Elcano: «La larga marcha hacia Europa: España y la Comunidad Europea, 1957–1986»', url: 'https://www.realinstitutoelcano.org/documento-de-trabajo/la-larga-marcha-hacia-europa-espana-y-la-comunidad-europea-1957-1986/' },
+      { kind: 'institution', label: 'Biblioteca Virtual Miguel de Cervantes: документы о вступлении Испании и Португалии в Европейские сообщества', url: 'https://www.cervantesvirtual.com/nd/ark:/59851/bmc1144774' },
+    ],
+  },
+  {
+    id: 'rel-es-1492-moriscos',
+    from: 'es-1492',
+    to: 'es-moriscos-1609',
+    kind: 'context',
+    label: 'Политика религиозного единства',
+    detail: `
+1492 год начал политику, при которой монархия добивалась религиозного единства подданных: евреям пришлось выбирать между крещением и изгнанием. Потомки мусульман, принявших крещение, — мориски — оставались под подозрением.
+
+В 1609–1614 годах корона выслала и их: по оценке Анри Лапейра, страну покинули около 275–300 тысяч человек, а Валенсия потеряла около трети населения.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Ayuntamiento de Alicante: «Normas de Felipe III para la expulsión de los moriscos — 22 de septiembre de 1609»', url: 'https://www.alicante.es/es/documentos/normas-felipe-iii-expulsion-moriscos-22-septiembre-1609' },
+      { kind: 'academic', label: 'Henri Lapeyre. Géographie de l’Espagne morisque. Paris, 1959' },
+    ],
+  },
+  {
+    id: 'rel-thirtyyears-crisis1640',
+    from: 'de-thirty-years-1618',
+    to: 'es-crisis-1640',
+    kind: 'context',
+    label: 'Война с Францией истощила монархию',
+    detail: `
+Тридцатилетняя война втянула Испанию в долгую войну с Францией. Королевские войска, размещённые в Каталонии против французов, вызвали недовольство, которое 7 июня 1640 года вылилось в восстание в Барселоне.
+
+Португальская знать воспользовалась тем, что силы Мадрида были заняты в Каталонии, и 1 декабря 1640 года провозгласила независимость. Политика Оливареса, требовавшего от всех владений участия в войне, оказалась причиной двойного кризиса.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Consellería de Educación, Xunta de Galicia — материалы о кризисе 1640 года', url: 'https://centros.edu.xunta.gal/iesderodeira/aulavirtual/mod/resource/view.php?id=59313' },
+      { kind: 'encyclopedia', label: 'Infopédia: Revolução da Catalunha', url: 'https://www.infopedia.pt/artigos/$revolucao-da-catalunha' },
+    ],
+  },
 ];
 
 /** Быстрый доступ к связям по идентификатору объекта. */
