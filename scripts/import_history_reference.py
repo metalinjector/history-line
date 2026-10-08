@@ -491,13 +491,16 @@ def normalized_title(value: str) -> str:
 
 def authored_ids() -> set[str]:
     """Records of the reference that the editors rewrote keep their ids in the
-    authored country files. They must not be regenerated, and their content
+    authored country files; duplicates are merged into authored cards. They must not be regenerated, and their content
     files (with verified sources and articles) must not be overwritten."""
     ids: set[str] = set()
     for path in (ROOT / "src/data/items").glob("*.ts"):
         if path.name == "reference.ts":
             continue
         ids.update(re.findall(r"id:\s*'(ref-[^']+)'", path.read_text(encoding="utf-8")))
+    # Records merged into an authored card (src/data/referenceMerges.ts).
+    merges = (ROOT / "src/data/referenceMerges.ts").read_text(encoding="utf-8")
+    ids.update(re.findall(r"^\s*'(ref-[^']+)':\s*'", merges, flags=re.M))
     return ids
 
 

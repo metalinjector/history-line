@@ -16,6 +16,7 @@ import { ancientRome } from './items/ancient-rome';
 import { byzantium } from './items/byzantium';
 import { kievanRus } from './items/kievan-rus';
 import { referenceItems } from './items/reference';
+import { referenceMerges } from './referenceMerges';
 
 /**
  * Единый массив объектов хронологии.
@@ -47,12 +48,16 @@ const authoredItems: TimelineItem[] = [
  * и переписала, переезжает в файл своей линии под тем же id: id уже живут
  * в ссылках и заметках читателей. Авторская карточка заменяет запись
  * справочника, а reference.json остаётся таким, каким его сгенерировал импорт.
+ * Запись, которая повторяет готовую карточку, сливается с ней — см. referenceMerges.ts.
  */
 const authoredIds = new Set(authoredItems.map((item) => item.id));
 
+/** Справочник без записей, переписанных редакцией или слитых с её карточками. */
+const isFallbackReference = (item: TimelineItem) => !authoredIds.has(item.id) && !(item.id in referenceMerges);
+
 export const timelineItems: TimelineItem[] = [
   ...authoredItems,
-  ...referenceItems.filter((item) => !authoredIds.has(item.id)),
+  ...referenceItems.filter(isFallbackReference),
 ].map((item) => ({
   // Статьи, источники и трактовки хранятся отдельно (content/) и грузятся
   // вместе с модальным окном. Здесь подмешивается только их сводка.

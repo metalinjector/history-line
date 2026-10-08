@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { parseCustomImport } from './lib/customObjects';
 import { parseTimelineUrl } from './lib/urlState';
+import { migrateMergedNotes, migrateMergedRelations, referenceMerges } from './data/referenceMerges';
+import { timelineItems } from './data/timelineItems';
 import sourceRule from './lib/sourceRule.ts?raw';
 
 /**
@@ -67,6 +69,22 @@ describe('контракты каркаса', () => {
       selectedId: 'ru-1917',
       orientation: 'vertical',
     });
+  });
+
+  it('id слитой записи справочника продолжает работать', () => {
+    // Запись справочника, повторявшая карточку, снята со шкалы, но её id уже
+    // мог попасть в ссылки, заметки и связи читателей — он ведёт на карточку.
+    const onScale = new Set(timelineItems.map((item) => item.id));
+    for (const [merged, card] of Object.entries(referenceMerges)) {
+      expect(onScale.has(merged), merged).toBe(false);
+      expect(onScale.has(card), `${merged} → ${card}`).toBe(true);
+    }
+    const [merged, card] = Object.entries(referenceMerges)[0];
+    expect(parseTimelineUrl(`?focus=${merged}&item=${merged}`)).toMatchObject({ selectedId: card, openedId: card });
+    expect(migrateMergedNotes({ [merged]: 'старая', [card]: 'новая', other: 'x' })).toEqual({ [card]: 'новая\n\nстарая', other: 'x' });
+    expect(migrateMergedRelations([{ from: 'custom-1', to: merged }])).toEqual([{ from: 'custom-1', to: card }]);
+    const untouched = { other: 'x' };
+    expect(migrateMergedNotes(untouched)).toBe(untouched);
   });
 
   it('файл своих объектов формата @1 принимается импортом', () => {

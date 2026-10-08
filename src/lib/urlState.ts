@@ -11,6 +11,7 @@ import { decodePeriod, encodePeriod } from '../data/periods';
 import { layers, MAX_ACTIVE_LAYERS } from '../data/layers';
 import { stories } from '../data/stories';
 import { timelineItems } from '../data/timelineItems';
+import { canonicalItemId } from '../data/referenceMerges';
 import { clampZoom } from './zoom';
 
 export type TimelineUrlState = {
@@ -92,8 +93,9 @@ export function parseTimelineUrl(search: string): TimelineUrlState {
     activeLayerIds: layerIds.length ? layerIds : shared ? [] : undefined,
     layerPlacements: Object.keys(placements).length ? placements : shared ? {} : undefined,
     columnGroups: columnGroups.length ? columnGroups : shared ? [] : undefined,
-    selectedId: params.get('focus') || undefined,
-    openedId: params.get('item') || undefined,
+    // Слитая запись справочника открывает свою карточку: ссылка не теряется.
+    selectedId: canonicalItemId(params.get('focus') || undefined),
+    openedId: canonicalItemId(params.get('item') || undefined),
     openedDayKey: params.get('day') || undefined,
     openedRelationId: params.get('relation') || undefined,
     showRelations: params.get('threads') === '0' ? false : shared ? true : undefined,

@@ -23,6 +23,7 @@ import { eraForYear, eras } from '../data/eras';
 import { intervalPeriods, periodContains, periodRange } from '../data/periods';
 import { ANCIENT_LINES, builtinCountrySets, MAX_USER_SETS, normalizeSet } from '../data/countrySets';
 import { timelineItems } from '../data/timelineItems';
+import { migrateMergedNotes, migrateMergedRelations } from '../data/referenceMerges';
 import { layerById, layers as allLayers, MAX_ACTIVE_LAYERS } from '../data/layers';
 import { applyLayers, materializeLayerItems, type LayerPlacements } from './layers';
 import { OWN_COLUMN, type LayerPlacement } from '../types';
@@ -96,6 +97,12 @@ export function useTimelineState() {
   const [userCountrySets, setUserCountrySets] = usePersistentState<CountrySet[]>('country-sets', []);
   /** Личные заметки читателя. Хранятся отдельно от базы фактов и не смешиваются с ней. */
   const [notes, setNotes] = usePersistentState<Record<string, string>>('notes', {});
+  // Записи справочника, слитые с карточками (data/referenceMerges.ts): заметки
+  // и связи читателя переезжают на карточку и сохраняются уже под её id.
+  useEffect(() => {
+    setNotes(migrateMergedNotes);
+    setAddedRelations(migrateMergedRelations);
+  }, [setAddedRelations, setNotes]);
   /** Включённые слои и их размещение — по умолчанию слоёв нет. */
   const [activeLayerIds, setActiveLayerIds] = usePersistentState<string[]>(
     'layers',
