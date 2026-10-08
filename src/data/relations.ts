@@ -1938,6 +1938,346 @@ timeline
       { kind: 'encyclopedia', label: 'EBSCO Research Starters: Otto I Defeats the Magyars', url: 'https://ebsco.com/research-starters/military-history-and-science/otto-i-defeats-magyars' },
     ],
   },
+  {
+    id: 'rel-odoacer-theodoric',
+    from: 'ref-p027-nizlozhenie-romula-avgustula-padenie-zapad',
+    to: 'it-theodoric-493',
+    kind: 'influence',
+    label: 'Константинополь послал Теодориха против Одоакра',
+    detail: `
+Одоакр, низложивший в 476 году последнего западного императора, правил Италией, не признавая на деле власти Константинополя.
+
+В 488 году Теодорих с согласия императора повёл остготов в Италию, чтобы сместить Одоакра. После долгой осады Равенны в 493 году он убил соперника и сделал город столицей нового королевства. Механизм прямой: режим, возникший после падения Западной империи, был устранён руками федерата, которого направила Восточная империя.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Musei nazionali di Ravenna: Mausoleo di Teodorico', url: 'https://musei.emiliaromagna.beniculturali.it/en/our-museums/mausoleo-di-teodorico' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Mausoleum of Theodoric', url: 'https://en.wikipedia.org/wiki/Mausoleum_of_Theodoric' },
+    ],
+  },
+  {
+    id: 'rel-pavia-charlemagne-rome',
+    from: 'it-pavia-774',
+    to: 'fr-charlemagne-800',
+    kind: 'influence',
+    label: 'Завоевание Павии сделало франков хозяевами Италии и Рима',
+    detail: `
+Взяв в 774 году Павию, Карл стал королём лангобардов и включил Северную Италию в свою державу. Верховенство над Римом и защита папства перешли от лангобардского к франкскому королю.
+
+Эта новая связь франкской монархии и папства подготовила коронацию Карла императором в Риме в 800 году.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Prosopography of the Byzantine Empire, King\'s College London: Desiderios 3', url: 'https://pbe.kcl.ac.uk/data/D22/F03.htm' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Siege of Pavia (773–774)', url: 'https://en.wikipedia.org/wiki/Siege_of_Pavia_(773%E2%80%93774)' },
+    ],
+  },
+  {
+    id: 'rel-ottomans-chrysoloras',
+    from: 'ref-p043-nachalo-zavoevaniya-turkami-osmanami-balka',
+    to: 'it-chrysoloras-1397',
+    kind: 'influence',
+    label: 'Османская угроза привела византийского посла в Италию',
+    detail: `
+Османское завоевание Балкан заставило Византию искать помощи на Западе. В 1394 году император Мануил II отправил Мануила Хрисолора послом в Европу просить военной и денежной поддержки против турок.
+
+В Италии посол остался учителем: в 1397 году Флоренция пригласила его на кафедру греческого языка. Так дипломатическая миссия, вызванная военной угрозой, открыла западным гуманистам прямой доступ к греческой литературе — одна из нитей, связывающих судьбу Византии с итальянским Возрождением.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Greek, Roman, and Byzantine Studies (Duke University): статья о преподавании Мануила Хрисолора во Флоренции', url: 'https://grbs.library.duke.edu/index.php/grbs/article/download/11571/4135/13967' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Manuel Chrysoloras', url: 'https://en.wikipedia.org/wiki/Manuel_Chrysoloras' },
+    ],
+  },
+  {
+    id: 'rel-italian-wars-habsburgs',
+    from: 'it-italian-wars-1494',
+    to: 'es-charles-v-1519',
+    kind: 'context',
+    label: 'Италия — главная арена борьбы Франции и Габсбургов',
+    detail: `
+Итальянские войны начались с похода Карла VIII в 1494 году, но основное их содержание составила борьба Франции и Габсбургов, которую при Карле V вели Испания и император.
+
+По миру в Като-Камбрези 1559 года Франция отказалась от притязаний на Милан, и Испания стала господствующей силой в Италии почти на полтора века. Наследство Карла V определило итальянскую карту до XVIII века.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'California State University, Fresno, HIST 126: The Italian Wars', url: 'https://zimmer.fresnostate.edu/~mariterel/hist126_sp%2704_italian_wars.htm' },
+      { kind: 'encyclopedia', label: 'Britannica: Italian Wars', url: 'https://www.britannica.com/event/Italian-Wars' },
+    ],
+  },
+  {
+    id: 'rel-cognac-sack-rome',
+    from: 'it-italian-wars-1494',
+    to: 'it-sack-rome-1527',
+    kind: 'influence',
+    label: 'Союз папы с Францией привёл армию императора к Риму',
+    detail: `
+В ходе Итальянских войн папа Климент VII примкнул к Коньякской лиге, созданной под руководством Франции против Габсбургов. Чтобы вывести папу из союза, Карл V двинул армию на Рим.
+
+Немецкие ландскнехты и испанцы вышли из подчинения и 6 мая 1527 года штурмовали город. Разграбление Рима — прямое следствие того, что папство стало одной из сторон в войне великих держав за Италию.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Judith Hook. The Sack of Rome, 1527. 2nd ed. Palgrave Macmillan, 2004', url: 'https://link.springer.com/book/10.1057/9780230628779' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Sack of Rome (1527)', url: 'https://en.wikipedia.org/wiki/Sack_of_Rome_(1527)' },
+    ],
+  },
+  {
+    id: 'rel-luther-trent',
+    from: 'de-luther-1517',
+    to: 'it-trent-1545',
+    kind: 'influence',
+    label: 'Тридентский собор — ответ католической церкви на Реформацию',
+    detail: `
+Павел III созвал собор в Тренто как ответ на протестантскую Реформацию, начатую выступлением Лютера.
+
+Собор осудил протестантское богословие, подтвердил оспоренные протестантами положения католического учения и определил состав Священного Писания, а также взялся исправить злоупотребления в самой церкви. Его решения задали курс Контрреформации на три века вперёд.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'John W. O\'Malley. Trent: What Happened at the Council. Harvard University Press, 2013 (рецензия в Church History)', url: 'https://www.cambridge.org/core/journals/church-history/article/trent-what-happened-at-the-council-by-john-w-omalley-cambridge-mass-the-belknap-press-of-harvard-university-press-2013-335-pp-2795-cloth/414B9138A39A84024C2C8CF4D5FD0008' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Council of Trent', url: 'https://en.wikipedia.org/wiki/Council_of_Trent' },
+    ],
+  },
+  {
+    id: 'rel-galileo-telescope-trial',
+    from: 'it-galileo-1610',
+    to: 'it-galileo-1633',
+    kind: 'influence',
+    label: 'От телескопа к процессу: открытия Галилея и инквизиция',
+    detail: `
+Телескопические открытия 1610 года сделали Галилея знаменитым и вовлекли его в спор о системе мира. Позднее он выпустил книгу, в которой отстаивал учение Коперника о движении Земли.
+
+За эту книгу Святая палата вызвала его в Рим; 22 июня 1633 года книга была запрещена, а Галилей должен был отречься от своих взглядов.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Museo Galileo: процесс Галилея', url: 'https://brunelleschi.imss.fi.it/pencil/eng/html/Time/08 Processo.htm' },
+      { kind: 'institution', label: 'Museo Galileo: Sidereus Nuncius', url: 'https://catalogue.museogalileo.it/object/GalileoGalileiSidereusNunciusFacsimile.html' },
+    ],
+  },
+  {
+    id: 'rel-napoleon-kingdom-italy',
+    from: 'fr-napoleon-1799',
+    to: 'it-kingdom-1805',
+    kind: 'influence',
+    label: 'Наполеон превратил Итальянскую республику в королевство',
+    detail: `
+Став императором французов, Наполеон в марте 1805 года преобразовал зависимую Итальянскую республику в Королевство Италия и 26 мая короновался в Миланском соборе Железной короной лангобардских королей.
+
+Управлять королевством он поставил вице-короля, своего пасынка Евгения Богарне. Государство с именем «Италия» стало частью системы зависимых от Франции стран.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Fondation Napoléon: Napoleon\'s consecration and coronation in Milan, 26 May 1805', url: 'https://www.napoleon.org/en/history-of-the-two-empires/timelines/napoleons-consecration-and-coronation-in-milan-26-may-1805/' },
+      { kind: 'institution', label: 'The Metropolitan Museum of Art: Napoleon, King of Italy, Wearing Iron Crown of Monza', url: 'https://82nd-and-fifth.metmuseum.org/art/collection/search/206682' },
+    ],
+  },
+  {
+    id: 'rel-young-italy-unification',
+    from: 'it-young-italy-1831',
+    to: 'ref-p062-obedinenie-italii',
+    kind: 'context',
+    label: 'Идея единой Италии: от Мадзини к королевству 1861 года',
+    detail: `
+«Молодая Италия» Мадзини с 1831 года проповедовала объединение итальянских государств в единую независимую республику путём народного восстания.
+
+Объединение в итоге произошло иначе — вокруг Сардинского королевства и Савойской династии. Но сама цель единого национального государства, которую Мадзини сделал программой массового движения, стала общей для эпохи Рисорджименто. Связь здесь — общий процесс, а не прямая причинность: путь Мадзини и путь Пьемонта расходились.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Denis Mack Smith. Mazzini. Yale University Press, 1994', url: 'https://yalebooks.yale.edu/book/9780300177121' },
+      { kind: 'encyclopedia', label: 'Britannica: Young Italy', url: 'https://www.britannica.com/topic/Young-Italy' },
+    ],
+  },
+  {
+    id: 'rel-unification-rome-1870',
+    from: 'ref-p062-obedinenie-italii',
+    to: 'it-rome-1870',
+    kind: 'influence',
+    label: 'Взятие Рима завершило объединение 1861 года',
+    detail: `
+Провозглашённое в 1861 году Королевство Италия ещё не включало Рим. Полное объединение заняло около десяти лет.
+
+20 сентября 1870 года итальянские войска вошли в Рим через брешь у Порта Пиа, а плебисцит 2 октября утвердил присоединение города, ставшего столицей. Так закончилась светская власть пап.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'MuseoTorino: 17 marzo 1861, proclamazione del Regno d\'Italia', url: 'https://www.museotorino.it/view/s/8e6b3f298d1e43c48e7cb1b167199eb8' },
+      { kind: 'institution', label: 'Ministero della Difesa: 20 settembre 1870, Porta Pia', url: 'https://www.difesa.it/primopiano/20-settembre-1870-porta-pia-una-palla-di-cannone-incastonata-nelle-mura/112416.html' },
+    ],
+  },
+  {
+    id: 'rel-rome-1870-lateran',
+    from: 'it-rome-1870',
+    to: 'it-lateran-1929',
+    kind: 'influence',
+    label: 'Латеранские соглашения закрыли «римский вопрос» 1870 года',
+    detail: `
+Присоединение Рима в 1870 году положило конец Папскому государству и оставило открытым «римский вопрос» — спор государства и папства о положении папы.
+
+Латеранские соглашения 1929 года впервые установили нормальные отношения между Италией и Святым Престолом: папа получил суверенный Город Ватикан, а конкордат определил место церкви в итальянском государстве.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'Zanichelli, Corso di diritto: I Patti Lateranensi (PDF)', url: 'https://online.scuola.zanichelli.it/corsodiritto/files/2012/04/B2-PattiLateranensi.pdf' },
+      { kind: 'institution', label: 'Vatican News: I novant\'anni dei Patti Lateranensi', url: 'https://www.vaticannews.va/it/vaticano/news/2019-02/patti-lateranensi-anniversario-papa-pacelli.print.html' },
+    ],
+  },
+  {
+    id: 'rel-caporetto-vittorio-veneto',
+    from: 'it-caporetto-1917',
+    to: 'it-vittorio-veneto-1918',
+    kind: 'context',
+    label: 'От разгрома к победе на итальянском фронте',
+    detail: `
+Прорыв при Капоретто 24 октября 1917 года стал крупнейшим поражением Италии в войне.
+
+Ровно через год, 24 октября 1918 года, итальянская армия начала наступление при Витторио-Венето, которое обрушило австро-венгерский фронт и закончилось перемирием на вилле Джусти 3–4 ноября. Два сражения — начало и конец последнего года войны на итальянском фронте.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'University of East Anglia: Truth and fake news about Caporetto', url: 'https://ueaeprints.uea.ac.uk/id/eprint/68278/' },
+      { kind: 'archive', label: 'The National Archives (UK): Milestones to peace — the Armistice of Villa Giusti', url: 'https://blog.nationalarchives.gov.uk/milestones-peace-armistice-villa-giusti' },
+    ],
+  },
+  {
+    id: 'rel-villa-giusti-compiegne',
+    from: 'it-vittorio-veneto-1918',
+    to: 'ref-p077-podpisanie-peremiriya-mezhdu-germaniey-i-s',
+    kind: 'context',
+    label: 'Перемирие с Австро-Венгрией на неделю опередило германское',
+    detail: `
+Австро-Венгрия попросила перемирия после разгрома при Витторио-Венето; оно было подписано 3 ноября 1918 года на вилле Джусти и вступило в силу 4 ноября.
+
+Германия, лишившаяся последнего крупного союзника, подписала перемирие с Антантой 11 ноября. Перемирия осени 1918 года — звенья одного процесса выхода Центральных держав из войны.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'The National Archives (UK): Milestones to peace — the Armistice of Villa Giusti', url: 'https://blog.nationalarchives.gov.uk/milestones-peace-armistice-villa-giusti' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Armistice of Villa Giusti', url: 'https://en.wikipedia.org/wiki/Armistice_of_Villa_Giusti' },
+    ],
+  },
+  {
+    id: 'rel-fasci-march-rome',
+    from: 'ref-p078-sozdanie-soyuza-borby-v-italii',
+    to: 'ref-p080-prihod-k-vlasti-fashistov-v-italii',
+    kind: 'influence',
+    label: 'Из «Союзов борьбы» выросла партия, пришедшая к власти',
+    detail: `
+Движение, основанное Муссолини в Милане 23 марта 1919 года, в 1921 году стало Национальной фашистской партией со своими вооружёнными отрядами.
+
+Именно угроза похода этих отрядов на столицу в октябре 1922 года и отказ короля применить против них силу привели Муссолини на пост премьер-министра.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'SIAS — Sistema informativo degli Archivi di Stato: Partito nazionale fascista — PNF, 1921–1943', url: 'https://sias-archivi.cultura.gov.it/cgi-bin/pagina.pl?TipoPag=profist&Chiave=493' },
+      { kind: 'encyclopedia', label: 'Britannica: March on Rome', url: 'https://www.britannica.com/event/March-on-Rome' },
+    ],
+  },
+  {
+    id: 'rel-march-rome-vs-1933',
+    from: 'ref-p080-prihod-k-vlasti-fashistov-v-italii',
+    to: 'de-1933',
+    kind: 'comparison',
+    label: 'Два назначения: Муссолини в 1922-м и Гитлер в 1933-м',
+    detail: `
+И в Италии, и в Германии лидер радикального движения пришёл к власти не через переворот, а по назначению главы государства, причём первое правительство было коалиционным.
+
+Сравнение полезно, чтобы увидеть общую черту: старые элиты рассчитывали «приручить» новую силу, включив её в правительство. Связь здесь — аналитическое сопоставление, а не утверждение о прямом влиянии одного события на другое.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'R. J. B. Bosworth. Mussolini\'s Italy: Life under the Dictatorship, 1915–1945. Allen Lane, 2005', url: 'https://catalog.nypl.org/search/i0713996978' },
+      { kind: 'encyclopedia', label: 'Britannica: March on Rome', url: 'https://www.britannica.com/event/March-on-Rome' },
+    ],
+  },
+  {
+    id: 'rel-adwa-ethiopia-1935',
+    from: 'ref-p074-italo-efiopskaya-voyna',
+    to: 'ref-p084-napadenie-italii-na-abissiniyu-efiopiyu-vt',
+    kind: 'context',
+    label: 'Вторая попытка Италии завоевать Эфиопию',
+    detail: `
+В 1896 году Эфиопия отразила первое итальянское вторжение и осталась одной из немногих независимых стран Африки.
+
+В 1935 году фашистская Италия вновь напала на Эфиопию, на этот раз с авиацией, моторизованными частями и химическим оружием, и в мае 1936 года захватила Аддис-Абебу. Две войны — два этапа итальянской колониальной политики в Восточной Африке.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'New World Encyclopedia: Second Italo-Ethiopian War', url: 'https://www.newworldencyclopedia.org/entry/Second_Italo-Ethiopian_War' },
+      { kind: 'academic', label: 'Mussolini, Mustard Gas and the Fascist Way of War: Ethiopia, 1935–1936 (ISBN 9781399051668)' },
+    ],
+  },
+  {
+    id: 'rel-ethiopia-league-exit',
+    from: 'ref-p084-napadenie-italii-na-abissiniyu-efiopiyu-vt',
+    to: 'ref-p085-vyhod-italii-iz-ligi-naciy',
+    kind: 'influence',
+    label: 'Санкции за Эфиопию привели к разрыву с Лигой Наций',
+    detail: `
+В октябре 1935 года Совет Лиги Наций признал, что Италия, напав на Эфиопию, нарушила Устав, и страны-члены ввели против неё санкции. Санкции не остановили войну и в июле 1936 года были отменены.
+
+Разрыв, однако, состоялся: 11 декабря 1937 года по решению Большого фашистского совета Италия объявила о выходе из Лиги.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Treaty of Versailles: Annotations of the Text — комментарий к Уставу Лиги Наций (University of Wisconsin Digital Collections)', url: 'https://search.library.wisc.edu/digital/AFYWAJO47JO4AT8Z/text/AJ74KJ7QLEHX7Q8L' },
+      { kind: 'institution', label: 'Learning on Screen: Il Duce announces Italy\'s withdrawal from the League of Nations', url: 'https://learningonscreen.ac.uk/newsonscreen/search/index.php/story/8297' },
+    ],
+  },
+  {
+    id: 'rel-ethiopia-league-weakness',
+    from: 'ref-p084-napadenie-italii-na-abissiniyu-efiopiyu-vt',
+    to: 'ref-p078-sozdanie-ligi-naciy',
+    kind: 'context',
+    label: 'Абиссинский кризис показал слабость Лиги Наций',
+    detail: `
+И Италия, и Эфиопия были членами Лиги Наций. Лига признала Италию нарушителем Устава и ввела санкции, но не смогла ни остановить войну, ни защитить Эфиопию.
+
+Именно этим конфликтом в истории Лиги чаще всего иллюстрируют пределы системы коллективной безопасности, созданной в 1919 году.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'encyclopedia', label: 'New World Encyclopedia: Second Italo-Ethiopian War', url: 'https://www.newworldencyclopedia.org/entry/Second_Italo-Ethiopian_War' },
+      { kind: 'archive', label: 'Treaty of Versailles: Annotations of the Text — комментарий к Уставу Лиги Наций (University of Wisconsin Digital Collections)', url: 'https://search.library.wisc.edu/digital/AFYWAJO47JO4AT8Z/text/AJ74KJ7QLEHX7Q8L' },
+    ],
+  },
+  {
+    id: 'rel-fall-1943-armistice',
+    from: 'it-fall-mussolini-1943',
+    to: 'ref-p098-podpisanie-italiey-peremiriya-s-anglo-amer',
+    kind: 'influence',
+    label: 'Правительство Бадольо вывело Италию из войны',
+    detail: `
+После отставки и ареста Муссолини 25 июля 1943 года король назначил главой правительства маршала Пьетро Бадольо.
+
+Новое правительство распустило фашистскую партию и начало тайные переговоры с союзниками, которые закончились перемирием, объявленным 8 сентября 1943 года.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'ANPI, Patria Indipendente: 25 luglio 1943, la caduta di Mussolini (PDF)', url: 'https://www.anpi.it/patria-indipendente/media/uploads/patria/2012/PATRIAluglio_Della_Valle_25_luglio_1943_pag32-35.pdf' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Fall of the Fascist regime in Italy', url: 'https://en.wikipedia.org/wiki/Fall_of_the_Fascist_regime_in_Italy' },
+    ],
+  },
+  {
+    id: 'rel-liberation-republic',
+    from: 'it-liberation-1945',
+    to: 'it-republic-1946',
+    kind: 'context',
+    label: 'От освобождения к республике',
+    detail: `
+Освобождение Северной Италии в апреле 1945 года завершило войну на полуострове и открыло переходный период, в котором решалась судьба государства.
+
+Через год, 2–3 июня 1946 года, на референдуме большинство итальянцев высказалось за республику, а избранное тогда же Учредительное собрание написало конституцию, вступившую в силу 1 января 1948 года.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Camera dei deputati, Portale storico: Guerra e ricostituzione — cronologia', url: 'https://storia.camera.it/cronologia/leg-transizione-ricostituzione/elenco' },
+      { kind: 'archive', label: 'Archivio di Stato di Asti: каталог выставки «2 giugno 1946» (PDF)', url: 'https://archiviodistatoasti.cultura.gov.it/fileadmin/risorse/ASAT_DOWNLOADS/Pubblicazioni/Catalogo_2_giugno_1946.pdf' },
+    ],
+  },
 ];
 
 /** Быстрый доступ к связям по идентификатору объекта. */
