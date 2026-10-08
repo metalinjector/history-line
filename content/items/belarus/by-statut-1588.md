@@ -8,5 +8,8 @@ sources:
     url: "https://www.nlb.by/"
   - kind: encyclopedia
     label: "Беларуская энцыклапедыя: Статут ВКЛ 1588"
+  - kind: institution
+    label: "Национальный правовой интернет-портал Республики Беларусь: Статуты ВКЛ"
+    url: "https://pravo.by/pravovaya-informatsiya/pomniki-gistoryi-prava-belarusi/"
 ---
 

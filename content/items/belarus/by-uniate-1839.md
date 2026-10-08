@@ -1,0 +1,12 @@
+---
+id: by-uniate-1839
+sources:
+  - kind: archive
+    label: "Соборный акт Полоцкого собора 1839 года — публикация текста"
+  - kind: academic
+    label: "Репозиторий Могилёвского государственного университета имени А. А. Кулешова: статьи о ликвидации унии"
+    url: "https://libr.msu.by/bitstream/123456789/3183/1/2064m.pdf"
+  - kind: encyclopedia
+    label: "Циклопедия: Иосиф Семашко (1799—1868)"
+    url: "https://cyclowiki.org/wiki/%D0%98%D0%BE%D1%81%D0%B8%D1%84_%D0%A1%D0%B5%D0%BC%D0%B0%D1%88%D0%BA%D0%BE_(1799%E2%80%941868)"
+---
