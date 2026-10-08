@@ -1,6 +1,16 @@
 ---
 id: ref-p028-pravlenie-imperatora-yustiniana
 sources:
-  - label: "В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. 28."
-    kind: reference
+  - kind: institution
+    label: "Université Grenoble Alpes, Droit romain: Corpus iuris civilis"
+    url: "https://droitromain.univ-grenoble-alpes.fr/corpjurciv.htm"
+  - kind: institution
+    label: "Western Civilization (Lumen Learning, LibreTexts): 8.4 The Justinian Code"
+    url: "https://chem.libretexts.org/Courses/Lumen_Learning/Book%3A_Western_Civilization_(Lumen)/Ch._07_The_Byzantine_Empire/08.4%3A_The_Justinian_Code"
+  - kind: encyclopedia
+    label: "Wikipedia: Justinian I"
+    url: "https://Www.wikipedia.org/wiki/Justinian"
+  - kind: encyclopedia
+    label: "Wikipedia: Corpus Juris Civilis"
+    url: "https://en.wikipedia.org/wiki/Corpus_Juris_Civilis"
 ---

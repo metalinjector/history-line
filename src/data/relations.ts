@@ -3440,6 +3440,196 @@ X съезд РКП(б) в марте 1921 года заменил развёр�
       { kind: 'encyclopedia', label: 'Infopédia: Revolução da Catalunha', url: 'https://www.infopedia.pt/artigos/$revolucao-da-catalunha' },
     ],
   },
+  {
+    id: 'rel-rome-expulsion-republic',
+    from: 'ref-p022-izgnanie-poslednego-carya-iz-rima',
+    to: 'ref-p022-ustanovlenie-respubliki',
+    kind: 'influence',
+    label: 'Изгнание царя заменило его двумя выборными консулами',
+    detail: `
+По рассказу Тита Ливия, Брут после смерти Лукреции призвал римлян немедленно упразднить царскую власть и поклялся не допускать в Риме ничьего царствования.
+
+Механизм прямой: место пожизненного царя заняли два консула, которых избирали на один год и которые исполняли решения сената. Первыми консулами традиция называет вождей переворота — Брута и Коллатина.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Тит Ливий. История Рима от основания города, I, 58–59 (пер. W. M. Roberts; Perseus / Perseids)', url: 'https://cts.perseids.org/read/latinLit/phi0914/phi001/perseus-eng3/1.58.2-1.59.3' },
+      { kind: 'institution', label: 'Boundless World History (SUNY, Lumen Learning): The Establishment of the Roman Republic', url: 'https://courses.lumenlearning.com/suny-worldhistory/?p=1163' },
+    ],
+  },
+  {
+    id: 'rel-rome-patricians-tribunes',
+    from: 'ref-p022-ustanovlenie-respubliki',
+    to: 'ref-p022-ustanovlenie-dolzhnosti-narodnyh-tribunov-',
+    kind: 'influence',
+    label: 'Власть патрициев вызвала уход плебеев и появление трибунов',
+    detail: `
+В ранней республике все ежегодные магистраты были патрициями, и плебеи, обременённые долгами, не могли добиться защиты через существующие должности.
+
+Ответом стала сецессия 494 года до н. э.: по соглашению плебеи получили собственных должностных лиц — неприкосновенных трибунов с правом защищать плебея от консулов. Так в республиканском устройстве появился противовес власти патрицианских магистратов.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Тит Ливий. История Рима от основания города, II, 33 (пер. W. M. Roberts; Perseus / Perseids)', url: 'https://cts.perseids.org/read/latinLit/phi0914/phi001/perseus-eng3/2.33.2-2.33.7' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Tribune', url: 'https://en.wikipedia.org/wiki/Tribune' },
+    ],
+  },
+  {
+    id: 'rel-rome-tribunes-licinian',
+    from: 'ref-p022-ustanovlenie-dolzhnosti-narodnyh-tribunov-',
+    to: 'ref-p023-uravnenie-plebeev-v-pravah-s-patriciyami',
+    kind: 'influence',
+    label: 'Трибунат помог плебеям добиться консульства',
+    detail: `
+Законы 367 года до н. э. провели народные трибуны Гай Лициний и Луций Секстий. Тит Ливий пишет, что они добивались трибуната как пути к другим должностям и, заняв его, внесли законы о долгах, о земле и о консуле-плебее.
+
+Должность, созданная в 494 году для защиты отдельных плебеев, через век с лишним стала инструментом законодательных реформ.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Тит Ливий. История Рима от основания города, VI, 34–35 (пер. W. M. Roberts; Perseus / Perseids)', url: 'https://cts.perseids.org/read/latinLit/phi0914/phi001/perseus-eng3/6.34.7-6.35.8' },
+      { kind: 'academic', label: 'McKay J. P. et al. Understanding World Societies (Bedford/St. Martin\'s): Social Conflict in Rome', url: 'https://digfir-published.macmillanusa.com/mckayworldunderstanding2e/mckayworldunderstanding2e_ch6_8.html' },
+    ],
+  },
+  {
+    id: 'rel-rome-twelve-tables-licinian',
+    from: 'ref-p022-prinyatie-zakonov-xii-tablic',
+    to: 'ref-p023-uravnenie-plebeev-v-pravah-s-patriciyami',
+    kind: 'context',
+    label: 'Два этапа борьбы патрициев и плебеев',
+    detail: `
+Обе реформы — части одного процесса, который историки называют борьбой сословий. Законы XII таблиц были записаны по настоянию плебеев, которые не могли проверить справедливость судов по неписаному обычаю; законы Лициния и Секстия открыли им доступ к консульству.
+
+Завершилась борьба в 287 году до н. э., когда решения плебейского собрания стали обязательны для всех граждан.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'academic', label: 'McKay J. P. et al. Understanding World Societies (Bedford/St. Martin\'s): Social Conflict in Rome', url: 'https://digfir-published.macmillanusa.com/mckayworldunderstanding2e/mckayworldunderstanding2e_ch6_8.html' },
+      { kind: 'encyclopedia', label: 'Britannica: Law of the Twelve Tables', url: 'https://www.britannica.com/print/article/610934' },
+    ],
+  },
+  {
+    id: 'rel-rome-italy-pyrrhus',
+    from: 'ref-p022-ekspansiya-rima-na-apenninskom-poluostrove',
+    to: 'ref-p023-razgrom-rimlyanami-grecheskogo-voyska-vo-g',
+    kind: 'influence',
+    label: 'Продвижение Рима на юг заставило Тарент позвать Пирра',
+    detail: `
+Покоряя Италию, Рим дошёл до греческих городов юга полуострова. Тарент позвал на помощь против Рима эпирского царя Пирра.
+
+Пирр выиграл два сражения, но, по Плутарху, потери были так велики, что ещё одна такая победа погубила бы его. После Беневента он ушёл, а в 272 году до н. э. Тарент сдался, и римское завоевание дошло до юга Италии.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Плутарх. Пирр, 20–21 (пер. B. Perrin; Perseus / Perseids)', url: 'https://cts.perseids.org/read/greekLit/tlg0007/tlg030/perseus-eng2/20.4-21.9' },
+      { kind: 'encyclopedia', label: 'EBSCO Research Starters: Pyrrhus', url: 'https://www.ebsco.com/research-starters/history/pyrrhus/' },
+    ],
+  },
+  {
+    id: 'rel-rome-italy-first-punic',
+    from: 'ref-p022-ekspansiya-rima-na-apenninskom-poluostrove',
+    to: 'ref-p024-pervaya-punicheskaya-voyna',
+    kind: 'context',
+    label: 'Покорив Италию, Рим в том же году вышел на Сицилию',
+    detail: `
+Сопротивление в Этрурии было сломлено в 265–264 годах до н. э. В том же 264 году началась Первая Пуническая война, и римское войско впервые воевало за пределами Апеннинского полуострова.
+
+Совпадение дат показывает смену масштаба: италийская держава сразу стала претендентом на первенство в Западном Средиземноморье.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'University of Oregon, курс по истории Римской республики: Summary of Important Events in Rome\'s Conquest of Italy', url: 'https://darkwing.uoregon.edu/~klio/republic/lect4events.htm' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Roman expansion in Italy', url: 'https://en.wikipedia.org/wiki/Roman_expansion_in_Italy' },
+    ],
+  },
+  {
+    id: 'rel-rome-treaty-201-third-punic',
+    from: 'ref-p024-vtoraya-punicheskaya-voyna',
+    to: 'ref-p024-tretya-punicheskaya-voyna-gibel-karfagena',
+    kind: 'influence',
+    label: 'Мир 201 года связал Карфаген и дал Риму повод к войне',
+    detail: `
+По миру, завершившему Вторую Пуническую войну, Карфаген не имел права воевать без разрешения Рима. Нумидийский царь Масинисса, союзник Рима, пользовался этим и захватывал карфагенские земли.
+
+Когда в 149 году до н. э. Карфаген выступил против Масиниссы, римская армия высадилась в Африке. Карфагеняне сдали оружие, но получили требование покинуть город, а затем осаду, закончившуюся его разрушением.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Аппиан. Римская история: Пунические войны, 10–11 (пер. H. White; Perseus / Perseids)', url: 'https://cts.perseids.org/read/greekLit/tlg0551/tlg009/perseus-eng2/10.70-11.79' },
+      { kind: 'encyclopedia', label: 'Wikipedia: 201 BC', url: 'https://en.wikipedia.org/wiki/201_BC' },
+      { kind: 'encyclopedia', label: 'Britannica: Third Punic War', url: 'https://www.britannica.com/event/Third-Punic-War' },
+    ],
+  },
+  {
+    id: 'rel-rome-marius-armies',
+    from: 'ref-p025-nachalo-voennoy-reformy-gaya-mariya',
+    to: 'ref-p026-grazhdanskaya-voyna-v-rime',
+    kind: 'context',
+    label: 'Армия неимущих и гражданские войны конца республики',
+    detail: `
+Марий в 107 году до н. э. набрал в легионы добровольцев, в основном неимущих. Саллюстий объяснял это так: тому, кто стремится к власти, полезнее всего бедняк, которому нечего терять и для которого достойно всё, за что платят.
+
+Учебник McKay рассматривает этот набор в разделе о политическом насилии поздней республики. Связь с войной Цезаря и Помпея — не прямая причинность, а общий процесс: солдаты всё больше зависели от командира, а не от сената.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Саллюстий. Югуртинская война, 86 (Lexundria)', url: 'https://lexundria.com/sal_jug/86/r' },
+      { kind: 'academic', label: 'McKay J. P. et al. A History of Western Society (Bedford/St. Martin\'s), гл. 5: Political Violence', url: 'https://digfir-published.macmillanusa.com/mckaywest11e/mckaywest11e_ch5_31.html' },
+    ],
+  },
+  {
+    id: 'rel-rome-tiberius-gaius',
+    from: 'ref-p025-reforma-tiberiya-grakha',
+    to: 'ref-p025-reformy-gaya-grakha',
+    kind: 'influence',
+    label: 'Гай Гракх продолжил дело брата',
+    detail: `
+По Плутарху, землю по закону Тиберия делила комиссия из трёх человек, в которую входил и его младший брат Гай. После убийства Тиберия комиссия продолжила работу, и за несколько лет была распределена значительная часть общественной земли.
+
+Через десять лет Гай, став народным трибуном, выдвинул ещё более широкую программу — от продажи зерна по низкой цене до передачи судов всадникам — и, как и брат, погиб в столкновении с противниками в сенате.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Плутарх. Тиберий Гракх, 12–13 (пер. B. Perrin; Perseus / Perseids)', url: 'https://cts.perseids.org/read/greekLit/tlg0007/tlg052/perseus-eng1/Tiberius.12.4-Tiberius.13.1' },
+      { kind: 'academic', label: 'Hunt L. et al. The Making of the West (Bedford/St. Martin\'s), гл. 5', url: 'https://digfir-published.macmillanusa.com/hunt5e/hunt5e_ch05_23.html' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Tiberius Gracchus', url: 'https://en.wikipedia.org/wiki/Tiberius_Gracchus' },
+    ],
+  },
+  {
+    id: 'rel-rome-civil-war-murder',
+    from: 'ref-p026-grazhdanskaya-voyna-v-rime',
+    to: 'ref-p026-ubiystvo-yuliya-cezarya',
+    kind: 'context',
+    label: 'Пожизненная диктатура и заговор сенаторов',
+    detail: `
+Победа в гражданской войне сделала Цезаря единственным хозяином Рима, и в начале 44 года до н. э. сенат объявил его пожизненным диктатором. Заговорщики, по их собственным словам, боялись, что такая концентрация власти уничтожает республику.
+
+Светоний пишет, что в заговоре участвовало больше шестидесяти человек; через месяц после провозглашения пожизненной диктатуры Цезарь был убит.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'archive', label: 'Светоний. Божественный Юлий, 82 (Lexundria)', url: 'https://lexundria.com/suet_jul/82/r' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Assassination of Julius Caesar', url: 'https://en.wikipedia.org/wiki/Assassination_of_Julius_Caesar' },
+    ],
+  },
+  {
+    id: 'rel-byz-1204-1261',
+    from: 'ref-p034-zahvat-krestonoscami-konstantinopolya',
+    to: 'ref-p034-vosstanovlenie-vizantiyskoy-imperii',
+    kind: 'influence',
+    label: 'Никейская империя, возникшая после 1204 года, вернула столицу',
+    detail: `
+После взятия Константинополя крестоносцами византийская знать создала несколько независимых государств; одним из них стала Никейская империя в Малой Азии. Латинская империя, основанная победителями, продержалась лишь до 1261 года.
+
+Именно никейский правитель Михаил VIII Палеолог готовил возвращение столицы, а его полководец Алексей Стратегопул в 1261 году взял город. Так государство-наследник, возникшее из катастрофы 1204 года, восстановило империю.
+`,
+    verification: 'verified',
+    sources: [
+      { kind: 'institution', label: 'Foundation of the Hellenic World, Chronos: возвращение Константинополя', url: 'https://www.fhw.gr/chronos/10/en/p/pb2/pb2b.html' },
+      { kind: 'institution', label: 'Dumbarton Oaks: Rulers of Byzantium — Michael VIII Palaiologos (1261–82)', url: 'https://www.doaks.org/resources/online-exhibits/gods-regents-on-earth-a-thousand-years-of-byzantine-imperial-seals/rulers-of-byzantium/michael-viii-palaiologos-1261-82' },
+      { kind: 'encyclopedia', label: 'Wikipedia: Sack of Constantinople', url: 'https://en.wikipedia.org/wiki/Sack_of_Constantinople' },
+    ],
+  },
 ];
 
 /** Быстрый доступ к связям по идентификатору объекта. */

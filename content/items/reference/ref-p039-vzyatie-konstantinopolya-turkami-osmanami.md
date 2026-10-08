@@ -1,6 +1,9 @@
 ---
 id: ref-p039-vzyatie-konstantinopolya-turkami-osmanami
 sources:
-  - label: "В. С. Кошелев, Н. В. Кошелева. Всемирная история. 5–11 классы. 6-е изд. Минск: Аверсэв, 2025. С. 39."
-    kind: reference
+  - kind: institution
+    label: "Koç University Libraries: Byzantine Constantinople — Fall of Constantinople 1453"
+    url: "https://libguides.ku.edu.tr/byzantineconstantinople/fallofconstantinople-1453"
+  - kind: academic
+    label: "Crowley R. 1453 — монография об осаде Константинополя Мехмедом II"
 ---
