@@ -9,6 +9,8 @@ import type { SourceLink, TimelineItem } from '../types';
 import { stories } from './stories';
 import { contentManifest, relationContentManifest, withContent, withRelationContent } from './content';
 import { referenceItems } from './items/reference';
+import rawReferenceItems from './items/reference.json';
+import { referenceCorrections } from './referenceCorrections';
 
 const sourceKinds = new Set<SourceLink['kind']>(['archive', 'academic', 'institution', 'encyclopedia', 'reference']);
 
@@ -140,6 +142,33 @@ describe('historical data integrity', () => {
 
   it('keeps item fields and dates inside the domain contract', () => {
     fullItems.forEach(expectValidItem);
+  });
+
+  it('applies every reference correction to a real record and keeps none that are stale', () => {
+    const rawById = new Map(rawReferenceItems.map((item) => [item.id, item]));
+    for (const [id, correction] of Object.entries(referenceCorrections)) {
+      const raw = rawById.get(id);
+      expect(raw, `${id}: нет такой записи в reference.json`).toBeDefined();
+      // Поправка без поправляемого — мусор: импорт уже исправлен, запись надо убрать.
+      const changed = Object.entries(correction).filter(
+        ([key, value]) => (raw as Record<string, unknown>)[key] !== value,
+      );
+      expect(changed.length, `${id}: поправка ничего не меняет`).toBeGreaterThan(0);
+      if (correction.country) expect(allCountryIds, `${id}: линия`).toContain(correction.country);
+    }
+    // Слитая запись (referenceMerges) со шкалы ушла — поправлять её бессмысленно.
+    for (const id of Object.keys(referenceCorrections)) {
+      expect(baseIds.has(id), `${id}: записи нет на шкале`).toBe(true);
+    }
+  });
+
+  it('keeps authored people with their life dates', () => {
+    for (const item of fullItems) {
+      // Шаги биографического слоя — события одной жизни; годы жизни стоят в подзаголовке слоя.
+      if (item.kind === 'person' && !item.layerId && !item.id.startsWith('ref-')) {
+        expect(item.life?.trim().length ?? 0, `${item.id}: у деятеля нет годов жизни`).toBeGreaterThan(3);
+      }
+    }
   });
 
   it('keeps the content summary in step with the full content', () => {

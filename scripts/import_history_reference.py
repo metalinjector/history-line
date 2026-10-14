@@ -164,101 +164,128 @@ WRAPPED_TITLES: dict[str, tuple[str, str]] = {
 }
 
 COUNTRY_RULES: list[tuple[str, tuple[str, ...]]] = [
-    ("germany", ("германи", "германск", "гитлер", "веймар", "фрг", "гдр", "берлин", "рейнск")),
-    ("england", ("англи", "великобрит", "британ", "стюарт", "кромвел", "хартия вольностей")),
-    ("france", ("франц", "париж", "наполеон", "бастили", "орлеан", "авиньон")),
-    ("russia", ("росси", "ссср", "советск", "рсфср", "москв", "ленинград", "петербург", "петр i", "екатерин")),
+    ("germany", ("германи", "германск", "гитлер", "веймар", "фрг", "гдр", "берлин", "рейнск", "немецк", "прусси", "баварск", "рентген")),
+    ("england", ("англи", "великобрит", "британ", "стюарт", "кромвел", "хартия вольностей", "мора утопия")),
+    ("france", ("франц", "париж", "наполеон", "бастили", "орлеан", "авиньон", "луи бонапарт", "декларация прав человека")),
+    ("russia", ("росси", "ссср", "советск", "рсфср", "москв", "ленинград", "петербург", "петр i", "петра i", "петром i", "екатерин",
+                "ленин", "сталин", "горбачев", "путин", "кпсс", "рсдрп", "ивана калиты", "ивана iii", "ивана iv", "судебник",
+                "избранной рады", "земского собора", "ливонск", "годунов", "болотников", "соборного уложения", "разина",
+                "северная война", "табели рангах", "русской армии", "крымская", "русско японск", "кровавое воскресенье", "московск",
+                "курская битва", "маньчжурская операция")),
     ("belarus", ("беларус", "белорус", "бсср", "полоц", "туров", "чернобыл")),
     ("spain", ("испани", "кастили", "арагон", "реконкист", "пиренейск")),
-    ("china", ("кита", "кнр", "пекин", "цин", "конфуц", "тяньаньмэнь")),
+    ("china", ("кита", "кнр", "пекин", "цин", "конфуц", "тяньаньмэнь", "мао цзэдун", "ху яобан", "чжао цзыян", "кпк")),
     ("japan", ("япони", "токуга", "фукусим", "маньчжоу-го")),
-    ("usa", ("сша", "соединенн", "американск", "трумэн", "маршалл", "вашингтон")),
+    ("usa", ("сша", "соединенн", "американск", "трумэн", "маршалл", "вашингтон", "конгрессом", "гомстед")),
     ("italy", ("итали", "римск поход", "муссолини")),
-    ("austria", ("австри", "габсбург")),
+    ("japan", ("сан францисск",)),
+    ("austria", ("австри", "габсбург", "австро венгерск")),
+    ("south-africa", ("юар", "южно африкан", "капской колони", "кейптаун", "англо бурск")),
     ("netherlands", ("нидерланд", "голланд")),
-    ("portugal", ("португал")),
+    ("portugal", ("португал", "васко да гам")),
     ("poland", ("польш", "польск")),
-    ("czechia", ("чехослова", "чехи", "пражск", "богеми")),
-    ("slovakia", ("словаки")),
-    ("hungary", ("венгр", "будапешт")),
+    ("czechia", ("чехослова", "чехи", "пражск", "богеми", "яна гуса", "гуситск")),
+    ("slovakia", ("словаки",)),
+    ("hungary", ("венгр", "венгерск", "будапешт")),
     ("romania", ("румын", "трансильван")),
-    ("bulgaria", ("болгар")),
-    ("serbia", ("серби", "югослав", "косов")),
-    ("croatia", ("хорват")),
-    ("greece", ("грец", "греци")),
-    ("albania", ("албани")),
+    ("bulgaria", ("болгар",)),
+    ("serbia", ("серби", "сербск", "югослав", "косов")),
+    ("croatia", ("хорват",)),
+    ("greece", ("грец", "греци", "греков")),
+    ("albania", ("албани",)),
     ("finland", ("финлянд", "финск")),
-    ("denmark", ("дани")),
-    ("estonia", ("эстони")),
-    ("latvia", ("латви")),
+    ("denmark", ("дания", "датск")),
+    ("estonia", ("эстони",)),
+    ("latvia", ("латви",)),
     ("lithuania", ("литв", "вкл", "кревск")),
-    ("ukraine", ("украин")),
+    ("ukraine", ("украин",)),
     ("turkey", ("турци", "турецк", "кемал", "анкар")),
     ("iran", ("иран", "пехлев", "персидск залив")),
     ("iraq", ("ирак", "багдад")),
     ("israel", ("государства израиль", "с израил", "израильск")),
-    ("syria", ("сири")),
-    ("lebanon", ("ливан")),
-    ("kuwait", ("кувейт")),
+    ("syria", ("сири",)),
+    ("lebanon", ("ливан",)),
+    ("kuwait", ("кувейт",)),
     ("egypt", ("суэц", "современн егип", "египет, ирак")),
     ("india", ("инди", "ганди", "амритсар", "британской индии")),
-    ("pakistan", ("пакистан")),
-    ("bangladesh", ("бангладеш")),
+    ("pakistan", ("пакистан",)),
+    ("bangladesh", ("бангладеш",)),
     ("vietnam", ("вьетнам", "дрв", "индокитай")),
     ("korea", ("корей", "коре")),
     ("cambodia", ("камбодж", "кампучи", "пол пот")),
     ("mongolia", ("монгольской народной", "монголи")),
-    ("cuba", ("куб", "кастро", "карибский кризис")),
+    ("cuba", ("куб", "кастро")),
     ("nicaragua", ("никарагу", "сандинист")),
-    ("chile", ("чили")),
+    ("chile", ("чили",)),
     ("brazil", ("бразили", "рио-де-жанейро")),
-    ("argentina", ("аргентин")),
-    ("mexico", ("мексик")),
-    ("colombia", ("колумби")),
-    ("panama", ("панам")),
-    ("peru", ("перу")),
-    ("algeria", ("алжир")),
-    ("south-africa", ("юар", "южно-африкан", "капской колони")),
-    ("congo", ("конго")),
-    ("morocco", ("марокк")),
-    ("tunisia", ("тунис")),
-    ("nigeria", ("нигери")),
-    ("cyprus", ("кипр")),
-    ("afghanistan", ("афган")),
+    ("argentina", ("аргентин",)),
+    ("mexico", ("мексик",)),
+    ("colombia", ("колумби",)),
+    ("panama", ("панам",)),
+    ("peru", ("перу",)),
+    ("algeria", ("алжир",)),
+    ("congo", ("конго",)),
+    ("morocco", ("марокк",)),
+    ("tunisia", ("тунис",)),
+    ("nigeria", ("нигери",)),
+    ("cyprus", ("кипр",)),
+    ("afghanistan", ("афган",)),
     ("ethiopia", ("эфиоп", "абиссин")),
 ]
 
 HISTORICAL_RULES: list[tuple[str, tuple[str, ...]]] = [
-    ("ancient-egypt", ("древн егип", "фараон", "нижнего и верхнего егип", "пирамид", "тутмос", "эхнатон", "рамсес", "гиксос")),
+    ("ancient-egypt", ("древн егип", "фараон", "нижнего верхнего егип", "пирамид", "тутмос", "эхнатон", "рамсес", "гиксос",
+                       "царство египте", "ослабления египта", "завоевание египта")),
     ("mesopotamia", ("месопотам", "шумер", "долине тигра", "междуречь")),
-    ("phoenicia", ("финики")),
-    ("elam", ("элам")),
-    ("hittites", ("хетт")),
-    ("ancient-israel", ("царства израиль", "иудейск", "царя соломон")),
-    ("assyria", ("ассири", "ниневи")),
+    ("phoenicia", ("финики",)),
+    ("elam", ("элам",)),
+    ("hittites", ("хетт",)),
+    ("ancient-israel", ("царства израиль", "иудейск", "царя соломон", "израильского царства")),
+    ("assyria", ("ассири", "ниневи", "ашшур")),
     ("babylonia", ("вавилон", "хаммурапи", "навуходонос")),
-    ("achaemenid-persia", ("ахеменид", "персидская держава", "дария i")),
-    ("ancient-macedonia", ("александр македон", "македонского царя филипп", "македонск царств")),
-    ("ancient-rome", ("рима", "римлян", "римской импер", "римск республи", "пуническ", "цезар", "октавиан", "спартак", "ганнибал")),
+    ("achaemenid-persia", ("ахеменид", "персидская держава", "дария i", "союза персов")),
+    ("ancient-macedonia", ("александр македон", "александра македон", "македонского царя филипп", "македонск царств")),
     ("byzantium", ("византи", "константинопол", "юстиниан")),
+    ("ancient-rome", ("рима", "римлян", "римской импер", "римск республи", "пуническ", "цезар", "октавиан", "спартак", "ганнибал")),
     ("frankish-empire", ("франкск импер", "карла велик", "верден")),
-    ("arab-caliphate", ("арабск халифат", "мухаммед", "мекки в медину")),
-    ("holy-roman-empire", ("священной римской импер")),
+    ("arab-caliphate", ("арабск халифат", "арабского халифата", "мухаммед", "мекки медину")),
+    ("holy-roman-empire", ("священной римской импер",)),
     ("kievan-rus", ("древнерус", "на руси", "батыя на русь", "князя владимир", "ярослава мудр", "любечск", "невск")),
-    ("mongol-empire", ("чингисхан", "монгольск государ", "монгольск поход", "вторжение монгол")),
-    ("khwarezm", ("хорезм")),
-    ("delhi-sultanate", ("делийск султанат")),
+    ("mongol-empire", ("чингисхан", "монгольск государ", "монгольского государства", "монгольск поход", "вторжение монгол")),
+    ("khwarezm", ("хорезм",)),
+    ("delhi-sultanate", ("делийск султанат", "делийского султаната")),
     ("timurid-empire", ("тимур", "тамерлан")),
-    ("ottoman-empire", ("осман", "сулейман великолеп")),
+    ("ottoman-empire", ("осман", "сулейман великолеп", "сулеймана великолеп", "русско турецк")),
     ("mughal-empire", ("великих могол", "тадж-махал")),
-    ("olmec", ("ольмек")),
-    ("aztec", ("ацтек")),
-    ("inca", ("инк")),
-    ("songhai", ("сонгай")),
+    ("olmec", ("ольмек",)),
+    ("aztec", ("ацтек",)),
+    ("inca", ("инков", "инки")),
+    ("songhai", ("сонгай",)),
     ("kingdom-kongo", ("государства конго", "королевство конго")),
 ]
 
+# Phrases that name the line unambiguously even though a broader marker
+# («НАТО», «советск», «американск») would otherwise win. Checked first.
+PRIORITY_RULES: list[tuple[str, tuple[str, ...]]] = [
+    ("greece", ("восстание греков",)),
+    ("bulgaria", ("независимости болгарии",)),
+    ("hungary", ("венгерская советская",)),
+    ("germany", ("баварская советская",)),
+    ("italy", ("италией перемирия", "пруссии италии против австрии")),
+    ("japan", ("сан францисск",)),
+    ("france", ("франции военной структуры нато",)),
+    ("serbia", ("против югославии",)),
+    ("russia", ("брестского мирного", "московская битва")),
+    ("assyria", ("апипур",)),
+    ("prehistory", ("появление человека",)),
+]
+
 WORLD_MARKERS = (
+    "объединенных наций",
+    "генуэзская конференция",
+    "антигитлеровск",
+    "карибский кризис",
+    "московская конференция",
     "мировая война",
     "организации объединенных наций",
     "лига наций",
@@ -362,18 +389,38 @@ def normalize_date_label(label: str) -> str:
 
 
 def century_year(century: int, bce: bool, qualifier: str) -> int:
+    """Representative year of a century, honouring «начало / середина / конец».
+
+    Centuries BCE run backwards: the VII century BCE is 700–601, so its
+    «конец» is around 610, not 690. Qualifiers «первая/вторая половина»
+    are treated as the start of that half.
+    """
     if bce:
         if "конец" in qualifier:
-            return -(century * 100 - 10)
-        if "середин" in qualifier:
+            return -(century * 100 - 90)
+        if "середин" in qualifier or "вторая половина" in qualifier:
             return -(century * 100 - 50)
         return -(century * 100)
     base = (century - 1) * 100 + 1
     if "конец" in qualifier:
         return base + 89
-    if "середин" in qualifier:
+    if "середин" in qualifier or "вторая половина" in qualifier:
         return base + 49
     return base
+
+
+def century_end(century: int, bce: bool, qualifier: str) -> int:
+    """Last representative year of the closing century of a range.
+
+    «XVI – XI вв. до н. э.» ends at the end of the XI century BCE (≈1001),
+    «первая половина XV в.» ends mid-century, «начало VI в.» — soon after
+    its start. Used only for `endYear`, so an approximate value is enough.
+    """
+    if "начало" in qualifier:
+        return century_year(century, bce, "") + 10
+    if "первая половина" in qualifier or "середин" in qualifier:
+        return century_year(century, bce, "середина")
+    return -((century - 1) * 100 + 1) if bce else century * 100
 
 
 def parse_date(raw: str) -> tuple[str, ParsedDate | None]:
@@ -408,7 +455,9 @@ def parse_date(raw: str) -> tuple[str, ParsedDate | None]:
     match = re.search(r"(?:(конец|начало|середина)\s+)?(\d+)-?(?:го|е)?\s+тысячелет", lower)
     if match:
         qualifier, millennium = match.group(1) or "", int(match.group(2))
-        offset = 100 if qualifier == "конец" else 900 if qualifier == "начало" else 500
+        # Millennia BCE run backwards: the 2nd millennium BCE is 2000–1001,
+        # so its «начало» is near 2000 and its «конец» near 1100.
+        offset = 900 if qualifier == "конец" else 100 if qualifier == "начало" else 500
         return label, ParsedDate(-(millennium * 1000 - offset), approximate=True)
 
     match = re.search(r"(?:около\s+)?(\d+)\s+тыс\.\s+лет\s+до", lower)
@@ -420,6 +469,15 @@ def parse_date(raw: str) -> tuple[str, ParsedDate | None]:
     if match:
         return label, ParsedDate(-int(match.group(1)), int(match.group(2)), approximate=approximate)
 
+    # Several separate spans («1768 – 1774, 1787 – 1791 гг.») stretch from the
+    # first year to the last one; checked before plain ranges, which would
+    # otherwise anchor the record to the last span only.
+    years = [int(value) for value in re.findall(r"\b(\d{3,4})\b", label)]
+    if "," in label and len(years) >= 2 and ("г." in label or "гг." in label):
+        bce = "до н. э." in lower
+        values = [-value if bce else value for value in years]
+        return label, ParsedDate(values[0], values[-1], approximate=approximate)
+
     # Numeric year range, with optional BCE suffix.
     match = re.search(r"(\d{1,4})\s*[–—-]+\s*(\d{1,4})\s*(?:гг?|п)\.", lower)
     if match:
@@ -427,42 +485,37 @@ def parse_date(raw: str) -> tuple[str, ParsedDate | None]:
         bce = "до н. э." in lower
         return label, ParsedDate(-first if bce else first, -second if bce else second, approximate=approximate)
 
-    # Multiple non-contiguous years use the first year as their sortable anchor.
-    years = [int(value) for value in re.findall(r"\b(\d{3,4})\b", label)]
-    if "," in label and len(years) >= 2 and ("г." in label or "гг." in label):
-        bce = "до н. э." in lower
-        values = [-value if bce else value for value in years]
-        return label, ParsedDate(values[0], values[-1], approximate=approximate)
-
-    # Century ranges may repeat the qualifier on both sides.
+    # Century ranges: «XVI – XI вв. до н. э.», «Конец VIII – XI в.», «V – начало VI в.»,
+    # «XVI – первая половина XV в. до н. э.». The qualifier may stand on either side;
+    # normalize_date_label puts spaces around the dash, so the dash is matched loosely.
+    qualifier_pattern = r"(?:(конец|начало|середина|первая половина|вторая половина|рубеж)\s+)?"
     match = re.search(
-        r"(?:(\u043a\u043e\u043d\u0435\u0446|\u043d\u0430\u0447\u0430\u043b\u043e|\u0441\u0435\u0440\u0435\u0434\u0438\u043d\u0430)\s+)?([IVXLCDM]+)\s*[\u2013\u2014-]+\s*"
-        r"(?:(\u043a\u043e\u043d\u0435\u0446|\u043d\u0430\u0447\u0430\u043b\u043e|\u0441\u0435\u0440\u0435\u0434\u0438\u043d\u0430)\s+)?([IVXLCDM]+)\s+\u0432\.",
+        qualifier_pattern + r"([IVXLCDM]+)\s*[–—-]+\s*" + qualifier_pattern + r"([IVXLCDM]+)\s+вв?\.",
         label,
         re.I,
     )
     if match:
         first, second = roman_to_int(match.group(2)), roman_to_int(match.group(4))
         if first and second:
-            bce = "\u0434\u043e \u043d. \u044d." in lower
-            year = century_year(first, bce, (match.group(1) or "").lower())
-            end_year = century_year(second, bce, (match.group(3) or "\u043a\u043e\u043d\u0435\u0446").lower())
+            bce = "до н. э." in lower
+            left, right = (match.group(1) or "").lower(), (match.group(3) or "").lower()
+            if left == "рубеж":
+                # «Рубеж XV – XVI вв.» is a point around the turn of the centuries, not a span.
+                return label, ParsedDate(century_year(second, bce, ""), approximate=True)
+            year = century_year(first, bce, left)
+            end_year = century_end(second, bce, right)
             if end_year < year:
                 year, end_year = end_year, year
             return label, ParsedDate(year, end_year, approximate=True)
 
-    # Roman century or century range.
-    match = re.search(r"(?:(конец|начало|середина|первая половина|вторая половина)\s+)?([IVXLCDM]+)(?:[–—-]+([IVXLCDM]+))?\s+(в|вв)\.", label, re.I)
+    # A single Roman century, possibly qualified.
+    match = re.search(r"(?:(конец|начало|середина|первая половина|вторая половина)\s+)?([IVXLCDM]+)\s+(в|вв)\.", label, re.I)
     if match:
         qualifier = (match.group(1) or "").lower()
-        first, second = roman_to_int(match.group(2)), roman_to_int(match.group(3) or "")
+        first = roman_to_int(match.group(2))
         if first:
             bce = "до н. э." in lower
-            year = century_year(first, bce, qualifier)
-            end_year = century_year(second, bce, "конец") if second else None
-            if end_year is not None and end_year < year:
-                year, end_year = end_year, year
-            return label, ParsedDate(year, end_year, approximate=True)
+            return label, ParsedDate(century_year(first, bce, qualifier), approximate=True)
 
     # Exact or approximate numeric year. The first plausible year is the anchor.
     match = re.search(r"\b(\d{1,4})\s*(?:гг?|п)\.", lower)
@@ -484,7 +537,9 @@ def parse_date(raw: str) -> tuple[str, ParsedDate | None]:
 
 
 def normalized_title(value: str) -> str:
-    value = unicodedata.normalize("NFKD", clean_text(value).lower().replace("ё", "е"))
+    # NFC, not NFKD: decomposition would split «й» and «ё» into a letter plus
+    # a combining mark, and the word «Кейптаун» would fall apart into «кеи птаун».
+    value = unicodedata.normalize("NFC", clean_text(value).lower().replace("ё", "е"))
     stop = {"в", "на", "и", "с", "из", "к", "по", "о", "об", "для", "г", "гг"}
     return " ".join(word for word in re.findall(r"[а-яa-z0-9]+", value) if word not in stop)
 
@@ -533,23 +588,45 @@ def duplicate_of(title: str, year: int, existing: list[tuple[str, int, str]]) ->
     return None
 
 
-def classify(event: dict[str, object]) -> str:
+def has_marker(text: str, markers: tuple[str, ...] | str) -> bool:
+    """Does the normalized title contain one of the markers?
+
+    Short markers must start a word: «нато» is not inside «Эхнатона», and
+    «куб» is not inside «инкубатор». Longer stems keep plain substring matching,
+    which tolerates inflection («германи» → «Германии»).
+    """
+    if isinstance(markers, str):
+        markers = (markers,)
+    for marker in markers:
+        if len(marker) <= 4:
+            if re.search(rf"(?<![а-яa-z0-9]){re.escape(marker)}", text):
+                return True
+        elif marker in text:
+            return True
+    return False
+
+
+def classify(event: dict[str, object], title: str | None = None) -> str:
+    """Pick the timeline line for a record.
+
+    `title` is the final, unwrapped title: a title split across two lines in
+    the scan may lose the very word («…во Франции») that names the country.
+    """
     page = int(event["page"])
     section = str(event["section"])
-    title = clean_text(str(event["title"]))
-    comment = clean_text(str(event["comment"]))
+    title = clean_text(title if title is not None else str(event["title"]))
     title_key = normalized_title(title)
-    text = f"{title} {comment}".lower().replace("ё", "е")
 
     if page <= 5:
         return "prehistory"
-    if any(marker in title_key for marker in WORLD_MARKERS):
+    for country, markers in PRIORITY_RULES:
+        if has_marker(title_key, markers):
+            return country
+    if has_marker(title_key, WORLD_MARKERS):
         return "world"
 
     for country, markers in HISTORICAL_RULES:
-        if isinstance(markers, str):
-            markers = (markers,)
-        if any(marker in title_key for marker in markers):
+        if has_marker(title_key, markers):
             return country
 
     if section == "Древний Египет":
@@ -564,15 +641,7 @@ def classify(event: dict[str, object]) -> str:
         return "ancient-rome"
 
     for country, markers in COUNTRY_RULES:
-        if isinstance(markers, str):
-            markers = (markers,)
-        if country == "denmark":
-            markers = ("\u0434\u0430\u043d\u0438\u044f", "\u0434\u0430\u0442\u0441\u043a")
-        if country == "russia":
-            markers += ("\u043b\u0435\u043d\u0438\u043d", "\u0441\u0442\u0430\u043b\u0438\u043d", "\u0433\u043e\u0440\u0431\u0430\u0447\u0435\u0432", "\u043f\u0443\u0442\u0438\u043d", "\u043a\u043f\u0441\u0441")
-        if country == "china":
-            markers += ("\u043c\u0430\u043e \u0446\u0437\u044d\u0434\u0443\u043d", "\u0445\u0443 \u044f\u043e\u0431\u0430\u043d", "\u0447\u0436\u0430\u043e \u0446\u0437\u044b\u044f\u043d", "\u043a\u043f\u043a")
-        if any(marker in title_key for marker in markers):
+        if has_marker(title_key, markers):
             return country
 
     # Page/section fallbacks are narrow enough to be meaningful; broad regional
@@ -697,7 +766,7 @@ def main() -> None:
             duplicates.append((event, duplicate))
             continue
 
-        country = classify(event)
+        country = classify(event, title)
         base_id = f"ref-p{page:03d}-{slugify(title)}"
         identifier = base_id
         suffix = 2
