@@ -311,6 +311,18 @@ export const france: TimelineItem[] = [
     importance: 2,
   },
   {
+    id: 'fr-paris-treaty-1763',
+    country: 'france',
+    year: 1763,
+    month: 2,
+    day: 10,
+    kind: 'event',
+    title: 'Парижский мир 1763 года',
+    summary: 'Франция теряет Канаду, Луизиану и позиции в Индии; Британия становится первой колониальной державой.',
+    tags: ['дипломатия', 'колонии', 'война'],
+    importance: 2,
+  },
+  {
     id: 'fr-us-alliance-1778',
     country: 'france',
     year: 1778,
@@ -357,6 +369,19 @@ export const france: TimelineItem[] = [
     summary: 'Национальный конвент единогласно упраздняет монархию на следующий день после победы при Вальми.',
     tags: ['республика', 'революция', 'война'],
     importance: 2,
+  },
+  {
+    id: 'fr-louis-xvi-1793',
+    country: 'france',
+    year: 1793,
+    month: 1,
+    day: 21,
+    kind: 'event',
+    title: 'Казнь Людовика XVI',
+    summary:
+      'Конвент большинством в один голос приговаривает короля к смерти; гильотина на площади Революции делает разрыв со старым порядком необратимым.',
+    tags: ['революция', 'монархия', 'право'],
+    importance: 3,
   },
   {
     id: 'fr-napoleon-1799',
@@ -602,6 +627,19 @@ export const france: TimelineItem[] = [
     importance: 2,
   },
   {
+    id: 'fr-marne-1914',
+    country: 'france',
+    year: 1914,
+    month: 9,
+    day: 6,
+    kind: 'event',
+    title: 'Битва на Марне',
+    summary:
+      'Жоффр останавливает немецкое наступление в сорока километрах от Парижа; план Шлиффена сорван, война становится позиционной.',
+    tags: ['война', 'Первая мировая', 'Париж'],
+    importance: 3,
+  },
+  {
     id: 'fr-verdun-1916',
     country: 'france',
     year: 1916,
@@ -612,6 +650,19 @@ export const france: TimelineItem[] = [
     summary: 'Десять месяцев боёв за одну крепость становятся символом бессмысленности окопной войны.',
     tags: ['война', 'память'],
     importance: 2,
+  },
+  {
+    id: 'fr-armistice-1918',
+    country: 'france',
+    year: 1918,
+    month: 11,
+    day: 11,
+    kind: 'event',
+    title: 'Компьенское перемирие',
+    summary:
+      'В вагоне маршала Фоша Германия подписывает перемирие; в одиннадцать часов одиннадцатого дня одиннадцатого месяца пушки замолкают.',
+    tags: ['война', 'Первая мировая', 'дипломатия'],
+    importance: 3,
   },
   {
     id: 'ref-p091-podpisanie-sovetsko-francuzskogo-dogovora-',
@@ -724,6 +775,19 @@ export const france: TimelineItem[] = [
     importance: 3,
   },
   {
+    id: 'fr-evian-1962',
+    country: 'france',
+    year: 1962,
+    month: 3,
+    day: 18,
+    kind: 'event',
+    title: 'Эвианские соглашения и независимость Алжира',
+    summary:
+      'После восьми лет войны де Голль соглашается на самоопределение Алжира; миллион европейцев покидает страну.',
+    tags: ['деколонизация', 'война', 'Алжир'],
+    importance: 3,
+  },
+  {
     id: 'fr-elysee-1963',
     country: 'france',
     year: 1963,
@@ -757,6 +821,19 @@ export const france: TimelineItem[] = [
     summary: 'По инициативе министра юстиции Робера Бадантера Франция отменяет смертную казнь.',
     tags: ['право', 'права человека', 'реформы'],
     importance: 1,
+  },
+  {
+    id: 'fr-attacks-2015',
+    country: 'france',
+    year: 2015,
+    month: 11,
+    day: 13,
+    kind: 'event',
+    title: 'Теракты 2015 года в Париже',
+    summary:
+      'После расстрела редакции «Шарли Эбдо» в январе боевики ИГ убивают 130 человек в «Батаклане», кафе и у стадиона; введено чрезвычайное положение.',
+    tags: ['терроризм', 'современность', 'общество'],
+    importance: 3,
   },
   {
     id: 'fr-olympics-2024',
