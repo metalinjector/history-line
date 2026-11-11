@@ -19,14 +19,21 @@
     <meta property="og:type" content="website" />
     <script>
       // Тема применяется до первой отрисовки, чтобы не было вспышки светлого фона.
-      try {
-        var saved = JSON.parse(localStorage.getItem('history-line:theme'));
-        if (saved === 'atlas' || saved === 'parchment') {
-          document.documentElement.dataset.theme = saved;
+      // Пока читатель не выбрал тему сам, она следует настройке системы
+      // (то же правило — systemTheme в src/lib/useTimelineState.ts).
+      (function () {
+        var theme;
+        try {
+          var saved = JSON.parse(localStorage.getItem('history-line:theme'));
+          if (saved === 'atlas' || saved === 'parchment') theme = saved;
+        } catch (error) {
+          /* хранилище недоступно — остаётся тема по настройке системы */
         }
-      } catch (error) {
-        /* хранилище недоступно — остаётся тема по умолчанию */
-      }
+        if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          theme = 'atlas';
+        }
+        if (theme) document.documentElement.dataset.theme = theme;
+      })();
     </script>
   </head>
   <body>

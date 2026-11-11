@@ -302,11 +302,14 @@ src/
     useTimelineState.ts       всё состояние приложения
     usePanning.ts             перетаскивание поля
     usePersistentState.ts     сохранение между сессиями
+    storedState.ts            проверка формы сохранённого при чтении
+    useModalHistory.ts        «Назад» закрывает открытое окно
   components/
     TimelineSection.tsx       сборка экрана хронологии
     TimelineControls.tsx      панель: на виду тип, поиск и период; остальное в «Настройках»
     TimelineOverlay.tsx       SVG-слой: штриховые линии и нити
     TimelineHorizontal.css    горизонтальная раскладка поверх той же разметки
     LayerMenu.tsx             меню слоёв и перетаскивание
+    ModalFallback.tsx         «открываем текст…» и сообщение, если окно не загрузилось
     modal/                    окна и вся работа с Markdown
 ```

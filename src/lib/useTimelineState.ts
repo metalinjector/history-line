@@ -46,8 +46,35 @@ import { stories as storyRoutes } from '../data/stories';
 import { findContemporaries } from './contemporaries';
 import { buildTimelineUrl, parseTimelineUrl } from './urlState';
 import { DEFAULT_ORIENTATION, isOrientation } from './orientation';
+import { useModalHistory } from './useModalHistory';
+import {
+  storedBoolean,
+  storedColumnGroups,
+  storedCountries,
+  storedCountrySets,
+  storedItems,
+  storedLayerIds,
+  storedLayerPlacements,
+  storedNotes,
+  storedAxis,
+  storedRelations,
+  storedTheme,
+  storedZoom,
+} from './storedState';
 
 export type ScrollTarget = { id: string; nonce: number };
+
+/** Цвет панели браузера под каждую тему — фон страницы из styles/tokens.css. */
+const THEME_COLOR: Record<ThemeName, string> = { parchment: '#f0e5d1', atlas: '#0d1017' };
+
+/**
+ * Тема до первого выбора читателя — по настройке системы: тёмная система
+ * открывает «Ночной атлас». То же правило — в index.html, до первой отрисовки.
+ */
+function systemTheme(): ThemeName {
+  if (typeof window === 'undefined' || !window.matchMedia) return 'parchment';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'atlas' : 'parchment';
+}
 
 /**
  * Всё состояние приложения в одном месте.
@@ -60,7 +87,7 @@ export function useTimelineState() {
   const [initialUrlState] = useState(() =>
     typeof window === 'undefined' ? {} : parseTimelineUrl(window.location.search),
   );
-  const [theme, setTheme] = usePersistentState<ThemeName>('theme', 'parchment');
+  const [theme, setTheme] = usePersistentState<ThemeName>('theme', systemTheme(), undefined, storedTheme);
   const [layer, setLayer] = useState<KindFilter>(initialUrlState.kind ?? 'all');
   const [query, setQuery] = useState(initialUrlState.query ?? '');
   const [keyOnly, setKeyOnly] = useState(initialUrlState.keyOnly ?? false);
@@ -69,14 +96,16 @@ export function useTimelineState() {
     'show-bce',
     true,
     initialUrlState.showBce,
+    storedBoolean,
   );
   const [tags, setTags] = useState<string[]>(initialUrlState.tags ?? []);
-  const [zoom, setZoomRaw] = usePersistentState<number>('zoom', 1, initialUrlState.zoom);
+  const [zoom, setZoomRaw] = usePersistentState<number>('zoom', 1, initialUrlState.zoom, storedZoom);
   /** Ось времени — личная настройка читателя, но ссылка на вид переносит и её. */
   const [storedOrientation, setOrientation] = usePersistentState<Orientation>(
     'orientation',
     DEFAULT_ORIENTATION,
     initialUrlState.orientation,
+    storedAxis,
   );
   // В localStorage может лежать что угодно: незнакомое значение не должно ломать раскладку.
   const orientation = isOrientation(storedOrientation) ? storedOrientation : DEFAULT_ORIENTATION;
@@ -84,20 +113,22 @@ export function useTimelineState() {
     'countries',
     defaultCountryIds,
     initialUrlState.countries,
+    storedCountries,
   );
-  const [addedPeople, setAddedPeople] = usePersistentState<TimelineItem[]>('added-people', []);
+  const [addedPeople, setAddedPeople] = usePersistentState<TimelineItem[]>('added-people', [], undefined, storedItems);
   /** Объединения колонок задаёт пользователь; по умолчанию у каждой страны своя колонка. */
   const [columnGroups, setColumnGroups] = usePersistentState<ColumnGroups>(
     'column-groups',
     [],
     initialUrlState.columnGroups,
+    storedColumnGroups,
   );
   /** Связи, созданные пользователем вместе с добавленными объектами. */
-  const [addedRelations, setAddedRelations] = usePersistentState<Relation[]>('added-relations', []);
+  const [addedRelations, setAddedRelations] = usePersistentState<Relation[]>('added-relations', [], undefined, storedRelations);
   /** Свои наборы стран. Живут в браузере рядом с остальными настройками читателя. */
-  const [userCountrySets, setUserCountrySets] = usePersistentState<CountrySet[]>('country-sets', []);
+  const [userCountrySets, setUserCountrySets] = usePersistentState<CountrySet[]>('country-sets', [], undefined, storedCountrySets);
   /** Личные заметки читателя. Хранятся отдельно от базы фактов и не смешиваются с ней. */
-  const [notes, setNotes] = usePersistentState<Record<string, string>>('notes', {});
+  const [notes, setNotes] = usePersistentState<Record<string, string>>('notes', {}, undefined, storedNotes);
   // Записи справочника, слитые с карточками (data/referenceMerges.ts): заметки
   // и связи читателя переезжают на карточку и сохраняются уже под её id.
   useEffect(() => {
@@ -109,11 +140,13 @@ export function useTimelineState() {
     'layers',
     [],
     initialUrlState.activeLayerIds,
+    storedLayerIds,
   );
   const [layerPlacements, setLayerPlacements] = usePersistentState<LayerPlacements>(
     'layer-placements',
     {},
     initialUrlState.layerPlacements,
+    storedLayerPlacements,
   );
   const [selectedId, setSelectedId] = useState<string | undefined>(
     initialUrlState.selectedId ?? initialUrlState.openedId,
@@ -129,6 +162,7 @@ export function useTimelineState() {
     'show-relations',
     true,
     initialUrlState.showRelations,
+    storedBoolean,
   );
   const [activeStoryId, setActiveStoryId] = useState<string | undefined>(initialUrlState.storyId);
   const [storyStep, setStoryStep] = useState(initialUrlState.storyStep ?? 0);
@@ -154,6 +188,11 @@ export function useTimelineState() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
+    // Панель браузера на телефоне красится под тему сайта, а не под тему системы:
+    // читатель мог выбрать пергамент при тёмной системе и наоборот.
+    for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
+      meta.setAttribute('content', THEME_COLOR[theme]);
+    }
   }, [theme]);
 
   // Геометрия растёт только до визуального предела; остальное уходит в детализацию.
@@ -233,9 +272,13 @@ export function useTimelineState() {
   useEffect(() => {
     if (!wantsFullText || searchText) return;
     let cancelled = false;
-    void loadContent().then((module) => {
-      if (!cancelled) setSearchText(module.searchTextById);
-    });
+    // Тексты не пришли (нет сети) — поиск остаётся по заголовкам и витрине.
+    void loadContent().then(
+      (module) => {
+        if (!cancelled) setSearchText(module.searchTextById);
+      },
+      () => undefined,
+    );
     return () => {
       cancelled = true;
     };
@@ -383,7 +426,10 @@ export function useTimelineState() {
   const backToDay = useMemo(() => {
     if (!returnDayKey) return undefined;
     const group = groups.find((item) => item.key === returnDayKey);
-    return group ? { key: group.key, label: group.label } : undefined;
+    // Месяц и день подписываются вместе с годом: «июль 1789», а не просто «июль».
+    return group
+      ? { key: group.key, label: group.sublabel ? `${group.label} ${group.sublabel}` : group.label }
+      : undefined;
   }, [groups, returnDayKey]);
 
   /**
@@ -611,6 +657,11 @@ export function useTimelineState() {
     setStoryStep(0);
   }, []);
 
+  // «Назад» закрывает открытое окно. Стоит до записи адреса: см. lib/useModalHistory.ts.
+  const [historyTick, setHistoryTick] = useState(0);
+  const syncUrlAfterHistory = useCallback(() => setHistoryTick((tick) => tick + 1), []);
+  useModalHistory(Boolean(openedItem || openedDay || openedRelation), closeModals, syncUrlAfterHistory);
+
   // Состояние исследования канонически отражается в URL. replaceState не засоряет
   // историю браузера при каждом символе поиска, но ссылка всегда готова к копированию.
   useEffect(() => {
@@ -645,6 +696,7 @@ export function useTimelineState() {
     activeLayerIds,
     activeStory?.id,
     columnGroups,
+    historyTick,
     keyOnly,
     layer,
     layerPlacements,

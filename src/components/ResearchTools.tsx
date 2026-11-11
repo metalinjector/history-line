@@ -7,6 +7,7 @@ import {
 } from '../lib/researchExport';
 import { periodLabel } from '../data/periods';
 import { loadContent } from '../data/loadContent';
+import { plural } from '../lib/format';
 import './ResearchTools.css';
 
 type Props = { state: TimelineState };
@@ -41,6 +42,9 @@ async function copyCurrentUrl(): Promise<void> {
   field.remove();
 }
 
+/** Тексты для экспорта подтягиваются заранее; сбой здесь не страшен — о нём скажет сам экспорт. */
+const prefetchContent = () => void loadContent().catch(() => undefined);
+
 export function ResearchTools({ state }: Props) {
   const [status, setStatus] = useState('');
   const [printSession, setPrintSession] = useState<ResearchSession>();
@@ -71,7 +75,7 @@ export function ResearchTools({ state }: Props) {
     try {
       save(await createSession());
     } catch {
-      notify('Не удалось подготовить экспорт — проверьте соединение');
+      notify('Не удалось подготовить экспорт — проверьте соединение и обновите страницу');
     }
   };
 
@@ -80,12 +84,15 @@ export function ResearchTools({ state }: Props) {
       <section className="research-tools" aria-label="Поделиться и экспортировать исследование">
         <div>
           <b>Исследовательская сессия</b>
-          <span>{state.filteredItems.length} объектов · фильтры и открытая карточка уже записаны в URL</span>
+          <span>
+            {state.filteredItems.length} {plural(state.filteredItems.length, ['объект', 'объекта', 'объектов'])} ·
+            фильтры и открытая карточка уже записаны в URL
+          </span>
         </div>
         <div
           className="research-tools__actions"
-          onPointerEnter={() => void loadContent()}
-          onFocus={() => void loadContent()}
+          onPointerEnter={prefetchContent}
+          onFocus={prefetchContent}
         >
           <button
             type="button"

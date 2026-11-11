@@ -32,7 +32,7 @@ export function DayModal({ group, onOpenItem, onClose }: Props) {
       <div className="modal__title-block">
         <p className="modal__date">{group.era.label}</p>
         <h2 className="modal__title" id="day-modal-title">
-          {group.label}
+          {group.sublabel ? `${group.label} ${group.sublabel}` : group.label}
           <span className="day__count">
             {group.items.length} {plural(group.items.length, ['событие', 'события', 'событий'])}
           </span>
@@ -41,7 +41,7 @@ export function DayModal({ group, onOpenItem, onClose }: Props) {
 
       <div className="modal__body">
         <p className="day__lede">
-          В этот год линии нескольких стран сошлись в одной строке. Нажмите на любую карточку,
+          В этой дате сошлись линии нескольких стран. Нажмите на любую карточку,
           чтобы открыть полный текст.
         </p>
 

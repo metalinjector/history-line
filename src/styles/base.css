@@ -252,6 +252,22 @@ button {
   border: 0;
 }
 
+/* Подсказки об управлении: мышь и колесо — там, где они есть,
+   палец — на сенсорных экранах. */
+.hint-touch {
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .hint-mouse {
+    display: none;
+  }
+
+  .hint-touch {
+    display: inline;
+  }
+}
+
 /* Полосы прокрутки под тему */
 * {
   scrollbar-width: thin;

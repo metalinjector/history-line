@@ -82,7 +82,7 @@ export function ItemModal({
               type="button"
               className="modal__back"
               onClick={() => onBackToDay(backToDay.key)}
-              title={`Вернуться к списку событий ${backToDay.label} года`}
+              title={`Вернуться к списку событий: ${backToDay.label}`}
             >
               <span aria-hidden="true">←</span> {backToDay.label}
             </button>

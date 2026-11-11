@@ -180,7 +180,8 @@ export function TimelineControls(props: Props) {
               onClick={() => onQueryChange('')}
               title="Очистить поиск"
             >
-              ×
+              <span aria-hidden="true">×</span>
+              <span className="visually-hidden">Очистить поиск</span>
             </button>
           ) : null}
         </div>
@@ -279,12 +280,20 @@ export function TimelineControls(props: Props) {
       </div>
 
       <div className="controls__meta">
+        {/* Каждая часть счётчика переносится целиком: на телефоне точка
+            не остаётся висеть в конце строки отдельно от своей подписи. */}
         <p className="controls__stats">
-          <b>{total}</b> {plural(total, ['объект', 'объекта', 'объектов'])} на шкале ·{' '}
-          <span className="controls__stat-dot" data-kind="event" aria-hidden="true" /> {events}{' '}
-          {plural(events, ['событие', 'события', 'событий'])} ·{' '}
-          <span className="controls__stat-dot" data-kind="person" aria-hidden="true" /> {people}{' '}
-          {plural(people, ['деятель', 'деятеля', 'деятелей'])}
+          <span className="controls__stat">
+            <b>{total}</b> {plural(total, ['объект', 'объекта', 'объектов'])} на шкале
+          </span>
+          <span className="controls__stat">
+            <span className="controls__stat-dot" data-kind="event" aria-hidden="true" />
+            {events} {plural(events, ['событие', 'события', 'событий'])}
+          </span>
+          <span className="controls__stat">
+            <span className="controls__stat-dot" data-kind="person" aria-hidden="true" />
+            {people} {plural(people, ['деятель', 'деятеля', 'деятелей'])}
+          </span>
         </p>
 
         {isFiltered ? (

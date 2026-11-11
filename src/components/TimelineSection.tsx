@@ -27,6 +27,7 @@ import { StoryChooser, StoryPlayer } from './StoryPanel';
 import { EditorialDashboard } from './EditorialDashboard';
 import { ResearchTools } from './ResearchTools';
 import { TimelineNavigator } from './TimelineNavigator';
+import { ModalBoundary, ModalLoading } from './ModalFallback';
 import { periodSegments } from '../lib/periods';
 import { loadContent } from '../data/loadContent';
 import './TimelineSection.css';
@@ -36,7 +37,7 @@ import './TimelineHorizontal.css';
 // базу (статьи и источники), поэтому живут в отдельном чанке. Первый экран
 // его не ждёт: чанк начинает грузиться, когда браузер освободится, — к первому
 // клику окно обычно уже готово. Ошибку фоновой загрузки можно не замечать:
-// lazy повторит запрос, когда окно понадобится.
+// когда окно понадобится, о сбое скажет ModalBoundary.
 const loadModalHost = () => import('./modal/ModalHost');
 const ModalHost = lazy(loadModalHost);
 const prefetchModalHost = () => void loadModalHost().catch(() => undefined);
@@ -215,6 +216,19 @@ export function TimelineSection({ state, sectionRef }: Props) {
   useEffect(() => {
     if (selectedItemId) void loadContent().catch(() => undefined);
   }, [selectedItemId]);
+
+  /**
+   * «Развернуть» отдаёт полю весь экран под шапкой сайта — и подводит его
+   * к верху окна. Без этого поле вырастало вниз, за край экрана, и кнопка
+   * выглядела неработающей, пока читатель сам не докрутит страницу.
+   */
+  const stageRef = useRef<HTMLDivElement>(null);
+  const wasExpanded = useRef(expanded);
+  useEffect(() => {
+    if (expanded === wasExpanded.current) return;
+    wasExpanded.current = expanded;
+    if (expanded) stageRef.current?.scrollIntoView({ block: 'start' });
+  }, [expanded]);
 
   const { ref: viewportRef, isPanning, onPointerDown, didPan } = usePanning<HTMLDivElement>();
   useWheelAlongTime(viewportRef, horizontal);
@@ -815,15 +829,21 @@ export function TimelineSection({ state, sectionRef }: Props) {
         </div>
         {horizontal ? (
           <p className="timeline__hint lede">
-            Колесо мыши листает время, Shift + колесо — линии, поле можно и тащить. Читайте столбец сверху
-            вниз — это одно и то же время в разных странах. Нажмите на карточку: сверху подсветится год,
-            раскроется описание, а значок <span className="timeline__hint-glyph">¶</span> откроет полный текст.
+            <span className="hint-mouse">
+              Колесо мыши листает время, Shift + колесо — линии, поле можно и тащить.
+            </span>
+            <span className="hint-touch">Листайте поле пальцем: вбок — время, вниз — линии.</span> Читайте
+            столбец сверху вниз — это одно и то же время в разных странах. Нажмите на карточку: сверху
+            подсветится год, раскроется описание, а значок <span className="timeline__hint-glyph">¶</span>{' '}
+            откроет полный текст.
           </p>
         ) : (
           <p className="timeline__hint lede">
-            Тащите поле мышью, читайте строку поперёк — это одно и то же время в разных странах. Нажмите
-            на карточку: слева подсветится год, а значок <span className="timeline__hint-glyph">¶</span> откроет
-            полный текст. Страны, масштаб и слои — в «Настройках».
+            <span className="hint-mouse">Тащите поле мышью</span>
+            <span className="hint-touch">Листайте поле пальцем</span>, читайте строку поперёк — это одно
+            и то же время в разных странах. Нажмите на карточку: слева подсветится год, а значок{' '}
+            <span className="timeline__hint-glyph">¶</span> откроет полный текст. Страны, масштаб и слои —
+            в «Настройках».
           </p>
         )}
       </header>
@@ -935,7 +955,12 @@ export function TimelineSection({ state, sectionRef }: Props) {
           onScrub={scrubToGroup}
         />
 
-        <div className="timeline__stage" data-expanded={expanded || undefined} data-orientation={orientation}>
+        <div
+          className="timeline__stage"
+          ref={stageRef}
+          data-expanded={expanded || undefined}
+          data-orientation={orientation}
+        >
           <div
             className="timeline__viewport"
             ref={viewportRef}
@@ -1137,9 +1162,14 @@ export function TimelineSection({ state, sectionRef }: Props) {
       </div>
 
       {state.openedItem || state.openedDay || state.openedRelation ? (
-        <Suspense fallback={null}>
-          <ModalHost state={state} />
-        </Suspense>
+        <ModalBoundary
+          key={state.openedItem?.id ?? state.openedRelation?.id ?? state.openedDay?.key}
+          onClose={state.closeModals}
+        >
+          <Suspense fallback={<ModalLoading />}>
+            <ModalHost state={state} />
+          </Suspense>
+        </ModalBoundary>
       ) : null}
     </section>
   );
