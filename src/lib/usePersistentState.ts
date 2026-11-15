@@ -10,8 +10,17 @@ const PREFIX = 'history-line:';
  * useState, который переживает перезагрузку страницы.
  * Ошибки чтения и записи игнорируются: приватный режим браузера
  * не должен ломать интерфейс.
+ *
+ * `sanitize` проверяет сохранённое значение (lib/storedState.ts): то, что
+ * не соответствует ожидаемой форме, заменяется значением по умолчанию,
+ * а не роняет страницу. Годное значение проходит как есть.
  */
-export function usePersistentState<T>(key: string, initial: T, urlOverride?: T) {
+export function usePersistentState<T>(
+  key: string,
+  initial: T,
+  urlOverride?: T,
+  sanitize?: (raw: unknown) => T | undefined,
+) {
   const [value, setValue] = useState<T>(() => {
     if (typeof window === 'undefined') return initial;
     // Явное состояние ссылки важнее локальной сессии: иначе shared URL
@@ -19,7 +28,9 @@ export function usePersistentState<T>(key: string, initial: T, urlOverride?: T) 
     if (urlOverride !== undefined) return urlOverride;
     try {
       const raw = window.localStorage.getItem(PREFIX + key);
-      return raw === null ? initial : (JSON.parse(raw) as T);
+      if (raw === null) return initial;
+      const parsed: unknown = JSON.parse(raw);
+      return sanitize ? (sanitize(parsed) ?? initial) : (parsed as T);
     } catch {
       return initial;
     }

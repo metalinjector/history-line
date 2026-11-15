@@ -51,6 +51,8 @@ export const TimelineRow = memo(function TimelineRow({
   /** Страны, чьи линии сошлись в этой строке. */
   const countriesHere = Array.from(new Set(group.items.map((item) => item.country)));
   const isCrossroads = countriesHere.length > 1;
+  /** Дата группы словами: «1789», «июль 1789», «753 до н. э.». */
+  const dateText = group.sublabel ? `${group.label} ${group.sublabel}` : group.label;
 
   return (
     <div
@@ -69,7 +71,7 @@ export const TimelineRow = memo(function TimelineRow({
             type="button"
             className="trow__crossroads"
             onClick={() => onOpenDay(group.key)}
-            title={`${group.label}: события ${countriesHere.length} стран — открыть все`}
+            title={`${dateText}: события ${countriesHere.length} стран — открыть все`}
             style={
               {
                 '--ring': `conic-gradient(${countriesHere
@@ -91,7 +93,7 @@ export const TimelineRow = memo(function TimelineRow({
               {countriesHere.length}
             </span>
             <span className="visually-hidden">
-              Открыть все события {group.label} года: {group.items.length}{' '}
+              Открыть все события — {dateText}: {group.items.length}{' '}
               {plural(group.items.length, ['объект', 'объекта', 'объектов'])} в{' '}
               {countriesHere.length} странах
             </span>

@@ -1,0 +1,83 @@
+/* Отклик на открытие окна: «открываем…» и сообщение о сбое загрузки.
+   Плашка внизу экрана, поверх шкалы; сама шкала остаётся доступной. */
+
+.modal-fallback {
+  position: fixed;
+  left: 50%;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  z-index: 200;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  max-width: min(560px, calc(100vw - 32px));
+  padding: 12px 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--card-border);
+  background: var(--paper-raised);
+  box-shadow: var(--shadow-md);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+/* Быстрая загрузка не должна мигать плашкой: она проявляется через треть секунды. */
+.modal-fallback[data-kind='loading'] {
+  opacity: 0;
+  animation: modal-fallback-in 180ms var(--ease-out) 320ms forwards;
+}
+
+.modal-fallback[data-kind='error'] {
+  flex-direction: column;
+  align-items: stretch;
+  border-color: color-mix(in oklab, var(--seal) 45%, var(--card-border));
+}
+
+.modal-fallback__text {
+  margin: 0;
+}
+
+.modal-fallback__text b {
+  color: var(--ink-strong);
+}
+
+.modal-fallback__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.modal-fallback__spinner {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in oklab, var(--accent) 30%, transparent);
+  border-top-color: var(--accent);
+  animation: modal-fallback-spin 800ms linear infinite;
+}
+
+@keyframes modal-fallback-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-fallback-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-fallback__spinner {
+    animation-duration: 2400ms;
+  }
+}
+
+@media print {
+  .modal-fallback {
+    display: none;
+  }
+}

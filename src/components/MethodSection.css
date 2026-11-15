@@ -13,24 +13,75 @@
   font-size: clamp(26px, 3vw, 40px);
 }
 
+/* Правил шесть — сетка делит их поровну: 3 × 2, на планшете 2 × 3, на телефоне
+   столбиком. auto-fit на широком экране давал 5 + 1, и шестое правило
+   оставалось одно во втором ряду. */
 .method__steps {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--line);
 }
 
 .method__step {
   position: relative;
   padding: 24px 26px 28px 0;
+  /* Линия сверху — у каждого правила, чтобы она была и у второго ряда */
+  border-top: 1px solid var(--line);
   border-right: 1px solid var(--line-soft);
 }
 
-.method__step:last-child {
+.method__step:not(:nth-child(3n + 1)) {
+  padding-left: 26px;
+}
+
+.method__step:not(:nth-child(3n + 1))::before {
+  left: 26px;
+}
+
+.method__step:nth-child(3n) {
   border-right: none;
+}
+
+@media (max-width: 1023px) {
+  .method__steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .method__step:nth-child(n) {
+    padding-left: 0;
+    border-right: 1px solid var(--line-soft);
+  }
+
+  .method__step:nth-child(n)::before {
+    left: 0;
+  }
+
+  .method__step:nth-child(2n) {
+    padding-left: 26px;
+    border-right: none;
+  }
+
+  .method__step:nth-child(2n)::before {
+    left: 26px;
+  }
+}
+
+@media (max-width: 640px) {
+  .method__steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .method__step:nth-child(n) {
+    padding-left: 0;
+    border-right: none;
+  }
+
+  .method__step:nth-child(n)::before {
+    left: 0;
+  }
 }
 
 .method__step::before {
@@ -141,10 +192,8 @@
   color: var(--ink-soft);
 }
 
-@media (max-width: 720px) {
+@media (max-width: 640px) {
   .method__step {
-    border-right: none;
-    border-bottom: 1px solid var(--line-soft);
     padding-right: 0;
   }
 }

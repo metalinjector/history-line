@@ -106,6 +106,9 @@
 
 .timeline__stage {
   --viewport-height: clamp(520px, calc(100vh - 290px), 940px);
+  /* «Развернуть» подводит поле к верху окна: под липкую шапку сайта, с тем же
+     зазором сверху, что остаётся снизу (высота развёрнутого поля — ниже). */
+  scroll-margin-top: calc(var(--header-height) + 18px);
 }
 
 .timeline__stage[data-expanded] {

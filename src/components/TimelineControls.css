@@ -354,8 +354,26 @@
   color: var(--ink-faint);
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 2px 14px;
   flex-wrap: wrap;
+  overflow: hidden;
+}
+
+/* Часть счётчика: число с подписью. Разделитель стоит в промежутке слева
+   от каждой части; у первой в строке он выпадает за край счётчика и обрезается,
+   поэтому после переноса строка не начинается с точки. */
+.controls__stat {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.controls__stat::before {
+  content: '·';
+  position: absolute;
+  left: -9px;
 }
 
 .controls__stats b {

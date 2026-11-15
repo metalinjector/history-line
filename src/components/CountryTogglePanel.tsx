@@ -136,6 +136,15 @@ export function CountryTogglePanel({
       aria-label="Показать, скрыть и объединить страны"
       ref={panelRef}
     >
+      {/* Заголовок раздела — как у «Вида шкалы» и «Тем»: без него панель
+          настроек начиналась с наборов, и было неясно, наборы чего это. */}
+      <h4 className="settings-group__title country-toggles__title">
+        Страны и линии
+        <span className="country-toggles__title-count">
+          {activeIds.length} на шкале из {countries.length}
+        </span>
+      </h4>
+
       {/*
         Наборы стоят перед каталогом: в каталоге больше сотни линий, и почти
         всегда читателю нужен не поиск конкретной страны, а готовая раскладка.
